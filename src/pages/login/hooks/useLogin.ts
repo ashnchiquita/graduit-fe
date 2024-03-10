@@ -1,4 +1,4 @@
-import axios from "@/config/axios-config";
+import axios from "@/config/login-axios-config";
 import { useState } from "react";
 interface ReturnType {
   email: string;

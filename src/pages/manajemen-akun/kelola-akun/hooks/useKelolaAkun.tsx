@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 
-import axios from "@/config/axios-config";
+import axios from "@/config/login-axios-config";
 import RowAction from "../components/RowAction";
 import AccessCell from "../components/AccessCell";
 import { SetURLSearchParams, useSearchParams } from "react-router-dom";

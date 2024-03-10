@@ -12,7 +12,7 @@ import { VscChromeClose } from "react-icons/vsc";
 import { FaChevronLeft } from "react-icons/fa";
 import MailLogo from "@/assets/mail-logo.svg";
 import UserLogo from "@/assets/user-logo.svg";
-import CheckLogo from "@/assets/check-logo.svg";
+// import CheckLogo from "@/assets/check-logo.svg";
 import LockLogo from "@/assets/lock-logo.svg";
 import { UseFormReturn } from "react-hook-form";
 import { Link } from "react-router-dom";

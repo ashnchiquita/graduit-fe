@@ -24,3 +24,24 @@ export const AkunCreate = lazy(
 export const AkunDetail = lazy(
   () => import("../pages/manajemen-akun/akun-detail/AkunDetail.tsx"),
 );
+
+export const LogBimbingan = lazy(
+  () => import("../pages/log/bimbingan/LogBimbingan.tsx"),
+);
+export const LogBimbinganMahasiswa = lazy(
+  () => import("../pages/log/bimbingan-mahasiswa/LogBimbinganMahasiswa.tsx"),
+);
+export const LogSistem = lazy(
+  () => import("../pages/log/sistem/LogSistem.tsx"),
+);
+
+export const StatusMahasiswa = lazy(
+  () => import("../pages/tugas-akhir/status-mahasiswa/StatusMahasiswa.tsx"),
+);
+export const Topik = lazy(() => import("../pages/tugas-akhir/topik/Topik.tsx"));
+export const Pengumuman = lazy(
+  () => import("../pages/tugas-akhir/pengumuman/Pengumuman.tsx"),
+);
+export const Penjadwalan = lazy(
+  () => import("../pages/tugas-akhir/penjadwalan/Penjadwalan.tsx"),
+);

@@ -4,7 +4,7 @@ import { z } from "zod";
 import { roleAccess } from "@/pages/manajemen-akun/akun-create/constants/roleAccess";
 import { useEffect, useState } from "react";
 import { Account } from "@/pages/manajemen-akun/kelola-akun/hooks/useKelolaAkun";
-import axios from "@/config/axios-config";
+import axios from "@/config/login-axios-config";
 import { useNavigate, useParams } from "react-router-dom";
 
 interface ReturnType {

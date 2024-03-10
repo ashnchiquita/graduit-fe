@@ -5,12 +5,19 @@ import {
   AkunCreate,
   AkunDetail,
   KelolaAkun,
+  LogBimbingan,
+  LogBimbinganMahasiswa,
+  LogSistem,
   Login,
   MainLayout,
   MhsDashboard,
   NotFound,
+  Pengumuman,
+  Penjadwalan,
   RegistrationRecap,
+  StatusMahasiswa,
   ThesisRegistration,
+  Topik,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -82,6 +89,42 @@ export const router = createBrowserRouter(
         {
           path: "/manajemen/tambah-akun",
           element: <AkunCreate />,
+        },
+        {
+          path: "/log",
+          element: <Navigate to="/log/bimbingan" replace />,
+        },
+        {
+          path: "/log/bimbingan",
+          element: <LogBimbingan />,
+        },
+        {
+          path: "/log/bimbingan/:id",
+          element: <LogBimbinganMahasiswa />,
+        },
+        {
+          path: "/log/sistem",
+          element: <LogSistem></LogSistem>,
+        },
+        {
+          path: "/tugas-akhir",
+          element: <Navigate to="/tugas-akhir/topik/2" replace />,
+        },
+        {
+          path: "/tugas-akhir/status/:id",
+          element: <StatusMahasiswa />,
+        },
+        {
+          path: "/tugas-akhir/topik/:role",
+          element: <Topik />,
+        },
+        {
+          path: "/tugas-akhir/pengumuman",
+          element: <Pengumuman />,
+        },
+        {
+          path: "/tugas-akhir/penjadwalan",
+          element: <Penjadwalan />,
         },
       ],
     },

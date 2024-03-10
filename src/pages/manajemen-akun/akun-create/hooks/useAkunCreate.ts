@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "@/config/axios-config";
+import axios from "@/config/login-axios-config";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { z } from "zod";
 import { roleAccess } from "../constants/roleAccess";

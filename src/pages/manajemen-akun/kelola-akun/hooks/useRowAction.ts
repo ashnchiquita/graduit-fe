@@ -1,4 +1,4 @@
-import axios from "@/config/axios-config";
+import axios from "@/config/login-axios-config";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 interface ReturnType {

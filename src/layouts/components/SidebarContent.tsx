@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IoSchoolOutline } from "react-icons/io5";
+import { IoClipboardOutline, IoSchoolOutline } from "react-icons/io5";
 import { VscChevronRight, VscInfo, VscNotebook } from "react-icons/vsc";
 import { NavLink } from "react-router-dom";
 import { Skeleton } from "../../components/ui/skeleton";
@@ -24,6 +24,16 @@ const navItems: NavItem[] = [
     ],
   },
   {
+    label: "Tugas Akhir",
+    icon: <IoSchoolOutline className="text-slate-700" />,
+    children: [
+      { label: "Topik", path: "/tugas-akhir/topik/2" },
+      { label: "Status", path: "/tugas-akhir/status/1" },
+      { label: "Pengumuman", path: "/tugas-akhir/pengumuman" },
+      { label: "Penjadwalan", path: "/tugas-akhir/penjadwalan" },
+    ],
+  },
+  {
     label: "Tugas",
     icon: <VscNotebook className="text-slate-700" />,
     children: [
@@ -37,6 +47,14 @@ const navItems: NavItem[] = [
     children: [
       { label: "Seminar", path: "/informasi/seminar" },
       { label: "Pengujian", path: "/informasi/pengujian" },
+    ],
+  },
+  {
+    label: "Log",
+    icon: <IoClipboardOutline className="text-slate-700" />,
+    children: [
+      { label: "Bimbingan", path: "/log/bimbingan" },
+      { label: "Sistem", path: "/log/sistem" },
     ],
   },
   {

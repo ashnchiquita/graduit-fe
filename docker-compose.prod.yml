@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  frontend:
+    container_name: frontend
+    image: gitlab.informatika.org:4567/k-01-11/graduit-fe:latest
+    restart: always
+    environment:
+      - NODE_ENV=production
+    ports:
+      - 3000:3000
