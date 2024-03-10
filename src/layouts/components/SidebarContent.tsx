@@ -39,6 +39,11 @@ const navItems: NavItem[] = [
       { label: "Pengujian", path: "/informasi/pengujian" },
     ],
   },
+  {
+    label: "Manajemen",
+    icon: <IoSchoolOutline className="text-slate-700" />,
+    children: [{ label: "Kelola Akun", path: "/manajemen/kelola-akun" }],
+  },
 ];
 
 export default function SidebarContent(): JSX.Element {

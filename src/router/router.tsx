@@ -2,6 +2,10 @@ import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import {
+  AkunCreate,
+  AkunDetail,
+  KelolaAkun,
+  Login,
   MainLayout,
   MhsDashboard,
   NotFound,
@@ -14,6 +18,10 @@ export const router = createBrowserRouter(
     {
       path: "/",
       element: <Navigate to="/tesis/registrasi" replace />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
     },
     {
       path: "/",
@@ -58,6 +66,22 @@ export const router = createBrowserRouter(
         {
           path: "/informasi/pengujian",
           element: <></>,
+        },
+        {
+          path: "/manajemen",
+          element: <Navigate to="/manajemen/kelola-akun" replace />,
+        },
+        {
+          path: "/manajemen/kelola-akun",
+          element: <KelolaAkun />,
+        },
+        {
+          path: "/manajemen/kelola-akun/:id",
+          element: <AkunDetail />,
+        },
+        {
+          path: "/manajemen/tambah-akun",
+          element: <AkunCreate />,
         },
       ],
     },

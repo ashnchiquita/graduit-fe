@@ -1,0 +1,96 @@
+.login {
+  background-color: #07090b;
+  height: 100vh;
+}
+
+.login .login-wrapper {
+  display: flex;
+  flex-direction: row;
+  height: -webkit-fill-available;
+}
+
+.kiri {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  background-image: url(/image/login-itb.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #ffffff;
+}
+
+.kiri .kiri-wrapper-dark {
+  background-color: rgba(0, 0, 0, 0.8);
+  height: -webkit-fill-available;
+}
+
+.kiri .kiri-wrapper-dark .kiri-wrapper {
+  padding-top: 30vh;
+  padding-left: 10vh;
+}
+
+.kiri .stei {
+  display: flex;
+  flex-direction: row;
+  grid-gap: 2.5vh;
+}
+
+.kiri .stei .tulisan-stei {
+  display: flex;
+  flex-direction: column;
+}
+
+.kiri .stei .tulisan-stei p {
+  font-weight: bold;
+}
+
+.kiri .stei .tulisan-stei p:first-child {
+  font-weight: lighter;
+}
+
+.kiri h2 {
+  font-weight: normal;
+}
+
+.kanan {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  background-color: #ffffff;
+}
+
+.kanan .kanan-wrapper {
+  padding-top: 26vh;
+  padding-left: 10vh;
+  padding-right: 10vh;
+}
+
+.kanan .kanan-wrapper .atas {
+  padding-bottom: 3vh;
+}
+
+.kanan .kanan-wrapper .atas p {
+  color: #9ca3af;
+  font-weight: 400;
+  padding-bottom: 2vh;
+  padding-top: 1.7vh;
+}
+
+.kanan .bawah .isian {
+  padding-bottom: 3vh;
+}
+.kanan .bawah .tulisan-or {
+  display: flex;
+  align-items: center;
+}
+
+.kanan .bawah .tulisan-or .line {
+  flex-grow: 1;
+  border-top: 1px solid #9ca3af;
+}
+
+.kanan .bawah .tulisan-or .tulisan-or p {
+  margin: 0 10px;
+  color: #000;
+}

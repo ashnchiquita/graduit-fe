@@ -1,0 +1,134 @@
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+/* Import Urbanist font */
+
+/* Define color variables */
+:root {
+  --color-primary: #232e6f;
+  --color-secondary-darker: #cc1228;
+  --color-secondary: #ef495d;
+  --color-secondary-light: #f47c8a;
+  --color-secondary-lighter: #f9bec5;
+  --color-tertiary-darker: #30409a;
+  --color-tertiary: #50b8e9;
+  --color-background: #f6e1ed;
+  --color-grey: #c4c4c4;
+}
+
+/* Reset default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styles */
+body {
+  background-color: white;
+  font-family: "Urbanist", sans-serif; /* Use Urbanist font */
+}
+
+/* Heading styles */
+h1,
+.h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  font-family: "Salaryman", "Syncopate", "Urbanist", sans-serif; /* You can adjust the font stack here */
+}
+
+h2,
+.h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+h3,
+.h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* Paragraph and link styles */
+p,
+.p,
+a,
+.a {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.text-detail {
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.text-detail-link {
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Wrapper styles */
+.wrapper {
+  width: 90%;
+  height: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Text gradient styles */
+.text-gradient-vertical {
+  background: -webkit-linear-gradient(
+    bottom,
+    var(--color-secondary),
+    var(--color-primary)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-horizontal {
+  background: -webkit-linear-gradient(
+    right,
+    var(--color-secondary),
+    var(--color-primary)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Media queries */
+@media screen and (min-width: 672px) {
+  h1,
+  .h1 {
+    font-size: 4.6rem;
+  }
+
+  h2,
+  .h2 {
+    font-size: 2.6rem;
+  }
+
+  p,
+  .p,
+  a,
+  .a {
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+
+  .wrapper {
+    width: 75%;
+  }
+}
+
+@media screen and (min-width: 1296px) {
+  h1,
+  .h1 {
+    font-size: 6rem;
+  }
+}

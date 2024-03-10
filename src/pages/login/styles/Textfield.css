@@ -1,0 +1,28 @@
+.textfield-container {
+  padding-bottom: 4vh;
+}
+.textfield-input-container {
+  position: relative;
+}
+
+.textfield-input-container img {
+  width: 2.5vh;
+}
+
+.input-icon {
+  position: absolute;
+  left: 0;
+  bottom: 8px;
+}
+
+.textfield-input {
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  padding-left: 5vh;
+  width: 95%;
+}
+
+.textfield-input:focus {
+  border-bottom: 2px solid blue;
+}

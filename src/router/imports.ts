@@ -12,3 +12,15 @@ export const MhsDashboard = lazy(
 
 export const NotFound = lazy(() => import("../pages/not-found/NotFound.tsx"));
 export const MainLayout = lazy(() => import("../layouts/MainLayout.tsx"));
+
+export const Login = lazy(() => import("../pages/login/Login.tsx"));
+
+export const KelolaAkun = lazy(
+  () => import("../pages/manajemen-akun/kelola-akun/KelolaAkun.tsx"),
+);
+export const AkunCreate = lazy(
+  () => import("../pages/manajemen-akun/akun-create/AkunCreate.tsx"),
+);
+export const AkunDetail = lazy(
+  () => import("../pages/manajemen-akun/akun-detail/AkunDetail.tsx"),
+);

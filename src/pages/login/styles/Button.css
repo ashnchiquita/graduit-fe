@@ -1,0 +1,32 @@
+.button.primary {
+  background-color: #3b82f6;
+  padding: 10px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  /* width: fit-content; */
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: white;
+}
+
+.button.primary .button-text.primary {
+  color: white;
+}
+
+.button.primary:hover {
+  background-color: var(--color-secondary-light);
+}
+
+.button.primary:focus {
+  background-color: var(--color-secondary-darker);
+}
+
+@media screen and (max-width: 430px) {
+  .button.primary .button-text.primary {
+    font-size: 0.9rem;
+  }
+}
