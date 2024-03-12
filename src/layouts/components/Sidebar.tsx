@@ -1,9 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import Logo from "@/assets/logo.svg";
-import SidebarContent from "./SidebarContent";
-import Profile from "./Profile";
 import Combobox from "@/components/ui/combobox";
+import { cn } from "@/lib/utils";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import Profile from "./Profile";
+import SidebarContent from "./SidebarContent";
 
 interface SidebarProps {
   closed: boolean;
@@ -17,13 +18,14 @@ export default function Sidebar({ closed }: SidebarProps): JSX.Element {
     navigate("/");
   };
 
-  const sidebarClasses = closed
-    ? "fixed left-[-100%] md:relative md:w-[0px]"
-    : "fixed left-0 z-40 md:relative";
-
   return (
     <aside
-      className={`${sidebarClasses} mt-[45px] size-full h-[calc(100vh-45px)] transition-all duration-500 ease-in-out md:mt-0 md:h-full md:w-[348px] md:py-1 md:pl-1`}
+      className={cn(
+        closed
+          ? "fixed left-[-100%] md:relative md:w-[0px]"
+          : "fixed left-0 z-40 md:relative md:w-[348px]",
+        "mt-[45px] size-full h-[calc(100vh-45px)] transition-all duration-500 ease-in-out md:mt-0 md:h-full md:py-1 md:pl-1",
+      )}
     >
       <nav className="relative flex h-full flex-col items-center justify-between bg-white px-4 py-5 md:h-full md:rounded-lg">
         <div className="flex size-full flex-col justify-between">
