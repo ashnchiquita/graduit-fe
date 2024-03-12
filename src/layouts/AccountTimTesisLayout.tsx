@@ -11,7 +11,7 @@ import AccountTimTesis from "./components/AccountTimTesis";
 export default function AccountTimTesisLayout(): JSX.Element {
   // Component states
   const [loading, setLoading] = useState<boolean>(true);
-  const [sidebarClosed, setSidebarClosed] = useState<boolean>(true);
+  const [sidebarClosed, setSidebarClosed] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
