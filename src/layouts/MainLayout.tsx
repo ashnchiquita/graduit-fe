@@ -22,7 +22,7 @@ const MainLayoutLoader = () => {
 export default function MainLayout(): JSX.Element {
   // Component states
   const [loading, setLoading] = useState<boolean>(true);
-  const [sidebarClosed, setSidebarClosed] = useState<boolean>(true);
+  const [sidebarClosed, setSidebarClosed] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
