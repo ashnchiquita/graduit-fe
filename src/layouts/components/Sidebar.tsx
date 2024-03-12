@@ -18,7 +18,7 @@ export default function Sidebar({ closed }: SidebarProps): JSX.Element {
   };
 
   const sidebarClasses = closed
-    ? "fixed left-[-100%] md:relative md:w-0"
+    ? "fixed left-[-100%] md:relative md:w-[0px]"
     : "fixed left-0 z-40 md:relative";
 
   return (
