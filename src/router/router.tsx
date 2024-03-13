@@ -19,6 +19,7 @@ import {
   ThesisRegistration,
   Topik,
 } from "./imports";
+import DashboardDosbing from "@/pages/dashboard-dosbing/DashboardDosbing";
 
 export const router = createBrowserRouter(
   [
@@ -34,6 +35,10 @@ export const router = createBrowserRouter(
       path: "/",
       element: <MainLayout />,
       children: [
+        {
+          path: "/dashboard-dosbing",
+          element: <DashboardDosbing />,
+        },
         {
           path: "/tesis",
           element: <Navigate to="/tesis/registrasi" replace />,
