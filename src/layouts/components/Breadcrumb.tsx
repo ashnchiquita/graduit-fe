@@ -51,7 +51,7 @@ export default function Breadcrumb({
                 "font-medium": index === paths.length - 1,
               })}
             >
-              {path}
+              {path.replace(/-/g, " ")}
             </p>
           </Link>
         </>
