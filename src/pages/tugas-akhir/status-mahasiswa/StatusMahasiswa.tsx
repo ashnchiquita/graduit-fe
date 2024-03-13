@@ -1,63 +1,43 @@
 "use client";
 
-// import { getStatusMahasiswaByNIM } from "@/api/status-mahasiswa/StatusMahasiswa";
+import s1Instance from "@/config/s1-axios-config";
 import BasicCard from "./components/BasicCard";
 import StatusMessageWrapper from "./components/StatusMessageWrapper";
 import { formatDate } from "@/lib/dateformat";
 import { type StatusMahasiswaResponse } from "@/types/status-mahasiswa";
-import { useState } from "react";
-// import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function StatusNIM() {
-  // const { nim } = useParams();
+  const { id } = useParams();
 
-  const [data] = useState<StatusMahasiswaResponse | null>({
-    id_mahasiswa: "1",
-    nama: "test",
-    nim: "125",
-    status_pendaftaran: {
-      status: true,
-      topik: "topikkkkkk",
-      judul: "juduel",
-      dosen_pembimbing: "adimul",
-      pengiriman_registrasi: new Date(),
-      persetujuan_dosen_pembimbing: new Date(),
-      jadwal_interview: new Date(),
-      pengesahan_dosen_pembimbing: true,
-    },
-    status_bimbingan: {
-      jumlah_bimbingan: 2,
-    },
-    status_seminar: {
-      status: true,
-      dosen_penguji: "lumida",
-      jadwal_seminar: new Date(),
-      ruangan: "7602",
-    },
-    status_sidang: {
-      status: true,
-      dosen_penguji_1: "adimul",
-      dosen_penguji_2: "lumida",
-      jadwal_seminar: new Date(),
-      ruangan: "7610",
-    },
-  });
-  // useEffect(() => {
-  //   getStatusMahasiswaByNIM(nim as string)
-  //     .then((res) => {
-  //       setdata(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log("err", err);
-  //     });
-  // }, [nim]);
+  const [data, setData] = useState<StatusMahasiswaResponse | null>();
+  useEffect(() => {
+    s1Instance
+      .get("/status-mahasiswa", {
+        params: {
+          nim: id,
+        },
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiVElNVEEifQ.X7BOX03ko-mdgBErB9Llku_QZUGEZcWcNM5wDsk0rW0",
+        },
+      })
+      .then((res) => {
+        setData(res.data.data);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        console.log("id", id);
+      });
+  }, []);
 
   if (!data) {
-    return <div>Loading...</div>;
+    return <Skeleton />;
   }
   return (
     <main className="flex min-h-screen w-full flex-col items-start justify-start p-4">
-      <p className="ml-5 text-[14px]">{`Tugas Akhir > Status`}</p>
       <div className="mt-5 flex h-fit min-h-[180px] w-full flex-row overflow-hidden rounded-lg bg-white">
         <div className="w-[6px] bg-sky-700" />
         <div className="flex flex-col p-5">
