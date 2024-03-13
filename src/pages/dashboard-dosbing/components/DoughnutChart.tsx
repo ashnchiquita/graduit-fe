@@ -35,6 +35,7 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ doughnutChartData }) => {
                 {
                   label: level,
                   data: chartData.data.map((item) => item.amount),
+                  borderRadius: 6,
                 },
               ],
             },
