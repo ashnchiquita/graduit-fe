@@ -7,12 +7,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { flexRender } from "@tanstack/react-table";
-import useKelolaAkun from "./hooks/useKelolaAkun";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { flexRender } from "@tanstack/react-table";
 import React from "react";
 import { Link } from "react-router-dom";
+import useKelolaAkun from "./hooks/useKelolaAkun";
 
 export default function KelolaAkun(): JSX.Element {
   const { table, searchParams, setSearchParams } = useKelolaAkun();

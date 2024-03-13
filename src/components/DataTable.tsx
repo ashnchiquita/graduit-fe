@@ -1,13 +1,14 @@
 "use client";
 
-import type { SystemLogs } from "@/lib/entity";
 //esling-disable-next-line
+import { Button } from "@/components/ui/button";
 import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-  getPaginationRowModel,
-} from "@tanstack/react-table";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -22,64 +23,131 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { Button } from "@/components/ui/button";
+import { flexRender } from "@tanstack/react-table";
+
+import type { Table as TableType } from "@tanstack/react-table";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  ChevronDown,
+  ChevronUp,
+  ChevronsUpDown,
+  ListFilter,
+  Plus,
+  Search,
+  Trash2,
+} from "lucide-react";
 
-import type { ColumnDef } from "@tanstack/react-table";
-
-export const columns: ColumnDef<SystemLogs>[] = [
-  {
-    header: "User ID",
-    accessorKey: "id",
-  },
-  {
-    header: "Action",
-    accessorKey: "action",
-  },
-  {
-    header: "Time Stamp",
-    accessorKey: "createdAt",
-  },
-];
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+interface DataTableProps<TData> {
+  table: TableType<TData>;
+  headline?: string;
+  description?: string;
+  searchValue?: string;
+  searchPlaceholder?: string;
+  setSearchValue?: (value: string) => void;
+  onClickDelete?: () => void;
+  onClickFilter?: () => void;
+  onClickCreate?: () => void;
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
+export function DataTable<TData>({
+  table,
+  headline,
+  description,
+  searchValue,
+  searchPlaceholder,
+  setSearchValue,
+  onClickCreate,
+  onClickDelete,
+  onClickFilter,
+}: DataTableProps<TData>) {
+  const useTableConfig = !!headline || !!description;
 
+  // TODO resize
   return (
     <div>
       <div className="rounded-md border bg-white">
+        {useTableConfig && (
+          <div className="flex px-6 py-5">
+            <div className="flex-1">
+              {headline && <div className="text-lg">{headline}</div>}
+              {description && (
+                <div className="text-sm text-muted-foreground">
+                  {description}
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-4">
+              {searchValue !== undefined && !!setSearchValue && (
+                <div className="group flex w-[235px] items-center gap-2 rounded-md border border-input bg-transparent px-2 py-1 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+                  <Search size={14} className="text-muted-foreground" />
+                  <input
+                    type="text"
+                    className="outline-none"
+                    placeholder={searchPlaceholder}
+                    value={searchValue}
+                    onChange={(e) => {
+                      setSearchValue(e.target.value);
+                    }}
+                  />
+                </div>
+              )}
+              {!!onClickDelete && (
+                <Button
+                  variant="outline"
+                  className="flex h-fit gap-2 bg-transparent px-2 py-1"
+                >
+                  <Trash2 size={14} />
+                  <div>Delete</div>
+                </Button>
+              )}
+              {!!onClickFilter && (
+                <Button
+                  variant="outline"
+                  className="flex h-fit gap-2 bg-transparent px-2 py-1"
+                >
+                  <ListFilter size={14} />
+                  <div>Filter</div>
+                </Button>
+              )}
+              {!!onClickCreate && (
+                <Button className="flex h-fit gap-2 border border-blue-500 bg-blue-500 px-2 py-1 hover:border-blue-600 hover:bg-blue-600">
+                  <Plus size={14} />
+                  <div>Create</div>
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="border-t bg-muted/50">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                    <TableHead
+                      key={header.id}
+                      onClick={() =>
+                        header.column.toggleSorting(
+                          header.column.getIsSorted() === "asc",
+                        )
+                      }
+                      className="cursor-pointer"
+                    >
+                      <div className="flex items-center gap-4">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                        {header.isPlaceholder ? null : header.column.getIsSorted() ===
+                          false ? (
+                          <ChevronsUpDown size={16} />
+                        ) : header.column.getIsSorted() === "asc" ? (
+                          <ChevronUp size={16} />
+                        ) : (
+                          <ChevronDown size={16} />
+                        )}
+                      </div>
                     </TableHead>
                   );
                 })}
@@ -106,7 +174,7 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={table.getAllColumns().length}
                   className="h-24 text-center"
                 >
                   No results.

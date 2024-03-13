@@ -7,10 +7,9 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 
-import axios from "@/config/login-axios-config";
-import RowAction from "../components/RowAction";
-import AccessCell from "../components/AccessCell";
 import { SetURLSearchParams, useSearchParams } from "react-router-dom";
+import AccessCell from "../components/AccessCell";
+import RowAction from "../components/RowAction";
 
 export type Account = {
   id: string;
@@ -32,7 +31,30 @@ export default function useKelolaAkun(): ReturnType {
   const [data, setData] = useState<Account[]>([]);
 
   const fetchAccounts = async (search: string) => {
-    const res = await axios.get(`/akun?search=${search}`);
+    // const res = await axios.get(`/akun?search=${search}`);
+    const res = {
+      data: [
+        {
+          id: "6519412d-6c50-457c-9e44-1076b3dd617b",
+          nama: "Chiquita Ahsanunnisa",
+          email: "13521129@mahasiswa.itb.ac.id",
+          roles: [],
+        },
+        {
+          id: "acdb67a2-1fcd-42b9-b23b-af042b0727aa",
+          nama: "Rava Maulan",
+          email:
+            "0.5867636326281975_0.12952183506811843_0.2849844693748018@gmail.com",
+          roles: [],
+        },
+        {
+          id: "7177be61-fb40-454b-bfc0-bd769be6bc4a",
+          nama: "Rava Maulana",
+          email: "a@gmail.com",
+          roles: ["S2_MAHASISWA", "S2_PEMBIMBING"],
+        },
+      ],
+    };
     setData(
       res.data.map(
         (resAccount: any): Account => ({
