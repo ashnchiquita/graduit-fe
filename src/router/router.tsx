@@ -35,8 +35,7 @@ export const router = createBrowserRouter(
     {
       path: "/timtesis",
       element: <AccountTimTesisLayout />,
-      children: [
-      ],
+      children: [],
     },
     {
       path: "/",
