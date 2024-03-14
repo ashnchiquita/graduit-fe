@@ -2,7 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   ColumnDef,
   getCoreRowModel,
-  useReactTable
+  useReactTable,
 } from "@tanstack/react-table";
 
 import { useEffect, useState } from "react";
@@ -15,25 +15,29 @@ import RowAction from "../components/RowAction";
 
 export default function useKelolaAkun() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchValue, setSearchValue] = useState(searchParams.get('search') ?? '');
+  const [searchValue, setSearchValue] = useState(
+    searchParams.get("search") ?? "",
+  );
   const navigate = useNavigate();
 
   const onClickCreate = () => {
     navigate("/manajemen/tambah-akun");
-  }
+  };
 
   const handleSearchValueChange = (value: string) => {
     setSearchParams(value ? { search: value } : {});
-    setSearchValue(value)
-    fetchData()
-  }
+    setSearchValue(value);
+    fetchData();
+  };
 
   useEffect(() => {
-    fetchData()
-  }, [searchValue])
+    fetchData();
+  }, [searchValue]);
 
   const { data = [], mutate: fetchData } = useSWR("/akun", async () => {
-    const res = await getAllAccounts({search: searchValue === '' ? undefined : searchValue})
+    const res = await getAllAccounts({
+      search: searchValue === "" ? undefined : searchValue,
+    });
     const data: Account[] = res.data.map(
       (resAccount: GetAccountResponseItem) => ({
         id: resAccount.id,
@@ -93,5 +97,11 @@ export default function useKelolaAkun() {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return { table, searchValue, handleSearchValueChange, fetchData, onClickCreate };
+  return {
+    table,
+    searchValue,
+    handleSearchValueChange,
+    fetchData,
+    onClickCreate,
+  };
 }

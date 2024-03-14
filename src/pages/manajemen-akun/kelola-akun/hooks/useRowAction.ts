@@ -12,10 +12,13 @@ export default function useRowAction(
 ): ReturnType {
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const {trigger, error} = useSWRMutation(`/akun`, async (_, {arg}: {arg: string}) => {
-    const res = await deleteAccount(arg);
-    return res.data;
-  });
+  const { trigger, error } = useSWRMutation(
+    `/akun`,
+    async (_, { arg }: { arg: string }) => {
+      const res = await deleteAccount(arg);
+      return res.data;
+    },
+  );
 
   const handleDelete = async (id: string) => {
     trigger(id);
