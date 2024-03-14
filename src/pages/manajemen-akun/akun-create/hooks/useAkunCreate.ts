@@ -1,35 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "@/config/login-axios-config";
-import { UseFormReturn, useForm } from "react-hook-form";
-import { z } from "zod";
-import { roleAccess } from "../constants/roleAccess";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import useSWRMutation from "swr/mutation";
+import { z } from "zod";
+import { putAccount } from "../../clients";
+import { PutAccountRequestData } from "../../types";
+import { roleAccess } from "../constants/roleAccess";
 
-interface ReturnType {
-  form: UseFormReturn<
-    {
-      email: string;
-      name: string;
-      access: {
-        name: string;
-        id: number;
-      }[];
-    },
-    any,
-    undefined
-  >;
-  handleSubmit: (values: {
-    email: string;
-    name: string;
-    access: {
-      name: string;
-      id: number;
-    }[];
-  }) => void;
-  roleAccess: { id: number; name: string }[];
-}
-
-export default function useAkunCreate(): ReturnType {
+export default function useAkunCreate() {
   const navigate = useNavigate();
 
   const formSchema = z.object({
@@ -52,17 +30,23 @@ export default function useAkunCreate(): ReturnType {
     },
   });
 
+  const {trigger, error} = useSWRMutation("/akun", async (_, {arg}: {arg: PutAccountRequestData}) => {
+    const res = await putAccount(arg);
+    return res.data;
+  });
+
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    // TODO: Add toast
-    try {
-      await axios.put("/akun", {
-        nama: values.name,
-        email: values.email,
-        access: values.access.map((item) => item.name),
-      });
+    await trigger({
+      nama: values.name,
+      email: values.email,
+      access: values.access.map((item) => item.name),
+    });
+
+    if (error) {
+      // TODO: Add toast
+      console.error(error);
+    } else {
       navigate("/manajemen/kelola-akun");
-    } catch (err) {
-      console.error(err);
     }
   };
 

@@ -1,25 +1,13 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-import { flexRender } from "@tanstack/react-table";
+import { DataTable } from "@/components/DataTable";
 import useKelolaAkun from "./hooks/useKelolaAkun";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import React from "react";
-import { Link } from "react-router-dom";
 
 export default function KelolaAkun(): JSX.Element {
-  const { table, searchParams, setSearchParams } = useKelolaAkun();
+  const { table, searchValue,handleSearchValueChange, onClickCreate } = useKelolaAkun();
 
   return (
     <main className="flex w-full flex-col gap-5 px-4">
-      <div className="flex w-full gap-4">
+      <DataTable table={table} headline="Kelola Akun Pengguna" searchValue={searchValue} setSearchValue={handleSearchValueChange} onClickCreate={onClickCreate} />
+      {/* <div className="flex w-full gap-4">
         <Input
           defaultValue={searchParams.get("search") || ""}
           onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -78,7 +66,7 @@ export default function KelolaAkun(): JSX.Element {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </Table> */}
     </main>
   );
 }
