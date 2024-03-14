@@ -1,6 +1,5 @@
 // Library imports
-import { Outlet } from "react-router-dom";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Component imports
 import SidebarTimTesis from "@/layouts/components/SidebarTimTesis";
