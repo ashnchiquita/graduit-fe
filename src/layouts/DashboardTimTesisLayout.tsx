@@ -10,7 +10,7 @@ import Alert from "./components/Alert";
 export default function DashboardTimTesisLayout(): JSX.Element {
   // Component states
   const [loading, setLoading] = useState<boolean>(true);
-  const [sidebarClosed, setSidebarClosed] = useState<boolean>(false); // Sidebar muncul diawal
+  const [sidebarClosed] = useState<boolean>(false); // Sidebar muncul diawal
 
   useEffect(() => {
     (async () => {
