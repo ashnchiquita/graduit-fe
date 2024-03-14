@@ -59,16 +59,17 @@ export function DataTable<TData>({
   onClickDelete,
   onClickFilter,
 }: DataTableProps<TData>) {
-  const useTableConfig = !!headline || !!description;
+  const useTableConfig = !!headline || !!description || !!searchValue || !!searchPlaceholder || !!setSearchValue || !!onClickCreate || !!onClickDelete || !!onClickFilter;
 
   // TODO resize
+  // TODO loading state
   return (
     <div>
       <div className="rounded-md border bg-white">
         {useTableConfig && (
           <div className="flex px-6 py-5">
             <div className="flex-1">
-              {headline && <div className="text-lg">{headline}</div>}
+              {headline && <div className="text-lg font-semibold">{headline}</div>}
               {description && (
                 <div className="text-sm text-muted-foreground">
                   {description}
@@ -92,6 +93,7 @@ export function DataTable<TData>({
               )}
               {!!onClickDelete && (
                 <Button
+                  onClick={() => {onClickDelete()}}
                   variant="outline"
                   className="flex h-fit gap-2 bg-transparent px-2 py-1"
                 >
@@ -101,6 +103,7 @@ export function DataTable<TData>({
               )}
               {!!onClickFilter && (
                 <Button
+                  onClick={() => {onClickFilter()}}
                   variant="outline"
                   className="flex h-fit gap-2 bg-transparent px-2 py-1"
                 >
@@ -109,7 +112,9 @@ export function DataTable<TData>({
                 </Button>
               )}
               {!!onClickCreate && (
-                <Button className="flex h-fit gap-2 border border-blue-500 bg-blue-500 px-2 py-1 hover:border-blue-600 hover:bg-blue-600">
+                <Button 
+                  onClick={() => {onClickCreate()}}
+                  className="flex h-fit gap-2 border border-blue-500 bg-blue-500 px-2 py-1 hover:border-blue-600 hover:bg-blue-600">
                   <Plus size={14} />
                   <div>Create</div>
                 </Button>
@@ -120,16 +125,17 @@ export function DataTable<TData>({
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-t bg-muted/50">
+              <TableRow key={headerGroup.id} className="border-t bg-muted/50 select-none">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
                       key={header.id}
-                      onClick={() =>
-                        header.column.toggleSorting(
-                          header.column.getIsSorted() === "asc",
-                        )
-                      }
+                      onClick={() => {
+                        if (header.column.getCanSort())
+                          header.column.toggleSorting(
+                            header.column.getIsSorted() === "asc",
+                          );
+                      }}
                       className="cursor-pointer"
                     >
                       <div className="flex items-center gap-4">
@@ -139,7 +145,8 @@ export function DataTable<TData>({
                               header.column.columnDef.header,
                               header.getContext(),
                             )}
-                        {header.isPlaceholder ? null : header.column.getIsSorted() ===
+                        {!header.column.getCanSort() ||
+                        header.isPlaceholder ? null : header.column.getIsSorted() ===
                           false ? (
                           <ChevronsUpDown size={16} />
                         ) : header.column.getIsSorted() === "asc" ? (
