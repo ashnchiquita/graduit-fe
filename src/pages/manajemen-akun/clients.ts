@@ -1,10 +1,17 @@
 import loginInstance from "@/config/login-axios-config";
-import { DeleteAccountResponseData, GetAccountResponseItem, GetAllAccountsParams, GetAllAccountsResponseData, PutAccountRequestData, PutAccountResponseData } from "./types";
+import {
+  DeleteAccountResponseData,
+  GetAccountResponseItem,
+  GetAllAccountsParams,
+  GetAllAccountsResponseData,
+  PutAccountRequestData,
+  PutAccountResponseData,
+} from "./types";
 
 export async function getAllAccounts(params: GetAllAccountsParams) {
   console.log(params);
-  return await loginInstance.get<GetAllAccountsResponseData>('/akun', {
-    params
+  return await loginInstance.get<GetAllAccountsResponseData>("/akun", {
+    params,
   });
 }
 

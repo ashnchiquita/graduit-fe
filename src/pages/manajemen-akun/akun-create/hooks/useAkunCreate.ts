@@ -30,10 +30,13 @@ export default function useAkunCreate() {
     },
   });
 
-  const {trigger, error} = useSWRMutation("/akun", async (_, {arg}: {arg: PutAccountRequestData}) => {
-    const res = await putAccount(arg);
-    return res.data;
-  });
+  const { trigger, error } = useSWRMutation(
+    "/akun",
+    async (_, { arg }: { arg: PutAccountRequestData }) => {
+      const res = await putAccount(arg);
+      return res.data;
+    },
+  );
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     await trigger({

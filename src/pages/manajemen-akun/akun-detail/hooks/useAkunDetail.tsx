@@ -38,18 +38,21 @@ export default function useAkunDetail(): ReturnType {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const {data: initialData, isLoading: isInitialDataLoading } = useSWRImmutable(`/akun/${id}`, async () => {
-    const res = await getAccount(id ?? '');
-    return res.data;
-  });
+  const { data: initialData, isLoading: isInitialDataLoading } =
+    useSWRImmutable(`/akun/${id}`, async () => {
+      const res = await getAccount(id ?? "");
+      return res.data;
+    });
 
   useEffect(() => {
     if (initialData !== undefined)
       form.reset({
-        access: initialData.roles.map((v: string) => roleAccess.find((y) => y.name === v)),
+        access: initialData.roles.map((v: string) =>
+          roleAccess.find((y) => y.name === v),
+        ),
         email: initialData.email,
         name: initialData.nama,
-      })
+      });
   }, [initialData]);
 
   const formSchema = z.object({
@@ -72,17 +75,20 @@ export default function useAkunDetail(): ReturnType {
     },
   });
 
-  const {trigger, error} = useSWRMutation("/akun", async (_, {arg}: {arg: PutAccountRequestData}) => {
-    const res = await putAccount(arg);
-    return res.data;
-  });
+  const { trigger, error } = useSWRMutation(
+    "/akun",
+    async (_, { arg }: { arg: PutAccountRequestData }) => {
+      const res = await putAccount(arg);
+      return res.data;
+    },
+  );
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     await trigger({
       nama: values.name,
       email: values.email,
       access: values.access.map((item) => item.name),
-      id: id ?? '',
+      id: id ?? "",
     });
 
     if (error) {
@@ -100,4 +106,3 @@ export default function useAkunDetail(): ReturnType {
     initialDataReady: !isInitialDataLoading,
   };
 }
-

@@ -59,7 +59,15 @@ export function DataTable<TData>({
   onClickDelete,
   onClickFilter,
 }: DataTableProps<TData>) {
-  const useTableConfig = !!headline || !!description || !!searchValue || !!searchPlaceholder || !!setSearchValue || !!onClickCreate || !!onClickDelete || !!onClickFilter;
+  const useTableConfig =
+    !!headline ||
+    !!description ||
+    !!searchValue ||
+    !!searchPlaceholder ||
+    !!setSearchValue ||
+    !!onClickCreate ||
+    !!onClickDelete ||
+    !!onClickFilter;
 
   // TODO resize
   // TODO loading state
@@ -69,7 +77,9 @@ export function DataTable<TData>({
         {useTableConfig && (
           <div className="flex px-6 py-5">
             <div className="flex-1">
-              {headline && <div className="text-lg font-semibold">{headline}</div>}
+              {headline && (
+                <div className="text-lg font-semibold">{headline}</div>
+              )}
               {description && (
                 <div className="text-sm text-muted-foreground">
                   {description}
@@ -93,7 +103,9 @@ export function DataTable<TData>({
               )}
               {!!onClickDelete && (
                 <Button
-                  onClick={() => {onClickDelete()}}
+                  onClick={() => {
+                    onClickDelete();
+                  }}
                   variant="outline"
                   className="flex h-fit gap-2 bg-transparent px-2 py-1"
                 >
@@ -103,7 +115,9 @@ export function DataTable<TData>({
               )}
               {!!onClickFilter && (
                 <Button
-                  onClick={() => {onClickFilter()}}
+                  onClick={() => {
+                    onClickFilter();
+                  }}
                   variant="outline"
                   className="flex h-fit gap-2 bg-transparent px-2 py-1"
                 >
@@ -112,9 +126,12 @@ export function DataTable<TData>({
                 </Button>
               )}
               {!!onClickCreate && (
-                <Button 
-                  onClick={() => {onClickCreate()}}
-                  className="flex h-fit gap-2 border border-blue-500 bg-blue-500 px-2 py-1 hover:border-blue-600 hover:bg-blue-600">
+                <Button
+                  onClick={() => {
+                    onClickCreate();
+                  }}
+                  className="flex h-fit gap-2 border border-blue-500 bg-blue-500 px-2 py-1 hover:border-blue-600 hover:bg-blue-600"
+                >
                   <Plus size={14} />
                   <div>Create</div>
                 </Button>
@@ -125,7 +142,10 @@ export function DataTable<TData>({
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-t bg-muted/50 select-none">
+              <TableRow
+                key={headerGroup.id}
+                className="select-none border-t bg-muted/50"
+              >
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
