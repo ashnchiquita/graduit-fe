@@ -8,9 +8,15 @@ import Logo from "@/assets/logo.svg";
 // Component imports
 import SidebarContentTimTesis from "./SidebarContentTimTesis";
 import Profile from "./Profile";
-import Combobox from "@/components/ui/combobox";
+import Combobox from "../../components/ui/combobox";
 
-export default function SidebarTimTesis(): JSX.Element {
+interface SidebarTimTesisProps {
+  closed: boolean;
+}
+
+export default function SidebarTimTesis({
+  closed,
+}: SidebarTimTesisProps): JSX.Element {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -18,8 +24,14 @@ export default function SidebarTimTesis(): JSX.Element {
     navigate("/");
   };
 
+  const sidebarClasses = closed
+    ? "fixed left-[-100%] md:relative md:w-0 pointer-events-none"
+    : "fixed left-0 z-40 md:relative pointer-events-auto";
+
   return (
-    <aside className={`relative flex h-full w-[348px] py-1 pl-1`}>
+    <aside
+      className={`${sidebarClasses} mt-[45px] size-full h-[calc(100vh-45px)] transition-all duration-500 ease-in-out md:mt-0 md:h-full md:w-[348px] md:py-1 md:pl-1`}
+    >
       <nav className="relative z-10 flex size-full flex-col items-center justify-between rounded-lg bg-white px-4 py-5">
         <div className="flex size-full flex-col justify-between">
           <div className="flex flex-col gap-6">
