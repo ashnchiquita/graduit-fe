@@ -50,7 +50,7 @@ export default function KonfigurasiPeriode(): JSX.Element {
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <FormControl>
                           <SelectTrigger
@@ -91,7 +91,7 @@ export default function KonfigurasiPeriode(): JSX.Element {
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <FormControl>
                           <SelectTrigger

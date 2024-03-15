@@ -31,3 +31,17 @@ export type RentangMasaProps = {
   startPlaceholder: string;
   endPlaceholder: string;
 };
+
+export type GetKonfigurasiResponse = {
+  data: {
+    key: string;
+    value: string;
+  }[];
+};
+
+export type PutKonfigurasiRequest = {
+  data: {
+    key: string;
+    value: string;
+  }[];
+};
