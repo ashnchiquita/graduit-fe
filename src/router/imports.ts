@@ -48,3 +48,7 @@ export const Penjadwalan = lazy(
 export const AccountTimTesisLayout = lazy(
   () => import("../layouts/AccountTimTesisLayout.tsx"),
 );
+
+export const KonfigurasiPeriode = lazy(
+  () => import("../pages/tim-tesis/konfigurasi-periode/KonfigurasiPeriode.tsx"),
+);

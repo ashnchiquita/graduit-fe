@@ -72,7 +72,13 @@ const navItems: NavItem[] = [
   {
     label: "Manajemen",
     icon: <IoSchoolOutline className="text-slate-700" />,
-    children: [{ label: "Kelola Akun", path: "/manajemen/kelola-akun" }],
+    children: [
+      { label: "Kelola Akun", path: "/manajemen/kelola-akun" },
+      {
+        label: "Periode Pendidikan",
+        path: "/manajemen/periode-pendidikan",
+      },
+    ],
   },
 ];
 
