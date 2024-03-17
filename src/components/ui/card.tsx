@@ -11,6 +11,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   leftHighlight?: boolean;
   collapseable?: boolean;
   initiallyCollapsed?: boolean;
+  isTable?: boolean;
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
@@ -23,6 +24,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       leftHighlight = false,
       collapseable = false,
       initiallyCollapsed = false,
+      isTable = false,
       ...props
     },
     ref,
@@ -34,8 +36,9 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          "rounded-xl bg-card border-x-[6px] border-x-card text-card-foreground px-7 py-6 space-y-5 box-border",
+          "rounded-xl bg-card border-x-card text-card-foreground py-6 space-y-5 box-border",
           leftHighlight && "border-l-sky-700",
+          !isTable && "px-7 border-x-[6px]",
           className,
         )}
         {...props}

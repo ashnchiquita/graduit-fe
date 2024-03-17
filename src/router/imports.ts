@@ -26,7 +26,7 @@ export const AkunDetail = lazy(
 );
 
 export const LogBimbingan = lazy(
-  () => import("../pages/log/bimbingan/LogBimbingan.tsx"),
+  () => import("../pages/log/bimbingan/LogMahasiswa.tsx"),
 );
 export const LogBimbinganMahasiswa = lazy(
   () => import("../pages/log/bimbingan-mahasiswa/LogBimbinganMahasiswa.tsx"),
