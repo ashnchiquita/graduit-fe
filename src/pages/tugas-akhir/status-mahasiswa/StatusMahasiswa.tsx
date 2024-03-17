@@ -43,11 +43,9 @@ export default function StatusNIM() {
         <div className="flex flex-col p-5">
           <h1 className=" mb-2 text-2xl">Status Tugas Akhir</h1>
           <p>
-            Mahasiswa diberikan kesempatan untuk memilih dosen pembimbing yang
-            dikehendaki. Akan tetapi, Tim Tesis S2 Informatika yang akan
-            menetapkan dosen pembimbing (yang dapat berbeda dari pilihan)
-            berdasarkan proses matchmaking dan ketersediaan sisa kuota jumlah
-            bimbingan setiap dosen.
+            Mahasiswa diberikan kesempatan untuk memilih dosen pembimbing dan
+            topik yang dikehendaki. Harap cek secara berkala untuk mengetahui
+            status pendaftaran.
           </p>
         </div>
       </div>
