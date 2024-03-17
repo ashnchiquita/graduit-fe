@@ -21,6 +21,7 @@ export default function StatusNIM() {
         },
         headers: {
           Authorization:
+            // HARDCODED
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiVElNVEEifQ.X7BOX03ko-mdgBErB9Llku_QZUGEZcWcNM5wDsk0rW0",
         },
       })
@@ -31,7 +32,7 @@ export default function StatusNIM() {
         console.log("err", err);
         console.log("id", id);
       });
-  }, []);
+  }, [id]);
 
   if (!data) {
     return <Skeleton />;
@@ -44,8 +45,8 @@ export default function StatusNIM() {
           <h1 className=" mb-2 text-2xl">Status Tugas Akhir</h1>
           <p>
             Mahasiswa diberikan kesempatan untuk memilih dosen pembimbing dan
-            topik yang dikehendaki. Harap cek secara berkala untuk mengetahui
-            status pendaftaran.
+            topik yang dikehendaki. Harap cek halaman ini berkala untuk
+            mengetahui status pendaftaran.
           </p>
         </div>
       </div>
