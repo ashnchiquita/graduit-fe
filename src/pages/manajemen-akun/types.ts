@@ -14,6 +14,8 @@ export type GetAccountResponseItem = {
 
 export type GetAllAccountsParams = {
   search?: string;
+  page: number;
+  limit: number;
 };
 
 export type GetAllAccountsResponseData = GetAccountResponseItem[];

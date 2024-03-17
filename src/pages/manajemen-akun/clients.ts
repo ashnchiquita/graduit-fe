@@ -9,7 +9,6 @@ import {
 } from "./types";
 
 export async function getAllAccounts(params: GetAllAccountsParams) {
-  console.log(params);
   return await loginInstance.get<GetAllAccountsResponseData>("/akun", {
     params,
   });

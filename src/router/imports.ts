@@ -48,3 +48,7 @@ export const Penjadwalan = lazy(
 export const AccountTimTesisLayout = lazy(
   () => import("../layouts/AccountTimTesisLayout.tsx"),
 );
+
+export const BatchUbahRole = lazy(
+  () => import("../pages/manajemen-akun/batch-ubah-role/BatchUbahRole.tsx"),
+);

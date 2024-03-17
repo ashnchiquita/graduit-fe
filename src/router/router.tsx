@@ -19,6 +19,7 @@ import {
   ThesisRegistration,
   Topik,
   AccountTimTesisLayout,
+  BatchUbahRole,
 } from "./imports";
 import DashboardDosbing from "@/pages/dashboard-dosbing/DashboardDosbing";
 
@@ -100,6 +101,10 @@ export const router = createBrowserRouter(
         {
           path: "/manajemen/tambah-akun",
           element: <AkunCreate />,
+        },
+        {
+          path: "/manajemen/role-pengguna",
+          element: <BatchUbahRole />,
         },
         {
           path: "/log",
