@@ -18,7 +18,7 @@ export type GetAllAccountsParams = {
   limit: number;
 };
 
-export type GetAllAccountsResponseData = GetAccountResponseItem[];
+export type GetAllAccountsResponseData = [GetAccountResponseItem[], number];
 
 export type PutAccountRequestData = {
   id?: string;

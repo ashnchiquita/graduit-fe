@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Account } from "../types";
+import { Account, BatchUbahRoleHookRet } from "../types";
 import {
   ColumnDef,
+  Table,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -12,51 +13,31 @@ import { getAllAccounts } from "../../clients";
 import { GetAccountResponseItem } from "../../types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
-export default function useBatchUbahRole() {
+export default function useBatchUbahRole(): BatchUbahRoleHookRet {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",
   );
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [access, setAccess] = useState<
-    {
-      name: string;
-      id: number;
-    }[]
-  >([]);
-
-  const { data = [], mutate: fetchData } = useSWR("/akun", async () => {
-    const res = await getAllAccounts({
-      search: searchValue === "" ? undefined : searchValue,
-      page: 1,
-      limit: 5,
-    });
-    const data: Account[] = res.data.map(
-      (resAccount: GetAccountResponseItem) => ({
-        id: resAccount.id,
-        email: resAccount.email,
-        name: resAccount.nama,
-        access: resAccount.roles,
-      }),
-    );
-
-    return data;
-  });
 
   const handleSearchValueChange = (value: string) => {
-    setSearchParams(value ? { search: value } : {});
+    setSearchParams(
+      value
+        ? {
+            search: value,
+            page: (tablePagination.pageIndex + 1).toString(),
+            limit: tablePagination.pageSize.toString(),
+          }
+        : {
+            page: (tablePagination.pageIndex + 1).toString(),
+            limit: tablePagination.pageSize.toString(),
+          },
+    );
     setSearchValue(value);
     fetchData();
   };
-
-  useEffect(() => {
-    fetchData();
-  }, [searchValue]);
 
   const columns: ColumnDef<Account>[] = [
     {
@@ -128,54 +109,71 @@ export default function useBatchUbahRole() {
     },
   ];
 
-  const table = useReactTable({
+  let table: Table<Account>;
+  const [rowCount, setRowCount] = useState(0);
+  const { data = [], mutate: fetchData } = useSWR("/akun", async () => {
+    const res = await getAllAccounts({
+      search: searchValue === "" ? undefined : searchValue,
+      page: table.getState().pagination.pageIndex + 1,
+      limit: table.getState().pagination.pageSize,
+    });
+
+    const data: Account[] = res.data[0].map(
+      (resAccount: GetAccountResponseItem) => ({
+        id: resAccount.id,
+        email: resAccount.email,
+        name: resAccount.nama,
+        access: resAccount.roles,
+      }),
+    );
+
+    setRowCount(res.data[1]);
+
+    return data;
+  });
+
+  table = useReactTable({
     columns,
     data,
+    manualPagination: true,
+    rowCount: rowCount,
     getCoreRowModel: getCoreRowModel(),
-  });
-
-  const formSchema = z.object({
-    access: z
-      .object({
-        id: z.number(),
-        name: z.string(),
-      })
-      .array(),
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      access: [],
+    initialState: {
+      pagination: {
+        pageIndex: +(searchParams?.get("page") ?? 1) - 1,
+        pageSize: +(searchParams?.get("limit") ?? 10),
+      },
     },
   });
 
-  const [isSubmitDisabled, setSubmitDisabled] = useState(
-    form.getValues().access.length === 0,
-  );
+  const tablePagination = table.getState().pagination;
+  useEffect(
+    () => {
+      fetchData();
+      setSearchParams(
+        searchValue
+          ? {
+              search: searchValue,
+              page: (tablePagination.pageIndex + 1).toString(),
+              limit: tablePagination.pageSize.toString(),
+            }
+          : {
+              page: (tablePagination.pageIndex + 1).toString(),
+              limit: tablePagination.pageSize.toString(),
+            },
+      );
+    },
+    // eslint-disable-next-line
+  [tablePagination]);
 
-  const handleSubmit = async ({ access }: z.infer<typeof formSchema>) => {
-    // await trigger({
-    //   nama: values.name,
-    //   email: values.email,
-    //   access: values.access.map((item) => item.name),
-    // });
+  useEffect(
+    () => {
+      fetchData();
+    },
+    // eslint-disable-next-line
+  [searchValue]);
 
-    // if (error) {
-    //   // TODO: Add toast
-    //   console.error(error);
-    // } else {
-    //   navigate("/manajemen/kelola-akun");
-    // }
-    console.log(
-      "val",
-      access.map((a) => a.name),
-    );
-    console.log(
-      "id",
-      table.getSelectedRowModel().rows.map((r) => r.original.id),
-    );
-  };
+
 
   return {
     table,
@@ -184,11 +182,5 @@ export default function useBatchUbahRole() {
     fetchData,
     dialogOpen,
     setDialogOpen,
-    access,
-    setAccess,
-    form,
-    handleSubmit,
-    isSubmitDisabled,
-    setSubmitDisabled,
   };
 }
