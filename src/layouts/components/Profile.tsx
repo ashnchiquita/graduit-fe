@@ -49,17 +49,17 @@ export default function Profile({ handleLogout }: ProfileProps): JSX.Element {
       {!loading ? (
         <>
           <Popover open={showPopover} onOpenChange={setShowPopover}>
-            <PopoverTrigger className="w-full">
-              <button className="flex w-full items-center justify-between rounded-xl border border-gray-300 bg-slate-100 p-2">
-                <div className="flex items-center gap-3">
-                  <LetteredAvatar name={profile.name} />
-                  <div className="flex flex-col items-start">
-                    <p className="text-xs font-medium">{profile.name}</p>
-                    <p className="text-xs">{profile.role}</p>
-                  </div>
+            <PopoverTrigger className="flex w-full items-center justify-between rounded-xl border border-gray-300 bg-slate-100 p-2">
+              {/* <button className="flex w-full items-center justify-between rounded-xl border border-gray-300 bg-slate-100 p-2"> */}
+              <div className="flex items-center gap-3">
+                <LetteredAvatar name={profile.name} />
+                <div className="flex flex-col items-start">
+                  <p className="text-xs font-medium">{profile.name}</p>
+                  <p className="text-xs">{profile.role}</p>
                 </div>
-                <VscChevronRight size={16} />
-              </button>
+              </div>
+              <VscChevronRight size={16} />
+              {/* </button> */}
             </PopoverTrigger>
 
             <PopoverContent className="z-10 flex w-full flex-col gap-2 px-0 py-2">
