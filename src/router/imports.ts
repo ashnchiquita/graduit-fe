@@ -45,3 +45,10 @@ export const Pengumuman = lazy(
 export const Penjadwalan = lazy(
   () => import("../pages/tugas-akhir/penjadwalan/Penjadwalan.tsx"),
 );
+export const AccountTimTesisLayout = lazy(
+  () => import("../layouts/AccountTimTesisLayout.tsx"),
+);
+
+export const KonfigurasiPeriode = lazy(
+  () => import("../pages/tim-tesis/konfigurasi-periode/KonfigurasiPeriode.tsx"),
+);

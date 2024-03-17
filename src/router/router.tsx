@@ -18,7 +18,10 @@ import {
   StatusMahasiswa,
   ThesisRegistration,
   Topik,
+  AccountTimTesisLayout,
+  KonfigurasiPeriode,
 } from "./imports";
+import DashboardDosbing from "@/pages/dashboard-dosbing/DashboardDosbing";
 
 export const router = createBrowserRouter(
   [
@@ -31,9 +34,18 @@ export const router = createBrowserRouter(
       element: <Login />,
     },
     {
+      path: "/timtesis",
+      element: <AccountTimTesisLayout />,
+      children: [],
+    },
+    {
       path: "/",
       element: <MainLayout />,
       children: [
+        {
+          path: "/dashboard-dosbing",
+          element: <DashboardDosbing />,
+        },
         {
           path: "/tesis",
           element: <Navigate to="/tesis/registrasi" replace />,
@@ -125,6 +137,10 @@ export const router = createBrowserRouter(
         {
           path: "/tugas-akhir/penjadwalan",
           element: <Penjadwalan />,
+        },
+        {
+          path: "/manajemen/periode-pendidikan",
+          element: <KonfigurasiPeriode />,
         },
       ],
     },

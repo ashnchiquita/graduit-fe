@@ -1,12 +1,4 @@
-import { IoEllipsisVertical } from "react-icons/io5";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Link } from "react-router-dom";
-import { Row } from "@tanstack/react-table";
-import { Account } from "../hooks/useKelolaAkun";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -16,12 +8,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Row } from "@tanstack/react-table";
+import { IoEllipsisVertical } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import { Account } from "../../types";
 import useRowAction from "../hooks/useRowAction";
 
 interface ComponentProps {
   row: Row<Account>;
-  refetchAccounts: (search: string) => Promise<void>;
+  refetchAccounts: () => Promise<any>;
 }
 
 export default function RowAction({

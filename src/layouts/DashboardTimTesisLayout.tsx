@@ -10,7 +10,7 @@ import Alert from "./components/Alert";
 export default function DashboardTimTesisLayout(): JSX.Element {
   // Component states
   const [loading, setLoading] = useState<boolean>(true);
-  // const [sidebarClosed, setSidebarClosed] = useState<boolean>(true);
+  const [sidebarClosed] = useState<boolean>(false); // Sidebar muncul diawal
 
   useEffect(() => {
     (async () => {
@@ -23,7 +23,7 @@ export default function DashboardTimTesisLayout(): JSX.Element {
     <>
       {!loading ? (
         <div className="flex h-screen w-full overflow-hidden bg-slate-100">
-          <SidebarTimTesis />
+          <SidebarTimTesis closed={sidebarClosed} />
           <div className="flex h-screen w-full flex-col overflow-y-scroll">
             <Alert deadline="10-03-2024 00:00" />
           </div>

@@ -1,14 +1,14 @@
 // Library imports
-import { Outlet } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 
 // Local imports
 // import axios from "@/config/axios-config";
 
 // Component imports
-import Sidebar from "@/layouts/components/Sidebar";
-import Breadcrumb from "@/layouts/components/Breadcrumb";
 import { Loader } from "@/components/ui/loader";
+import Breadcrumb from "@/layouts/components/Breadcrumb";
+import Sidebar from "@/layouts/components/Sidebar";
 import TopNav from "@/layouts/components/TopNav";
 
 const MainLayoutLoader = () => {
@@ -22,7 +22,7 @@ const MainLayoutLoader = () => {
 export default function MainLayout(): JSX.Element {
   // Component states
   const [loading, setLoading] = useState<boolean>(true);
-  const [sidebarClosed, setSidebarClosed] = useState<boolean>(true);
+  const [sidebarClosed, setSidebarClosed] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {

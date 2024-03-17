@@ -1,6 +1,6 @@
-import axios from "@/config/login-axios-config";
-import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
+import useSWRMutation from "swr/mutation";
+import { deleteAccount } from "../../clients";
 interface ReturnType {
   handleDelete: (id: string) => Promise<void>;
   dialogOpen: boolean;
@@ -8,20 +8,27 @@ interface ReturnType {
 }
 
 export default function useRowAction(
-  refetchAccounts: (search: string) => Promise<void>,
+  refetchAccounts: () => Promise<unknown>,
 ): ReturnType {
-  const [searchParams] = useSearchParams();
-
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const { trigger, error } = useSWRMutation(
+    `/akun`,
+    async (_, { arg }: { arg: string }) => {
+      const res = await deleteAccount(arg);
+      return res.data;
+    },
+  );
+
   const handleDelete = async (id: string) => {
-    // TODO: Add toast
-    try {
-      await axios.delete(`/akun/${id}`);
-      await refetchAccounts(searchParams.get("search") || "");
+    trigger(id);
+
+    if (error) {
+      // TODO: Add toast
+      console.error(error);
+    } else {
+      await refetchAccounts();
       setDialogOpen(false);
-    } catch (err) {
-      console.error(err);
     }
   };
 
