@@ -30,10 +30,10 @@ export default function RoleDialog({
 }: RoleDialogProps): JSX.Element {
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-      <DialogContent>
+      <DialogContent className="max-w-[330px] rounded-md md:max-w-[425px]">
         <DialogHeader className="gap-2">
-          <DialogTitle>Ubah Role Pengguna</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-left">Ubah Role Pengguna</DialogTitle>
+          <DialogDescription className="text-left">
             Anda akan mengubah role pada{" "}
             {table.getSelectedRowModel().flatRows.length} akun pengguna.{" "}
             <span className="font-bold">

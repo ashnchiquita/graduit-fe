@@ -52,6 +52,7 @@ export default function useRoleDialog({
     } else {
       await fetchData();
       form.reset();
+      table.toggleAllRowsSelected(false);
       setDialogOpen(false);
     }
   };
