@@ -40,6 +40,7 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ doughnutChartData }) => {
               ],
             },
             options: {
+              responsive: true,
               plugins: {
                 legend: {
                   display: false,

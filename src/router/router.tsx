@@ -27,7 +27,7 @@ export const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: <Navigate to="/tesis/registrasi" replace />,
+      element: <Navigate to="/dashboard-dosbing" replace />,
     },
     {
       path: "/login",
