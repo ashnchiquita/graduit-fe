@@ -14,7 +14,7 @@ export default function DoughnutChartCard({
   data,
 }: DoughnutChartCardProps): JSX.Element {
   return (
-    <div className="hidden w-full rounded-lg bg-white p-4 md:block">
+    <div className="hidden w-full rounded-lg bg-white p-4 lg:block">
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <h1 className="text-sm font-medium">{title}</h1>

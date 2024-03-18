@@ -11,6 +11,7 @@ import {
 import { MahasiswaBimbingan } from "./types";
 import { useEffect, useState } from "react";
 import StatusCell from "./components/StatusCell";
+import MobileBimbinganList from "./components/MobileBimbinganList";
 
 const DashboardDosbing = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -130,13 +131,23 @@ const DashboardDosbing = () => {
           data={doughnutChartData}
         />
       </div>
-      <DataTable
-        table={table}
-        headline="Daftar Mahasiswa"
-        description="Daftar mahasiswa bimbingan beserta statusnya."
-        searchValue={searchValue}
-        setSearchValue={handleSearchValueChange}
-      />
+      <div className="hidden md:block">
+        <DataTable
+          table={table}
+          headline="Daftar Mahasiswa"
+          description="Daftar mahasiswa bimbingan beserta statusnya."
+          searchValue={searchValue}
+          setSearchValue={handleSearchValueChange}
+        />
+      </div>
+      <div className="block md:hidden">
+        <MobileBimbinganList
+          data={data}
+          searchPlaceholder="Cari mahasiswa..."
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+        />
+      </div>
     </div>
   );
 };
