@@ -1,5 +1,3 @@
-import { Row } from "@tanstack/react-table";
-import { Account } from "../hooks/useKelolaAkun";
 import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
@@ -7,6 +5,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Row } from "@tanstack/react-table";
+import { Account } from "../../types";
 
 export default function AccessCell({
   row,

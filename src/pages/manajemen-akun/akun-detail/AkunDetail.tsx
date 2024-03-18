@@ -1,4 +1,4 @@
-import AccountForm from "@/components/AccountForm";
+import AccountForm from "../components/AccountForm";
 import useAkunDetail from "./hooks/useAkunDetail";
 
 export default function AkunDetail(): JSX.Element {

@@ -1,57 +1,59 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   ColumnDef,
-  Table,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+
 import { useEffect, useState } from "react";
-
-import axios from "@/config/login-axios-config";
-import RowAction from "../components/RowAction";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import useSWR from "swr";
+import { getAllAccounts } from "../../clients";
+import { Account, GetAccountResponseItem } from "../../types";
 import AccessCell from "../components/AccessCell";
-import { SetURLSearchParams, useSearchParams } from "react-router-dom";
+import RowAction from "../components/RowAction";
 
-export type Account = {
-  id: string;
-  email: string;
-  name: string;
-  access: string[];
-};
-
-interface ReturnType {
-  table: Table<Account>;
-  searchParams: URLSearchParams;
-  setSearchParams: SetURLSearchParams;
-  fetchAccounts: (search: string) => Promise<void>;
-}
-
-export default function useKelolaAkun(): ReturnType {
+export default function useKelolaAkun() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchValue, setSearchValue] = useState(
+    searchParams.get("search") ?? "",
+  );
+  const navigate = useNavigate();
 
-  const [data, setData] = useState<Account[]>([]);
+  const onClickCreate = () => {
+    navigate("/manajemen/tambah-akun");
+  };
 
-  const fetchAccounts = async (search: string) => {
-    const res = await axios.get(`/akun?search=${search}`);
-    setData(
-      res.data.map(
-        (resAccount: any): Account => ({
-          id: resAccount.id,
-          email: resAccount.email,
-          name: resAccount.nama,
-          access: resAccount.roles,
-        }),
-      ),
-    );
+  const handleSearchValueChange = (value: string) => {
+    setSearchParams(value ? { search: value } : {});
+    setSearchValue(value);
+    fetchData();
   };
 
   useEffect(() => {
-    fetchAccounts(searchParams.get("search") || "");
-  }, [searchParams]);
+    fetchData();
+  }, [searchValue]);
+
+  const { data = [], mutate: fetchData } = useSWR("/akun", async () => {
+    const res = await getAllAccounts({
+      search: searchValue === "" ? undefined : searchValue,
+    });
+    const data: Account[] = res.data.map(
+      (resAccount: GetAccountResponseItem) => ({
+        id: resAccount.id,
+        email: resAccount.email,
+        name: resAccount.nama,
+        access: resAccount.roles,
+      }),
+    );
+
+    return data;
+  });
 
   const columns: ColumnDef<Account>[] = [
     {
       id: "select",
+      enableSorting: false,
       header: ({ table }) => (
         <Checkbox
           checked={table.getIsAllPageRowsSelected()}
@@ -80,12 +82,12 @@ export default function useKelolaAkun(): ReturnType {
       header: "Akses Aplikasi",
       accessorKey: "access",
       cell: ({ row }) => <AccessCell row={row} />,
+      enableSorting: false,
     },
     {
       id: "action",
-      cell: ({ row }) => (
-        <RowAction row={row} refetchAccounts={fetchAccounts} />
-      ),
+      cell: ({ row }) => <RowAction row={row} refetchAccounts={fetchData} />,
+      enableSorting: false,
     },
   ];
 
@@ -95,5 +97,11 @@ export default function useKelolaAkun(): ReturnType {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return { table, searchParams, setSearchParams, fetchAccounts };
+  return {
+    table,
+    searchValue,
+    handleSearchValueChange,
+    fetchData,
+    onClickCreate,
+  };
 }

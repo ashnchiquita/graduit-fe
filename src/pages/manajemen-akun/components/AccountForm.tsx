@@ -1,19 +1,19 @@
-import { Form, FormControl, FormField, FormLabel } from "@/components/ui/form";
+import LockLogo from "@/assets/account-form/lock-logo.svg";
+import MailLogo from "@/assets/account-form/mail-logo.svg";
+import UserLogo from "@/assets/account-form/user-logo.svg";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Command,
   CommandGroup,
   CommandInput,
   CommandItem,
 } from "@/components/ui/command";
-import { Badge } from "@/components/ui/badge";
-import { VscChromeClose } from "react-icons/vsc";
+import { Form, FormControl, FormField, FormLabel } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { FaChevronLeft } from "react-icons/fa";
-import MailLogo from "@/assets/mail-logo.svg";
-import UserLogo from "@/assets/user-logo.svg";
+import { VscChromeClose } from "react-icons/vsc";
 // import CheckLogo from "@/assets/check-logo.svg";
-import LockLogo from "@/assets/lock-logo.svg";
 import { UseFormReturn } from "react-hook-form";
 import { Link } from "react-router-dom";
 

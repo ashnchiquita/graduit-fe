@@ -30,7 +30,7 @@ export default function useLogin(): ReturnType {
 
   const handleMicrosoft = () => {
     window.open(
-      `${import.meta.env.VITE_API_URL}/auth/login/microsoft`,
+      `${import.meta.env.VITE_LOGIN_API_URL}/auth/login/microsoft`,
       "_self",
     );
   };
