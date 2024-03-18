@@ -20,6 +20,7 @@ import {
   Topik,
   AccountTimTesisLayout,
   BatchUbahRole,
+  KonfigurasiPeriode,
 } from "./imports";
 import DashboardDosbing from "@/pages/dashboard-dosbing/DashboardDosbing";
 
@@ -141,6 +142,10 @@ export const router = createBrowserRouter(
         {
           path: "/tugas-akhir/penjadwalan",
           element: <Penjadwalan />,
+        },
+        {
+          path: "/manajemen/periode-pendidikan",
+          element: <KonfigurasiPeriode />,
         },
       ],
     },
