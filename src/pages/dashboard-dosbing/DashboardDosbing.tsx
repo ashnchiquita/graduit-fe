@@ -9,39 +9,42 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { MahasiswaBimbingan } from "./types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StatusCell from "./components/StatusCell";
 
 const DashboardDosbing = () => {
   const [searchValue, setSearchValue] = useState("");
+  const [data, setData] = useState<MahasiswaBimbingan[]>([]);
+
+  useEffect(() => {
+    // TODO: Fetch data from database
+    setData([
+      {
+        nim: "13518001",
+        nama: "John Doe",
+        topik: "Pengembangan Aplikasi",
+        status: "lancar",
+      },
+      {
+        nim: "13518002",
+        nama: "Jane Doe",
+        topik: "Pengembangan Aplikasi",
+        status: "perlu bimbingan",
+      },
+      {
+        nim: "13518003",
+        nama: "John Smith",
+        topik: "Pengembangan Aplikasi",
+        status: "terkendala",
+      },
+    ]);
+  }, [setData]);
 
   const handleSearchValueChange = (value: string) => {
     setSearchValue(value);
 
     // TODO: Refetch data from database
   };
-
-  // TODO: Use data from database
-  const data = [
-    {
-      nim: "13518001",
-      nama: "John Doe",
-      topik: "Pengembangan Aplikasi",
-      status: "lancar",
-    },
-    {
-      nim: "13518002",
-      nama: "Jane Doe",
-      topik: "Pengembangan Aplikasi",
-      status: "perlu bimbingan",
-    },
-    {
-      nim: "13518003",
-      nama: "John Smith",
-      topik: "Pengembangan Aplikasi",
-      status: "terkendala",
-    },
-  ];
 
   const barChartData: BarChartDosbing[] = [
     { level: "S1", lancar: 10, bimbingan: 5, terkendala: 3 },
