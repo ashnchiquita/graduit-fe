@@ -18,7 +18,10 @@ export type GetAllAccountsParams = {
   limit: number;
 };
 
-export type GetAllAccountsResponseData = [GetAccountResponseItem[], number];
+export type GetAllAccountsResponseData = {
+  akun: GetAccountResponseItem[];
+  count: number;
+};
 
 export type PutAccountRequestData = {
   id?: string;
@@ -46,4 +49,13 @@ export type DeleteAccountResponseData = {
     id: string;
   }[];
   affected: number;
+};
+
+export type PatchBatchUpdateRole = {
+  ids: string[];
+  newRoles: string[];
+};
+
+export type SuccessResponse = {
+  message: string;
 };

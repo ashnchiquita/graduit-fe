@@ -93,10 +93,13 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
           <Button
             variant="ghost"
             onClick={() => {
-              !row.getIsSelected() && row.toggleSelected();
+              table.setRowSelection((_) => {
+                return {
+                  [row.id]: true,
+                };
+              });
 
               setDialogOpen(true);
-              console.log(table.getSelectedRowModel());
             }}
             className="size-fit px-3 py-2 text-xs text-blue-500 hover:bg-muted hover:text-blue-500"
           >
@@ -118,7 +121,7 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
       limit: table.getState().pagination.pageSize,
     });
 
-    const data: Account[] = res.data[0].map(
+    const data: Account[] = res.data.akun.map(
       (resAccount: GetAccountResponseItem) => ({
         id: resAccount.id,
         email: resAccount.email,
@@ -127,7 +130,7 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
       }),
     );
 
-    setRowCount(res.data[1]);
+    setRowCount(res.data.count);
 
     return data;
   });
@@ -164,16 +167,16 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
       );
     },
     // eslint-disable-next-line
-  [tablePagination]);
+    [tablePagination],
+  );
 
   useEffect(
     () => {
       fetchData();
     },
     // eslint-disable-next-line
-  [searchValue]);
-
-
+    [searchValue],
+  );
 
   return {
     table,

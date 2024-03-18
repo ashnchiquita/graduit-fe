@@ -37,8 +37,10 @@ export default function useKelolaAkun() {
   const { data = [], mutate: fetchData } = useSWR("/akun", async () => {
     const res = await getAllAccounts({
       search: searchValue === "" ? undefined : searchValue,
+      page: table.getState().pagination.pageIndex + 1,
+      limit: table.getState().pagination.pageSize,
     });
-    const data: Account[] = res.data.map(
+    const data: Account[] = res.data.akun.map(
       (resAccount: GetAccountResponseItem) => ({
         id: resAccount.id,
         email: resAccount.email,

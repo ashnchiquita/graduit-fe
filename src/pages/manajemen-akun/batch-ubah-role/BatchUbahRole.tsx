@@ -10,9 +10,10 @@ export default function BatchUbahRole(): JSX.Element {
     handleSearchValueChange,
     dialogOpen,
     setDialogOpen,
+    fetchData,
   } = useBatchUbahRole();
 
-  const roleDialogHookRet = useRoleDialog({ table });
+  const roleDialogHookRet = useRoleDialog({ table, fetchData, setDialogOpen });
 
   return (
     <main className="flex w-full flex-col gap-5 px-4 pb-10">

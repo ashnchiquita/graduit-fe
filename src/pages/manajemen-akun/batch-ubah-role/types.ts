@@ -26,6 +26,8 @@ export type RoleDialogProps = {
 
 export type RoleDialogHookProps = {
   table: Table<Account>;
+  fetchData: KeyedMutator<Account[]>;
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type RoleDialogHookRet = {
