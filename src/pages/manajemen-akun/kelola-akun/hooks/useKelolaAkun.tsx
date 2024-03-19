@@ -55,8 +55,6 @@ export default function useKelolaAkun() {
       }),
     );
 
-    console.log(data);
-
     return data;
   });
 
