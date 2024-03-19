@@ -87,13 +87,23 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ doughnutChartData }) => {
   }, [doughnutChartData, initializeChart]);
 
   return (
-    <div className="flex size-full items-center justify-center gap-4 py-2">
+    <div className="flex items-center justify-center gap-4 self-center py-2">
       <div className="flex flex-col items-center gap-2">
-        <canvas ref={chartRefS1} className="size-full opacity-80" />
+        <canvas
+          ref={chartRefS1}
+          className="size-full opacity-80"
+          width={172}
+          height={172}
+        />
         <h2 className="text-sm text-gray-700">Mahasiswa S1</h2>
       </div>
       <div className="flex flex-col items-center gap-2">
-        <canvas ref={chartRefS2} className="size-full opacity-80" />
+        <canvas
+          ref={chartRefS2}
+          className="size-full opacity-80"
+          width={172}
+          height={172}
+        />
         <h2 className="text-sm text-gray-700">Mahasiswa S2</h2>
       </div>
     </div>

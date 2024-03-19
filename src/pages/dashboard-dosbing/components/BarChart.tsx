@@ -9,6 +9,7 @@ interface BarChartProps {
 const BarChart: React.FC<BarChartProps> = ({ data }) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const chartInstanceRef = useRef<Chart | null>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
   useEffect(() => {
     if (chartRef.current) {
@@ -41,6 +42,8 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
             ],
           },
           options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
               x: {
                 ticks: {
@@ -98,7 +101,31 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
     };
   }, [data]);
 
-  return <canvas ref={chartRef} className="size-full" />;
+  // Use effect hook for observing container size changes
+  useEffect(() => {
+    if (chartRef.current && chartInstanceRef.current) {
+      const resizeObserver = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          if (chartInstanceRef.current) {
+            const cr = entry.contentRect;
+            chartInstanceRef.current.resize(cr.width, cr.height);
+          }
+        }
+      });
+
+      // Observe the chart container
+      resizeObserver.observe(chartRef.current);
+      resizeObserverRef.current = resizeObserver;
+
+      return () => {
+        if (resizeObserverRef.current) {
+          resizeObserverRef.current.disconnect();
+        }
+      };
+    }
+  }, []);
+
+  return <canvas ref={chartRef} height={200} />;
 };
 
 export default BarChart;

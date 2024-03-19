@@ -110,7 +110,7 @@ export default function MobileBimbinganList({
                 tab.onClick();
               }}
               className={clsx(
-                "relative z-10 flex items-center gap-1 px-3 py-2 text-[#0D0D0D] transition-all duration-200 ease-in-out hover:text-blue-500",
+                "relative flex items-center gap-1 px-3 py-2 text-[#0D0D0D] transition-all duration-200 ease-in-out hover:text-blue-500",
                 activeTab.name === tab.name ? "text-blue-500" : "",
               )}
             >
@@ -120,7 +120,7 @@ export default function MobileBimbinganList({
           <div
             className="absolute bottom-[-1.25px] h-0.5 rounded bg-blue-500 transition-all duration-300"
             style={highlightStyle}
-          ></div>
+          />
         </div>
       </div>
       <div className="flex w-full flex-col gap-2">

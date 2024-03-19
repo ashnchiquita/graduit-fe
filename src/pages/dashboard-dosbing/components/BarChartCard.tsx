@@ -20,7 +20,7 @@ export default function BarChartCard({
           <h1 className="text-sm font-medium">{title}</h1>
           <p className="text-xs">{desc}</p>
         </div>
-        <div className="flex size-full items-center justify-center py-2">
+        <div className="flex h-full w-[95%] items-center justify-center self-center py-2">
           <BarChart data={data} />
         </div>
       </div>
