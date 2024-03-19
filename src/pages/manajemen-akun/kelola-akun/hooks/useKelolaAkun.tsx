@@ -32,14 +32,20 @@ export default function useKelolaAkun() {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
   const { data = [], mutate: fetchData } = useSWR("/akun", async () => {
+    console.log("runnning");
+
     const res = await getAllAccounts({
       search: searchValue === "" ? undefined : searchValue,
       page: table.getState().pagination.pageIndex + 1,
       limit: table.getState().pagination.pageSize,
     });
+
+    console.log(res.data);
+
     const data: Account[] = res.data.akun.map(
       (resAccount: GetAccountResponseItem) => ({
         id: resAccount.id,
@@ -48,6 +54,8 @@ export default function useKelolaAkun() {
         access: resAccount.roles,
       }),
     );
+
+    console.log(data);
 
     return data;
   });
@@ -96,6 +104,7 @@ export default function useKelolaAkun() {
   const table = useReactTable({
     columns,
     data,
+    manualPagination: true,
     getCoreRowModel: getCoreRowModel(),
   });
 
