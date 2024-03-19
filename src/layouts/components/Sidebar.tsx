@@ -42,19 +42,6 @@ export default function Sidebar({ closed }: SidebarProps): JSX.Element {
                   GraduIT
                 </h1>
               </div>
-              <Combobox
-                placeholder="Tingkat"
-                options={[
-                  { value: "sarjana", label: "Sarjana" },
-                  { value: "magister", label: "Magister" },
-                ]}
-                value="magister"
-                onChange={(newValue) => console.log(newValue)}
-                containerClassName="text-xs mt-0.5 px-2 h-7 rounded-lg bg-slate-100 font-medium text-blue-900 border-none"
-                contentClassName="w-24"
-                optionClassName="text-xs"
-                searchBar={false}
-              />
             </div>
             {/* Sidebar Content */}
             <SidebarContent />

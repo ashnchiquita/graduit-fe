@@ -107,7 +107,7 @@ export default function SidebarContent(): JSX.Element {
   return (
     <>
       {!loading ? (
-        <div className="z-[99] flex size-full max-h-[72vh] flex-col gap-4 overflow-auto">
+        <div className="z-[99] flex size-full max-h-[72vh] flex-col gap-4 overflow-auto pr-1">
           {navItems.map((group) => (
             <div key={group.label} className="flex w-full flex-col gap-1">
               {/* Check if group has children to decide rendering logic */}
