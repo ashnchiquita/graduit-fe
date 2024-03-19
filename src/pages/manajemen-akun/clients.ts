@@ -4,12 +4,13 @@ import {
   GetAccountResponseItem,
   GetAllAccountsParams,
   GetAllAccountsResponseData,
+  PatchBatchUpdateRole,
   PutAccountRequestData,
   PutAccountResponseData,
+  SuccessResponse,
 } from "./types";
 
 export async function getAllAccounts(params: GetAllAccountsParams) {
-  console.log(params);
   return await loginInstance.get<GetAllAccountsResponseData>("/akun", {
     params,
   });
@@ -25,4 +26,10 @@ export async function putAccount(data: PutAccountRequestData) {
 
 export async function deleteAccount(id: string) {
   return await loginInstance.delete<DeleteAccountResponseData>(`/akun/${id}`);
+}
+
+export async function patchBatchUpdateRole(data: PatchBatchUpdateRole) {
+  return await loginInstance.patch<SuccessResponse>("/akun/roles-batch", data, {
+    withCredentials: true,
+  });
 }
