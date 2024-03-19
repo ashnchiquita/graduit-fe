@@ -74,6 +74,7 @@ const navItems: NavItem[] = [
     icon: <IoSchoolOutline className="text-slate-700" />,
     children: [
       { label: "Kelola Akun", path: "/manajemen/kelola-akun" },
+      { label: "Role Pengguna", path: "/manajemen/role-pengguna" },
       {
         label: "Periode Pendidikan",
         path: "/manajemen/periode-pendidikan",

@@ -1,66 +1,20 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "./button";
-import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  HeaderElement?: React.ReactNode;
-  ContentElement?: React.ReactNode;
-  FooterElement?: React.ReactNode;
-  leftHighlight?: boolean;
-  collapseable?: boolean;
-  initiallyCollapsed?: boolean;
-}
-
-const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  (
-    {
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-lg border bg-card text-card-foreground shadow-sm",
       className,
-      HeaderElement,
-      ContentElement,
-      FooterElement,
-      leftHighlight = false,
-      collapseable = false,
-      initiallyCollapsed = false,
-      ...props
-    },
-    ref,
-  ) => {
-    // TODO animate open close, refer to radix docs for reference
-    const [collapsed, setCollapsed] = React.useState(initiallyCollapsed);
-
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "rounded-xl bg-card border-x-[6px] border-x-card text-card-foreground px-7 py-6 space-y-5 box-border",
-          leftHighlight && "border-l-sky-700",
-          className,
-        )}
-        {...props}
-      >
-        <div className="flex items-center justify-between">
-          {HeaderElement}
-          {collapseable && (
-            <Button
-              variant={"outline"}
-              onClick={() => {
-                setCollapsed(!collapsed);
-              }}
-              className="flex items-center gap-2 text-muted-foreground"
-            >
-              Sembunyikan
-              {collapsed ? <VscChevronDown /> : <VscChevronUp />}
-            </Button>
-          )}
-        </div>
-        {(!collapseable || (collapseable && !collapsed)) && ContentElement}
-        {(!collapseable || (collapseable && !collapsed)) && FooterElement}
-      </div>
-    );
-  },
-);
+    )}
+    {...props}
+  />
+));
 Card.displayName = "Card";
 
 const CardHeader = React.forwardRef<
@@ -69,7 +23,7 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col space-y-2", className)}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
     {...props}
   />
 ));
@@ -78,14 +32,15 @@ CardHeader.displayName = "CardHeader";
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLHeadingElement>
->(({ className, children, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn("font-medium leading-none tracking-tight text-xl", className)}
+    className={cn(
+      "text-2xl font-semibold leading-none tracking-tight",
+      className,
+    )}
     {...props}
-  >
-    {children}
-  </h3>
+  />
 ));
 CardTitle.displayName = "CardTitle";
 
@@ -105,7 +60,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn(className)} {...props} />
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
 ));
 CardContent.displayName = "CardContent";
 
@@ -113,7 +68,11 @@ const CardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("flex items-center", className)} {...props} />
+  <div
+    ref={ref}
+    className={cn("flex items-center p-6 pt-0", className)}
+    {...props}
+  />
 ));
 CardFooter.displayName = "CardFooter";
 
