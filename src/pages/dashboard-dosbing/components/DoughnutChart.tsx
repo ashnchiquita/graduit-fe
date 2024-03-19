@@ -46,6 +46,13 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ doughnutChartData }) => {
                   display: false,
                 },
                 tooltip: {
+                  titleFont: {
+                    family: "Satoshi",
+                  },
+                  bodyFont: {
+                    size: 12,
+                    family: "Satoshi",
+                  },
                   callbacks: {
                     label: function (context) {
                       let label = context.label || "";
