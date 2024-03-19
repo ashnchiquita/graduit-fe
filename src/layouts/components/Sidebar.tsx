@@ -28,7 +28,7 @@ export default function Sidebar({ closed }: SidebarProps): JSX.Element {
       )}
     >
       <nav className="relative z-[99] flex h-full flex-col items-center justify-between bg-white px-4 py-5 md:h-full md:rounded-lg">
-        <div className="flex size-full flex-col justify-between">
+        <div className="z-[99] flex size-full flex-col justify-between">
           <div className="flex flex-col gap-6">
             {/* Logo */}
             <div className="hidden w-full items-center justify-between md:flex">
