@@ -1,10 +1,16 @@
 import { CgProfile } from "react-icons/cg";
+import { FaArrowLeft } from "react-icons/fa6";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
 import type { User } from "@/lib/entity";
-import { Link } from "react-router-dom";
 
-const MahasiswaCard = ({ user, logs }: { user: User; logs: boolean }) => {
+const MahasiswaCardLogBimbingan = ({
+  user,
+  backArrow,
+}: {
+  user: User;
+  backArrow: boolean;
+}) => {
   const [subMenuOpen, setSubMenuOpen] = useState(false);
   const toggleSubMenu = () => {
     setSubMenuOpen(!subMenuOpen);
@@ -14,7 +20,10 @@ const MahasiswaCard = ({ user, logs }: { user: User; logs: boolean }) => {
     <div className="rounded-lg bg-white px-6 py-4">
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row items-center space-x-4">
+          {backArrow ? <FaArrowLeft className="text-[20px]" /> : <></>}
+
           <CgProfile className="text-[60px]" />
+
           <div className="flex flex-col">
             <p className="mb-2 lg:text-2xl">{user.name}</p>
             <div className="flex flex-row items-center space-x-2">
@@ -24,22 +33,16 @@ const MahasiswaCard = ({ user, logs }: { user: User; logs: boolean }) => {
             </div>
           </div>
         </div>
-        {logs ? (
-          <Link to={`/log/bimbingan/${user.id}`}>
-            <p className="hover:cursor-pointer hover:underline">See Logs</p>
-          </Link>
-        ) : (
-          <>
-            <button className={`${subMenuOpen ? "rotate-180" : ""} flex`}>
-              <Icon
-                icon="lucide:chevron-down"
-                width="20"
-                height="20"
-                onClick={toggleSubMenu}
-              />
-            </button>
-          </>
-        )}
+        <>
+          <button className={`${subMenuOpen ? "rotate-180" : ""} flex`}>
+            <Icon
+              icon="lucide:chevron-down"
+              width="20"
+              height="20"
+              onClick={toggleSubMenu}
+            />
+          </button>
+        </>
       </div>
 
       {subMenuOpen && (
@@ -74,4 +77,4 @@ const MahasiswaCard = ({ user, logs }: { user: User; logs: boolean }) => {
   );
 };
 
-export default MahasiswaCard;
+export default MahasiswaCardLogBimbingan;

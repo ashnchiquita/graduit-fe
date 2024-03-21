@@ -1,81 +1,45 @@
-"use client";
 import { DataTable } from "@/components/DataTable";
-import type { SystemLogs } from "@/lib/entity";
-import {
-  ColumnDef,
-  PaginationState,
-  SortingState,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useLogBimbinganMahasiswa from "./hooks/useLogBimbinganMahasiswa";
+// import MahasiswaCardLogBimbingan from "./components/MahasiswaCardLogBimbingan";
+import MahasiswaCard from "../components/MahasiswaCard";
+import { User } from "@/lib/entity";
 
-const columns: ColumnDef<SystemLogs>[] = [
+const dummyUsers: User[] = [
   {
-    header: "User ID",
-    accessorKey: "id",
-    minSize: 1000,
+    id: "1",
+    name: "Ariel Jovananda",
+    email: "135210856@mahasiswa.itb.ac.id",
+    major: "Teknik Informatika",
+    profpic: "",
   },
   {
-    header: "Action",
-    accessorKey: "action",
-    minSize: 1000,
-  },
-  {
-    header: "Time Stamp",
-    accessorKey: "createdAt",
-    minSize: 1000,
+    id: "2",
+    name: "Ariel Jovananda",
+    email: "135210856@mahasiswa.itb.ac.id",
+    major: "Teknik Informatika",
+    profpic: "",
   },
 ];
 
 export default function LogBimbinganMahasiswa() {
-  const data: SystemLogs[] = [
-    {
-      id: "1",
-      idPengguna: "2",
-      action: "Ada deh",
-      createdAt: "02/03/2024 19:58",
-    },
-  ];
-
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-
-  const [sorting, setSorting] = useState<SortingState>([
-    {
-      id: "id",
-      desc: false,
-    },
-  ]);
-
-  useEffect(() => {
-    console.log(sorting);
-  }, [sorting]);
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination,
-    onSortingChange: setSorting,
-    state: {
-      pagination,
-      sorting,
-    },
-  });
-
   const [searchValue, setSearchValue] = useState("");
+  const { table } = useLogBimbinganMahasiswa();
 
   return (
-    <main className="flex min-h-screen flex-col p-5">
+    <main className="flex min-h-screen flex-col p-5 gap-4">
+      {/* <p className="mb-10 text-5xl font-black">Bimbingan Logs</p> */}
+      <MahasiswaCard user={dummyUsers[0]} backArrow={true} logs={false} />
       <DataTable
         table={table}
-        searchValue={searchValue}
+        headline="Log Bimbingan"
+        description="Berikut merupakan log bimbingan"
         setSearchValue={setSearchValue}
+        searchValue={searchValue}
+        searchPlaceholder="Search something"
+        onClickFilter={() => {
+          console.log("filtered");
+        }}
       />
     </main>
   );

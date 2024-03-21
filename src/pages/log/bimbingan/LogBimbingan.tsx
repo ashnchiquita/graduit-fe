@@ -1,4 +1,4 @@
-import MahasiswaCard from "./components/MahasiswaCard";
+import MahasiswaCard from "../components/MahasiswaCard";
 import type { User } from "@/lib/entity";
 
 const dummyUsers: User[] = [
@@ -52,7 +52,14 @@ export default function LogBimbingan() {
         </div>
 
         {dummyUsers.map((item, idx) => {
-          return <MahasiswaCard key={idx} user={item} logs={true} />;
+          return (
+            <MahasiswaCard
+              key={idx}
+              user={item}
+              logs={true}
+              backArrow={false}
+            />
+          );
         })}
       </div>
     </main>
