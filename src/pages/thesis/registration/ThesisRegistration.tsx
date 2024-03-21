@@ -1,22 +1,14 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/Card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form/form";
 import { LecturerCard } from "./components/LecturerCard/LecturerCard";
 import { StreamCard } from "./components/StreamCard/StreamCard";
+import { TopicCard } from "./components/TopicCard/TopicCard";
 import useThesisRegistrationImpl from "./useThesisRegistrationImpl";
 
 const ThesisRegistration = () => {
@@ -51,58 +43,9 @@ const ThesisRegistration = () => {
             }
           />
 
-          <Card
-            HeaderElement={
-              <CardHeader>
-                <CardTitle>
-                  Usulan Topik <span className="text-destructive">*</span>
-                </CardTitle>
-                {/* TODO link */}
-                <CardDescription>
-                  Research interests setiap dosen dapat dilihat di link ini
-                </CardDescription>
-              </CardHeader>
-            }
-            ContentElement={
-              <div className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="topic"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Topik</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Masukkan judul topik yang Anda ajukan"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="topicDescription"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Deskripsi Singkat</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Masukkan deskripsi topik yang Anda ajukan"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            }
-          />
-
-          <StreamCard form={form} />
           <LecturerCard form={form} />
+          <TopicCard form={form} lecturerId={form.watch("lecturer")} />
+          <StreamCard form={form} />
 
           <div className="flex flex-col gap-8 p-6">
             <div className="text-gray-600">

@@ -11,21 +11,24 @@ import {
   FormMessage,
 } from "@/components/ui/form/form";
 import { SearchableSelect } from "@/components/ui/searchable-select";
-import { DUMMY_DOSEN } from "../../constants";
 import { LecturerCardProps, useLecturerCardImpl } from "./useLecturerCardImpl";
 
 export const LecturerCard = ({ form }: LecturerCardProps) => {
-  const { lecturerSearchValue, setLecturerSeachValue } = useLecturerCardImpl();
+  const {
+    lecturerOptions,
+    isLoading,
+    lecturerSearchValue,
+    setLecturerSeachValue,
+  } = useLecturerCardImpl();
 
   return (
     <Card
       HeaderElement={
         <CardHeader>
-          <CardTitle>Calon Pembimbing</CardTitle>
-          <CardDescription>
-            Pilih satu atau lebih calon pembimbing tesis.{" "}
-            <strong>Bagian ini bersifat opsional.</strong>
-          </CardDescription>
+          <CardTitle>
+            Calon Pembimbing <span className="text-destructive">*</span>
+          </CardTitle>
+          <CardDescription>Pilih satu calon pembimbing tesis.</CardDescription>
         </CardHeader>
       }
       ContentElement={
@@ -36,15 +39,14 @@ export const LecturerCard = ({ form }: LecturerCardProps) => {
             <FormItem>
               <FormControl>
                 <SearchableSelect
-                  dataOptions={DUMMY_DOSEN.map((value) => ({
-                    label: value,
-                    value,
-                  }))}
+                  dataOptions={lecturerOptions}
                   inputValue={lecturerSearchValue}
                   setInputValue={setLecturerSeachValue}
                   selected={field.value ?? ""}
                   setSelected={(selected) => field.onChange(selected)}
                   placeholder="Pilih dosen pembimbing..."
+                  disabled={isLoading}
+                  shouldFilter={true}
                 />
               </FormControl>
               <FormMessage />
