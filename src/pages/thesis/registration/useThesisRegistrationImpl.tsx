@@ -19,18 +19,10 @@ const useThesisRegistrationImpl = () => {
       topic: "",
       topicDescription: "",
     },
-    // TODO remove debug logs
-    // resolver: zodResolver(thesisRegistrationFormSchema),
-    resolver: async (data, context, options) => {
-      console.log(
-        "validation result",
-        await zodResolver(thesisRegistrationFormSchema)(data, context, options),
-      );
-      return zodResolver(thesisRegistrationFormSchema)(data, context, options);
-    },
+    resolver: zodResolver(thesisRegistrationFormSchema),
   });
 
-  const { trigger, error } = useSWRMutation(
+  const { trigger } = useSWRMutation(
     "/registrasi-topik",
     async (_, { arg }: { arg: PostRegistrasiTesisRequestData }) => {
       return await postRegistrasiTesis(arg);
