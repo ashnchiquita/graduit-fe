@@ -4,7 +4,13 @@ import { useState } from "react";
 import { Icon } from "@iconify/react";
 import type { User } from "@/lib/entity";
 
-const MahasiswaCardLogBimbingan = ({ user }: { user: User }) => {
+const MahasiswaCardLogBimbingan = ({
+  user,
+  backArrow,
+}: {
+  user: User;
+  backArrow: boolean;
+}) => {
   const [subMenuOpen, setSubMenuOpen] = useState(false);
   const toggleSubMenu = () => {
     setSubMenuOpen(!subMenuOpen);
@@ -14,9 +20,10 @@ const MahasiswaCardLogBimbingan = ({ user }: { user: User }) => {
     <div className="rounded-lg bg-white px-6 py-4">
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row items-center space-x-4">
-            <FaArrowLeft className="text-[20px]"/>
+          {backArrow ? <FaArrowLeft className="text-[20px]" /> : <></>}
+
           <CgProfile className="text-[60px]" />
-          
+
           <div className="flex flex-col">
             <p className="mb-2 lg:text-2xl">{user.name}</p>
             <div className="flex flex-row items-center space-x-2">
@@ -26,16 +33,16 @@ const MahasiswaCardLogBimbingan = ({ user }: { user: User }) => {
             </div>
           </div>
         </div>
-          <>
-            <button className={`${subMenuOpen ? "rotate-180" : ""} flex`}>
-              <Icon
-                icon="lucide:chevron-down"
-                width="20"
-                height="20"
-                onClick={toggleSubMenu}
-              />
-            </button>
-          </>
+        <>
+          <button className={`${subMenuOpen ? "rotate-180" : ""} flex`}>
+            <Icon
+              icon="lucide:chevron-down"
+              width="20"
+              height="20"
+              onClick={toggleSubMenu}
+            />
+          </button>
+        </>
       </div>
 
       {subMenuOpen && (

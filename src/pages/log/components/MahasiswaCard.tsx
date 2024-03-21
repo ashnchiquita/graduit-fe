@@ -1,20 +1,32 @@
 import { CgProfile } from "react-icons/cg";
+import { FaArrowLeft } from "react-icons/fa6";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
 import type { User } from "@/lib/entity";
 import { Link } from "react-router-dom";
 
-const MahasiswaCard = ({ user, logs }: { user: User; logs: boolean }) => {
+const MahasiswaCard = ({
+  user,
+  backArrow,
+  logs,
+}: {
+  user: User;
+  backArrow: boolean;
+  logs: boolean;
+}) => {
   const [subMenuOpen, setSubMenuOpen] = useState(false);
   const toggleSubMenu = () => {
     setSubMenuOpen(!subMenuOpen);
   };
 
   return (
-    <div className="rounded-lg bg-white px-6 py-4">
+    <div className="rounded-lg bg-white px-6 py-4 border border-[#EAECF0]">
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row items-center space-x-4">
+          {backArrow ? <FaArrowLeft className="text-[20px]" /> : <></>}
+
           <CgProfile className="text-[60px]" />
+
           <div className="flex flex-col">
             <p className="mb-2 lg:text-2xl">{user.name}</p>
             <div className="flex flex-row items-center space-x-2">

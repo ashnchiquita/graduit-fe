@@ -1,21 +1,27 @@
-
-import { ColumnDef, PaginationState, SortingState, getCoreRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  PaginationState,
+  SortingState,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { BimbinganLogs } from "../types";
 import { useEffect, useState } from "react";
 import DownloadBox from "../components/DownloadBox";
 import StatusCircle from "../components/StatusCircle";
 
-
 export default function useLogBimbinganMahasiswa() {
-
- const dummyBimbinganLogs: BimbinganLogs[] = [
+  const dummyBimbinganLogs: BimbinganLogs[] = [
     {
       tanggal: "01/03/2024",
-      laporan_kemajuan: "Minggu pertama, telah menyelesaikan pembacaan buku A dan B",
+      laporan_kemajuan:
+        "Minggu pertama, telah menyelesaikan pembacaan buku A dan B",
       todo: "Minggu depan, akan mulai menulis bab 1 dari tesis",
-      rencana: "Minggu depan, akan bertemu dengan dosen pembimbing untuk diskusi lebih lanjut",
+      rencana:
+        "Minggu depan, akan bertemu dengan dosen pembimbing untuk diskusi lebih lanjut",
       berkas: ["file1.pdf", "file2.docx"],
-      status: true
+      status: true,
     },
     {
       tanggal: "08/03/2024",
@@ -23,7 +29,7 @@ export default function useLogBimbinganMahasiswa() {
       todo: "Minggu depan, akan menyelesaikan analisis data",
       rencana: "Minggu depan, akan mengajukan proposal penelitian",
       berkas: ["proposal.pdf", "data.xlsx"],
-      status: true
+      status: true,
     },
     {
       tanggal: "15/03/2024",
@@ -31,12 +37,12 @@ export default function useLogBimbinganMahasiswa() {
       todo: "Minggu depan, akan menulis bab 2 dari tesis",
       rencana: "Minggu depan, akan membuat presentasi untuk seminar proposal",
       berkas: ["presentation.pptx", "thesis.docx"],
-      status: false
+      status: false,
     },
     // Add more dummy data as needed
   ];
 
- const columns: ColumnDef<BimbinganLogs>[] = [
+  const columns: ColumnDef<BimbinganLogs>[] = [
     {
       header: "Tanggal",
       accessorKey: "tanggal",
@@ -60,13 +66,13 @@ export default function useLogBimbinganMahasiswa() {
     {
       header: "Berkas",
       accessorKey: "berkas",
-      cell: ({row}) => <DownloadBox row = {row}/>,
+      cell: ({ row }) => <DownloadBox row={row} />,
       minSize: 1000,
     },
     {
       header: "Status",
       accessorKey: "status",
-      cell: ({row}) => <StatusCircle row = {row}/ >,
+      cell: ({ row }) => <StatusCircle row={row} />,
       minSize: 1000,
       enableSorting: false,
     },
@@ -88,7 +94,7 @@ export default function useLogBimbinganMahasiswa() {
     console.log(sorting);
   }, [sorting]);
 
-const table = useReactTable({
+  const table = useReactTable({
     data: dummyBimbinganLogs,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -101,7 +107,7 @@ const table = useReactTable({
     },
   });
 
-  return{
-    table
-  }
+  return {
+    table,
+  };
 }
