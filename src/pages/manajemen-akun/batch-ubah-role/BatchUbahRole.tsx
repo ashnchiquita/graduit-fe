@@ -1,18 +1,18 @@
 import { DataTable } from "@/components/DataTable";
-import useBatchUbahRole from "./hooks/useBatchUbahRole";
-import useRoleDialog from "./hooks/useRoleDialog";
-import RoleDialog from "./components/RoleDialog";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { IoFilterOutline } from "react-icons/io5";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from "@/components/ui/badge";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
+import { IoFilterOutline } from "react-icons/io5";
+import RoleDialog from "./components/RoleDialog";
+import useBatchUbahRole from "./hooks/useBatchUbahRole";
+import useRoleDialog from "./hooks/useRoleDialog";
 
 export default function BatchUbahRole(): JSX.Element {
   const {
@@ -25,7 +25,6 @@ export default function BatchUbahRole(): JSX.Element {
   } = useBatchUbahRole();
 
   const roleDialogHookRet = useRoleDialog({ table, fetchData, setDialogOpen });
-  console.log(table.getRowModel());
   return (
     <main className="flex w-full flex-col gap-5 px-4 pb-10">
       <section className="hidden md:block">

@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form/form";
 import { SearchableSelect } from "@/components/ui/searchable-select";
-import { DUMMY_CHOICES } from "../../constants";
+import { StreamSelectOptions } from "../../constants";
 import { StreamCardProps, useStreamCardImpl } from "./useStreamCardImpl";
 
 export const StreamCard = ({ form }: StreamCardProps) => {
@@ -37,10 +37,7 @@ export const StreamCard = ({ form }: StreamCardProps) => {
             <FormItem>
               <FormControl>
                 <SearchableSelect
-                  dataOptions={DUMMY_CHOICES.map((value) => ({
-                    label: value,
-                    value,
-                  }))}
+                  dataOptions={StreamSelectOptions}
                   inputValue={streamSearchValue}
                   setInputValue={setStreamSeachValue}
                   selected={field.value}
@@ -48,6 +45,7 @@ export const StreamCard = ({ form }: StreamCardProps) => {
                     field.onChange(selected);
                   }}
                   placeholder="Cari jalur pilihan..."
+                  shouldFilter={true}
                 />
               </FormControl>
               <FormMessage />
