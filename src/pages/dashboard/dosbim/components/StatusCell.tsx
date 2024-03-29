@@ -7,5 +7,9 @@ export default function StatusCell({
 }: {
   row: Row<MahasiswaBimbingan>;
 }): JSX.Element {
-  return <StatusBadge status={row.original.status as StatusBimbingan} />;
+  return (
+    <StatusBadge
+      status={row.original.status.toLowerCase() as StatusBimbingan}
+    />
+  );
 }

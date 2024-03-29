@@ -1,19 +1,19 @@
 export const RECAP_FILTER_STATUS_OPTIONS = [
   {
     label: "Belum Ditetapkan",
-    value: "unreviewed",
+    value: "NOT_ASSIGNED",
   },
   {
     label: "Wawancara",
-    value: "interview",
+    value: "INTERVIEW",
   },
   {
     label: "Disetujui",
-    value: "accepted",
+    value: "APPROVED",
   },
   {
     label: "Ditolak",
-    value: "rejected",
+    value: "REJECTED",
   },
 ];
 

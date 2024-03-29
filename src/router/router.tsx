@@ -21,14 +21,14 @@ import {
   AccountTimTesisLayout,
   BatchUbahRole,
   KonfigurasiPeriode,
+  Dashboard,
 } from "./imports";
-import DashboardDosbing from "@/pages/dashboard-dosbing/DashboardDosbing";
 
 export const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: <Navigate to="/dashboard-dosbing" replace />,
+      element: <Navigate to="/dashboard" replace />,
     },
     {
       path: "/login",
@@ -44,8 +44,8 @@ export const router = createBrowserRouter(
       element: <MainLayout />,
       children: [
         {
-          path: "/dashboard-dosbing",
-          element: <DashboardDosbing />,
+          path: "/dashboard",
+          element: <Dashboard />,
         },
         {
           path: "/tesis",
@@ -56,7 +56,7 @@ export const router = createBrowserRouter(
           element: <ThesisRegistration></ThesisRegistration>,
         },
         {
-          path: "/tesis/rekap",
+          path: "/rekap-pendaftaran",
           element: <RegistrationRecap></RegistrationRecap>,
         },
         {
@@ -116,7 +116,7 @@ export const router = createBrowserRouter(
           element: <LogBimbingan />,
         },
         {
-          path: "/log/bimbingan/:id",
+          path: "/dosen/bimbingan/:strata/:id",
           element: <LogBimbinganMahasiswa />,
         },
         {

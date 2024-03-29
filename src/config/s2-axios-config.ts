@@ -5,4 +5,18 @@ const s2Instance = axios.create({
   timeout: 10000,
 });
 
+s2Instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error.response.status === 401 &&
+      window.location.pathname !== "/login"
+    ) {
+      window.location.href = `${import.meta.env.VITE_BASE_URL}/login`;
+    }
+
+    return Promise.reject(error);
+  },
+);
+
 export default s2Instance;

@@ -10,6 +10,7 @@ const RegistrationRecap = () => {
     currentApplicationData,
     setCurrentApplicationId,
     isMobile,
+    fetchData,
   } = useRegistrationRecapImpl();
 
   return (
@@ -37,7 +38,7 @@ const RegistrationRecap = () => {
           />
         )}
         {(!isMobile || (isMobile && currentApplicationId !== "")) && (
-          <RecapDetail data={currentApplicationData} />
+          <RecapDetail data={currentApplicationData} refetchData={fetchData} />
         )}
       </div>
     </div>

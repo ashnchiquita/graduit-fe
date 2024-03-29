@@ -13,19 +13,26 @@ import {
 export async function getAllAccounts(params: GetAllAccountsParams) {
   return await loginInstance.get<GetAllAccountsResponseData>("/akun", {
     params,
+    withCredentials: true,
   });
 }
 
 export async function getAccount(id: string) {
-  return await loginInstance.get<GetAccountResponseItem>(`/akun/${id}`);
+  return await loginInstance.get<GetAccountResponseItem>(`/akun/${id}`, {
+    withCredentials: true,
+  });
 }
 
 export async function putAccount(data: PutAccountRequestData) {
-  return await loginInstance.put<PutAccountResponseData>("/akun", data);
+  return await loginInstance.put<PutAccountResponseData>("/akun", data, {
+    withCredentials: true,
+  });
 }
 
 export async function deleteAccount(id: string) {
-  return await loginInstance.delete<DeleteAccountResponseData>(`/akun/${id}`);
+  return await loginInstance.delete<DeleteAccountResponseData>(`/akun/${id}`, {
+    withCredentials: true,
+  });
 }
 
 export async function patchBatchUpdateRole(data: PatchBatchUpdateRole) {

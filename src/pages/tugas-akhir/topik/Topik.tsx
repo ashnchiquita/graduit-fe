@@ -3,8 +3,9 @@ import useTopik from "./hooks/useTopik";
 import { DataTable } from "@/components/DataTable";
 
 export default function TopicAllocation() {
-  const { role } = useParams()
-  const { table, searchValue, handleSearchValueChange, onClickCreate } = useTopik()
+  const { role } = useParams();
+  const { table, searchValue, handleSearchValueChange, onClickCreate } =
+    useTopik();
 
   return (
     <>

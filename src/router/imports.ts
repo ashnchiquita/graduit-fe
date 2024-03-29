@@ -55,3 +55,5 @@ export const BatchUbahRole = lazy(
 export const KonfigurasiPeriode = lazy(
   () => import("../pages/tim-tesis/konfigurasi-periode/KonfigurasiPeriode.tsx"),
 );
+
+export const Dashboard = lazy(() => import("../pages/dashboard/Dashboard.tsx"));

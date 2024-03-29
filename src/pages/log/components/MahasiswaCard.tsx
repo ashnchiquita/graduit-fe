@@ -3,14 +3,18 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
 import type { User } from "@/lib/entity";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MahasiswaCard = ({
   user,
+  topik,
+  deskripsiTopik,
   backArrow,
   logs,
 }: {
   user: User;
+  topik: string;
+  deskripsiTopik: string;
   backArrow: boolean;
   logs: boolean;
 }) => {
@@ -18,12 +22,20 @@ const MahasiswaCard = ({
   const toggleSubMenu = () => {
     setSubMenuOpen(!subMenuOpen);
   };
+  const navigate = useNavigate();
 
   return (
-    <div className="rounded-lg bg-white px-6 py-4 border border-[#EAECF0]">
+    <div className="rounded-lg border border-[#EAECF0] bg-white px-6 py-4">
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row items-center space-x-4">
-          {backArrow ? <FaArrowLeft className="text-[20px]" /> : <></>}
+          {backArrow ? (
+            <FaArrowLeft
+              onClick={() => navigate(-1)}
+              className="cursor-pointer text-[20px] hover:text-blue-500"
+            />
+          ) : (
+            <></>
+          )}
 
           <CgProfile className="text-[60px]" />
 
@@ -57,29 +69,9 @@ const MahasiswaCard = ({
       {subMenuOpen && (
         <div className="my-2 flex h-[50%] flex-col space-y-4 px-[75px] pt-3">
           <p className="text-xl">Topik</p>
-          <span className="text-slate-500">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </span>
+          <span className="text-slate-500">{topik}</span>
           <p className="text-xl">Deskripsi</p>
-          <span className="text-slate-500">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </span>
+          <span className="text-slate-500">{deskripsiTopik}</span>
         </div>
       )}
     </div>
