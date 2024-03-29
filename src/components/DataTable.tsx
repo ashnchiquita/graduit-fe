@@ -139,6 +139,7 @@ export function DataTable<TData>({
             </div>
           </div>
         )}
+
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -189,7 +190,12 @@ export function DataTable<TData>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      align={
+                        (cell.column.columnDef.meta as any)?.align ?? "left"
+                      }
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
@@ -247,7 +253,7 @@ export function DataTable<TData>({
               }}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to first page</span>
+              {/* <span className="sr-only">Go to first page</span> */}
               <DoubleArrowLeftIcon className="size-4" />
             </Button>
             <Button
@@ -259,7 +265,7 @@ export function DataTable<TData>({
               }}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to previous page</span>
+              {/* <span className="sr-only">Go to previous page</span> */}
               <ChevronLeftIcon className="size-4" />
             </Button>
             <Button
@@ -271,7 +277,7 @@ export function DataTable<TData>({
               }}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to next page</span>
+              {/* <span className="sr-only">Go to next page</span> */}
               <ChevronRightIcon className="size-4" />
             </Button>
             <Button
@@ -283,7 +289,7 @@ export function DataTable<TData>({
               }}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to last page</span>
+              {/* <span className="sr-only">Go to last page</span> */}
               <DoubleArrowRightIcon className="size-4" />
             </Button>
           </div>

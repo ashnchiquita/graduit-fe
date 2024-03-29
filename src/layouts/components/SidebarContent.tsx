@@ -21,54 +21,54 @@ interface NavItem {
 // Sample navigation data
 const navItems: NavItem[] = [
   {
-    label: "Dashboard Dosbing",
+    label: "Dashboard",
     icon: <VscPieChart className="text-slate-700" />,
     iconActive: <VscPieChart className="text-blue-900" />,
-    path: "/dashboard-dosbing",
+    path: "/dashboard",
   },
-  {
-    label: "Tesis",
-    icon: <IoSchoolOutline className="text-slate-700" />,
-    children: [
-      { label: "Registrasi", path: "/tesis/registrasi" },
-      { label: "Status", path: "/tesis/status" },
-      { label: "Rekap", path: "/tesis/rekap" },
-    ],
-  },
-  {
-    label: "Tugas Akhir",
-    icon: <IoSchoolOutline className="text-slate-700" />,
-    children: [
-      { label: "Topik", path: "/tugas-akhir/topik/2" },
-      { label: "Status", path: "/tugas-akhir/status/1" },
-      { label: "Pengumuman", path: "/tugas-akhir/pengumuman" },
-      { label: "Penjadwalan", path: "/tugas-akhir/penjadwalan" },
-    ],
-  },
-  {
-    label: "Tugas",
-    icon: <VscNotebook className="text-slate-700" />,
-    children: [
-      { label: "Kelas", path: "/tugas/kelas" },
-      { label: "Logbook", path: "/tugas/logbook" },
-    ],
-  },
-  {
-    label: "Informasi",
-    icon: <VscInfo className="text-slate-700" />,
-    children: [
-      { label: "Seminar", path: "/informasi/seminar" },
-      { label: "Pengujian", path: "/informasi/pengujian" },
-    ],
-  },
-  {
-    label: "Log",
-    icon: <IoClipboardOutline className="text-slate-700" />,
-    children: [
-      { label: "Bimbingan", path: "/log/bimbingan" },
-      { label: "Sistem", path: "/log/sistem" },
-    ],
-  },
+  // {
+  //   label: "Tesis",
+  //   icon: <IoSchoolOutline className="text-slate-700" />,
+  //   children: [
+  //     { label: "Registrasi", path: "/tesis/registrasi" },
+  //     { label: "Status", path: "/tesis/status" },
+  //     { label: "Rekap", path: "/tesis/rekap" },
+  //   ],
+  // },
+  // {
+  //   label: "Tugas Akhir",
+  //   icon: <IoSchoolOutline className="text-slate-700" />,
+  //   children: [
+  //     { label: "Topik", path: "/tugas-akhir/topik/2" },
+  //     { label: "Status", path: "/tugas-akhir/status/1" },
+  //     { label: "Pengumuman", path: "/tugas-akhir/pengumuman" },
+  //     { label: "Penjadwalan", path: "/tugas-akhir/penjadwalan" },
+  //   ],
+  // },
+  // {
+  //   label: "Tugas",
+  //   icon: <VscNotebook className="text-slate-700" />,
+  //   children: [
+  //     { label: "Kelas", path: "/tugas/kelas" },
+  //     { label: "Logbook", path: "/tugas/logbook" },
+  //   ],
+  // },
+  // {
+  //   label: "Informasi",
+  //   icon: <VscInfo className="text-slate-700" />,
+  //   children: [
+  //     { label: "Seminar", path: "/informasi/seminar" },
+  //     { label: "Pengujian", path: "/informasi/pengujian" },
+  //   ],
+  // },
+  // {
+  //   label: "Log",
+  //   icon: <IoClipboardOutline className="text-slate-700" />,
+  //   children: [
+  //     { label: "Bimbingan", path: "/log/bimbingan" },
+  //     { label: "Sistem", path: "/log/sistem" },
+  //   ],
+  // },
   {
     label: "Manajemen",
     icon: <IoSchoolOutline className="text-slate-700" />,
@@ -122,10 +122,10 @@ export default function SidebarContent(): JSX.Element {
                         <div className="h-full w-[2px] rounded" />
                         {group.icon}
                       </div>
-                      <p className="text-slate-700">{group.label}</p>
+                      <p className="text-base text-slate-700">{group.label}</p>
                     </div>
                     <VscChevronRight
-                      className={`text-slate-700 transition-all duration-150 ${openGroups.includes(group.label) ? "rotate-90" : ""}`}
+                      className={`text-base text-slate-700 transition-all duration-150 ${openGroups.includes(group.label) ? "rotate-90" : ""}`}
                     />
                   </div>
                   {openGroups.includes(group.label) &&
@@ -147,7 +147,7 @@ export default function SidebarContent(): JSX.Element {
                                   <div className="h-full w-[2px] rounded" />
                                 )}
                               </div>
-                              <p>{item.label}</p>
+                              <p className="text-base">{item.label}</p>
                             </div>
                           </div>
                         )}
@@ -178,7 +178,7 @@ export default function SidebarContent(): JSX.Element {
                             </>
                           )}
                         </div>
-                        <p>{group.label}</p>
+                        <p className="text-base">{group.label}</p>
                       </div>
                     </div>
                   )}

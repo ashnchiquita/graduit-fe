@@ -1,5 +1,7 @@
 import axios from "@/config/login-axios-config";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 interface ReturnType {
   email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
@@ -13,7 +15,10 @@ export default function useLogin(): ReturnType {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+
   const handleCredentials = async () => {
+    const toastId = toast.loading("Mohon menunggu...");
     try {
       await axios.post(
         `/auth/login/credentials`,
@@ -23,8 +28,21 @@ export default function useLogin(): ReturnType {
         },
         { withCredentials: true },
       );
+
+      setTimeout(() => navigate("/dashboard"), 1000);
+      toast.update(toastId, {
+        render: "Success",
+        type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
     } catch (err) {
-      console.error(err);
+      toast.update(toastId, {
+        render: "Data yang Anda masukkan salah",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
     }
   };
 

@@ -27,7 +27,7 @@ export default function LogBimbinganMahasiswa() {
   const { table } = useLogBimbinganMahasiswa();
 
   return (
-    <main className="flex min-h-screen flex-col p-5 gap-4">
+    <main className="flex min-h-screen flex-col gap-4 p-5">
       {/* <p className="mb-10 text-5xl font-black">Bimbingan Logs</p> */}
       <MahasiswaCard user={dummyUsers[0]} backArrow={true} logs={false} />
       <DataTable

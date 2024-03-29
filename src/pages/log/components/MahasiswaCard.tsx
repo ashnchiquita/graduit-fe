@@ -3,7 +3,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
 import type { User } from "@/lib/entity";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MahasiswaCard = ({
   user,
@@ -18,12 +18,20 @@ const MahasiswaCard = ({
   const toggleSubMenu = () => {
     setSubMenuOpen(!subMenuOpen);
   };
+  const navigate = useNavigate();
 
   return (
-    <div className="rounded-lg bg-white px-6 py-4 border border-[#EAECF0]">
+    <div className="rounded-lg border border-[#EAECF0] bg-white px-6 py-4">
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row items-center space-x-4">
-          {backArrow ? <FaArrowLeft className="text-[20px]" /> : <></>}
+          {backArrow ? (
+            <FaArrowLeft
+              onClick={() => navigate(-1)}
+              className="cursor-pointer text-[20px] hover:text-blue-500"
+            />
+          ) : (
+            <></>
+          )}
 
           <CgProfile className="text-[60px]" />
 
