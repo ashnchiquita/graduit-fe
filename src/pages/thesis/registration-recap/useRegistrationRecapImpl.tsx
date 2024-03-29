@@ -2,7 +2,7 @@ import useWindowSize from "@/hooks/useWindowSize";
 import { useEffect, useState } from "react";
 import { MOBILE_BREAKPOINT } from "./constants";
 import { useRegistrationRecapData } from "./hooks/useRegistrationRecapData";
-import { RegistrationRecapListData } from "./models";
+import { RegistrationRecapListData } from "./types";
 
 const useRegistrationRecapImpl = () => {
   const [currentApplicationId, setCurrentApplicationId] = useState("");
@@ -12,7 +12,7 @@ const useRegistrationRecapImpl = () => {
   const [width] = useWindowSize();
   const [isMobile, setIsMobile] = useState(false);
 
-  const { data: listData } = useRegistrationRecapData();
+  const { data: listData, mutate: fetchData } = useRegistrationRecapData();
 
   useEffect(() => {
     setCurrentApplicationData(
@@ -37,6 +37,7 @@ const useRegistrationRecapImpl = () => {
     currentApplicationId,
     setCurrentApplicationId,
     isMobile,
+    fetchData,
   };
 };
 

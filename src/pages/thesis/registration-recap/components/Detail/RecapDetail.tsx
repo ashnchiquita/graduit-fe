@@ -4,13 +4,21 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import dayjs from "dayjs";
 import { Lightbulb, Pencil, WrapText } from "lucide-react";
 import { DATETIME_FORMAT, RECAP_FILTER_STATUS_OPTIONS } from "../../constants";
-import { RegistrationRecapListData } from "../../models";
+import { RegistrationRecapListData } from "../../types";
+import useApproval from "../../hooks/useApproval";
+import { KeyedMutator } from "swr";
 
 type RecapDetailProps = {
   data: RegistrationRecapListData | null;
+  refetchData: KeyedMutator<RegistrationRecapListData[]>;
 };
 
-const RecapDetail = ({ data }: RecapDetailProps) => {
+const RecapDetail = ({ data, refetchData }: RecapDetailProps) => {
+  const { handleApprove, handleReject } = useApproval({
+    id: data?.id ?? "",
+    fetchData: refetchData,
+  });
+
   return (
     <div className="flex h-full flex-1 flex-col gap-8 overflow-hidden rounded-2xl bg-white px-10 py-8">
       <div className="flex items-center gap-6">
@@ -111,10 +119,19 @@ const RecapDetail = ({ data }: RecapDetailProps) => {
         </div>
 
         <div className="flex items-center justify-center gap-5 justify-self-end pl-9">
-          <Button size="sm" className="flex-1 bg-blue-500 hover:bg-blue-600">
+          <Button
+            onClick={() => (data?.id ? handleApprove() : null)}
+            size="sm"
+            className="flex-1 bg-blue-500 hover:bg-blue-600"
+          >
             Setujui
           </Button>
-          <Button size="sm" className="flex-1" variant="outline">
+          <Button
+            onClick={() => (data?.id ? handleReject() : null)}
+            size="sm"
+            className="flex-1"
+            variant="outline"
+          >
             Tolak
           </Button>
         </div>

@@ -12,7 +12,7 @@ import dayjs from "dayjs";
 import { Search } from "lucide-react";
 import { VscChevronDown, VscChevronRight } from "react-icons/vsc";
 import { DATETIME_FORMAT, RECAP_FILTER_STATUS_OPTIONS } from "../../constants";
-import { RegistrationRecapListData } from "../../models";
+import { RegistrationRecapListData } from "../../types";
 import useRecapListImpl from "./useRecapListImpl";
 
 type RecapListProps = {

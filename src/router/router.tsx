@@ -56,7 +56,7 @@ export const router = createBrowserRouter(
           element: <ThesisRegistration></ThesisRegistration>,
         },
         {
-          path: "/tesis/rekap",
+          path: "/rekap-pendaftaran",
           element: <RegistrationRecap></RegistrationRecap>,
         },
         {

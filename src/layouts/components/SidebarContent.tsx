@@ -26,6 +26,11 @@ const navItems: NavItem[] = [
     iconActive: <VscPieChart className="text-blue-900" />,
     path: "/dashboard",
   },
+  {
+    label: "Pendaftaran",
+    icon: <VscNotebook className="text-slate-700" />,
+    children: [{ label: "Rekap Pendaftaran", path: "/rekap-pendaftaran" }],
+  },
   // {
   //   label: "Tesis",
   //   icon: <IoSchoolOutline className="text-slate-700" />,
