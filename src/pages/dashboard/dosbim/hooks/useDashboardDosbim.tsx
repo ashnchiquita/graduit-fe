@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { getDashboardDosbim, getDosbimStatistics } from "../clients";
+import { getDashboardDosbimS2, getDosbimStatisticsS2 } from "../clients";
 import StatusCell from "../components/StatusCell";
 import {
   ColumnDef,
@@ -18,11 +18,12 @@ import { Link } from "react-router-dom";
 export default function useDashboardDosbim(): DashboardDosbimHookRet {
   // TODO: Update this to fetch from S1 service
   const { data: s1MahasiswaData = [] } = useSWR(
-    "/dashboard/dosbim",
+    "/dashboard/dosbim/s1",
     async () => {
-      const res = await getDashboardDosbim();
+      const res = await getDashboardDosbimS2();
 
       const data = res.data.map((item) => ({
+        id: item.mahasiswa.id,
         nim: item.mahasiswa.nim,
         nama: item.mahasiswa.nama,
         topik: item.topik.judul,
@@ -35,11 +36,12 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
   );
 
   const { data: s2MahasiswaData = [] } = useSWR(
-    "/dashboard/dosbim",
+    "/dashboard/dosbim/s2",
     async () => {
-      const res = await getDashboardDosbim();
+      const res = await getDashboardDosbimS2();
 
       const data = res.data.map((item) => ({
+        id: item.mahasiswa.id,
         nim: item.mahasiswa.nim,
         nama: item.mahasiswa.nama,
         topik: item.topik.judul,
@@ -53,15 +55,15 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
 
   useEffect(() => {
     setMahasiswaData((prev) => {
-      const newData = prev.filter((mahasiswa) => mahasiswa.strata === "S2");
-      return [...newData, ...s1MahasiswaData];
+      const prevData = prev.filter((mahasiswa) => mahasiswa.strata === "S2");
+      return [...prevData, ...s1MahasiswaData];
     });
   }, [s1MahasiswaData]);
 
   useEffect(() => {
     setMahasiswaData((prev) => {
-      const newData = prev.filter((mahasiswa) => mahasiswa.strata === "S1");
-      return [...newData, ...s2MahasiswaData];
+      const prevData = prev.filter((mahasiswa) => mahasiswa.strata === "S1");
+      return [...prevData, ...s2MahasiswaData];
     });
   }, [s2MahasiswaData]);
 
@@ -71,7 +73,7 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
   const { data: s1StatisticData = [] } = useSWR(
     "/dashboard/dosbim/statistics",
     async () => {
-      const res = await getDosbimStatistics();
+      const res = await getDosbimStatisticsS2();
 
       const data = res.data.map((item) => ({
         type: item.jalurPilihan,
@@ -85,7 +87,7 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
   const { data: s2StatisticData = [] } = useSWR(
     "/dashboard/dosbim/statistics",
     async () => {
-      const res = await getDosbimStatistics();
+      const res = await getDosbimStatisticsS2();
 
       const data = res.data.map((item) => ({
         type: item.jalurPilihan,
@@ -130,7 +132,9 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
     {
       id: "link",
       cell: ({ row }) => (
-        <Link to={`/dosen/bimbingan/${row.original.nim}`}>
+        <Link
+          to={`/dosen/bimbingan/${row.original.strata.toLowerCase()}/${row.original.id}`}
+        >
           <HiOutlineExternalLink className="size-4 hover:text-blue-500" />
         </Link>
       ),

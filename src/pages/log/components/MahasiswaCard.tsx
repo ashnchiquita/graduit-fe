@@ -7,10 +7,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 const MahasiswaCard = ({
   user,
+  topik,
+  deskripsiTopik,
   backArrow,
   logs,
 }: {
   user: User;
+  topik: string;
+  deskripsiTopik: string;
   backArrow: boolean;
   logs: boolean;
 }) => {
@@ -65,29 +69,9 @@ const MahasiswaCard = ({
       {subMenuOpen && (
         <div className="my-2 flex h-[50%] flex-col space-y-4 px-[75px] pt-3">
           <p className="text-xl">Topik</p>
-          <span className="text-slate-500">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </span>
+          <span className="text-slate-500">{topik}</span>
           <p className="text-xl">Deskripsi</p>
-          <span className="text-slate-500">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </span>
+          <span className="text-slate-500">{deskripsiTopik}</span>
         </div>
       )}
     </div>

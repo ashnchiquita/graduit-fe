@@ -116,7 +116,7 @@ export const router = createBrowserRouter(
           element: <LogBimbingan />,
         },
         {
-          path: "/dosen/bimbingan/:nim",
+          path: "/dosen/bimbingan/:strata/:id",
           element: <LogBimbinganMahasiswa />,
         },
         {

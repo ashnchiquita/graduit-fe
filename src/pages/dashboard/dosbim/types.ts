@@ -1,6 +1,7 @@
 import { Table } from "@tanstack/react-table";
 
 export type MahasiswaBimbingan = {
+  id: string;
   nim: string;
   nama: string;
   topik: string;

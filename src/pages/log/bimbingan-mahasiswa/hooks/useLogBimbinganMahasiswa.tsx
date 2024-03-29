@@ -6,41 +6,91 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { BimbinganLogs } from "../types";
+import {
+  BimbinganData,
+  BimbinganLogs,
+  LogBimbinganMahasiswaHookRet,
+} from "../types";
 import { useEffect, useState } from "react";
 import DownloadBox from "../components/DownloadBox";
 import StatusCircle from "../components/StatusCircle";
+import { useParams } from "react-router-dom";
+import useSWR from "swr";
+import { getLogBimbinganS2 } from "../clients";
 
-export default function useLogBimbinganMahasiswa() {
-  const dummyBimbinganLogs: BimbinganLogs[] = [
-    {
-      tanggal: "01/03/2024",
-      laporan_kemajuan:
-        "Minggu pertama, telah menyelesaikan pembacaan buku A dan B",
-      todo: "Minggu depan, akan mulai menulis bab 1 dari tesis",
-      rencana:
-        "Minggu depan, akan bertemu dengan dosen pembimbing untuk diskusi lebih lanjut",
-      berkas: ["file1.pdf", "file2.docx"],
-      status: true,
+export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet {
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearchValueChange = (value: string) => {
+    setSearchValue(value);
+  };
+
+  const { id, strata } = useParams();
+
+  const defaultData: BimbinganData = {
+    bimbingan: [],
+    mahasiswa: {
+      name: "",
+      email: "",
+      major: "",
     },
-    {
-      tanggal: "08/03/2024",
-      laporan_kemajuan: "Minggu kedua, telah menulis bab 1 dari tesis",
-      todo: "Minggu depan, akan menyelesaikan analisis data",
-      rencana: "Minggu depan, akan mengajukan proposal penelitian",
-      berkas: ["proposal.pdf", "data.xlsx"],
-      status: true,
+    topik: {
+      judul: "",
+      deskripsi: "",
     },
-    {
-      tanggal: "15/03/2024",
-      laporan_kemajuan: "Minggu ketiga, telah menyelesaikan analisis data",
-      todo: "Minggu depan, akan menulis bab 2 dari tesis",
-      rencana: "Minggu depan, akan membuat presentasi untuk seminar proposal",
-      berkas: ["presentation.pptx", "thesis.docx"],
-      status: false,
-    },
-    // Add more dummy data as needed
-  ];
+  };
+  const { data = defaultData } = useSWR(`/bimbingan/${id}`, async () => {
+    let data: BimbinganData;
+
+    if (strata?.toUpperCase() === "S1") {
+      // TODO: Update this to fetch from S1 service
+      const res = await getLogBimbinganS2(id ?? "");
+
+      data = {
+        bimbingan: res.data.bimbingan.map((item) => ({
+          tanggal: item.waktuBimbingan,
+          laporan_kemajuan: item.laporanKemajuan,
+          todo: item.todo,
+          rencana: item.bimbinganBerikutnya,
+          berkas: item.berkasLinks,
+          status: true,
+        })),
+        mahasiswa: {
+          name: res.data.mahasiswa.nama,
+          email: res.data.mahasiswa.email,
+          major: res.data.mahasiswa.jalurPilihan,
+        },
+        topik: {
+          judul: res.data.topik.judul,
+          deskripsi: res.data.topik.deskripsi,
+        },
+      };
+    } else {
+      const res = await getLogBimbinganS2(id ?? "");
+
+      data = {
+        bimbingan: res.data.bimbingan.map((item) => ({
+          tanggal: item.waktuBimbingan,
+          laporan_kemajuan: item.laporanKemajuan,
+          todo: item.todo,
+          rencana: item.bimbinganBerikutnya,
+          berkas: item.berkasLinks,
+          status: true,
+        })),
+        mahasiswa: {
+          name: res.data.mahasiswa.nama,
+          email: res.data.mahasiswa.email,
+          major: res.data.mahasiswa.jalurPilihan,
+        },
+        topik: {
+          judul: res.data.topik.judul,
+          deskripsi: res.data.topik.deskripsi,
+        },
+      };
+    }
+
+    return data;
+  });
 
   const columns: ColumnDef<BimbinganLogs>[] = [
     {
@@ -95,7 +145,7 @@ export default function useLogBimbinganMahasiswa() {
   }, [sorting]);
 
   const table = useReactTable({
-    data: dummyBimbinganLogs,
+    data: data.bimbingan,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -109,5 +159,9 @@ export default function useLogBimbinganMahasiswa() {
 
   return {
     table,
+    mahasiswaData: data.mahasiswa,
+    topik: data.topik,
+    searchValue,
+    handleSearchValueChange,
   };
 }
