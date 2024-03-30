@@ -5,10 +5,17 @@ import useSWRMutation from "swr/mutation";
 import { z } from "zod";
 import { putAccount } from "../../clients";
 import { PutAccountRequestData } from "../../types";
-import { roleAccess } from "../constants/roleAccess";
+import { RoleEnum } from "@/types/session-data";
 
 export default function useAkunCreate() {
   const navigate = useNavigate();
+
+  const roleAccess = Object.keys(RoleEnum)
+    .filter((v) => isNaN(Number(v)))
+    .map((role, idx) => ({
+      id: idx,
+      name: role,
+    }));
 
   const formSchema = z.object({
     email: z.string().email(),

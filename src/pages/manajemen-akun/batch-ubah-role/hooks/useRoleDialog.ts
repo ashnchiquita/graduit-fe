@@ -6,6 +6,7 @@ import { RoleDialogHookProps, RoleDialogHookRet } from "../types";
 import useSWRMutation from "swr/mutation";
 import { patchBatchUpdateRole } from "../../clients";
 import { PatchBatchUpdateRole } from "../../types";
+import { RoleEnum } from "@/types/session-data";
 
 export default function useRoleDialog({
   table,
@@ -20,6 +21,13 @@ export default function useRoleDialog({
       })
       .array(),
   });
+
+  const roleAccess = Object.keys(RoleEnum)
+    .filter((v) => isNaN(Number(v)))
+    .map((role, idx) => ({
+      id: idx,
+      name: role,
+    }));
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,5 +70,6 @@ export default function useRoleDialog({
     handleSubmit,
     isSubmitDisabled,
     setSubmitDisabled,
+    roleAccess,
   };
 }

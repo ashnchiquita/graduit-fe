@@ -15,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { roleAccess } from "../../akun-create/constants/roleAccess";
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { RoleDialogProps } from "../types";
 
@@ -27,6 +26,7 @@ export default function RoleDialog({
   table,
   form,
   handleSubmit,
+  roleAccess,
 }: RoleDialogProps): JSX.Element {
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

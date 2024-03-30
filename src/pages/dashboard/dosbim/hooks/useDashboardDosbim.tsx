@@ -16,7 +16,7 @@ import { HiOutlineExternalLink } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
 export default function useDashboardDosbim(): DashboardDosbimHookRet {
-  // TODO: Update this to fetch from S1 service
+  // TODO-S1: Update this to fetch from S1 service
   const { data: s1MahasiswaData = [] } = useSWR(
     "/dashboard/dosbim/s1",
     async () => {

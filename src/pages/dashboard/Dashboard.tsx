@@ -11,7 +11,10 @@ export default function Dashboard(): JSX.Element {
         <div className="size-20 animate-spin rounded-full border-8 border-gray-300 border-t-blue-600" />
       </div>
     );
-  } else if (data?.roles.includes(RoleEnum.S2_PEMBIMBING)) {
+  } else if (
+    data?.roles.includes(RoleEnum.S2_PEMBIMBING) ||
+    data?.roles.includes(RoleEnum.S1_PEMBIMBING)
+  ) {
     return <DashboardDosbim />;
   } else {
     return <div>gaboleh :o</div>;
