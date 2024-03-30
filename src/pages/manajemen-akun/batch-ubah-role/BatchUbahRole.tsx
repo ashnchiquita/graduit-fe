@@ -25,6 +25,7 @@ export default function BatchUbahRole(): JSX.Element {
   } = useBatchUbahRole();
 
   const roleDialogHookRet = useRoleDialog({ table, fetchData, setDialogOpen });
+
   return (
     <main className="flex w-full flex-col gap-5 px-4 pb-10">
       <section className="hidden md:block">

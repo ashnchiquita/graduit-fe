@@ -43,7 +43,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
     let data: BimbinganData;
 
     if (strata?.toUpperCase() === "S1") {
-      // TODO: Update this to fetch from S1 service
+      // TODO-S1: Update this to fetch from S1 service
       const res = await getLogBimbinganS2(id ?? "");
 
       data = {

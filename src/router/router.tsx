@@ -56,9 +56,14 @@ export const router = createBrowserRouter(
           element: <ThesisRegistration></ThesisRegistration>,
         },
         {
-          path: "/rekap-pendaftaran",
+          path: "/rekap-pendaftaran-tugas-akhir",
           element: <RegistrationRecap></RegistrationRecap>,
         },
+        {
+          path: "/rekap-pendaftaran-tesis",
+          element: <RegistrationRecap></RegistrationRecap>,
+        },
+
         {
           path: "/tesis/status",
           element: <MhsDashboard />,

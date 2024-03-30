@@ -4,7 +4,7 @@ export const ThesisRegistration = lazy(
   () => import("../pages/thesis/registration/ThesisRegistration.tsx"),
 );
 export const RegistrationRecap = lazy(
-  () => import("../pages/thesis/registration-recap/RegistrationRecap.tsx"),
+  () => import("../pages/rekap-pendaftaran/RegistrationRecap.tsx"),
 );
 export const MhsDashboard = lazy(
   () => import("../pages/thesis/dashboard-mhs/MhsDashboard.tsx"),
