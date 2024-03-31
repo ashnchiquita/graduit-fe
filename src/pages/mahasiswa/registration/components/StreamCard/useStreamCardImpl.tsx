@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { thesisRegistrationFormData } from "../../constants";
+import { RegistrationFormData } from "../../constants";
 
 export type StreamCardProps = {
-  form: UseFormReturn<thesisRegistrationFormData>;
+  form: UseFormReturn<RegistrationFormData>;
 };
 
 export const useStreamCardImpl = () => {

@@ -15,7 +15,7 @@ import {
   Pengumuman,
   Penjadwalan,
   RegistrationRecap,
-  ThesisRegistration,
+  Registration,
   Topik,
   AccountTimTesisLayout,
   BatchUbahRole,
@@ -60,12 +60,16 @@ export const router = createBrowserRouter(
           element: <DaftarPengajuan></DaftarPengajuan>,
         },
         {
+          path: "/registrasi",
+          element: <Registration></Registration>,
+        },
+        {
           path: "/tesis",
           element: <Navigate to="/tesis/registrasi" replace />,
         },
         {
           path: "/tesis/registrasi",
-          element: <ThesisRegistration></ThesisRegistration>,
+          element: <Registration></Registration>,
         },
 
         {

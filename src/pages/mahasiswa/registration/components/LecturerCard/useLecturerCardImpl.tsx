@@ -3,10 +3,10 @@ import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import useSWR from "swr";
 import { getAllDosenPembimbing } from "../../clients";
-import { thesisRegistrationFormData } from "../../constants";
+import { RegistrationFormData } from "../../constants";
 
 export type LecturerCardProps = {
-  form: UseFormReturn<thesisRegistrationFormData>;
+  form: UseFormReturn<RegistrationFormData>;
 };
 
 export const useLecturerCardImpl = () => {

@@ -9,9 +9,9 @@ import { Form } from "@/components/ui/form/form";
 import { LecturerCard } from "./components/LecturerCard/LecturerCard";
 import { StreamCard } from "./components/StreamCard/StreamCard";
 import { TopicCard } from "./components/TopicCard/TopicCard";
-import useThesisRegistrationImpl from "./useThesisRegistrationImpl";
+import useThesisRegistrationImpl from "./useRegistrationImpl";
 
-const ThesisRegistration = () => {
+const Registration = () => {
   const { form, onSubmit } = useThesisRegistrationImpl();
 
   return (
@@ -77,4 +77,4 @@ const ThesisRegistration = () => {
   );
 };
 
-export default ThesisRegistration;
+export default Registration;
