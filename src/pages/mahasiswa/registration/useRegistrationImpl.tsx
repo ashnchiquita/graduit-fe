@@ -3,23 +3,20 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import useSWRMutation from "swr/mutation";
 import { postRegistrasiTesis } from "./clients";
-import {
-  thesisRegistrationFormData,
-  thesisRegistrationFormSchema,
-} from "./constants";
+import { RegistrationFormData, RegistrationFormSchema } from "./constants";
 import { PostRegistrasiTesisRequestData } from "./types";
 
-const useThesisRegistrationImpl = () => {
+const useRegistrationImpl = () => {
   const navigate = useNavigate();
 
-  const form = useForm<thesisRegistrationFormData>({
+  const form = useForm<RegistrationFormData>({
     defaultValues: {
       lecturer: "",
       stream: "",
       topic: "",
       topicDescription: "",
     },
-    resolver: zodResolver(thesisRegistrationFormSchema),
+    resolver: zodResolver(RegistrationFormSchema),
   });
 
   const { trigger } = useSWRMutation(
@@ -29,7 +26,7 @@ const useThesisRegistrationImpl = () => {
     },
   );
 
-  const onSubmit = async (values: thesisRegistrationFormData) => {
+  const onSubmit = async (values: RegistrationFormData) => {
     const data: PostRegistrasiTesisRequestData = {
       // TODO remove hard code
       idMahasiswa: "75740361-3cc0-4520-8e08-7f8ab99f46fe",
@@ -42,7 +39,7 @@ const useThesisRegistrationImpl = () => {
     try {
       await trigger(data);
       // TODO toast
-      navigate("/tesis/status");
+      navigate("/daftar-pengajuan");
     } catch (error) {
       // TODO toast
       console.error("Failed to submit registration");
@@ -55,4 +52,4 @@ const useThesisRegistrationImpl = () => {
   };
 };
 
-export default useThesisRegistrationImpl;
+export default useRegistrationImpl;

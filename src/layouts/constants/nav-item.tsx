@@ -31,6 +31,11 @@ const NAV_ITEMS: NavItem[] = [
         roleAccess: [RoleEnum.S2_PEMBIMBING],
       },
       {
+        label: "Registrasi",
+        path: "/registrasi",
+        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
+      },
+      {
         label: "Daftar Pengajuan",
         path: "/daftar-pengajuan",
         roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],

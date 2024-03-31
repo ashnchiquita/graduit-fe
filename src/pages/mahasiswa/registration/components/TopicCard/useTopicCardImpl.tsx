@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import useSWR from "swr";
 import { getAlokasiTopikPerPembimbing } from "../../clients";
-import { thesisRegistrationFormData } from "../../constants";
+import { RegistrationFormData } from "../../constants";
 
 export type TopicCardProps = {
-  form: UseFormReturn<thesisRegistrationFormData>;
+  form: UseFormReturn<RegistrationFormData>;
   lecturerId: string;
 };
 

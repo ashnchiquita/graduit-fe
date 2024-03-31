@@ -8,7 +8,9 @@ import {
 } from "./types";
 
 export const getAllDosenPembimbing = () => {
-  return s2Instance.get<GetAllDosenPembimbingRespData>("/dosen-bimbingan");
+  return s2Instance.get<GetAllDosenPembimbingRespData>("/dosen-bimbingan", {
+    withCredentials: true,
+  });
 };
 
 export const getAlokasiTopikPerPembimbing = (
@@ -16,7 +18,7 @@ export const getAlokasiTopikPerPembimbing = (
 ) => {
   return s2Instance.get<GetAlokasiTopikPerPembimbingRespData>(
     "/alokasi-topik",
-    { params },
+    { params, withCredentials: true },
   );
 };
 
@@ -24,5 +26,6 @@ export const postRegistrasiTesis = (data: PostRegistrasiTesisRequestData) => {
   return s2Instance.post<PostRegistrasiTesisResponseData>(
     "/registrasi-tesis",
     data,
+    { withCredentials: true },
   );
 };

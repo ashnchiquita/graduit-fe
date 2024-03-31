@@ -1,13 +1,13 @@
 import { lazy } from "react";
 
-export const ThesisRegistration = lazy(
-  () => import("../pages/thesis/registration/ThesisRegistration.tsx"),
+export const Registration = lazy(
+  () => import("../pages/mahasiswa/registration/Registration.tsx"),
 );
 export const RegistrationRecap = lazy(
   () => import("../pages/dosen/rekap-pendaftaran/RegistrationRecap.tsx"),
 );
 export const MhsDashboard = lazy(
-  () => import("../pages/thesis/dashboard-mhs/MhsDashboard.tsx"),
+  () => import("../pages/archive/dashboard-mhs/MhsDashboard.tsx"),
 );
 
 export const NotFound = lazy(() => import("../pages/not-found/NotFound.tsx"));

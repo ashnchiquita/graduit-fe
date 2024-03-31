@@ -4,7 +4,7 @@ import { z } from "zod";
 export const StreamSelectOptions: SelectData[] = [
   { label: "Ilmu Komputer (CS)", value: "CS" },
   { label: "Rekayasa Perangkat Lunak dan Inovasi (SEI)", value: "SEI" },
-  { label: "Sistem Informasi (SI)", value: "SI" },
+  { label: "Sistem Informasi (SI)", value: "IS" },
   { label: "Teknologi Informasi (IT)", value: "IT" },
   { label: "Sistem Inteligensi (IntS)", value: "INTS" },
   { label: "Teknologi Media dan Piranti Bergerak (MMT)", value: "MMT" },
@@ -13,7 +13,7 @@ export const StreamSelectOptions: SelectData[] = [
   { label: "Keamanan Siber (CSec)", value: "CSEC" },
 ];
 
-export const thesisRegistrationFormSchema = z.object({
+export const RegistrationFormSchema = z.object({
   // TODO adjust to API contract
   topic: z.string().min(1, "Topik tidak boleh diisi kosong"),
   topicDescription: z
@@ -23,6 +23,4 @@ export const thesisRegistrationFormSchema = z.object({
   lecturer: z.string().min(1, "Harus memilih dosen pembimbing"),
 });
 
-export type thesisRegistrationFormData = z.infer<
-  typeof thesisRegistrationFormSchema
->;
+export type RegistrationFormData = z.infer<typeof RegistrationFormSchema>;
