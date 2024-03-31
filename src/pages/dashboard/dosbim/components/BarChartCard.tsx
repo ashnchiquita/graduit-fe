@@ -1,4 +1,4 @@
-import BarChartDosbing from "@/types/bar-chart-dosbing";
+import { BarChartDosbing } from "../types";
 import BarChart from "./BarChart";
 
 // Props

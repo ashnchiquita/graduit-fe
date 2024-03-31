@@ -1,12 +1,16 @@
+export type DashboardMahasiswaHookRet = {
+  data: StatusMahasiswaResponse;
+};
+
 export type StatusMahasiswaResponse = {
   id_mahasiswa: string;
   nama: string;
   nim: string;
 
   status_pendaftaran: StatusPendaftaranResponse;
-  status_bimbingan: StatusBimbinganResponse;
-  status_seminar: StatusSeminarResponse;
-  status_sidang: StatusSidangResponse;
+  status_bimbingan?: StatusBimbinganResponse;
+  status_seminar?: StatusSeminarResponse;
+  status_sidang?: StatusSidangResponse;
 };
 
 type StatusPendaftaranResponse = {
@@ -15,8 +19,8 @@ type StatusPendaftaranResponse = {
   judul: string;
   dosen_pembimbing: string;
   pengiriman_registrasi: Date;
-  persetujuan_dosen_pembimbing: Date;
-  jadwal_interview: Date;
+  persetujuan_dosen_pembimbing: Date | null;
+  jadwal_interview: Date | null;
   pengesahan_dosen_pembimbing: boolean;
 };
 

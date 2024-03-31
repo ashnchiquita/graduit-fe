@@ -1,5 +1,5 @@
-import { IoClipboardOutline, IoSchoolOutline } from "react-icons/io5";
-import { VscInfo, VscNotebook, VscPieChart } from "react-icons/vsc";
+import { IoSchoolOutline } from "react-icons/io5";
+import { VscNotebook, VscPieChart } from "react-icons/vsc";
 import { NavItem } from "../types";
 import { RoleEnum } from "@/types/session-data";
 
@@ -9,7 +9,12 @@ const NAV_ITEMS: NavItem[] = [
     icon: <VscPieChart className="text-slate-700" />,
     iconActive: <VscPieChart className="text-blue-900" />,
     path: "/dashboard",
-    roleAccess: [RoleEnum.S1_PEMBIMBING, RoleEnum.S2_PEMBIMBING],
+    roleAccess: [
+      RoleEnum.S1_PEMBIMBING,
+      RoleEnum.S2_PEMBIMBING,
+      RoleEnum.S1_MAHASISWA,
+      RoleEnum.S2_MAHASISWA,
+    ],
   },
   {
     label: "Pendaftaran",
@@ -25,8 +30,18 @@ const NAV_ITEMS: NavItem[] = [
         path: "/rekap-pendaftaran-tesis",
         roleAccess: [RoleEnum.S2_PEMBIMBING],
       },
+      {
+        label: "Daftar Pengajuan",
+        path: "/daftar-pengajuan",
+        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
+      },
     ],
-    roleAccess: [RoleEnum.S1_PEMBIMBING, RoleEnum.S2_PEMBIMBING],
+    roleAccess: [
+      RoleEnum.S1_PEMBIMBING,
+      RoleEnum.S2_PEMBIMBING,
+      RoleEnum.S1_MAHASISWA,
+      RoleEnum.S2_MAHASISWA,
+    ],
   },
   // {
   //   label: "Tesis",

@@ -15,13 +15,13 @@ import {
   Pengumuman,
   Penjadwalan,
   RegistrationRecap,
-  StatusMahasiswa,
   ThesisRegistration,
   Topik,
   AccountTimTesisLayout,
   BatchUbahRole,
   KonfigurasiPeriode,
   Dashboard,
+  DaftarPengajuan,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -48,20 +48,24 @@ export const router = createBrowserRouter(
           element: <Dashboard />,
         },
         {
-          path: "/tesis",
-          element: <Navigate to="/tesis/registrasi" replace />,
-        },
-        {
-          path: "/tesis/registrasi",
-          element: <ThesisRegistration></ThesisRegistration>,
-        },
-        {
           path: "/rekap-pendaftaran-tugas-akhir",
           element: <RegistrationRecap></RegistrationRecap>,
         },
         {
           path: "/rekap-pendaftaran-tesis",
           element: <RegistrationRecap></RegistrationRecap>,
+        },
+        {
+          path: "/daftar-pengajuan",
+          element: <DaftarPengajuan></DaftarPengajuan>,
+        },
+        {
+          path: "/tesis",
+          element: <Navigate to="/tesis/registrasi" replace />,
+        },
+        {
+          path: "/tesis/registrasi",
+          element: <ThesisRegistration></ThesisRegistration>,
         },
 
         {
@@ -131,10 +135,6 @@ export const router = createBrowserRouter(
         {
           path: "/tugas-akhir",
           element: <Navigate to="/tugas-akhir/topik/2" replace />,
-        },
-        {
-          path: "/tugas-akhir/status/:id",
-          element: <StatusMahasiswa />,
         },
         {
           path: "/tugas-akhir/topik/:role",

@@ -1,6 +1,7 @@
 import useSession from "@/hooks/useSession";
 import DashboardDosbim from "./dosbim/DashboardDosbim";
 import { RoleEnum } from "@/types/session-data";
+import DashboardMahasiswa from "./mahasiswa/DashboardMahasiswa";
 
 export default function Dashboard(): JSX.Element {
   const { data, isLoading } = useSession();
@@ -16,6 +17,11 @@ export default function Dashboard(): JSX.Element {
     data?.roles.includes(RoleEnum.S1_PEMBIMBING)
   ) {
     return <DashboardDosbim />;
+  } else if (
+    data?.roles.includes(RoleEnum.S2_MAHASISWA) ||
+    data?.roles.includes(RoleEnum.S1_MAHASISWA)
+  ) {
+    return <DashboardMahasiswa />;
   } else {
     return <div>gaboleh :o</div>;
   }

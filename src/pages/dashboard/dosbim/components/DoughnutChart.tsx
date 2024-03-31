@@ -1,4 +1,4 @@
-import DoughnutChartDosbing from "@/types/doughnut-chart-dosbing";
+import { DoughnutChartDosbing } from "../types";
 import React, { useCallback, useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 

@@ -1,4 +1,3 @@
-import { roleAccess } from "@/pages/manajemen-akun/akun-create/constants/roleAccess";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
@@ -8,6 +7,7 @@ import useSWRMutation from "swr/mutation";
 import { z } from "zod";
 import { getAccount, putAccount } from "../../clients";
 import { PutAccountRequestData } from "../../types";
+import { RoleEnum } from "@/types/session-data";
 
 interface ReturnType {
   form: UseFormReturn<
@@ -37,6 +37,13 @@ interface ReturnType {
 export default function useAkunDetail(): ReturnType {
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const roleAccess = Object.keys(RoleEnum)
+    .filter((v) => isNaN(Number(v)))
+    .map((role, idx) => ({
+      id: idx,
+      name: role,
+    }));
 
   const { data: initialData, isLoading: isInitialDataLoading } =
     useSWRImmutable(`/akun/${id}`, async () => {
