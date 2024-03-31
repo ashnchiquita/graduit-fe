@@ -1,4 +1,4 @@
-import DoughnutChartDosbing from "@/types/doughnut-chart-dosbing";
+import { DoughnutChartDosbing } from "../types";
 import DoughnutChart from "./DoughnutChart";
 
 // Props

@@ -1,4 +1,4 @@
-import MahasiswaCard from "../components/MahasiswaCard";
+import MahasiswaCard from "../../../dosen/components/MahasiswaCard";
 import type { User } from "@/lib/entity";
 
 const dummyUsers: User[] = [
@@ -58,6 +58,8 @@ export default function LogBimbingan() {
               user={item}
               logs={true}
               backArrow={false}
+              topik=""
+              deskripsiTopik=""
             />
           );
         })}

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import Chart from "chart.js/auto";
-import BarChartDosbing from "@/types/bar-chart-dosbing";
+import { BarChartDosbing } from "../types";
 
 interface BarChartProps {
   data: BarChartDosbing[];
