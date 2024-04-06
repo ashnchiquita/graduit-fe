@@ -47,13 +47,14 @@ Mandatory to pass `table` that is defined using `useReactTable` hook. example:
 
 ```javascript
 <DataTable
-    table={table}
-    headline="Kelola Akun Pengguna"
-    searchValue={searchValue}
-    setSearchValue={handleSearchValueChange}
-    onClickCreate={onClickCreate}
+  table={table}
+  headline="Kelola Akun Pengguna"
+  searchValue={searchValue}
+  setSearchValue={handleSearchValueChange}
+  onClickCreate={onClickCreate}
 />
 ```
+
 Features/Props (All are optional):
 
 1. `headline`: Adds headline on top of table
@@ -67,20 +68,20 @@ Features/Props (All are optional):
 
 ### useReactTable Hook
 
-Hook to define options for `DataTable` component 
+Hook to define options for `DataTable` component
 
 ```javascript
 const table = useReactTable({
-    columns,
-    data,
-    manualPagination: true,
-    rowCount: rowCount,
-    getCoreRowModel: getCoreRowModel(),
-    columnResizeMode: "onChange",
-    onPaginationChange: setPagination,
-    initialState: {
-        pagination
-    },
+  columns,
+  data,
+  manualPagination: true,
+  rowCount: rowCount,
+  getCoreRowModel: getCoreRowModel(),
+  columnResizeMode: "onChange",
+  onPaginationChange: setPagination,
+  initialState: {
+    pagination,
+  },
 });
 ```
 
@@ -99,6 +100,7 @@ Fields (not exhaustive):
 Define column sizing, content, data, etc. Use `columnHelper` <strong>don't forget to set the type</strong>, define each column with `columnHelper.accessor`, first argument is the data field (defined in type passed to `columnHelper`) that the column wants to display.
 
 example:
+
 ```javascript
 // outside of hook, in global scope of file
 const columnHelper = createColumnHelper<Person>()
@@ -109,6 +111,7 @@ const columnHelper = createColumnHelper<Person>()
         columnHelper.accessor('visits', {
             id: 'visits-checkbox'
             header: () => <span>Visits</span>,
+            size: 150,
             minSize: 150,
             enableSorting: false,
             cell: ({ row }) => (
@@ -122,18 +125,20 @@ const columnHelper = createColumnHelper<Person>()
     ]
 // ...
 ```
-Notes: 
+
+Notes:
+
 - Define `columnHelper` outside of hook function
 - You can define columns in a different hook, e.g. `useDashboardColumns.tsx`
 
 Fields:
+
 1. `id`: Optional field to define id, <strong>use in case many columns use the same accessor</strong>
 2. `header`: Can be JSX or string, defines Header to be used
-3. `minSize`: Defines minimum width of columns, <strong>do not use `size`</strong> as it only sets starting width
-4. `enableSorting`: Defaults to true, <b>use to disable sorting for columns like row number, checkbox, and action</b>
-5. `cell`: Defaults to displaying data as is, can be modified to show given JSX, get data for cell or its row using props in its function,
-        - `getValue()`: Gets value of data in the cell
-        - `row`: Information about row of data, access all data of row using `row.original`
+3. `size`: Defines starting width of columns, reccommended to set as the same as `minSize`
+4. `minSize`: Defines minimum width of columns
+5. `enableSorting`: Defaults to true, <b>use to disable sorting for columns like row number, checkbox, and action</b>
+6. `cell`: Defaults to displaying data as is, can be modified to show given JSX, get data for cell or its row using props in its function, - `getValue()`: Gets value of data in the cell - `row`: Information about row of data, access all data of row using `row.original`
 
 ## Folder
 

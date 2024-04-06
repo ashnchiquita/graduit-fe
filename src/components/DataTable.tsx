@@ -84,11 +84,6 @@ export function DataTable<TData>({
   }, [table.getState().columnSizingInfo]);
 
   const containerRef = useRef<HTMLTableElement>(null);
-  console.log(table.getTotalSize() > (containerRef.current?.offsetWidth ?? 0));
-  console.log({
-    totalSize: table.getTotalSize(),
-    width: containerRef.current?.offsetWidth ?? 0,
-  });
 
   const [fullWidth, setFullWidth] = useState(0);
   useEffect(() => {
