@@ -97,6 +97,7 @@ export default function useKelolaAkun() {
 
   const table = useReactTable({
     columns,
+    columnResizeMode: "onChange",
     data,
     manualPagination: true,
     getCoreRowModel: getCoreRowModel(),

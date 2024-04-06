@@ -183,6 +183,7 @@ export default function LogSistem() {
   const table = useReactTable({
     data: dummySystemLogs,
     columns,
+    columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,

@@ -6,17 +6,17 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import useSWR from "swr";
+import { getLogBimbinganS2 } from "../clients";
+import DownloadBox from "../components/DownloadBox";
+import StatusCircle from "../components/StatusCircle";
 import {
   BimbinganData,
   BimbinganLogs,
   LogBimbinganMahasiswaHookRet,
 } from "../types";
-import { useEffect, useState } from "react";
-import DownloadBox from "../components/DownloadBox";
-import StatusCircle from "../components/StatusCircle";
-import { useParams } from "react-router-dom";
-import useSWR from "swr";
-import { getLogBimbinganS2 } from "../clients";
 
 export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet {
   const [searchValue, setSearchValue] = useState("");
@@ -148,6 +148,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
     data: data.bimbingan,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    columnResizeMode: "onChange",
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
     onSortingChange: setSorting,

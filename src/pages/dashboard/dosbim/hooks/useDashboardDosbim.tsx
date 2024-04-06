@@ -1,19 +1,19 @@
-import useSWR from "swr";
-import { getDashboardDosbimS2, getDosbimStatisticsS2 } from "../clients";
-import StatusCell from "../components/StatusCell";
 import {
   ColumnDef,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useEffect, useState } from "react";
+import { HiOutlineExternalLink } from "react-icons/hi";
+import { Link } from "react-router-dom";
+import useSWR from "swr";
+import { getDashboardDosbimS2, getDosbimStatisticsS2 } from "../clients";
+import StatusCell from "../components/StatusCell";
 import {
   DashboardDosbimHookRet,
   DoughnutChartDosbing,
   MahasiswaBimbingan,
 } from "../types";
-import { useEffect, useState } from "react";
-import { HiOutlineExternalLink } from "react-icons/hi";
-import { Link } from "react-router-dom";
 
 export default function useDashboardDosbim(): DashboardDosbimHookRet {
   // TODO-S1: Update this to fetch from S1 service
@@ -147,6 +147,7 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
   const table = useReactTable({
     columns,
     data: mahasiswaData,
+    columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
   });
 
