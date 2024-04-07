@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -35,6 +36,7 @@ import {
   Search,
   Trash2,
 } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface DataTableProps<TData> {
   table: TableType<TData>;
@@ -69,11 +71,32 @@ export function DataTable<TData>({
     !!onClickDelete ||
     !!onClickFilter;
 
-  // TODO resize
+  const columnSizeVars = React.useMemo(() => {
+    const headers = table.getFlatHeaders();
+    const colSizes: { [key: string]: number } = {};
+    for (let i = 0; i < headers.length; i++) {
+      const header = headers[i]!;
+      colSizes[`--header-${header.id}-size`] = header.getSize();
+      colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
+    }
+    return colSizes;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [table.getState().columnSizingInfo]);
+
+  const containerRef = useRef<HTMLTableElement>(null);
+
+  const [fullWidth, setFullWidth] = useState(0);
+  useEffect(() => {
+    if (containerRef.current) {
+      setFullWidth(containerRef.current.offsetWidth);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [containerRef.current]);
+
   // TODO loading state
   return (
     <div>
-      <div className="rounded-md border bg-white">
+      <div className="rounded-md border bg-white" ref={containerRef}>
         {useTableConfig && (
           <div className="flex px-6 py-5">
             <div className="flex-1">
@@ -140,7 +163,12 @@ export function DataTable<TData>({
           </div>
         )}
 
-        <Table>
+        <Table
+          style={{
+            ...columnSizeVars,
+            width: Math.max(fullWidth, table.getTotalSize()) - 2,
+          }}
+        >
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
@@ -157,7 +185,10 @@ export function DataTable<TData>({
                             header.column.getIsSorted() === "asc",
                           );
                       }}
-                      className="cursor-pointer"
+                      className="relative cursor-pointer"
+                      style={{
+                        width: `calc(var(--header-${header?.id}-size) * 1px)`,
+                      }}
                     >
                       <div className="flex items-center gap-4">
                         {header.isPlaceholder
@@ -175,6 +206,14 @@ export function DataTable<TData>({
                         ) : (
                           <ChevronDown size={16} />
                         )}
+                        <div
+                          onDoubleClick={() => header.column.resetSize()}
+                          onMouseDown={header.getResizeHandler()}
+                          onTouchStart={header.getResizeHandler()}
+                          className={cn(
+                            "absolute top-0 right-0 h-full w-4 group-hover:bg-black/10 cursor-col-resize select-none touch-none",
+                          )}
+                        />
                       </div>
                     </TableHead>
                   );
@@ -182,39 +221,11 @@ export function DataTable<TData>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      align={
-                        (cell.column.columnDef.meta as any)?.align ?? "left"
-                      }
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={table.getAllColumns().length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+          {table.getState().columnSizingInfo.isResizingColumn ? (
+            <MemoizedDataTableBody table={table} />
+          ) : (
+            <DataTableBody table={table} />
+          )}
         </Table>
         <div className="flex h-12 items-center justify-between space-x-6 border-t px-4 text-gray-500 lg:space-x-8">
           <div className="flex items-center space-x-2">
@@ -296,5 +307,40 @@ export function DataTable<TData>({
         </div>
       </div>
     </div>
+  );
+}
+
+const MemoizedDataTableBody = React.memo(
+  DataTableBody,
+  (prev, next) => prev.table.options.data === next.table.options.data,
+) as typeof DataTableBody;
+
+function DataTableBody<TData>({ table }: { table: TableType<TData> }) {
+  return (
+    <TableBody>
+      {table.getRowModel().rows?.length ? (
+        table.getRowModel().rows.map((row) => (
+          <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+            {row.getVisibleCells().map((cell) => (
+              <TableCell
+                key={cell.id}
+                align={(cell.column.columnDef.meta as any)?.align ?? "left"}
+              >
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))
+      ) : (
+        <TableRow>
+          <TableCell
+            colSpan={table.getAllColumns().length}
+            className="h-24 text-center"
+          >
+            No results.
+          </TableCell>
+        </TableRow>
+      )}
+    </TableBody>
   );
 }

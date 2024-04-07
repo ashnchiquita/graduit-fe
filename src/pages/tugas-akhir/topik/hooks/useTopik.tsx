@@ -7,8 +7,8 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useSWR from "swr";
-import { Topic } from "../types";
 import { getAllTopics } from "../cleints";
+import { Topic } from "../types";
 
 export default function useTopik() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -69,6 +69,7 @@ export default function useTopik() {
   const table = useReactTable({
     columns,
     data,
+    columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
   });
 
