@@ -145,3 +145,17 @@ https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a
 2. Install dependencies `npm install`
 3. Sesuaikan env dengan file .env.example
 4. Jalankan local dev derver `npm run dev`
+
+## Techniques
+
+### Environment Variables
+
+Kalo nambahin environment variable, kalian harus:
+
+- Tambahin di `env.example`
+- Tambahin schema validation. Tulis validasi di `env.ts`. Dokumentasi: [Zod](https://zod.dev/)
+
+NOTES:
+
+- `import.meta.env.` sudah type-safe
+- Sebenernya kalian tetep masih bisa make environment variables yang ga di list di `env.ts`, cuman pas ngoding keluarnya bakal `any`. Tapi ini bakal musingin banget ke developer selanjutnya, jadi tolong kalo ada perubahan environment variables lakuin 2 hal di atas
