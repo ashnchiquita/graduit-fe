@@ -22,6 +22,7 @@ import {
   KonfigurasiPeriode,
   Dashboard,
   DaftarPengajuan,
+  RekapPendaftaranDosbim,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -54,6 +55,10 @@ export const router = createBrowserRouter(
         {
           path: "/rekap-pendaftaran-tesis",
           element: <RegistrationRecap></RegistrationRecap>,
+        },
+        {
+          path: "/rekap-pendaftaran",
+          element: <RekapPendaftaranDosbim></RekapPendaftaranDosbim>,
         },
         {
           path: "/daftar-pengajuan",
