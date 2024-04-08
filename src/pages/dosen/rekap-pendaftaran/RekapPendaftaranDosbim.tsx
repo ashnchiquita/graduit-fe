@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
+import StatisticCard from "@/components/StatisticCard";
 
 export default function RekapPendaftaranDosbim(): JSX.Element {
   const {
@@ -29,8 +30,29 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
 
   return (
     <main className="flex flex-col gap-3.5 px-5 md:px-7">
-      <section className="hidden h-[236px] w-full rounded-lg bg-white px-6 py-3 text-slate-900 md:block">
+      <section className="hidden w-full flex-col gap-3 rounded-lg bg-white px-6 py-4 text-slate-900 md:flex">
         <h2 className="text-lg font-medium">Statistik</h2>
+
+        <div className="flex items-center justify-around">
+          <StatisticCard
+            title="Diterima"
+            count={234}
+            percentage={8}
+            color="GREEN"
+          />
+          <StatisticCard
+            title="Sedang Proses"
+            count={234}
+            percentage={8}
+            color="ORANGE"
+          />
+          <StatisticCard
+            title="Ditolak"
+            count={234}
+            percentage={8}
+            color="RED"
+          />
+        </div>
       </section>
 
       <section className="hidden md:block">
