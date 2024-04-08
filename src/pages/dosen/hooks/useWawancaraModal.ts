@@ -1,22 +1,20 @@
 import { useState } from "react";
-import { FormSchema, Mahasiswa, WawancaraModalHookRet } from "../types";
+import { FormSchema, WawancaraModalHookRet } from "../types";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useWindowSize from "@/hooks/useWindowSize";
 
 export default function useWawancaraModal(
   dateInit: Date | null,
-  setData: React.Dispatch<React.SetStateAction<Mahasiswa[]>>,
-  nim: string,
+  onChange: (date: Date) => void,
 ): WawancaraModalHookRet {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [width] = useWindowSize();
 
   const handleChange = (data: z.infer<typeof FormSchema>) => {
-    setData((prev) =>
-      prev.map((mhs) =>
-        mhs.nim === nim ? { ...mhs, jadwalWawancara: data.jadwalWawan } : mhs,
-      ),
-    );
+    onChange(data.jadwalWawan);
+
     setDialogOpen(false);
   };
 
@@ -32,5 +30,6 @@ export default function useWawancaraModal(
     setDialogOpen,
     handleChange,
     form,
+    isMobile: width < 1024,
   };
 }

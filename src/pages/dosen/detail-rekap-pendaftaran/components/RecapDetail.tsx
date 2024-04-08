@@ -3,25 +3,35 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import dayjs from "dayjs";
 import { Lightbulb, Pencil, WrapText } from "lucide-react";
-import { DATETIME_FORMAT, RECAP_FILTER_STATUS_OPTIONS } from "../../constants";
-import { RegistrationRecapListData } from "../../types";
-import useApproval from "../../hooks/useApproval";
-import { KeyedMutator } from "swr";
+import { DATETIME_FORMAT, RECAP_FILTER_STATUS_OPTIONS } from "../constants";
+// import useApproval from "../hooks/useApproval";
+import WawancaraModal from "@/pages/dosen/components/WawancaraModal";
+import RegAcceptDialog from "../../components/RegAcceptDialog";
+import useDetailRekapPendaftaran from "../hooks/useDetailRekapPendaftaran";
+import { FaArrowLeft } from "react-icons/fa6";
+import RegRejectDialog from "../../components/RegRejectDialog";
 
-type RecapDetailProps = {
-  data: RegistrationRecapListData | null;
-  refetchData: KeyedMutator<RegistrationRecapListData[]>;
-};
+const RecapDetail = () => {
+  const {
+    data,
+    setData,
+    acceptDialogOpen,
+    setAcceptDialogOpen,
+    rejectDialogOpen,
+    setRejectDialogOpen,
+    navigate,
+  } = useDetailRekapPendaftaran();
 
-const RecapDetail = ({ data, refetchData }: RecapDetailProps) => {
-  const { handleApprove, handleReject } = useApproval({
-    id: data?.id ?? "",
-    fetchData: refetchData,
-  });
+  // const { handleApprove, handleReject } = useApproval({
+  //   id: data?.id ?? "",
+  // });
 
   return (
     <div className="flex h-full flex-1 flex-col gap-8 overflow-hidden rounded-2xl bg-white px-10 py-8">
       <div className="flex items-center gap-6">
+        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+          <FaArrowLeft className="size-6 text-gray-500" />
+        </Button>
         <Avatar className="size-12">
           <AvatarFallback className="bg-violet-500 text-xl text-white">
             {data && data.name.length > 0 && data?.name[0]}
@@ -79,23 +89,31 @@ const RecapDetail = ({ data, refetchData }: RecapDetailProps) => {
               </Avatar>
               <div className="text-muted-foreground">Jadwal Wawancara</div>
             </div>
-            <div className="pl-9">
+            <div className="flex items-center gap-5 pl-9">
               {data === null ? (
                 <></>
               ) : data.interview_date !== null ? (
                 dayjs(data.interview_date).format(DATETIME_FORMAT)
               ) : (
-                <div className="flex items-center gap-5">
-                  Belum ada
-                  <Button
-                    variant="outline"
-                    className="flex h-7 gap-2 px-3 py-2 text-sm"
-                  >
-                    <Pencil size={12} />
-                    Jadwalkan
-                  </Button>
-                </div>
+                <div className="flex items-center gap-5">Belum ada</div>
               )}
+              {data?.status !== "APPROVED" && data?.status !== "REJECTED" ? (
+                <WawancaraModal
+                  dateInit={data?.interview_date ?? null}
+                  onChange={(date: Date) =>
+                    setData((prev) => ({ ...prev, interview_date: date }))
+                  }
+                  modalTrigger={
+                    <Button
+                      variant="outline"
+                      className="flex h-7 gap-2 px-3 py-2 text-sm"
+                    >
+                      <Pencil size={12} />
+                      {data?.interview_date ? "Ubah" : "Jadwalkan"}
+                    </Button>
+                  }
+                />
+              ) : null}
             </div>
           </div>
 
@@ -118,23 +136,40 @@ const RecapDetail = ({ data, refetchData }: RecapDetailProps) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-5 justify-self-end pl-9">
-          <Button
-            onClick={() => (data?.id ? handleApprove() : null)}
-            size="sm"
-            className="flex-1 bg-blue-500 hover:bg-blue-600"
-          >
-            Setujui
-          </Button>
-          <Button
-            onClick={() => (data?.id ? handleReject() : null)}
-            size="sm"
-            className="flex-1"
-            variant="outline"
-          >
-            Tolak
-          </Button>
-        </div>
+        {data?.status !== "APPROVED" && data?.status !== "REJECTED" && (
+          <div className="flex items-center justify-center gap-5 justify-self-end pl-9">
+            <RegAcceptDialog
+              acceptDialogOpen={acceptDialogOpen}
+              setAcceptDialogOpen={setAcceptDialogOpen}
+              name={data.name}
+              onAccept={() =>
+                setData((prev) => ({ ...prev, status: "APPROVED" }))
+              }
+              dialogTrigger={
+                <Button
+                  size="sm"
+                  className="flex-1 bg-blue-500 hover:bg-blue-600"
+                >
+                  Setujui
+                </Button>
+              }
+            />
+
+            <RegRejectDialog
+              rejectDialogOpen={rejectDialogOpen}
+              setRejectDialogOpen={setRejectDialogOpen}
+              name={data.name}
+              onReject={() =>
+                setData((prev) => ({ ...prev, status: "REJECTED" }))
+              }
+              dialogTrigger={
+                <Button size="sm" className="flex-1" variant="outline">
+                  Tolak
+                </Button>
+              }
+            />
+          </div>
+        )}
       </div>
     </div>
   );

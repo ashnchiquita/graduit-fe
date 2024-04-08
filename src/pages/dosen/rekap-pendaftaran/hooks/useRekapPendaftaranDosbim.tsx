@@ -9,8 +9,10 @@ import { Mahasiswa, RekapPendaftaranDosbimHookRet } from "../types";
 import { formatDate } from "@/lib/dateformat";
 import StatusPendaftaranBadge from "@/components/StatusPendaftaranBadge";
 import RowAction from "../components/RowAction";
-import WawancaraModal from "../components/WawancaraModal";
+import WawancaraModal from "../../components/WawancaraModal";
 import { useSearchParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { GoPencil } from "react-icons/go";
 
 export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookRet {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -91,8 +93,20 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
         row.original.status === StatusPendaftaranEnum.PROCESS ? (
           <WawancaraModal
             dateInit={row.original.jadwalWawancara}
-            setData={setData}
-            nim={row.original.nim}
+            onChange={(date: Date) =>
+              setData((prev) =>
+                prev.map((mhs) =>
+                  mhs.nim === row.original.nim
+                    ? { ...mhs, jadwalWawancara: date }
+                    : mhs,
+                ),
+              )
+            }
+            modalTrigger={
+              <Button variant="outline" className="size-fit gap-2 text-xs">
+                <GoPencil className="size-3" /> Ubah
+              </Button>
+            }
           />
         ) : null,
     },

@@ -6,7 +6,6 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { TimePicker } from "@/components/ui/time-picker/time-picker";
 import { Button } from "@/components/ui/button";
-import { GoPencil } from "react-icons/go";
 import {
   Dialog,
   DialogContent,
@@ -19,7 +18,7 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import useWawancaraModal from "../hooks/useWawancaraModal";
-import { Mahasiswa, WawancaraModalProps } from "../types";
+import { WawancaraModalProps } from "../types";
 import {
   FormControl,
   FormField,
@@ -29,24 +28,17 @@ import {
 
 export default function WawancaraModal({
   dateInit,
-  setData,
-  nim,
+  onChange,
+  modalTrigger,
 }: WawancaraModalProps): JSX.Element {
-  const { dialogOpen, setDialogOpen, handleChange, form } = useWawancaraModal(
-    dateInit,
-    setData,
-    nim,
-  );
+  const { dialogOpen, setDialogOpen, handleChange, form, isMobile } =
+    useWawancaraModal(dateInit, onChange);
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="size-fit gap-2 text-xs">
-          <GoPencil className="size-3" /> Ubah
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{modalTrigger}</DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="max-w-[330px] rounded-md md:max-w-[425px]">
         <DialogHeader className="gap-2">
           <DialogTitle>Wawancara</DialogTitle>
           <DialogDescription>
@@ -79,7 +71,10 @@ export default function WawancaraModal({
                       </Button>
                     </PopoverTrigger>
 
-                    <PopoverContent side="right">
+                    <PopoverContent
+                      sideOffset={isMobile ? -200 : 20}
+                      side={isMobile ? "top" : "right"}
+                    >
                       <FormControl>
                         <>
                           <Calendar

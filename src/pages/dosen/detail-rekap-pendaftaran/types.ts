@@ -1,6 +1,4 @@
-import { KeyedMutator } from "swr";
-
-export type RegistrationRecapListData = {
+export type RegistrationRecapData = {
   id: string;
   name: string;
   apply_date: Date;
@@ -37,5 +35,4 @@ export type ApprovalHookRet = {
 
 export type ApprovalHookProps = {
   id: string;
-  fetchData: KeyedMutator<RegistrationRecapListData[]>;
 };

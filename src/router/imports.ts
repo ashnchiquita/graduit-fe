@@ -3,8 +3,11 @@ import { lazy } from "react";
 export const Registration = lazy(
   () => import("../pages/mahasiswa/registration/Registration.tsx"),
 );
-export const RegistrationRecap = lazy(
-  () => import("../pages/archive/rekap-pendaftaran-old/RegistrationRecap.tsx"),
+export const DetailRekapPendaftaran = lazy(
+  () =>
+    import(
+      "../pages/dosen/detail-rekap-pendaftaran/DetailRekapPendaftaran.tsx"
+    ),
 );
 export const MhsDashboard = lazy(
   () => import("../pages/archive/dashboard-mhs/MhsDashboard.tsx"),

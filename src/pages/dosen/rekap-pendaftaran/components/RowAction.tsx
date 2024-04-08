@@ -1,13 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   Popover,
   PopoverContent,
@@ -21,6 +11,8 @@ import useRowAction from "../hooks/useRowAction";
 import { PiClockCounterClockwise } from "react-icons/pi";
 import { HiOutlineDocument } from "react-icons/hi2";
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
+import RegAcceptDialog from "../../components/RegAcceptDialog";
+import RegRejectDialog from "../../components/RegRejectDialog";
 
 interface ComponentProps {
   row: Row<Mahasiswa>;
@@ -57,7 +49,7 @@ export default function RowAction({
         <div className="size-full bg-white">
           <div className="w-full p-3">
             <Link
-              to={`/manajemen/kelola-akun/${row.original.nim}`}
+              to={`/rekap-pendaftaran/${row.original.nim}`}
               className="flex w-full items-center gap-3 text-xs font-medium text-slate-700"
             >
               <PiClockCounterClockwise className="size-4" />
@@ -77,84 +69,30 @@ export default function RowAction({
               </PopoverTrigger>
               <PopoverContent align="end" className="w-[100px] p-0">
                 {/* Accept Dialog */}
-                <Dialog
-                  open={acceptDialogOpen}
-                  onOpenChange={setAcceptDialogOpen}
-                >
-                  <DialogTrigger asChild>
+                <RegAcceptDialog
+                  acceptDialogOpen={acceptDialogOpen}
+                  setAcceptDialogOpen={setAcceptDialogOpen}
+                  name={row.original.nama}
+                  onAccept={() => handleAccept(row.original.nim)}
+                  dialogTrigger={
                     <button className="w-full p-3 text-left text-xs">
                       Diterima
                     </button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader className="gap-2">
-                      <DialogTitle>
-                        Yakin untuk menerima pengajuan {row.original.nama}?
-                      </DialogTitle>
-                      <DialogDescription>
-                        Aksi ini tidak bisa dibatalkan.
-                      </DialogDescription>
-                    </DialogHeader>
-
-                    <div className="mt-8 flex w-full justify-end gap-2">
-                      <DialogClose asChild>
-                        <Button
-                          className="gap-4 border-2 border-slate-200 bg-white text-primary hover:bg-slate-100"
-                          type="submit"
-                        >
-                          Kembali
-                        </Button>
-                      </DialogClose>
-                      <Button
-                        className="bg-blue-500 px-4 text-gray-100 hover:bg-blue-600"
-                        type="submit"
-                        onClick={() => handleAccept(row.original.nim)}
-                      >
-                        Terima
-                      </Button>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                  }
+                />
 
                 {/* Reject Dialog */}
-                <Dialog
-                  open={rejectDialogOpen}
-                  onOpenChange={setRejectDialogOpen}
-                >
-                  <DialogTrigger asChild>
+                <RegRejectDialog
+                  rejectDialogOpen={rejectDialogOpen}
+                  setRejectDialogOpen={setRejectDialogOpen}
+                  name={row.original.nama}
+                  onReject={() => handleReject(row.original.nim)}
+                  dialogTrigger={
                     <button className="w-full p-3 text-left text-xs">
                       Ditolak
                     </button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader className="gap-2">
-                      <DialogTitle>
-                        Yakin untuk menolak pengajuan {row.original.nama}?
-                      </DialogTitle>
-                      <DialogDescription>
-                        Aksi ini tidak bisa dibatalkan.
-                      </DialogDescription>
-                    </DialogHeader>
-
-                    <div className="mt-8 flex w-full justify-end gap-2">
-                      <DialogClose asChild>
-                        <Button
-                          className="gap-4 border-2 border-slate-200 bg-white text-primary hover:bg-slate-100"
-                          type="submit"
-                        >
-                          Kembali
-                        </Button>
-                      </DialogClose>
-                      <Button
-                        className="bg-red-500 px-4 text-gray-100 hover:bg-red-600"
-                        type="submit"
-                        onClick={() => handleReject(row.original.nim)}
-                      >
-                        Tolak
-                      </Button>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                  }
+                />
               </PopoverContent>
             </Popover>
           )}
