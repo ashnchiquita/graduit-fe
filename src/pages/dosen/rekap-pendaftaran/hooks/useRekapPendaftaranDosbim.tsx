@@ -17,10 +17,26 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",
   );
+  const [statusFilter, setStatusFilter] = useState(
+    searchParams.get("filter") ?? "",
+  );
 
   const handleSearchValueChange = (value: string) => {
-    setSearchParams(value ? { search: value } : {});
+    const obj: any = {};
+    value && (obj.search = value);
+    statusFilter && statusFilter !== "semua" && (obj.filter = statusFilter);
+
+    setSearchParams(obj);
     setSearchValue(value);
+  };
+
+  const handleStatusFilterChange = (value: string) => {
+    const obj: any = {};
+    value && value !== "semua" && (obj.filter = value);
+    searchValue && (obj.search = searchValue);
+
+    setSearchParams(obj);
+    setStatusFilter(value);
   };
 
   const [data, setData] = useState<Mahasiswa[]>([
@@ -105,5 +121,11 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return { table, searchValue, handleSearchValueChange };
+  return {
+    table,
+    searchValue,
+    handleSearchValueChange,
+    statusFilter,
+    handleStatusFilterChange,
+  };
 }

@@ -14,6 +14,8 @@ export type RekapPendaftaranDosbimHookRet = {
   table: Table<Mahasiswa>;
   searchValue: string;
   handleSearchValueChange: (value: string) => void;
+  statusFilter: string;
+  handleStatusFilterChange: (value: string) => void;
 };
 
 export type RowActionHookRet = {
