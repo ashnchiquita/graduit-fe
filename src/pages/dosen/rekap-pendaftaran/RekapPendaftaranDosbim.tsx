@@ -18,6 +18,9 @@ import {
 } from "@/components/ui/select";
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import StatisticCard from "@/components/StatisticCard";
+import { FaRegEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import InfoKontakDialog from "./components/InfoKontakDialog";
 
 export default function RekapPendaftaranDosbim(): JSX.Element {
   const {
@@ -55,14 +58,46 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
         </div>
       </section>
 
-      <section className="hidden md:block">
+      <section className="hidden pb-8 md:block">
         <DataTable
           table={table}
           headline="Pengajuan Mahasiswa"
           searchValue={searchValue}
           setSearchValue={handleSearchValueChange}
           searchPlaceholder="Cari nama atau NIM mahasiswa"
-        />
+        >
+          <div className="flex items-center gap-4">
+            <Select
+              value={statusFilter}
+              onValueChange={handleStatusFilterChange}
+            >
+              <SelectTrigger className="h-fit text-xs">
+                <SelectValue placeholder="Semua Bimbingan" />
+              </SelectTrigger>
+
+              <SelectContent>
+                <SelectItem value="semua" className="text-xs">
+                  Semua
+                </SelectItem>
+                {Object.values(StatusPendaftaranEnum).map((status) => (
+                  <SelectItem key={status} value={status} className="text-xs">
+                    {status}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <InfoKontakDialog
+              infoKontak=""
+              dialogTrigger={
+                <Button className="flex h-fit items-center gap-2 bg-blue-500 text-xs text-gray-100 hover:bg-blue-600">
+                  <FaRegEdit className="size-3" />
+                  Informasi Kontak Saya
+                </Button>
+              }
+            />
+          </div>
+        </DataTable>
       </section>
 
       <section className="flex w-full flex-col gap-2.5 rounded-lg bg-white px-6 py-4 md:hidden">
@@ -104,22 +139,21 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
 
         <ul className="flex flex-col gap-2.5">
           {table.getRowModel().rows.map((row, index) => (
-            <li
-              key={index}
-              className="flex w-full items-center justify-between rounded-lg border border-[#E2E5E8] px-3 py-4"
-            >
-              <div>
-                <p className="text-xs font-medium">{row.original.nama}</p>
-                <p className="text-xs font-medium text-gray-500">
-                  {row.original.nim}
-                </p>
-              </div>
+            <Link key={index} to={`/rekap-pendaftaran/${row.original.nim}`}>
+              <li className="flex w-full items-center justify-between rounded-lg border border-[#E2E5E8] px-3 py-4">
+                <div>
+                  <p className="text-xs font-medium">{row.original.nama}</p>
+                  <p className="text-xs font-medium text-gray-500">
+                    {row.original.nim}
+                  </p>
+                </div>
 
-              <div className="flex items-center gap-1">
-                <StatusPendaftaranBadge status={row.original.status} />
-                <ChevronRightIcon className="size-5" />
-              </div>
-            </li>
+                <div className="flex items-center gap-1">
+                  <StatusPendaftaranBadge status={row.original.status} />
+                  <ChevronRightIcon className="size-5" />
+                </div>
+              </li>
+            </Link>
           ))}
         </ul>
 

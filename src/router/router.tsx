@@ -33,7 +33,11 @@ export const router = createBrowserRouter(
     },
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <Suspense fallback={<LoaderIcon />}>
+          <Login />
+        </Suspense>
+      ),
     },
     {
       path: "/timtesis",

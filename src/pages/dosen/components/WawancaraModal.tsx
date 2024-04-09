@@ -40,8 +40,8 @@ export default function WawancaraModal({
 
       <DialogContent className="max-w-[330px] rounded-md md:max-w-[425px]">
         <DialogHeader className="gap-2">
-          <DialogTitle>Wawancara</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-left">Wawancara</DialogTitle>
+          <DialogDescription className="text-left">
             Jadwalkan wawancara dengan calon mahasiswa bimbingan.
           </DialogDescription>
         </DialogHeader>
@@ -72,7 +72,7 @@ export default function WawancaraModal({
                     </PopoverTrigger>
 
                     <PopoverContent
-                      sideOffset={isMobile ? -200 : 20}
+                      sideOffset={isMobile ? -50 : 20}
                       side={isMobile ? "top" : "right"}
                     >
                       <FormControl>

@@ -27,27 +27,35 @@ const RecapDetail = () => {
   // });
 
   return (
-    <div className="flex h-full flex-1 flex-col gap-8 overflow-hidden rounded-2xl bg-white px-10 py-8">
-      <div className="flex items-center gap-6">
+    <div className="flex h-full flex-1 flex-col gap-8 overflow-hidden rounded-2xl bg-white p-6 md:px-10 md:py-8">
+      <div className="flex items-center gap-4 md:gap-6">
         <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-          <FaArrowLeft className="size-6 text-gray-500" />
+          <FaArrowLeft className="size-4 text-gray-500 md:size-6" />
         </Button>
         <Avatar className="size-12">
           <AvatarFallback className="bg-violet-500 text-xl text-white">
             {data && data.name.length > 0 && data?.name[0]}
           </AvatarFallback>
         </Avatar>
-        <div className="space-y-2">
+        <div className="space-y-1 md:space-y-2">
           <div className="flex items-center gap-3">
-            <div>{data?.name}</div>
-            <div className="text-xs text-muted-foreground">
+            <div className="font-medium">{data?.name}</div>
+            <div className="hidden text-xs text-muted-foreground md:block">
               {dayjs(data?.apply_date).format(DATETIME_FORMAT)}
             </div>
           </div>
-          <div className="flex gap-2 text-xs text-muted-foreground">
+
+          {/* Desktop */}
+          <div className="hidden gap-2 text-xs text-muted-foreground md:flex">
             <div>{data?.email}</div>
             <div>•</div>
             <div>{data?.stream}</div>
+          </div>
+
+          {/* Mobile */}
+          <div className="flex flex-col gap-1 text-xs text-muted-foreground md:hidden">
+            <div className="font-medium">{data?.stream}</div>
+            <div>{data?.email}</div>
           </div>
         </div>
       </div>
@@ -63,7 +71,7 @@ const RecapDetail = () => {
               </Avatar>
               <div className="text-muted-foreground">Topik</div>
             </div>
-            <div className="pl-9">{data?.topic}</div>
+            <div className="pl-9 text-sm md:text-base">{data?.topic}</div>
           </div>
 
           <div className="flex flex-col space-y-1 overflow-hidden">
@@ -76,7 +84,9 @@ const RecapDetail = () => {
               <div className="text-muted-foreground">Deskripsi</div>
             </div>
             <ScrollArea className="flex-1">
-              <div className="pl-9">{data?.description}</div>
+              <div className="pl-9 text-sm md:text-base">
+                {data?.description}
+              </div>
             </ScrollArea>
           </div>
 
@@ -89,13 +99,15 @@ const RecapDetail = () => {
               </Avatar>
               <div className="text-muted-foreground">Jadwal Wawancara</div>
             </div>
-            <div className="flex items-center gap-5 pl-9">
+            <div className="flex items-center gap-5 pl-9 text-sm md:text-base">
               {data === null ? (
                 <></>
               ) : data.interview_date !== null ? (
                 dayjs(data.interview_date).format(DATETIME_FORMAT)
               ) : (
-                <div className="flex items-center gap-5">Belum ada</div>
+                <div className="flex items-center gap-5 text-sm md:text-base">
+                  Belum ada
+                </div>
               )}
               {data?.status !== "APPROVED" && data?.status !== "REJECTED" ? (
                 <WawancaraModal
@@ -126,7 +138,7 @@ const RecapDetail = () => {
               </Avatar>
               <ScrollArea className="text-muted-foreground">Status</ScrollArea>
             </div>
-            <div className="pl-9">
+            <div className="pl-9 text-sm md:text-base">
               {
                 RECAP_FILTER_STATUS_OPTIONS.find(
                   ({ value }) => value === data?.status,

@@ -207,15 +207,6 @@ export default function LogSistem() {
         setSearchValue={setSearchValue}
         searchValue={searchValue}
         searchPlaceholder="Search something"
-        onClickDelete={() => {
-          console.log("deleted");
-        }}
-        onClickCreate={() => {
-          console.log("created");
-        }}
-        onClickFilter={() => {
-          console.log("filtered");
-        }}
       />
     </main>
   );

@@ -27,15 +27,7 @@ import {
 import { flexRender } from "@tanstack/react-table";
 
 import type { Table as TableType } from "@tanstack/react-table";
-import {
-  ChevronDown,
-  ChevronUp,
-  ChevronsUpDown,
-  ListFilter,
-  Plus,
-  Search,
-  Trash2,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, ChevronsUpDown, Search } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
 interface DataTableProps<TData> {
@@ -45,9 +37,7 @@ interface DataTableProps<TData> {
   searchValue?: string;
   searchPlaceholder?: string;
   setSearchValue?: (value: string) => void;
-  onClickDelete?: () => void;
-  onClickFilter?: () => void;
-  onClickCreate?: () => void;
+  children?: JSX.Element;
 }
 
 export function DataTable<TData>({
@@ -57,19 +47,14 @@ export function DataTable<TData>({
   searchValue,
   searchPlaceholder,
   setSearchValue,
-  onClickCreate,
-  onClickDelete,
-  onClickFilter,
+  children,
 }: DataTableProps<TData>) {
   const useTableConfig =
     !!headline ||
     !!description ||
     !!searchValue ||
     !!searchPlaceholder ||
-    !!setSearchValue ||
-    !!onClickCreate ||
-    !!onClickDelete ||
-    !!onClickFilter;
+    !!setSearchValue;
 
   const columnSizeVars = React.useMemo(() => {
     const headers = table.getFlatHeaders();
@@ -115,7 +100,7 @@ export function DataTable<TData>({
                   <Search size={14} className="text-muted-foreground" />
                   <input
                     type="text"
-                    className="outline-none"
+                    className="flex-auto outline-none"
                     placeholder={searchPlaceholder}
                     value={searchValue}
                     onChange={(e) => {
@@ -124,41 +109,7 @@ export function DataTable<TData>({
                   />
                 </div>
               )}
-              {!!onClickDelete && (
-                <Button
-                  onClick={() => {
-                    onClickDelete();
-                  }}
-                  variant="outline"
-                  className="flex h-fit gap-2 bg-transparent px-2 py-1"
-                >
-                  <Trash2 size={14} />
-                  <div>Delete</div>
-                </Button>
-              )}
-              {!!onClickFilter && (
-                <Button
-                  onClick={() => {
-                    onClickFilter();
-                  }}
-                  variant="outline"
-                  className="flex h-fit gap-2 bg-transparent px-2 py-1"
-                >
-                  <ListFilter size={14} />
-                  <div>Filter</div>
-                </Button>
-              )}
-              {!!onClickCreate && (
-                <Button
-                  onClick={() => {
-                    onClickCreate();
-                  }}
-                  className="flex h-fit gap-2 border border-blue-500 bg-blue-500 px-2 py-1 hover:border-blue-600 hover:bg-blue-600"
-                >
-                  <Plus size={14} />
-                  <div>Create</div>
-                </Button>
-              )}
+              {children}
             </div>
           </div>
         )}

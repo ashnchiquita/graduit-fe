@@ -32,15 +32,6 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
     setSearchValue(value);
   };
 
-  const handleStatusFilterChange = (value: string) => {
-    const obj: any = {};
-    value && value !== "semua" && (obj.filter = value);
-    searchValue && (obj.search = searchValue);
-
-    setSearchParams(obj);
-    setStatusFilter(value);
-  };
-
   const [data, setData] = useState<Mahasiswa[]>([
     {
       nim: "23521149",
@@ -60,7 +51,34 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
       jadwalWawancara: new Date("2003-03-14"),
       status: StatusPendaftaranEnum.REJECTED,
     },
+    {
+      nim: "23521146",
+      nama: "Rava James Maulana",
+      jadwalWawancara: new Date("2003-03-14"),
+      status: StatusPendaftaranEnum.ACCEPTED,
+    },
+    {
+      nim: "23521145",
+      nama: "Maulana James Rava",
+      jadwalWawancara: null,
+      status: StatusPendaftaranEnum.PROCESS,
+    },
+    {
+      nim: "23521144",
+      nama: "James Rava Maulana",
+      jadwalWawancara: new Date("2003-03-14"),
+      status: StatusPendaftaranEnum.REJECTED,
+    },
   ]);
+
+  const handleStatusFilterChange = (value: string) => {
+    const obj: any = {};
+    value && value !== "semua" && (obj.filter = value);
+    searchValue && (obj.search = searchValue);
+
+    setSearchParams(obj);
+    setStatusFilter(value);
+  };
 
   const columns: ColumnDef<Mahasiswa>[] = [
     {

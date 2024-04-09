@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import useTopik from "./hooks/useTopik";
 import { DataTable } from "@/components/DataTable";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 export default function TopicAllocation() {
   const { role } = useParams();
@@ -16,8 +18,15 @@ export default function TopicAllocation() {
           description="Topik yang diajukan oleh dosen pembimbing"
           searchValue={searchValue}
           setSearchValue={handleSearchValueChange}
-          onClickCreate={Number(role) > 0 ? onClickCreate : undefined}
-        />
+        >
+          <Button
+            onClick={() => (Number(role) > 0 ? onClickCreate : undefined)}
+            className="flex h-fit gap-2 border border-blue-500 bg-blue-500 px-2 py-1 hover:border-blue-600 hover:bg-blue-600"
+          >
+            <Plus size={14} />
+            <div>Create</div>
+          </Button>
+        </DataTable>
       </main>
     </>
   );
