@@ -1,7 +1,6 @@
 // Library imports
 import { useEffect, useState } from "react";
-
-// Component imports
+import loginInstance from "@/config/login-axios-config";
 
 // Local imports
 import { VscChevronRight } from "react-icons/vsc";
@@ -12,17 +11,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { toast } from "react-toastify";
 
 interface User {
   name: string;
   role: string;
 }
 
-interface ProfileProps {
-  handleLogout: () => void;
-}
-
-export default function Profile({ handleLogout }: ProfileProps): JSX.Element {
+export default function Profile(): JSX.Element {
   // Component imports
   const [loading, setLoading] = useState<boolean>(true);
   const [showPopover, setShowPopover] = useState<boolean>(false);
@@ -30,6 +26,14 @@ export default function Profile({ handleLogout }: ProfileProps): JSX.Element {
     name: "Alisha Listya Wardhani",
     role: "Mahasiswa",
   });
+
+  const handleLogout = async () => {
+    try {
+      await loginInstance.post("/auth/logout");
+    } catch (error) {
+      toast.error("Gagal logout");
+    }
+  };
 
   const fetchProfile = async () => {
     // TODO: Fetch user profile
@@ -62,7 +66,7 @@ export default function Profile({ handleLogout }: ProfileProps): JSX.Element {
               {/* </button> */}
             </PopoverTrigger>
 
-            <PopoverContent className="z-10 flex w-full flex-col gap-2 px-0 py-2">
+            <PopoverContent className="z-[99] flex w-full flex-col gap-2 px-0 py-2">
               <button
                 disabled={loading}
                 className="w-full px-4 text-left hover:text-red-500"
