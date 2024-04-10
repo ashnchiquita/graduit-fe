@@ -40,7 +40,7 @@ export default function StatisticCard({
         />
       </div>
 
-      <p className="font-semibold">
+      <p className="text-base font-semibold">
         <span
           className={clsx(
             color === "GREEN"
