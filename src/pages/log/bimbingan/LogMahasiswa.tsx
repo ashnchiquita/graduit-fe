@@ -9,7 +9,14 @@ import { Button } from "@/components/ui/button";
 
 import { VscListFilter, VscAdd } from "react-icons/vsc";
 import { CardTable, TableHeader, TableRowProps } from "./components/Table";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,DropdownMenuRadioGroup, DropdownMenuRadioItem } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+} from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 
@@ -137,7 +144,7 @@ const dummyData: TableRowProps[] = [
 ];
 
 export default function LogMahasiswa(): JSX.Element {
-    const [color,setColor] = useState('blue')
+  const [color, setColor] = useState("blue");
   return (
     <div className="flex flex-col gap-4 px-4 pb-20">
       <ul className=" font-urbanist text-xs font-semibold text-green-500 list-disc ml-2">
@@ -177,27 +184,17 @@ export default function LogMahasiswa(): JSX.Element {
         FooterElement={
           <>
             <div className="flex justify-between px-4">
-                <div>
-                    <p className="text=[#344054] text-[14px]">
-                        Display
-                    </p>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger>
-                            oke
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-fit">
-                            <DropdownMenuItem>
-                                1
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                1
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                1
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
+              <div>
+                <p className="text=[#344054] text-[14px]">Display</p>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>oke</DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-fit">
+                    <DropdownMenuItem>1</DropdownMenuItem>
+                    <DropdownMenuItem>1</DropdownMenuItem>
+                    <DropdownMenuItem>1</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
           </>
         }
