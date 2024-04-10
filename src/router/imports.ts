@@ -64,3 +64,7 @@ export const Dashboard = lazy(() => import("../pages/dashboard/Dashboard.tsx"));
 export const RekapPendaftaranDosbim = lazy(
   () => import("../pages/dosen/rekap-pendaftaran/RekapPendaftaranDosbim.tsx"),
 );
+export const DetailSubmissionTugas = lazy(
+  () =>
+    import("../pages/dosen/detail-submission-tugas/DetailSubmissionTugas.tsx"),
+);
