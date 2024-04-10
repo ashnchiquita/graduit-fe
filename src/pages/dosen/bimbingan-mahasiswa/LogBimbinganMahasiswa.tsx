@@ -26,9 +26,6 @@ export default function LogBimbinganMahasiswa() {
         setSearchValue={handleSearchValueChange}
         searchValue={searchValue}
         searchPlaceholder="Search something"
-        onClickFilter={() => {
-          console.log("filtered");
-        }}
       />
     </main>
   );

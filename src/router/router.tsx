@@ -14,7 +14,7 @@ import {
   NotFound,
   Pengumuman,
   Penjadwalan,
-  RegistrationRecap,
+  DetailRekapPendaftaran,
   Registration,
   Topik,
   AccountTimTesisLayout,
@@ -22,6 +22,7 @@ import {
   KonfigurasiPeriode,
   Dashboard,
   DaftarPengajuan,
+  RekapPendaftaranDosbim,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -32,7 +33,11 @@ export const router = createBrowserRouter(
     },
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <Suspense fallback={<LoaderIcon />}>
+          <Login />
+        </Suspense>
+      ),
     },
     {
       path: "/timtesis",
@@ -48,12 +53,12 @@ export const router = createBrowserRouter(
           element: <Dashboard />,
         },
         {
-          path: "/rekap-pendaftaran-tugas-akhir",
-          element: <RegistrationRecap></RegistrationRecap>,
+          path: "/rekap-pendaftaran",
+          element: <RekapPendaftaranDosbim />,
         },
         {
-          path: "/rekap-pendaftaran-tesis",
-          element: <RegistrationRecap></RegistrationRecap>,
+          path: "/rekap-pendaftaran/:nim",
+          element: <DetailRekapPendaftaran />,
         },
         {
           path: "/daftar-pengajuan",
