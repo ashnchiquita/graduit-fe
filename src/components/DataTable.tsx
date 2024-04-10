@@ -37,7 +37,8 @@ interface DataTableProps<TData> {
   searchValue?: string;
   searchPlaceholder?: string;
   setSearchValue?: (value: string) => void;
-  children?: JSX.Element;
+  customElementsLeft?: JSX.Element;
+  customElementsRight?: JSX.Element;
 }
 
 export function DataTable<TData>({
@@ -47,14 +48,17 @@ export function DataTable<TData>({
   searchValue,
   searchPlaceholder,
   setSearchValue,
-  children,
+  customElementsLeft,
+  customElementsRight,
 }: DataTableProps<TData>) {
   const useTableConfig =
     !!headline ||
     !!description ||
     !!searchValue ||
     !!searchPlaceholder ||
-    !!setSearchValue;
+    !!setSearchValue ||
+    !!customElementsLeft ||
+    !!customElementsRight;
 
   const columnSizeVars = React.useMemo(() => {
     const headers = table.getFlatHeaders();
@@ -95,12 +99,13 @@ export function DataTable<TData>({
               )}
             </div>
             <div className="flex items-center gap-4">
+              {customElementsLeft}
               {searchValue !== undefined && !!setSearchValue && (
-                <div className="group flex w-[235px] items-center gap-2 rounded-md border border-input bg-transparent px-2 py-1 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+                <div className="group flex items-center gap-2 rounded-md border border-input bg-transparent px-2 py-1 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
                   <Search size={14} className="text-muted-foreground" />
                   <input
                     type="text"
-                    className="flex-auto outline-none"
+                    className="w-[225px] flex-auto outline-none"
                     placeholder={searchPlaceholder}
                     value={searchValue}
                     onChange={(e) => {
@@ -109,7 +114,7 @@ export function DataTable<TData>({
                   />
                 </div>
               )}
-              {children}
+              {customElementsRight}
             </div>
           </div>
         )}

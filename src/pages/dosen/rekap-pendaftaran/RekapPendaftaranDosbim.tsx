@@ -1,14 +1,7 @@
 import { DataTable } from "@/components/DataTable";
-import useRekapPendaftaranDosbim from "./hooks/useRekapPendaftaranDosbim";
+import StatisticCard from "@/components/StatisticCard";
 import StatusPendaftaranBadge from "@/components/StatusPendaftaranBadge";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  DoubleArrowLeftIcon,
-  DoubleArrowRightIcon,
-} from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -17,10 +10,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
-import StatisticCard from "@/components/StatisticCard";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from "@radix-ui/react-icons";
+import { Search } from "lucide-react";
 import { FaRegEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import InfoKontakDialog from "./components/InfoKontakDialog";
+import useRekapPendaftaranDosbim from "./hooks/useRekapPendaftaranDosbim";
 
 export default function RekapPendaftaranDosbim(): JSX.Element {
   const {
@@ -65,39 +65,40 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
           searchValue={searchValue}
           setSearchValue={handleSearchValueChange}
           searchPlaceholder="Cari nama atau NIM mahasiswa"
-        >
-          <div className="flex items-center gap-4">
-            <Select
-              value={statusFilter}
-              onValueChange={handleStatusFilterChange}
-            >
-              <SelectTrigger className="h-fit text-xs">
-                <SelectValue placeholder="Semua Bimbingan" />
-              </SelectTrigger>
+          customElementsRight={
+            <>
+              <Select
+                value={statusFilter}
+                onValueChange={handleStatusFilterChange}
+              >
+                <SelectTrigger className="h-fit text-xs">
+                  <SelectValue placeholder="Semua Bimbingan" />
+                </SelectTrigger>
 
-              <SelectContent>
-                <SelectItem value="semua" className="text-xs">
-                  Semua
-                </SelectItem>
-                {Object.values(StatusPendaftaranEnum).map((status) => (
-                  <SelectItem key={status} value={status} className="text-xs">
-                    {status}
+                <SelectContent>
+                  <SelectItem value="semua" className="text-xs">
+                    Semua
                   </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                  {Object.values(StatusPendaftaranEnum).map((status) => (
+                    <SelectItem key={status} value={status} className="text-xs">
+                      {status}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
-            <InfoKontakDialog
-              infoKontak=""
-              dialogTrigger={
-                <Button className="flex h-fit items-center gap-2 bg-blue-500 text-xs text-gray-100 hover:bg-blue-600">
-                  <FaRegEdit className="size-3" />
-                  Informasi Kontak Saya
-                </Button>
-              }
-            />
-          </div>
-        </DataTable>
+              <InfoKontakDialog
+                infoKontak=""
+                dialogTrigger={
+                  <Button className="flex h-fit items-center gap-2 bg-blue-500 text-xs text-gray-100 hover:bg-blue-600">
+                    <FaRegEdit className="size-3" />
+                    Informasi Kontak Saya
+                  </Button>
+                }
+              />
+            </>
+          }
+        />
       </section>
 
       <section className="flex w-full flex-col gap-2.5 rounded-lg bg-white px-6 py-4 md:hidden">
