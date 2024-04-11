@@ -31,6 +31,10 @@ export type PostNewTopicReqData = {
   idPengaju: string;
 };
 
+export type PostNewTopicBulkReqData = {
+  data: PostNewTopicReqData[];
+};
+
 export type PutExistingTopicReqData = {
   idTopic: string;
   judul: string;
@@ -42,4 +46,10 @@ export type GetAllDosenPembimbingRespData = {
   id: string;
   nama: string;
   email: string;
+}[];
+
+export type LoadedExcelData = {
+  Judul: string;
+  Deskripsi: string;
+  "Dosen Pengaju": string;
 }[];

@@ -7,3 +7,5 @@ export const UpsertTopikFormSchema = z.object({
 });
 
 export type UpsertTopikFormData = z.infer<typeof UpsertTopikFormSchema>;
+
+export const EXCEL_HEADERS = ["Judul", "Deskripsi", "Dosen Pengaju"];

@@ -3,6 +3,7 @@ import {
   GetAllDosenPembimbingRespData,
   GetAllTopicParams,
   GetAllTopicRespData,
+  PostNewTopicBulkReqData,
   PostNewTopicReqData,
   PutExistingTopicReqData,
 } from "./types";
@@ -14,15 +15,14 @@ export async function getAllTopics(params: GetAllTopicParams) {
 }
 
 export async function postNewTopic(data: PostNewTopicReqData) {
-  return await s2Instance.post("/alokasi-topik", {
-    data,
-  });
+  return await s2Instance.post("/alokasi-topik", data);
+}
+export async function postNewTopicBulk(data: PostNewTopicBulkReqData) {
+  return await s2Instance.post("/alokasi-topik/bulk", data);
 }
 
 export async function putExistingTopic(data: PutExistingTopicReqData) {
-  return await s2Instance.put("/alokasi-topik", {
-    data,
-  });
+  return await s2Instance.put("/alokasi-topik", data);
 }
 
 export const getAllDosenPembimbing = () => {

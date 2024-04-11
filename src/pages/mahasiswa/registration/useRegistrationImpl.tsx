@@ -1,3 +1,4 @@
+import useSession from "@/hooks/useSession";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -27,10 +28,11 @@ const useRegistrationImpl = () => {
     },
   );
 
+  const { data: sessionData } = useSession();
+
   const onSubmit = async (values: RegistrationFormData) => {
     const data: PostRegistrasiTesisRequestData = {
-      // TODO remove hard code
-      idMahasiswa: "75740361-3cc0-4520-8e08-7f8ab99f46fe",
+      idMahasiswa: sessionData?.id ?? "",
       idPenerima: values.lecturer,
       jalurPilihan: values.stream,
       judulTopik: values.topic,
