@@ -39,6 +39,7 @@ interface DataTableProps<TData> {
   setSearchValue?: (value: string) => void;
   customElementsLeft?: JSX.Element;
   customElementsRight?: JSX.Element;
+  allowHorizontalOverflow?: boolean;
 }
 
 export function DataTable<TData>({
@@ -50,6 +51,7 @@ export function DataTable<TData>({
   setSearchValue,
   customElementsLeft,
   customElementsRight,
+  allowHorizontalOverflow = false,
 }: DataTableProps<TData>) {
   const useTableConfig =
     !!headline ||
@@ -85,9 +87,9 @@ export function DataTable<TData>({
   // TODO loading state
   return (
     <div>
-      <div className="rounded-md border bg-white" ref={containerRef}>
+      <div className="mb-3 rounded-md border bg-white" ref={containerRef}>
         {useTableConfig && (
-          <div className="flex px-6 py-5">
+          <div className="flex flex-wrap gap-x-3 gap-y-4 px-6 py-5">
             <div className="flex-1">
               {headline && (
                 <div className="text-lg font-semibold">{headline}</div>
@@ -98,14 +100,14 @@ export function DataTable<TData>({
                 </div>
               )}
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               {customElementsLeft}
               {searchValue !== undefined && !!setSearchValue && (
-                <div className="group flex items-center gap-2 rounded-md border border-input bg-transparent px-2 py-1 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+                <div className="group flex flex-1 items-center gap-2 rounded-md border border-input bg-transparent px-2 py-1 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:flex-none">
                   <Search size={14} className="text-muted-foreground" />
                   <input
                     type="text"
-                    className="w-[225px] flex-auto outline-none"
+                    className="flex-1 outline-none md:w-[225px] md:flex-auto"
                     placeholder={searchPlaceholder}
                     value={searchValue}
                     onChange={(e) => {
@@ -122,8 +124,11 @@ export function DataTable<TData>({
         <Table
           style={{
             ...columnSizeVars,
-            width: Math.max(fullWidth, table.getTotalSize()) - 2,
+            width: allowHorizontalOverflow
+              ? Math.max(fullWidth, table.getTotalSize()) - 2
+              : undefined,
           }}
+          className="text-xs md:text-sm"
         >
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -185,7 +190,7 @@ export function DataTable<TData>({
             <DataTableBody table={table} />
           )}
         </Table>
-        <div className="flex h-12 items-center justify-between space-x-6 border-t px-4 text-gray-500 lg:space-x-8">
+        <div className="flex min-h-12 items-center justify-between space-x-6 border-t px-4 py-1 text-gray-500 lg:space-x-8">
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium">Rows per page</p>
             <Select

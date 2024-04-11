@@ -1,3 +1,4 @@
+import useWindowSize from "@/hooks/useWindowSize";
 import SelectData from "@/types/select-data";
 import { RoleEnum } from "@/types/session-data";
 import {
@@ -24,7 +25,8 @@ import {
 const DUMMY_DATA: DaftarTopikData[] = [
   {
     id: "1",
-    deskripsi: "no",
+    deskripsi:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     judul: "yeehaw",
     pengaju: {
       id: "d682f596-9ee3-485d-89bb-402e54106b60",
@@ -135,6 +137,8 @@ const DUMMY_DATA: DaftarTopikData[] = [
 const columHelper = createColumnHelper<DaftarTopikData>();
 
 export default function useDaftarTopikTimTugas() {
+  const [width] = useWindowSize();
+
   const [isInsertDialogOpen, setIsInsertDialogOpen] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -166,25 +170,26 @@ export default function useDaftarTopikTimTugas() {
     },
   );
 
+  const isMobile = width < 768;
   const columns = [
     columHelper.accessor("judul", {
-      minSize: 150,
+      minSize: isMobile ? 50 : 150,
       enableSorting: false,
       header: "Nama Topik",
     }),
     columHelper.accessor("deskripsi", {
-      minSize: 250,
+      minSize: isMobile ? 100 : 250,
       enableSorting: false,
       header: "Deskripsi",
     }),
     columHelper.accessor("pengaju.nama", {
-      minSize: 170,
+      minSize: isMobile ? 40 : 170,
       enableSorting: false,
       header: "Dosen Pengaju",
     }),
     columHelper.accessor("id", {
       id: "action",
-      minSize: 50,
+      minSize: isMobile ? 30 : 50,
       maxSize: 50,
       header: "",
       enableSorting: false,

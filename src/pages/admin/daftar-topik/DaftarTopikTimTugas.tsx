@@ -27,9 +27,10 @@ export default function DaftarTopikTimTugas() {
         searchPlaceholder="Cari topik atau dosen pengaju"
         customElementsRight={
           <>
+            {}
             <Button
               size="sm"
-              className="flex gap-2 border-blue-500 text-blue-500 hover:text-blue-500"
+              className="hidden gap-2 border-blue-500 text-blue-500 hover:text-blue-500 md:flex"
               onClick={handleClickGenerateTemplate}
               variant="outline"
             >
@@ -39,7 +40,7 @@ export default function DaftarTopikTimTugas() {
 
             <Button
               size="sm"
-              className="flex gap-2 bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
+              className="hidden gap-2 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 md:flex"
               onClick={handleClickImportFromTemplate}
             >
               <Upload size={16} />
@@ -56,7 +57,7 @@ export default function DaftarTopikTimTugas() {
                   className="flex gap-2 bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
                 >
                   <Edit size={16} />
-                  <div>Tambahkan Topik</div>
+                  <div className="hidden md:block">Tambahkan Topik</div>
                 </Button>
               </DialogTrigger>
               <UpsertDialog
