@@ -68,3 +68,6 @@ export const DetailSubmissionTugas = lazy(
   () =>
     import("../pages/dosen/detail-submission-tugas/DetailSubmissionTugas.tsx"),
 );
+export const SubmissionTugas = lazy(
+  () => import("../pages/dosen/submission-tugas/SubmissionTugas.tsx"),
+);

@@ -24,6 +24,7 @@ import {
   DaftarPengajuan,
   RekapPendaftaranDosbim,
   DetailSubmissionTugas,
+  SubmissionTugas,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -64,6 +65,10 @@ export const router = createBrowserRouter(
         {
           path: "/daftar-pengajuan",
           element: <DaftarPengajuan></DaftarPengajuan>,
+        },
+        {
+          path: "/tugas/:idTugas",
+          element: <SubmissionTugas />,
         },
         {
           path: "/tugas/:idTugas/submisi/:idSubmisi",

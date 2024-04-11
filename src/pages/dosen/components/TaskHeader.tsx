@@ -38,7 +38,7 @@ export default function TaskHeader({
 
   return (
     <section className="relative flex w-full flex-col gap-2.5 rounded-2xl bg-white p-7 text-xs">
-      <div className="absolute left-0 top-0 h-1.5 w-full rounded-t-2xl bg-sky-700 md:h-full md:w-1.5 md:rounded-l-2xl" />
+      <div className="absolute left-0 top-0 h-1.5 w-full rounded-t-2xl bg-sky-700 md:h-full md:w-1.5 md:rounded-l-2xl md:rounded-tr-none" />
 
       <div className="flex w-full items-center justify-between">
         <h2 className="text-xl font-medium">{title}</h2>
