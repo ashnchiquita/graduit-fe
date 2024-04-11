@@ -29,7 +29,7 @@ export default function Profile(): JSX.Element {
 
   const handleLogout = async () => {
     try {
-      await loginInstance.post("/auth/logout");
+      await loginInstance.post("/auth/logout", {}, { withCredentials: true });
     } catch (error) {
       toast.error("Gagal logout");
     }
