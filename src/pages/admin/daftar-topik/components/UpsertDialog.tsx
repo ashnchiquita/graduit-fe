@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   DialogContent,
   DialogFooter,
@@ -56,7 +57,7 @@ export default function UpsertDialog({
         >
           <FormField
             control={form.control}
-            name="judul"
+            name="idPengaju"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Dosen Pengaju Topik</FormLabel>
@@ -118,6 +119,11 @@ export default function UpsertDialog({
         </form>
         <DialogFooter></DialogFooter>
       </Form>
+      <DialogFooter>
+        <Button className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700">
+          {row ? "Ubah" : "Tambahkan"} Topik
+        </Button>
+      </DialogFooter>
     </DialogContent>
   );
 }

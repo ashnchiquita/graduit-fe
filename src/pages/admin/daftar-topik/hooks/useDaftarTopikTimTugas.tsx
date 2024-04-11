@@ -17,8 +17,8 @@ const DUMMY_DATA: DaftarTopikData[] = [
     deskripsi: "no",
     judul: "yeehaw",
     pengaju: {
-      id: "2",
-      nama: "juan",
+      id: "d682f596-9ee3-485d-89bb-402e54106b60",
+      nama: "Rafa Maulana 1",
       email: "gmail@gmail.com",
       roles: [RoleEnum.S2_PEMBIMBING],
     },
@@ -29,6 +29,7 @@ const DUMMY_DATA: DaftarTopikData[] = [
 const columHelper = createColumnHelper<DaftarTopikData>();
 
 export default function useDaftarTopikTimTugas() {
+  const [isInsertDialogOpen, setIsInsertDialogOpen] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -44,7 +45,7 @@ export default function useDaftarTopikTimTugas() {
     setSearchValue(value);
   };
 
-  const { data = { data: [], maxPage: 1 }, mutate } = useSWR(
+  const { data = { data: [], maxPage: 1 }, mutate: updateData } = useSWR(
     ["/alokasi-topik", pagination, searchValue],
     async () => {
       // const res = await getAllTopics({
@@ -81,7 +82,7 @@ export default function useDaftarTopikTimTugas() {
       header: "",
       enableSorting: false,
       enableResizing: false,
-      cell: ({ row }) => <RowAction row={row} updateData={mutate} />,
+      cell: ({ row }) => <RowAction row={row} updateData={updateData} />,
     }),
   ];
 
@@ -99,5 +100,12 @@ export default function useDaftarTopikTimTugas() {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return { table, searchValue, handleChangeSearchValue };
+  return {
+    table,
+    searchValue,
+    isInsertDialogOpen,
+    setIsInsertDialogOpen,
+    handleChangeSearchValue,
+    updateData,
+  };
 }
