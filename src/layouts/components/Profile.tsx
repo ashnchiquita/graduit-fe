@@ -12,6 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   name: string;
@@ -27,9 +28,12 @@ export default function Profile(): JSX.Element {
     role: "Mahasiswa",
   });
 
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       await loginInstance.post("/auth/logout", {}, { withCredentials: true });
+      navigate("/login");
     } catch (error) {
       toast.error("Gagal logout");
     }
