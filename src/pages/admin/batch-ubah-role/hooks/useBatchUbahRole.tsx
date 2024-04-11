@@ -141,6 +141,7 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
     manualPagination: true,
     rowCount: rowCount,
     getCoreRowModel: getCoreRowModel(),
+    columnResizeMode: "onChange",
     initialState: {
       pagination: {
         pageIndex: +(searchParams?.get("page") ?? 1) - 1,

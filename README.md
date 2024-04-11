@@ -37,6 +37,109 @@ Sangat dimohon untuk memperhatikan hal-hal berikut:
    b. Penamaan hook menggunakan camel case dengan diawali use (useNama).  
    c. Penamaan file selain yang disebutkan di atas menggunakan kebab case (nama-file).
 
+## Penggunaan DataTable
+
+Use DataTable by defining columns, `useReactTable` hook, and React `DataTable` component
+
+### DataTable React Component
+
+Mandatory to pass `table` that is defined using `useReactTable` hook. example:
+
+```javascript
+<DataTable
+  table={table}
+  headline="Kelola Akun Pengguna"
+  searchValue={searchValue}
+  setSearchValue={handleSearchValueChange}
+  onClickCreate={onClickCreate}
+/>
+```
+
+Features/Props (All are optional):
+
+1. `headline`: Adds headline on top of table
+2. `description`: Adds description under headline
+3. `searchValue`: State prop for `input` value in search box
+4. `searchPlaceholder`: Placeholder for `input` in search box
+5. `setSearchValue`: SetState callback prop for `input` value in search box
+6. `onClickDelete`: OnClick callback for delete button
+7. `onClickFilter`: OnClick callback for filter button
+8. `onClickCreate`: OnClick callback for create button
+
+### useReactTable Hook
+
+Hook to define options for `DataTable` component
+
+```javascript
+const table = useReactTable({
+  columns,
+  data,
+  manualPagination: true,
+  rowCount: rowCount,
+  getCoreRowModel: getCoreRowModel(),
+  columnResizeMode: "onChange",
+  onPaginationChange: setPagination,
+  initialState: {
+    pagination,
+  },
+});
+```
+
+Fields (not exhaustive):
+
+1. `data`: Data that you want to display
+2. `columns`: Column definitions (sizing, content, etc.) for table
+3. `manualPagination`: Lets us to use BE pagination logic
+4. `rowCount`: Total number of rows in data (not just data displayed), must be provided from BE
+5. `getCoreRowModel`: Idk what it does but use as above
+6. `columnResizeMode`: Column resize is enabled, allow for smooth resize
+7. `pagination`: Pagination state, use `useState` to store `PaginationState` object
+
+### Column Definitions
+
+Define column sizing, content, data, etc. Use `columnHelper` <strong>don't forget to set the type</strong>, define each column with `columnHelper.accessor`, first argument is the data field (defined in type passed to `columnHelper`) that the column wants to display.
+
+example:
+
+```javascript
+// outside of hook, in global scope of file
+const columnHelper = createColumnHelper<Person>()
+
+// ...
+// inside of hook
+    const columns = [
+        columnHelper.accessor('visits', {
+            id: 'visits-checkbox'
+            header: () => <span>Visits</span>,
+            size: 150,
+            minSize: 150,
+            enableSorting: false,
+            cell: ({ row }) => (
+                <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value: boolean) => row.toggleSelected(value)}
+                />
+            ),
+        }),
+        // ...
+    ]
+// ...
+```
+
+Notes:
+
+- Define `columnHelper` outside of hook function
+- You can define columns in a different hook, e.g. `useDashboardColumns.tsx`
+
+Fields:
+
+1. `id`: Optional field to define id, <strong>use in case many columns use the same accessor</strong>
+2. `header`: Can be JSX or string, defines Header to be used
+3. `size`: Defines starting width of columns, reccommended to set as the same as `minSize`
+4. `minSize`: Defines minimum width of columns
+5. `enableSorting`: Defaults to true, <b>use to disable sorting for columns like row number, checkbox, and action</b>
+6. `cell`: Defaults to displaying data as is, can be modified to show given JSX, get data for cell or its row using props in its function, - `getValue()`: Gets value of data in the cell - `row`: Information about row of data, access all data of row using `row.original`
+
 ## Folder
 
 ```
@@ -145,3 +248,17 @@ https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a
 2. Install dependencies `npm install`
 3. Sesuaikan env dengan file .env.example
 4. Jalankan local dev derver `npm run dev`
+
+## Techniques
+
+### Environment Variables
+
+Kalo nambahin environment variable, kalian harus:
+
+- Tambahin di `env.example`
+- Tambahin schema validation. Tulis validasi di `env.ts`. Dokumentasi: [Zod](https://zod.dev/)
+
+NOTES:
+
+- `import.meta.env.` sudah type-safe
+- Sebenernya kalian tetep masih bisa make environment variables yang ga di list di `env.ts`, cuman pas ngoding keluarnya bakal `any`. Tapi ini bakal musingin banget ke developer selanjutnya, jadi tolong kalo ada perubahan environment variables lakuin 2 hal di atas

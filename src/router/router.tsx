@@ -14,7 +14,7 @@ import {
   NotFound,
   Pengumuman,
   Penjadwalan,
-  RegistrationRecap,
+  DetailRekapPendaftaran,
   Registration,
   Topik,
   AccountTimTesisLayout,
@@ -22,6 +22,9 @@ import {
   KonfigurasiPeriode,
   Dashboard,
   DaftarPengajuan,
+  RekapPendaftaranDosbim,
+  DetailSubmissionTugas,
+  SubmissionTugas,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -32,7 +35,11 @@ export const router = createBrowserRouter(
     },
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <Suspense fallback={<LoaderIcon />}>
+          <Login />
+        </Suspense>
+      ),
     },
     {
       path: "/timtesis",
@@ -48,16 +55,24 @@ export const router = createBrowserRouter(
           element: <Dashboard />,
         },
         {
-          path: "/rekap-pendaftaran-tugas-akhir",
-          element: <RegistrationRecap></RegistrationRecap>,
+          path: "/rekap-pendaftaran",
+          element: <RekapPendaftaranDosbim />,
         },
         {
-          path: "/rekap-pendaftaran-tesis",
-          element: <RegistrationRecap></RegistrationRecap>,
+          path: "/rekap-pendaftaran/:nim",
+          element: <DetailRekapPendaftaran />,
         },
         {
           path: "/daftar-pengajuan",
           element: <DaftarPengajuan></DaftarPengajuan>,
+        },
+        {
+          path: "/tugas/:idTugas",
+          element: <SubmissionTugas />,
+        },
+        {
+          path: "/tugas/:idTugas/submisi/:idSubmisi",
+          element: <DetailSubmissionTugas />,
         },
         {
           path: "/registrasi",
@@ -75,30 +90,6 @@ export const router = createBrowserRouter(
         {
           path: "/tesis/status",
           element: <MhsDashboard />,
-        },
-        {
-          path: "/tugas",
-          element: <Navigate to="/tugas/kelas" replace />,
-        },
-        {
-          path: "/tugas/kelas",
-          element: <></>,
-        },
-        {
-          path: "/tugas/logbook",
-          element: <></>,
-        },
-        {
-          path: "/informasi",
-          element: <Navigate to="/informasi/seminar" replace />,
-        },
-        {
-          path: "/informasi/seminar",
-          element: <></>,
-        },
-        {
-          path: "/informasi/pengujian",
-          element: <></>,
         },
         {
           path: "/manajemen",

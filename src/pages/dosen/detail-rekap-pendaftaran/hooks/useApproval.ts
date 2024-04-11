@@ -4,7 +4,7 @@ import { approvePendaftaran, rejectPendaftaran } from "../clients";
 
 export default function useApproval({
   id,
-  fetchData,
+  // fetchData,
 }: ApprovalHookProps): ApprovalHookRet {
   const { trigger: triggerApprove, error: approveError } = useSWRMutation(
     "/akun/roles-batch",
@@ -29,7 +29,7 @@ export default function useApproval({
       // TODO: Add toast
       console.error(approveError);
     } else {
-      await fetchData();
+      // await fetchData();
     }
   };
 
@@ -40,7 +40,7 @@ export default function useApproval({
       // TODO: Add toast
       console.error(rejectError);
     } else {
-      await fetchData();
+      // await fetchData();
     }
   };
 

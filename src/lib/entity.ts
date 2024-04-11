@@ -19,7 +19,6 @@ export type User = {
   name: string;
   email: string;
   major: string;
-  profpic: string;
 };
 
 export type SystemLogs = {
