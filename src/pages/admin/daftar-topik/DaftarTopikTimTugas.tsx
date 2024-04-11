@@ -12,6 +12,7 @@ export default function DaftarTopikTimTugas() {
         description="Topik yang diajukan oleh pembimbing"
         searchValue={searchValue}
         setSearchValue={handleChangeSearchValue}
+        searchPlaceholder="Cari topik atau dosen pengaju"
       />
     </div>
   );

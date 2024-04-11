@@ -2,14 +2,12 @@ import { useState } from "react";
 
 export default function useRowAction() {
   const [deleteDialogOpen, setDeteleDialogOpen] = useState(false);
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
 
-  const openDeleteDialog = () => {
-    setDeteleDialogOpen(true);
+  return {
+    deleteDialogOpen,
+    updateDialogOpen,
+    setUpdateDialogOpen,
+    setDeteleDialogOpen,
   };
-
-  const closeDeleteDialog = () => {
-    setDeteleDialogOpen(false);
-  };
-
-  return { deleteDialogOpen, openDeleteDialog, closeDeleteDialog };
 }

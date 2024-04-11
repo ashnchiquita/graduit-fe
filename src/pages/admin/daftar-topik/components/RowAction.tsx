@@ -9,6 +9,7 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import useRowAction from "../hooks/useRowAction";
 import { DaftarTopikData } from "../types";
 import DeleteDialog from "./DeleteDialog";
+import UpsertDialog from "./UpsertDialog";
 
 interface ComponentProps {
   row: Row<DaftarTopikData>;
@@ -19,8 +20,12 @@ export default function RowAction({
   row,
   updateData,
 }: ComponentProps): JSX.Element {
-  const { deleteDialogOpen, openDeleteDialog, closeDeleteDialog } =
-    useRowAction();
+  const {
+    deleteDialogOpen,
+    updateDialogOpen,
+    setUpdateDialogOpen,
+    setDeteleDialogOpen,
+  } = useRowAction();
 
   return (
     <Popover>
@@ -34,17 +39,36 @@ export default function RowAction({
         side="left"
         className="w-[233px] overflow-hidden rounded-md p-0"
       >
-        <Dialog open={deleteDialogOpen} onOpenChange={openDeleteDialog}>
+        <Dialog open={updateDialogOpen} onOpenChange={setUpdateDialogOpen}>
+          <DialogTrigger asChild>
+            <button className="w-full p-3">
+              <p className="w-full text-left text-sm font-medium">
+                Update topik
+              </p>
+            </button>
+          </DialogTrigger>
+          <UpsertDialog
+            row={row}
+            closeDialog={() => {
+              setDeteleDialogOpen(false);
+            }}
+            updateData={updateData}
+          />
+        </Dialog>
+
+        <Dialog open={deleteDialogOpen} onOpenChange={setDeteleDialogOpen}>
           <DialogTrigger asChild>
             <button className="w-full p-3">
               <p className="w-full text-left text-sm font-medium text-red-600">
-                Hapus
+                Hapus topik
               </p>
             </button>
           </DialogTrigger>
           <DeleteDialog
             row={row}
-            closeDialog={closeDeleteDialog}
+            closeDialog={() => {
+              setDeteleDialogOpen(false);
+            }}
             updateData={updateData}
           />
         </Dialog>

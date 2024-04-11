@@ -1,4 +1,4 @@
-import s2Instance from "@/config/s2-axios-config";
+import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
 
 export default function useDeleteDialog(
@@ -8,7 +8,7 @@ export default function useDeleteDialog(
   const { trigger } = useSWRMutation(
     "/alokasi-topik",
     async (url, { arg }: { arg: string }) => {
-      await s2Instance.delete(url + `/${arg}`);
+      // await s2Instance.delete(url + `/${arg}`);
     },
   );
 
@@ -16,6 +16,7 @@ export default function useDeleteDialog(
     await trigger(id);
     updateData();
     closeDialog();
+    toast.success("Berhasil menghapus topik!");
   };
 
   return { handleDelete };

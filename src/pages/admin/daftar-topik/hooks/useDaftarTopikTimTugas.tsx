@@ -85,12 +85,13 @@ export default function useDaftarTopikTimTugas() {
     }),
   ];
 
+  // TODO on pagination change
   const table = useReactTable({
     data: data.data,
     columns,
     pageCount: data.maxPage,
+    rowCount: 1,
     columnResizeMode: "onChange",
-    onPaginationChange: setPagination,
     initialState: {
       pagination,
     },

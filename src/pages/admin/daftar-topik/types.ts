@@ -24,3 +24,22 @@ export type GetAllTopicRespData = {
   data: DaftarTopikData[];
   maxPage: number;
 };
+
+export type PostNewTopicReqData = {
+  judul: string;
+  deskripsi: string;
+  idPengaju: string;
+};
+
+export type PutExistingTopicReqData = {
+  idTopic: string;
+  judul: string;
+  deskripsi: string;
+  idPengaju: string;
+};
+
+export type GetAllDosenPembimbingRespData = {
+  id: string;
+  nama: string;
+  email: string;
+}[];

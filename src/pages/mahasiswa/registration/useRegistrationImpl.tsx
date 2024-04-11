@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
 import { postRegistrasiTesis } from "./clients";
 import { RegistrationFormData, RegistrationFormSchema } from "./constants";
@@ -38,11 +39,10 @@ const useRegistrationImpl = () => {
 
     try {
       await trigger(data);
-      // TODO toast
+      toast.success("Berhasil melakukan registrasi");
       navigate("/daftar-pengajuan");
     } catch (error) {
-      // TODO toast
-      console.error("Failed to submit registration");
+      toast.success("Gagal melakukan registrasi");
     }
   };
 
