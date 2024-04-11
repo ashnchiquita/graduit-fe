@@ -1,7 +1,5 @@
-type Berkas = {
-  nama: string;
-  link: string;
-};
+import { Table } from "@tanstack/react-table";
+import { Berkas } from "../types";
 
 export type SubmisiMahasiswa = {
   id: string;
@@ -24,4 +22,14 @@ export type SubmisiTugas = {
   waktuDiubah: Date;
   jawaban: string;
   mahasiswa: SubmisiMahasiswa[];
+};
+
+export type SubmissionTugasHookRet = {
+  data: SubmisiTugas;
+  searchValue: string;
+  handleSearchValueChange: (value: string) => void;
+  table: Table<SubmisiMahasiswa>;
+  statusFilter: string;
+  handleStatusFilterChange: (value: string) => void;
+  idTugas?: string;
 };

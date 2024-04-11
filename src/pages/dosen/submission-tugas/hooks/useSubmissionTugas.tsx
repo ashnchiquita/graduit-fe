@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import { SubmisiMahasiswa, SubmisiTugas } from "../types";
+import {
+  SubmisiMahasiswa,
+  SubmisiTugas,
+  SubmissionTugasHookRet,
+} from "../types";
 import {
   ColumnDef,
   getCoreRowModel,
@@ -10,7 +14,7 @@ import BerkasBadge from "@/components/BerkasBadge";
 import StatusTugasBadge from "../components/StatusTugasBadge";
 import { Button } from "@/components/ui/button";
 
-export default function useSubmissionTugas() {
+export default function useSubmissionTugas(): SubmissionTugasHookRet {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",

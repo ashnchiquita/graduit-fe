@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { DetailSubmisi, DetailSubmissionTugasHookRet } from "../types";
 
-export default function useDetailSubmissionTugas() {
-  const [data] = useState({
+export default function useDetailSubmissionTugas(): DetailSubmissionTugasHookRet {
+  const [data] = useState<DetailSubmisi>({
     nama: "Sundaymorning Okinawa",
     email: "okinawa@std.stei.itb.ac.id",
     nim: "23521149",

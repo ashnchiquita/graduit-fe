@@ -20,3 +20,8 @@ export const FormSchema = z.object({
     required_error: "Jadwal wawancara harus diisi",
   }),
 });
+
+export type Berkas = {
+  nama: string;
+  link: string;
+};

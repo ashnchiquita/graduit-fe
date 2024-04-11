@@ -24,12 +24,15 @@ export default function DetailSubmissionTugas(): JSX.Element {
         title={data.tugas}
         course={data.namaMatkul}
         startTime={data.waktuMulai}
-        description={data.deskripsiTugas}
         endTime={data.waktuSelesai}
         creatorName={data.namaPembuat}
         createdAt={data.waktuDibuat}
         editorName={data.namaPengubah}
         editedAt={data.waktuDiubah}
+        files={data.berkasTugas.map((berkas) => ({
+          title: berkas.nama,
+          link: berkas.link,
+        }))}
       />
 
       <section className="flex w-full flex-col gap-3.5 rounded-2xl bg-white p-7 text-xs">
