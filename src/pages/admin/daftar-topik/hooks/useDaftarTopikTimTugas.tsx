@@ -34,6 +34,102 @@ const DUMMY_DATA: DaftarTopikData[] = [
     },
     periode: "PRABOWO",
   },
+  {
+    id: "1",
+    deskripsi: "desk 2",
+    judul: "topik 2",
+    pengaju: {
+      id: "d682f596-9ee3-485d-89bb-402e54106b60",
+      nama: "Rafa Maulana 1",
+      email: "gmail@gmail.com",
+      roles: [RoleEnum.S2_PEMBIMBING],
+    },
+    periode: "PRABOWO",
+  },
+  {
+    id: "1",
+    deskripsi: "no",
+    judul: "yeehaw",
+    pengaju: {
+      id: "d682f596-9ee3-485d-89bb-402e54106b60",
+      nama: "Rafa Maulana 1",
+      email: "gmail@gmail.com",
+      roles: [RoleEnum.S2_PEMBIMBING],
+    },
+    periode: "PRABOWO",
+  },
+  {
+    id: "1",
+    deskripsi: "no",
+    judul: "yeehaw",
+    pengaju: {
+      id: "d682f596-9ee3-485d-89bb-402e54106b60",
+      nama: "Rafa Maulana 1",
+      email: "gmail@gmail.com",
+      roles: [RoleEnum.S2_PEMBIMBING],
+    },
+    periode: "PRABOWO",
+  },
+  {
+    id: "1",
+    deskripsi: "no",
+    judul: "yeehaw",
+    pengaju: {
+      id: "d682f596-9ee3-485d-89bb-402e54106b60",
+      nama: "Rafa Maulana 1",
+      email: "gmail@gmail.com",
+      roles: [RoleEnum.S2_PEMBIMBING],
+    },
+    periode: "PRABOWO",
+  },
+  {
+    id: "1",
+    deskripsi: "no",
+    judul: "yeehaw",
+    pengaju: {
+      id: "d682f596-9ee3-485d-89bb-402e54106b60",
+      nama: "Rafa Maulana 1",
+      email: "gmail@gmail.com",
+      roles: [RoleEnum.S2_PEMBIMBING],
+    },
+    periode: "PRABOWO",
+  },
+  {
+    id: "1",
+    deskripsi: "no",
+    judul: "yeehaw",
+    pengaju: {
+      id: "d682f596-9ee3-485d-89bb-402e54106b60",
+      nama: "Rafa Maulana 1",
+      email: "gmail@gmail.com",
+      roles: [RoleEnum.S2_PEMBIMBING],
+    },
+    periode: "PRABOWO",
+  },
+  {
+    id: "1",
+    deskripsi: "no",
+    judul: "yeehaw",
+    pengaju: {
+      id: "d682f596-9ee3-485d-89bb-402e54106b60",
+      nama: "Rafa Maulana 1",
+      email: "gmail@gmail.com",
+      roles: [RoleEnum.S2_PEMBIMBING],
+    },
+    periode: "PRABOWO",
+  },
+  {
+    id: "1",
+    deskripsi: "no",
+    judul: "yeehaw",
+    pengaju: {
+      id: "d682f596-9ee3-485d-89bb-402e54106b60",
+      nama: "Rafa Maulana 1",
+      email: "gmail@gmail.com",
+      roles: [RoleEnum.S2_PEMBIMBING],
+    },
+    periode: "PRABOWO",
+  },
 ];
 
 const columHelper = createColumnHelper<DaftarTopikData>();
