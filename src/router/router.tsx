@@ -87,30 +87,6 @@ export const router = createBrowserRouter(
           element: <MhsDashboard />,
         },
         {
-          path: "/tugas",
-          element: <Navigate to="/tugas/kelas" replace />,
-        },
-        {
-          path: "/tugas/kelas",
-          element: <></>,
-        },
-        {
-          path: "/tugas/logbook",
-          element: <></>,
-        },
-        {
-          path: "/informasi",
-          element: <Navigate to="/informasi/seminar" replace />,
-        },
-        {
-          path: "/informasi/seminar",
-          element: <></>,
-        },
-        {
-          path: "/informasi/pengujian",
-          element: <></>,
-        },
-        {
           path: "/manajemen",
           element: <Navigate to="/manajemen/kelola-akun" replace />,
         },

@@ -43,6 +43,7 @@ const ExpandableMahasiswaCard = ({
               <Button
                 variant="ghost"
                 size="icon"
+                className="w-fit"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(-1);

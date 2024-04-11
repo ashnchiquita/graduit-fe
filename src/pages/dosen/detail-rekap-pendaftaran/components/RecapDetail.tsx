@@ -29,7 +29,12 @@ const RecapDetail = () => {
   return (
     <div className="flex h-full flex-1 flex-col gap-8 overflow-hidden rounded-2xl bg-white p-6 md:px-10 md:py-8">
       <div className="flex items-center gap-4 md:gap-6">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => navigate(-1)}
+          className="w-fit"
+        >
           <FaArrowLeft className="size-4 text-gray-500 md:size-6" />
         </Button>
         <Avatar className="size-12">
