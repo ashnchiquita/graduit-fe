@@ -1,7 +1,6 @@
 import { DataTable } from "@/components/DataTable";
-import StatisticCard from "@/components/StatisticCard";
-import StatusPendaftaranBadge from "@/components/StatusPendaftaranBadge";
-import { Button } from "@/components/ui/button";
+import TaskHeader from "../components/TaskHeader";
+import useSubmissionTugas from "./hooks/useSubmissionTugas";
 import {
   Select,
   SelectContent,
@@ -9,106 +8,87 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
+import { ChevronLeftIcon, ChevronRightIcon, Search } from "lucide-react";
+import { Link } from "react-router-dom";
+import StatusTugasBadge from "./components/StatusTugasBadge";
+import { Button } from "@/components/ui/button";
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { Search } from "lucide-react";
-import { FaRegEdit } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import InfoKontakDialog from "./components/InfoKontakDialog";
-import useRekapPendaftaranDosbim from "./hooks/useRekapPendaftaranDosbim";
 
-export default function RekapPendaftaranDosbim(): JSX.Element {
+export default function SubmissionTugas(): JSX.Element {
   const {
-    table,
+    data,
     searchValue,
     handleSearchValueChange,
+    table,
     statusFilter,
     handleStatusFilterChange,
-  } = useRekapPendaftaranDosbim();
+    idTugas,
+  } = useSubmissionTugas();
 
   return (
-    <main className="flex flex-col gap-3.5 px-5 md:px-7">
-      <section className="hidden w-full flex-col gap-3 rounded-lg bg-white px-6 py-4 text-slate-900 md:flex">
-        <h2 className="text-lg font-medium">Statistik</h2>
+    <main className="flex flex-col gap-3.5 px-4 pb-10">
+      <TaskHeader
+        title={data.tugas}
+        course={data.namaMatkul}
+        startTime={data.waktuMulai}
+        description={data.deskripsiTugas}
+        endTime={data.waktuSelesai}
+        creatorName={data.namaPembuat}
+        createdAt={data.waktuDibuat}
+        editorName={data.namaPengubah}
+        editedAt={data.waktuDiubah}
+        files={data.berkasTugas.map((berkas) => ({
+          title: berkas.nama,
+          link: berkas.link,
+        }))}
+        changeDetail
+      />
 
-        <div className="flex items-center justify-around">
-          <StatisticCard
-            title="Diterima"
-            count={234}
-            percentage={8}
-            color="GREEN"
-          />
-          <StatisticCard
-            title="Sedang Proses"
-            count={234}
-            percentage={8}
-            color="ORANGE"
-          />
-          <StatisticCard
-            title="Ditolak"
-            count={234}
-            percentage={8}
-            color="RED"
-          />
-        </div>
-      </section>
-
-      <section className="hidden pb-8 md:block">
+      <section className="hidden md:block">
         <DataTable
           table={table}
-          headline="Pengajuan Mahasiswa"
+          headline="Daftar Mahasiswa"
           searchValue={searchValue}
           setSearchValue={handleSearchValueChange}
           searchPlaceholder="Cari nama atau NIM mahasiswa"
-          customElementsRight={
+          customElementsLeft={
             <>
               <Select
                 value={statusFilter}
                 onValueChange={handleStatusFilterChange}
               >
                 <SelectTrigger className="h-fit text-xs">
-                  <SelectValue placeholder="Semua Bimbingan" />
+                  <SelectValue placeholder="Semua" />
                 </SelectTrigger>
 
                 <SelectContent>
                   <SelectItem value="semua" className="text-xs">
                     Semua
                   </SelectItem>
-                  {Object.values(StatusPendaftaranEnum).map((status) => (
-                    <SelectItem key={status} value={status} className="text-xs">
-                      {status}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="true" className="text-xs">
+                    Selesai
+                  </SelectItem>
+                  <SelectItem value="false" className="text-xs">
+                    Belum Mengerjakan
+                  </SelectItem>
                 </SelectContent>
               </Select>
-
-              <InfoKontakDialog
-                infoKontak=""
-                dialogTrigger={
-                  <Button className="flex h-fit items-center gap-2 bg-blue-500 text-xs text-gray-100 hover:bg-blue-600">
-                    <FaRegEdit className="size-3" />
-                    Informasi Kontak Saya
-                  </Button>
-                }
-              />
             </>
           }
         />
       </section>
 
       <section className="flex w-full flex-col gap-2.5 rounded-lg bg-white px-5 py-4 md:hidden">
-        <h2 className="text-lg font-bold">Rekap Pendaftaran</h2>
+        <h2 className="text-lg font-bold">Daftar Mahasiswa</h2>
 
         <div className="flex w-full items-center justify-between">
-          <p className="text-xs text-slate-700">Status Pengajuan</p>
+          <p className="text-xs text-slate-700">Status Pengerjaan</p>
 
           <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
-            <SelectTrigger className="w-[120px] border-none text-xs">
+            <SelectTrigger className="w-[150px] border-none text-xs">
               <SelectValue placeholder="Semua" />
             </SelectTrigger>
 
@@ -116,11 +96,12 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
               <SelectItem value="semua" className="text-xs">
                 Semua
               </SelectItem>
-              {Object.values(StatusPendaftaranEnum).map((status) => (
-                <SelectItem key={status} value={status} className="text-xs">
-                  {status}
-                </SelectItem>
-              ))}
+              <SelectItem value="true" className="text-xs">
+                Selesai
+              </SelectItem>
+              <SelectItem value="false" className="text-xs">
+                Belum Mengerjakan
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -140,7 +121,10 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
 
         <ul className="flex flex-col gap-2.5">
           {table.getRowModel().rows.map((row, index) => (
-            <Link key={index} to={`/rekap-pendaftaran/${row.original.nim}`}>
+            <Link
+              key={index}
+              to={`/tugas/${idTugas}/submisi/${row.original.id}`}
+            >
               <li className="flex w-full items-center justify-between gap-2 rounded-lg border border-[#E2E5E8] px-3 py-4">
                 <div className="flex flex-col gap-1">
                   <p className="text-xs font-medium">{row.original.nama}</p>
@@ -150,7 +134,7 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
                 </div>
 
                 <div className="flex shrink-0 items-center gap-1">
-                  <StatusPendaftaranBadge status={row.original.status} />
+                  <StatusTugasBadge selesai={row.original.selesai} />
                   <ChevronRightIcon className="size-5" />
                 </div>
               </li>

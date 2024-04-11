@@ -23,6 +23,8 @@ import {
   Dashboard,
   DaftarPengajuan,
   RekapPendaftaranDosbim,
+  DetailSubmissionTugas,
+  SubmissionTugas,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -65,6 +67,14 @@ export const router = createBrowserRouter(
           element: <DaftarPengajuan></DaftarPengajuan>,
         },
         {
+          path: "/tugas/:idTugas",
+          element: <SubmissionTugas />,
+        },
+        {
+          path: "/tugas/:idTugas/submisi/:idSubmisi",
+          element: <DetailSubmissionTugas />,
+        },
+        {
           path: "/registrasi",
           element: <Registration></Registration>,
         },
@@ -80,30 +90,6 @@ export const router = createBrowserRouter(
         {
           path: "/tesis/status",
           element: <MhsDashboard />,
-        },
-        {
-          path: "/tugas",
-          element: <Navigate to="/tugas/kelas" replace />,
-        },
-        {
-          path: "/tugas/kelas",
-          element: <></>,
-        },
-        {
-          path: "/tugas/logbook",
-          element: <></>,
-        },
-        {
-          path: "/informasi",
-          element: <Navigate to="/informasi/seminar" replace />,
-        },
-        {
-          path: "/informasi/seminar",
-          element: <></>,
-        },
-        {
-          path: "/informasi/pengujian",
-          element: <></>,
         },
         {
           path: "/manajemen",
