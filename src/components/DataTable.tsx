@@ -162,14 +162,16 @@ export function DataTable<TData>({
                         ) : (
                           <ChevronDown size={16} />
                         )}
-                        <div
-                          onDoubleClick={() => header.column.resetSize()}
-                          onMouseDown={header.getResizeHandler()}
-                          onTouchStart={header.getResizeHandler()}
-                          className={cn(
-                            "absolute top-0 right-0 h-full w-4 group-hover:bg-black/10 cursor-col-resize select-none touch-none",
-                          )}
-                        />
+                        {header.column.getCanResize() && (
+                          <div
+                            onDoubleClick={() => header.column.resetSize()}
+                            onMouseDown={header.getResizeHandler()}
+                            onTouchStart={header.getResizeHandler()}
+                            className={cn(
+                              "absolute top-0 right-0 h-full w-4 group-hover:bg-black/10 cursor-col-resize select-none touch-none",
+                            )}
+                          />
+                        )}
                       </div>
                     </TableHead>
                   );
