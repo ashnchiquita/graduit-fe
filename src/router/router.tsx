@@ -26,6 +26,7 @@ import {
   RekapPendaftaranDosbim,
   SubmissionTugas,
   Topik,
+  RekapPendaftaranTimTesis,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -58,6 +59,10 @@ export const router = createBrowserRouter(
         {
           path: "/rekap-pendaftaran",
           element: <RekapPendaftaranDosbim />,
+        },
+        {
+          path: "/rekap-pendaftaran-tim-tesis",
+          element: <RekapPendaftaranTimTesis />,
         },
         {
           path: "/rekap-pendaftaran/:nim",
