@@ -1,7 +1,7 @@
+import { RoleEnum } from "@/types/session-data";
 import { IoSchoolOutline } from "react-icons/io5";
 import { VscNotebook, VscPieChart } from "react-icons/vsc";
 import { NavItem } from "../types";
-import { RoleEnum } from "@/types/session-data";
 
 const NAV_ITEMS: NavItem[] = [
   {
@@ -102,6 +102,16 @@ const NAV_ITEMS: NavItem[] = [
     label: "Manajemen",
     icon: <IoSchoolOutline className="text-slate-700" />,
     children: [
+      {
+        label: "Daftar Topik",
+        path: "/manajemen/daftar-topik",
+        roleAccess: [
+          RoleEnum.ADMIN,
+          RoleEnum.TU,
+          RoleEnum.S2_TIM_TESIS,
+          RoleEnum.S1_TIM_TA,
+        ],
+      },
       {
         label: "Kelola Akun",
         path: "/manajemen/kelola-akun",

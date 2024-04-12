@@ -2,9 +2,17 @@ import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import {
+  AccountTimTesisLayout,
   AkunCreate,
   AkunDetail,
+  BatchUbahRole,
+  DaftarPengajuan,
+  DaftarTopikTimTugas,
+  Dashboard,
+  DetailRekapPendaftaran,
+  DetailSubmissionTugas,
   KelolaAkun,
+  KonfigurasiPeriode,
   LogBimbingan,
   LogBimbinganMahasiswa,
   LogSistem,
@@ -14,17 +22,10 @@ import {
   NotFound,
   Pengumuman,
   Penjadwalan,
-  DetailRekapPendaftaran,
   Registration,
-  Topik,
-  AccountTimTesisLayout,
-  BatchUbahRole,
-  KonfigurasiPeriode,
-  Dashboard,
-  DaftarPengajuan,
   RekapPendaftaranDosbim,
-  DetailSubmissionTugas,
   SubmissionTugas,
+  Topik,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -110,6 +111,10 @@ export const router = createBrowserRouter(
         {
           path: "/manajemen/role-pengguna",
           element: <BatchUbahRole />,
+        },
+        {
+          path: "/manajemen/daftar-topik",
+          element: <DaftarTopikTimTugas />,
         },
         {
           path: "/log",

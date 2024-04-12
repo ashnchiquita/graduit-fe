@@ -18,6 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import SelectData from "@/types/select-data";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -39,6 +40,11 @@ interface DataTableProps<TData> {
   setSearchValue?: (value: string) => void;
   customElementsLeft?: JSX.Element;
   customElementsRight?: JSX.Element;
+  allowHorizontalOverflow?: boolean;
+  selectFilterValue?: string;
+  selectFilterPlaceholder?: string;
+  selectFilterOptions?: SelectData[];
+  setSelectFilterValue?: (value: string) => void;
 }
 
 export function DataTable<TData>({
@@ -50,6 +56,11 @@ export function DataTable<TData>({
   setSearchValue,
   customElementsLeft,
   customElementsRight,
+  allowHorizontalOverflow = false,
+  selectFilterOptions,
+  selectFilterPlaceholder,
+  selectFilterValue,
+  setSelectFilterValue,
 }: DataTableProps<TData>) {
   const useTableConfig =
     !!headline ||
@@ -58,7 +69,10 @@ export function DataTable<TData>({
     !!searchPlaceholder ||
     !!setSearchValue ||
     !!customElementsLeft ||
-    !!customElementsRight;
+    !!customElementsRight ||
+    !!selectFilterOptions ||
+    !!selectFilterValue ||
+    !!setSelectFilterValue;
 
   const columnSizeVars = React.useMemo(() => {
     const headers = table.getFlatHeaders();
@@ -85,9 +99,9 @@ export function DataTable<TData>({
   // TODO loading state
   return (
     <div>
-      <div className="rounded-md border bg-white" ref={containerRef}>
+      <div className="mb-3 rounded-md border bg-white" ref={containerRef}>
         {useTableConfig && (
-          <div className="flex px-6 py-5">
+          <div className="flex flex-wrap gap-x-3 gap-y-4 px-6 py-5">
             <div className="flex-1">
               {headline && (
                 <div className="text-lg font-semibold">{headline}</div>
@@ -98,14 +112,14 @@ export function DataTable<TData>({
                 </div>
               )}
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               {customElementsLeft}
               {searchValue !== undefined && !!setSearchValue && (
-                <div className="group flex items-center gap-2 rounded-md border border-input bg-transparent px-2 py-1 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+                <div className="group flex flex-1 items-center gap-2 rounded-md border border-input bg-transparent px-2 py-1 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:flex-none">
                   <Search size={14} className="text-muted-foreground" />
                   <input
                     type="text"
-                    className="w-[225px] flex-auto outline-none"
+                    className="flex-1 outline-none md:w-[225px] md:flex-auto"
                     placeholder={searchPlaceholder}
                     value={searchValue}
                     onChange={(e) => {
@@ -114,6 +128,32 @@ export function DataTable<TData>({
                   />
                 </div>
               )}
+              {selectFilterOptions !== undefined &&
+                selectFilterValue !== undefined &&
+                !!setSelectFilterValue && (
+                  <Select
+                    value={selectFilterValue}
+                    onValueChange={setSelectFilterValue}
+                  >
+                    <SelectTrigger className="h-fit w-[180px] text-xs">
+                      <SelectValue placeholder={selectFilterPlaceholder} />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {Object.values(selectFilterOptions).map(
+                        ({ label, value }) => (
+                          <SelectItem
+                            key={value}
+                            value={value}
+                            className="text-xs"
+                          >
+                            {label}
+                          </SelectItem>
+                        ),
+                      )}
+                    </SelectContent>
+                  </Select>
+                )}
               {customElementsRight}
             </div>
           </div>
@@ -122,8 +162,11 @@ export function DataTable<TData>({
         <Table
           style={{
             ...columnSizeVars,
-            width: Math.max(fullWidth, table.getTotalSize()) - 2,
+            width: allowHorizontalOverflow
+              ? Math.max(fullWidth, table.getTotalSize()) - 2
+              : undefined,
           }}
+          className="text-xs md:text-sm"
         >
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -162,14 +205,16 @@ export function DataTable<TData>({
                         ) : (
                           <ChevronDown size={16} />
                         )}
-                        <div
-                          onDoubleClick={() => header.column.resetSize()}
-                          onMouseDown={header.getResizeHandler()}
-                          onTouchStart={header.getResizeHandler()}
-                          className={cn(
-                            "absolute top-0 right-0 h-full w-4 group-hover:bg-black/10 cursor-col-resize select-none touch-none",
-                          )}
-                        />
+                        {header.column.getCanResize() && (
+                          <div
+                            onDoubleClick={() => header.column.resetSize()}
+                            onMouseDown={header.getResizeHandler()}
+                            onTouchStart={header.getResizeHandler()}
+                            className={cn(
+                              "absolute top-0 right-0 h-full w-4 group-hover:bg-black/10 cursor-col-resize select-none touch-none",
+                            )}
+                          />
+                        )}
                       </div>
                     </TableHead>
                   );
@@ -183,7 +228,7 @@ export function DataTable<TData>({
             <DataTableBody table={table} />
           )}
         </Table>
-        <div className="flex h-12 items-center justify-between space-x-6 border-t px-4 text-gray-500 lg:space-x-8">
+        <div className="flex min-h-12 items-center justify-between space-x-6 border-t px-4 py-1 text-gray-500 lg:space-x-8">
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium">Rows per page</p>
             <Select
