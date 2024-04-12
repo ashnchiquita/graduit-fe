@@ -23,11 +23,11 @@ export default function Sidebar({ closed }: SidebarProps): JSX.Element {
         closed
           ? "fixed left-[-100%] md:relative md:w-[0px]"
           : "fixed left-0 md:relative md:w-[348px]",
-        "mt-[45px] size-full h-[calc(100vh-45px)] transition-all duration-500 ease-in-out md:mt-0 md:h-full md:py-1 md:pl-1",
+        "mt-[45px] size-full h-[calc(100vh-45px)] transition-all duration-500 ease-in-out md:mt-0 md:h-full md:py-1 md:pl-1 z-[99]",
       )}
     >
-      <nav className="relative z-10 flex h-full flex-col items-center justify-between bg-white px-4 py-5 md:h-full md:rounded-lg">
-        <div className="z-10 flex size-full flex-col justify-between">
+      <nav className="relative flex h-full flex-col items-center justify-between bg-white px-4 py-5 md:h-full md:rounded-lg">
+        <div className="flex size-full flex-col justify-between">
           <div className="flex flex-col gap-6">
             {/* Logo */}
             <div className="hidden w-full items-center justify-between md:flex">
