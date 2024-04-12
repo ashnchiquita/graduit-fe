@@ -30,7 +30,7 @@ export default function RowAction({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button onClick={() => console.log(row)}>
+        <button>
           <IoEllipsisVertical className="text-[#94A3B8]" />
         </button>
       </PopoverTrigger>
