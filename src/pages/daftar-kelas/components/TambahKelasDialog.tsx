@@ -90,6 +90,7 @@ export default function TambahKelasDialog({
             className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
             placeholder="Masukkan nomor kelas"
             value={nomorKelas}
+            min={1}
             onChange={(e) => {
               setNomorKelas(parseInt(e.target.value));
             }}
