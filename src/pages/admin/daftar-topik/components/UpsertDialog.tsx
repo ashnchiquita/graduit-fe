@@ -44,7 +44,7 @@ export default function UpsertDialog({
   );
 
   return (
-    <DialogContent>
+    <DialogContent className="w-11/12 sm:max-w-md">
       <DialogHeader className="gap-2">
         <DialogTitle>{row ? "Ubah" : "Tambahkan"} topik</DialogTitle>
       </DialogHeader>

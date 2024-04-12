@@ -86,7 +86,7 @@ export function useUpsertDialog(
       }
       toast.success(`Berhasil ${row ? "mengubah" : "menambahkan"} topik`);
     } catch (error) {
-      toast.success(`Gagal ${row ? "mengubah" : "menambahkan"} topik`);
+      toast.error(`Gagal ${row ? "mengubah" : "menambahkan"} topik`);
     } finally {
       closeDialog();
       updateData();
