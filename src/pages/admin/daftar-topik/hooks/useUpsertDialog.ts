@@ -43,7 +43,7 @@ export function useUpsertDialog(
   const { trigger: triggerPut } = useSWRMutation(
     "/registrasi-topik",
     async (_, { arg }: { arg: PutExistingTopicReqData }) => {
-      return await putExistingTopic(arg);
+      if (row) return await putExistingTopic(row?.original.id, arg);
     },
   );
 
@@ -65,7 +65,6 @@ export function useUpsertDialog(
     try {
       if (row) {
         const data: PutExistingTopicReqData = {
-          idTopic: row.original.id,
           ...values,
         };
         await triggerPut(data);

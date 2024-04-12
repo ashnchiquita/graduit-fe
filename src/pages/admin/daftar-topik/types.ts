@@ -36,7 +36,6 @@ export type PostNewTopicBulkReqData = {
 };
 
 export type PutExistingTopicReqData = {
-  idTopic: string;
   judul: string;
   deskripsi: string;
   idPengaju: string;
