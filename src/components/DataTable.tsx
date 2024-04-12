@@ -18,6 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import SelectData from "@/types/select-data";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -40,6 +41,10 @@ interface DataTableProps<TData> {
   customElementsLeft?: JSX.Element;
   customElementsRight?: JSX.Element;
   allowHorizontalOverflow?: boolean;
+  selectFilterValue?: string;
+  selectFilterPlaceholder?: string;
+  selectFilterOptions?: SelectData[];
+  setSelectFilterValue?: (value: string) => void;
 }
 
 export function DataTable<TData>({
@@ -52,6 +57,10 @@ export function DataTable<TData>({
   customElementsLeft,
   customElementsRight,
   allowHorizontalOverflow = false,
+  selectFilterOptions,
+  selectFilterPlaceholder,
+  selectFilterValue,
+  setSelectFilterValue,
 }: DataTableProps<TData>) {
   const useTableConfig =
     !!headline ||
@@ -60,7 +69,10 @@ export function DataTable<TData>({
     !!searchPlaceholder ||
     !!setSearchValue ||
     !!customElementsLeft ||
-    !!customElementsRight;
+    !!customElementsRight ||
+    !!selectFilterOptions ||
+    !!selectFilterValue ||
+    !!setSelectFilterValue;
 
   const columnSizeVars = React.useMemo(() => {
     const headers = table.getFlatHeaders();
@@ -116,6 +128,32 @@ export function DataTable<TData>({
                   />
                 </div>
               )}
+              {selectFilterOptions !== undefined &&
+                selectFilterValue !== undefined &&
+                !!setSelectFilterValue && (
+                  <Select
+                    value={selectFilterValue}
+                    onValueChange={setSelectFilterValue}
+                  >
+                    <SelectTrigger className="h-fit w-[180px] text-xs">
+                      <SelectValue placeholder={selectFilterPlaceholder} />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {Object.values(selectFilterOptions).map(
+                        ({ label, value }) => (
+                          <SelectItem
+                            key={value}
+                            value={value}
+                            className="text-xs"
+                          >
+                            {label}
+                          </SelectItem>
+                        ),
+                      )}
+                    </SelectContent>
+                  </Select>
+                )}
               {customElementsRight}
             </div>
           </div>

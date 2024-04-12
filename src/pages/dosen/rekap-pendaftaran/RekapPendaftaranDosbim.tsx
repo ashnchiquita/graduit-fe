@@ -20,6 +20,7 @@ import { Search } from "lucide-react";
 import { FaRegEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import InfoKontakDialog from "./components/InfoKontakDialog";
+import { StatusPendaftaranOptions } from "./cosntants";
 import useRekapPendaftaranDosbim from "./hooks/useRekapPendaftaranDosbim";
 
 export default function RekapPendaftaranDosbim(): JSX.Element {
@@ -65,28 +66,12 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
           searchValue={searchValue}
           setSearchValue={handleSearchValueChange}
           searchPlaceholder="Cari nama atau NIM mahasiswa"
+          selectFilterValue={statusFilter}
+          selectFilterPlaceholder="Semua Bimbingan"
+          setSelectFilterValue={handleStatusFilterChange}
+          selectFilterOptions={StatusPendaftaranOptions}
           customElementsRight={
             <>
-              <Select
-                value={statusFilter}
-                onValueChange={handleStatusFilterChange}
-              >
-                <SelectTrigger className="h-fit text-xs">
-                  <SelectValue placeholder="Semua Bimbingan" />
-                </SelectTrigger>
-
-                <SelectContent>
-                  <SelectItem value="semua" className="text-xs">
-                    Semua
-                  </SelectItem>
-                  {Object.values(StatusPendaftaranEnum).map((status) => (
-                    <SelectItem key={status} value={status} className="text-xs">
-                      {status}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
               <InfoKontakDialog
                 infoKontak=""
                 dialogTrigger={
