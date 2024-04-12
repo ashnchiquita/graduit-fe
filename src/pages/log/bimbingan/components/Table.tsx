@@ -152,7 +152,7 @@ interface ButtonDownloadProps extends HTMLAttributes<HTMLDivElement> {
   };
 }
 
-const ButtonDownload = forwardRef<HTMLDivElement, ButtonDownloadProps>(
+export const ButtonDownload = forwardRef<HTMLDivElement, ButtonDownloadProps>(
   ({ berkas, className, ...props }, ref) => {
     return (
       <>

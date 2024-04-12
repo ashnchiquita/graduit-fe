@@ -1,203 +1,107 @@
+"use client";
+import { DataTable } from "@/components/DataTable";
+import type { MahasiswaLogs } from "@/lib/entity";
 import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  ColumnDef,
+  PaginationState,
+  SortingState,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useEffect, useState } from "react";
+import TagStatus from "./components/TagStatus";
+import { Badge, ButtonDownload } from "./components/Table";
 
-import { Button } from "@/components/ui/button";
-
-import { VscListFilter, VscAdd } from "react-icons/vsc";
-import { CardTable, TableHeader, TableRowProps } from "./components/Table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-} from "@/components/ui/dropdown-menu";
-import { useState } from "react";
-import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
-
-const dummyData: TableRowProps[] = [
+const columns: ColumnDef<MahasiswaLogs>[] = [
   {
-    tanggal: <p>11/02/2023</p>,
-    laporanKemajuan: (
-      <p>
-        Sudah mengerjakan bab 1-3 untuk propsan. Mionggu depan sudah bisa
-        seminar
-      </p>
-    ),
-    todo: (
-      <>
-        <p>Berikut hal yang saya akan lakukan</p>
-        <ul>
-          <li>Berjalan-jalan di taman</li>
-          <li>Menontori spongebob</li>
-        </ul>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eligendi
-          numquam dignissimos porro expedita exercitationem. Pariatur repellat
-          aspernatur ex, veritatis perspiciatis, et in aliquid facere minima
-          corporis blanditiis dolore repudiandae dolores?
-        </p>
-      </>
-    ),
-    berkas: {
-      nama: "Laporan #1",
-      url: "https://www.google.com",
-    },
-    status: "Tidak Sah",
-    rencana: <p>11/03/20224</p>,
+    header: "Tanggal",
+    accessorKey: "tanggal",
+    minSize: 1000,
   },
   {
-    tanggal: <p>11/02/2023</p>,
-    laporanKemajuan: (
-      <p>
-        Sudah mengerjakan bab 1-3 untuk propsan. Mionggu depan sudah bisa
-        seminar
-      </p>
-    ),
-    todo: (
-      <>
-        <p>Berikut hal yang saya akan lakukan</p>
-        <ul>
-          <li>Berjalan-jalan di taman</li>
-          <li>Menontori spongebob</li>
-        </ul>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eligendi
-          numquam dignissimos porro expedita exercitationem. Pariatur repellat
-          aspernatur ex, veritatis perspiciatis, et in aliquid facere minima
-          corporis blanditiis dolore repudiandae dolores?
-        </p>
-      </>
-    ),
-    berkas: {
-      nama: "Laporan #1",
-      url: "https://www.google.com",
-    },
-    status: "Tidak Sah",
-    rencana: <p>11/03/20224</p>,
+    header: "Laporan Kemajuan",
+    accessorKey: "laporanKemajuan",
+    minSize: 1000,
   },
   {
-    tanggal: <p>11/02/2023</p>,
-    laporanKemajuan: (
-      <p>
-        Sudah mengerjakan bab 1-3 untuk propsan. Mionggu depan sudah bisa
-        seminar
-      </p>
-    ),
-    todo: (
-      <>
-        <p>Berikut hal yang saya akan lakukan</p>
-        <ul>
-          <li>Berjalan-jalan di taman</li>
-          <li>Menontori spongebob</li>
-        </ul>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eligendi
-          numquam dignissimos porro expedita exercitationem. Pariatur repellat
-          aspernatur ex, veritatis perspiciatis, et in aliquid facere minima
-          corporis blanditiis dolore repudiandae dolores?
-        </p>
-      </>
-    ),
-    berkas: {
-      nama: "Laporan #1",
-      url: "https://www.google.com",
-    },
-    status: "Tidak Sah",
-    rencana: <p>11/03/20224</p>,
+    header: "To-Do",
+    accessorKey: "toDo",
+    minSize: 1000,
   },
   {
-    tanggal: <p>11/02/2023</p>,
-    laporanKemajuan: (
-      <p>
-        Sudah mengerjakan bab 1-3 untuk propsan. Mionggu depan sudah bisa
-        seminar
-      </p>
-    ),
-    todo: (
-      <>
-        <p>Berikut hal yang saya akan lakukan</p>
-        <ul>
-          <li>Berjalan-jalan di taman</li>
-          <li>Menontori spongebob</li>
-        </ul>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eligendi
-          numquam dignissimos porro expedita exercitationem. Pariatur repellat
-          aspernatur ex, veritatis perspiciatis, et in aliquid facere minima
-          corporis blanditiis dolore repudiandae dolores?
-        </p>
-      </>
-    ),
-    berkas: {
-      nama: "Laporan #1",
-      url: "https://www.google.com",
-    },
-    status: "Tidak Sah",
-    rencana: <p>11/03/20224</p>,
+    header: "Berkas",
+    accessorKey: "berkas",
+    minSize: 1000,
+  },
+  {
+    header: "Status",
+    accessorKey: "status",
+    minSize: 1000,
+  },
+  {
+    header: "Rencana",
+    accessorKey: "rencana",
+    minSize: 1000,
   },
 ];
 
 export default function LogMahasiswa(): JSX.Element {
-  const [color, setColor] = useState("blue");
+  const data: MahasiswaLogs[] = [
+    {
+      tanggal: "12/12/2024",
+      laporanKemajuan: "lorem ipsum",
+      toDo : "membantu orang tua",
+      berkas : <ButtonDownload berkas={
+      {
+        nama:"oke",
+        url:"google.com"
+      }
+      }/>,
+      status: <Badge/>,
+      rencana: "12/1/2025"
+    }
+  ];
+
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const [sorting, setSorting] = useState<SortingState>([
+    {
+      id: "id",
+      desc: false,
+    },
+  ]);
+
+  useEffect(() => {
+    console.log(sorting);
+  }, [sorting]);
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
+    onSortingChange: setSorting,
+    state: {
+      pagination,
+      sorting,
+    },
+  });
+
+  const [searchValue, setSearchValue] = useState("");
+
   return (
     <div className="flex flex-col gap-4 px-4 pb-20">
-      <ul className=" font-urbanist text-xs font-semibold text-green-500 list-disc ml-2">
-        <li>Status bimbingan log bimbingan</li>
-      </ul>
-      <Card
-        isTable={true}
-        HeaderElement={
-          <CardHeader className="w-full px-7">
-            <div className="flex justify-between items-center">
-              <div className="flex flex-col">
-                <CardTitle>Log Bimbingan</CardTitle>
-                <CardDescription>
-                  Berikut merupakan log bimbingan
-                </CardDescription>
-              </div>
-              <div className="flex gap-2">
-                <Button variant={"outline"} className="flex">
-                  <VscListFilter className="text-muted-foreground" />
-                  <p className="font-urbanist font-medium text-[12px] text-muted-foreground ml-2">
-                    Filter
-                  </p>
-                </Button>
-                <Button variant={"default"} className="bg-blue-500 flex">
-                  <VscAdd />
-                  <p className="ml-2 font-urbanist font-medium text-[12px]">
-                    Isi Baru
-                  </p>
-                </Button>
-              </div>
-            </div>
-          </CardHeader>
-        }
-        ContentElement={
-          <CardTable TableHeader={<TableHeader />} TableContent={dummyData} />
-        }
-        FooterElement={
-          <>
-            <div className="flex justify-between px-4">
-              <div>
-                <p className="text=[#344054] text-[14px]">Display</p>
-                <DropdownMenu>
-                  <DropdownMenuTrigger>oke</DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-fit">
-                    <DropdownMenuItem>1</DropdownMenuItem>
-                    <DropdownMenuItem>1</DropdownMenuItem>
-                    <DropdownMenuItem>1</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          </>
-        }
+      <TagStatus status="SAH" />
+      <DataTable
+        headline="Log Bimbingan"
+        table={table}
+        onClickDelete={()=>{console.log("DELETE")}}
+        onClickFilter={()=>{console.log("FILTER")}}
       />
     </div>
   );
