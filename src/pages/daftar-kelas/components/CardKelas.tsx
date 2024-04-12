@@ -31,7 +31,7 @@ export default function CardKelas({ dataKelas }: CardKelasProps): JSX.Element {
   const namaMatkul = dataKelas.mata_kuliah.split(" ").slice(1).join(" ");
 
   return (
-    <div className="flex w-52 flex-col gap-4 rounded-lg bg-white p-1">
+    <div className="flex w-full sm:w-52 flex-col gap-4 rounded-lg bg-white p-1">
       <div
         className={`h-20 w-full rounded ${cardColor ? cardColor : "bg-blue-500"}`}
       />

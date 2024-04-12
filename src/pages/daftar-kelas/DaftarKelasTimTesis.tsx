@@ -76,9 +76,12 @@ export default function DaftarKelasTimTesis(): JSX.Element {
       </div>
 
       {/* Daftar Kelas */}
-      <div className="grid w-fit grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+      <div className="flex w-full flex-col gap-2 sm:grid sm:w-fit sm:grid-cols-3 sm:gap-x-4 sm:gap-y-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
         {daftarKelas.map((kelas) => (
-          <div onClick={() => {}} className="mx-auto max-w-xs cursor-pointer">
+          <div
+            onClick={() => {}}
+            className="cursor-pointer sm:mx-auto sm:max-w-xs"
+          >
             <CardKelas key={kelas.id} dataKelas={kelas} />
           </div>
         ))}
