@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DaftarKelasTimTesisData } from "./types";
 import { Plus, Search } from "lucide-react";
 import CardKelas from "./components/CardKelas";
 import { Button } from "@/components/ui/button";
+import TambahKelasDialog from "./components/TambahKelasDialog";
 
 export default function DaftarKelasTimTesis(): JSX.Element {
   const [daftarKelas, setDaftarKelas] = useState<DaftarKelasTimTesisData>([
@@ -43,11 +44,29 @@ export default function DaftarKelasTimTesis(): JSX.Element {
       jumlah_mahasiswa: 3,
     },
   ]);
+  const [filteredKelas, setFilteredKelas] =
+    useState<DaftarKelasTimTesisData>(daftarKelas);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
+  useEffect(() => {
+    const result = daftarKelas.filter((kelas) =>
+      kelas.mata_kuliah.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+    setFilteredKelas(result);
+  }, [searchQuery, daftarKelas]);
+
+  const handleTambahKelas = () => {
+    setDialogOpen(false);
+  };
+
   return (
     <div className="flex w-full flex-col gap-4 px-4">
+      <TambahKelasDialog
+        dialogOpen={dialogOpen}
+        setDialogOpen={setDialogOpen}
+        handleAddKelas={handleTambahKelas}
+      />
       <div className="flex w-full justify-end gap-2">
         {/* Search Bar */}
         <div className="flex grow items-center gap-2 rounded-md border border-input bg-white px-2 py-1 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
@@ -77,7 +96,7 @@ export default function DaftarKelasTimTesis(): JSX.Element {
 
       {/* Daftar Kelas */}
       <div className="flex w-full flex-col gap-2 sm:grid sm:w-fit sm:grid-cols-3 sm:gap-x-4 sm:gap-y-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-        {daftarKelas.map((kelas) => (
+        {filteredKelas.map((kelas) => (
           <div
             onClick={() => {}}
             className="cursor-pointer sm:mx-auto sm:max-w-xs"
