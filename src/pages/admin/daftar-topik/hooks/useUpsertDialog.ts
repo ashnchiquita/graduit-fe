@@ -30,7 +30,14 @@ export function useUpsertDialog(
           judul: row.original.judul,
         }
       : { deskripsi: "", idPengaju: "", judul: "" },
-    resolver: zodResolver(UpsertTopikFormSchema),
+    resolver: async (data, context, options) => {
+      console.log("formData", data);
+      console.log(
+        "validation result",
+        await zodResolver(UpsertTopikFormSchema)(data, context, options),
+      );
+      return zodResolver(UpsertTopikFormSchema)(data, context, options);
+    },
   });
 
   const { trigger: triggerPost } = useSWRMutation(
@@ -62,6 +69,8 @@ export function useUpsertDialog(
   );
 
   const onSubmit = async (values: UpsertTopikFormData) => {
+    console.log(values);
+
     try {
       if (row) {
         const data: PutExistingTopicReqData = {

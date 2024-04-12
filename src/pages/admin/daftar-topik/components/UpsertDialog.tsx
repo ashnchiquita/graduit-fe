@@ -12,7 +12,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form/form";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -116,14 +116,16 @@ export default function UpsertDialog({
               </FormItem>
             )}
           />
+          <DialogFooter>
+            <Button
+              className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
+              type="submit"
+            >
+              {row ? "Ubah" : "Tambahkan"} Topik
+            </Button>
+          </DialogFooter>
         </form>
-        <DialogFooter></DialogFooter>
       </Form>
-      <DialogFooter>
-        <Button className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700">
-          {row ? "Ubah" : "Tambahkan"} Topik
-        </Button>
-      </DialogFooter>
     </DialogContent>
   );
 }
