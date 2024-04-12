@@ -23,7 +23,7 @@ export default function Sidebar({ closed }: SidebarProps): JSX.Element {
         closed
           ? "fixed left-[-100%] md:relative md:w-[0px]"
           : "fixed left-0 md:relative md:w-[348px]",
-        "mt-[45px] size-full h-[calc(100vh-45px)] transition-all duration-500 ease-in-out md:mt-0 md:h-full md:py-1 md:pl-1 z-[99]",
+        "mt-[45px] size-full h-[calc(100vh-45px)] transition-all duration-500 ease-in-out md:mt-0 md:h-full md:py-1 md:pl-1 z-10",
       )}
     >
       <nav className="relative flex h-full flex-col items-center justify-between bg-white px-4 py-5 md:h-full md:rounded-lg">
