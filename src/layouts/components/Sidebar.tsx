@@ -1,7 +1,5 @@
 import Logo from "@/assets/logo.svg";
 import { cn } from "@/lib/utils";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 import Profile from "./Profile";
 import SidebarContent from "./SidebarContent";
 
@@ -10,12 +8,6 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ closed }: SidebarProps): JSX.Element {
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    Cookies.remove("token");
-    navigate("/");
-  };
 
   return (
     <aside
@@ -46,7 +38,7 @@ export default function Sidebar({ closed }: SidebarProps): JSX.Element {
             <SidebarContent />
           </div>
           {/* Profile */}
-          <Profile handleLogout={handleLogout} />
+          <Profile />
         </div>
       </nav>
     </aside>
