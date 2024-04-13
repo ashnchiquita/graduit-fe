@@ -1,27 +1,32 @@
 import { CardDescription, CardTitle } from "@/components/Card";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 import { PickDateButton } from "./PickDateButton";
 import { AddBerkas } from "./AddBerkas";
+import { UseFormReturn } from "react-hook-form";
+import { AddLogBimbinganFormData } from "../constants";
+import { TextAreaComponent } from "./TextAreaComponent";
 
 export default function AddLogBimbinganCard({
   title,
   descriprion,
   optional,
   type,
+  form,
 }: {
   title: string;
   descriprion: string;
   optional: boolean;
   type: string;
+  form: UseFormReturn<AddLogBimbinganFormData>;
 }) {
   const renderComponent = () => {
     switch (type) {
       case "date":
-        return <PickDateButton />;
+        return <PickDateButton form={form} />;
       case "text":
-        return <Textarea />;
+        return <TextAreaComponent form={form} />;
       case "berkas":
-        return <AddBerkas />;
+        return <AddBerkas form={form} />;
       default:
         return null;
     }
