@@ -3,7 +3,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useRiwayatPendaftaran from "./hooks/useRiwayatPendaftaran";
 import { RiwayatPendaftaranHookRet } from "../rekap-pendaftaran/types";
 import { formatDate } from "@/lib/dateformat";
-import { Button } from "@/components/ui/button";
 import StatusPendaftaranBadge from "@/components/StatusPendaftaranBadge";
 import { useNavigate } from "react-router-dom";
 import {
@@ -26,8 +25,8 @@ export default function RiwayatPendaftaran(): JSX.Element {
         <button onClick={() => navigate("/rekap-pendaftaran-tim-tesis")}>
           <ArrowLeft size={20} className="text-gray-500" />
         </button>
-        <Avatar className="size-10">
-          <AvatarFallback className="bg-violet-500 text-lg text-white">
+        <Avatar className="z-0 size-10">
+          <AvatarFallback className="z-0 bg-violet-500 text-lg text-white">
             {data && data.nama.length > 0 && data.nama[0]}
           </AvatarFallback>
         </Avatar>
@@ -46,7 +45,7 @@ export default function RiwayatPendaftaran(): JSX.Element {
               <h2>Pengajuan {data.listPengajuan.length - index} </h2>
 
               {/* Info Pengajuan */}
-              <div className="flex justify-between gap-8">
+              <div className="flex flex-col gap-4 md:flex-row md:justify-between md:gap-8">
                 {/*  Deskripsi Topik */}
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1">
