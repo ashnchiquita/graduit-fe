@@ -21,6 +21,10 @@ export type RowActionHookRet = {
   setAcceptDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   rejectDialogOpen: boolean;
   setRejectDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  editDosenPembimbingDialogOpen: boolean;
+  setEditDosenPembimbingDialogOpen: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   handleAccept: (nim: string) => void;
   handleReject: (nim: string) => void;
 };

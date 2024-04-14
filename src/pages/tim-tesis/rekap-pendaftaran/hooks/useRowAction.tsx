@@ -9,6 +9,8 @@ type HookProps = {
 export default function useRowAction({ setData }: HookProps): RowActionHookRet {
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [editDosenPembimbingDialogOpen, setEditDosenPembimbingDialogOpen] =
+    useState(false);
 
   const handleAccept = (nim: string) => {
     setData((prev) =>
@@ -37,6 +39,8 @@ export default function useRowAction({ setData }: HookProps): RowActionHookRet {
     setAcceptDialogOpen,
     rejectDialogOpen,
     setRejectDialogOpen,
+    editDosenPembimbingDialogOpen,
+    setEditDosenPembimbingDialogOpen,
     handleAccept,
     handleReject,
   };
