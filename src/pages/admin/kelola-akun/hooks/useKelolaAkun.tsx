@@ -30,6 +30,10 @@ export default function useKelolaAkun() {
     fetchData();
   };
 
+  const handleCheckboxRoleAccess = (access: string[], checkAccess: string) => {
+    return access.includes(checkAccess);
+  };
+
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,6 +51,7 @@ export default function useKelolaAkun() {
         id: resAccount.id,
         email: resAccount.email,
         name: resAccount.nama,
+        nim: resAccount.nim,
         access: resAccount.roles,
       }),
     );
@@ -56,36 +61,107 @@ export default function useKelolaAkun() {
 
   const columns: ColumnDef<Account>[] = [
     {
-      id: "select",
-      enableSorting: false,
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value: boolean) =>
-            table.toggleAllPageRowsSelected(value)
-          }
-          className="bg-white"
-        />
+      header: "Nama",
+      accessorKey: "name",
+      cell: ({ row }) => (
+        <div>
+          <div>{row.original.nim || row.original.email}</div>
+          <div>{row.original.name}</div>
+        </div>
       ),
+    },
+
+    // NOTE : how to decide if an account belongs to s1 or s2?, sementara di asumsiin kalo dikasi role itu lgsg ke s1 dan s2
+    {
+      header: "Dosen Pembimbing",
+      accessorKey: "access",
       cell: ({ row }) => (
         <Checkbox
-          checked={row.getIsSelected()}
+          checked={
+            handleCheckboxRoleAccess(row.getValue("access"), "S1_PEMBIMBING") ||
+            handleCheckboxRoleAccess(row.getValue("access"), "S2_PEMBIMBING")
+          }
           onCheckedChange={(value: boolean) => row.toggleSelected(value)}
         />
       ),
+      enableSorting: false,
     },
     {
-      header: "Email",
-      accessorKey: "email",
-    },
-    {
-      header: "Nama",
-      accessorKey: "name",
-    },
-    {
-      header: "Akses Aplikasi",
+      header: "Dosen Penguji",
       accessorKey: "access",
-      cell: ({ row }) => <AccessCell row={row} />,
+      cell: ({ row }) => (
+        <Checkbox
+          checked={
+            handleCheckboxRoleAccess(row.getValue("access"), "S1_PENGUJI") ||
+            handleCheckboxRoleAccess(row.getValue("access"), "S2_PENGUJI")
+          }
+          onCheckedChange={(value: boolean) => row.toggleSelected(value)}
+        />
+      ),
+      enableSorting: false,
+    },
+    {
+      header: "Dosen Kuliah",
+      accessorKey: "access",
+      cell: ({ row }) => (
+        <Checkbox
+          checked={handleCheckboxRoleAccess(
+            row.getValue("access"),
+            "S2_KULIAH",
+          )}
+          onCheckedChange={(value: boolean) => row.toggleSelected(value)}
+        />
+      ),
+      enableSorting: false,
+    },
+    {
+      header: "Tim Tugas",
+      accessorKey: "access",
+      cell: ({ row }) => (
+        <Checkbox
+          checked={
+            handleCheckboxRoleAccess(row.getValue("access"), "S1_TIM_TESIS") ||
+            handleCheckboxRoleAccess(row.getValue("access"), "S2_TIM_TA")
+          }
+          onCheckedChange={(value: boolean) => row.toggleSelected(value)}
+        />
+      ),
+      enableSorting: false,
+    },
+    {
+      header: "Mahasiswa",
+      accessorKey: "access",
+      cell: ({ row }) => (
+        <Checkbox
+          checked={
+            handleCheckboxRoleAccess(row.getValue("access"), "S1_MAHASISWA") ||
+            handleCheckboxRoleAccess(row.getValue("access"), "S2_MAHASISWA")
+          }
+          onCheckedChange={(value: boolean) => row.toggleSelected(value)}
+        />
+      ),
+      enableSorting: false,
+    },
+    {
+      header: "TU",
+      accessorKey: "access",
+      cell: ({ row }) => (
+        <Checkbox
+          checked={handleCheckboxRoleAccess(row.getValue("access"), "TU")}
+          onCheckedChange={(value: boolean) => row.toggleSelected(value)}
+        />
+      ),
+      enableSorting: false,
+    },
+    {
+      header: "Admin",
+      accessorKey: "access",
+      cell: ({ row }) => (
+        <Checkbox
+          checked={handleCheckboxRoleAccess(row.getValue("access"), "ADMIN")}
+          onCheckedChange={(value: boolean) => row.toggleSelected(value)}
+        />
+      ),
       enableSorting: false,
     },
     {

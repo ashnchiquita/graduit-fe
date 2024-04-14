@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { DataTable } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -11,7 +12,7 @@ export default function KelolaAkun(): JSX.Element {
     <main className="flex w-full flex-col gap-5 px-4">
       <DataTable
         table={table}
-        headline="Kelola Akun Pengguna"
+        headline="Pengaturan Akun Aplikasi Pengguna"
         searchValue={searchValue}
         setSearchValue={handleSearchValueChange}
         customElementsRight={

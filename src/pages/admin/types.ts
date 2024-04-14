@@ -2,6 +2,7 @@ export type Account = {
   id: string;
   email: string;
   name: string;
+  nim?: string;
   access: string[];
 };
 
@@ -9,6 +10,7 @@ export type GetAccountResponseItem = {
   id: string;
   nama: string;
   email: string;
+  nim?: string;
   roles: string[];
 };
 
