@@ -27,6 +27,8 @@ export default function EditDosenPembimbingDialog({
     SelectData[]
   >([]);
 
+  const [isChanged, setIsChanged] = useState(false);
+
   // TODO: Get dosen pembimbing data from API
   useEffect(() => {
     // Fetch dosen pembimbing data
@@ -66,6 +68,7 @@ export default function EditDosenPembimbingDialog({
           selected={selectedDosenPembimbing}
           setSelected={setSelectedDosenPembimbing}
           placeholder="Pilih Dosen Pembimbing..."
+          setEditedFlag={setIsChanged}
         />
         <div className="flex w-full items-center justify-end">
           <Button
@@ -74,6 +77,7 @@ export default function EditDosenPembimbingDialog({
               setOpen(false);
             }}
             className="bg-blue-500 text-gray-100 hover:bg-blue-600 disabled:bg-slate-200 disabled:text-primary-foreground"
+            disabled={!isChanged}
           >
             Ubah
           </Button>

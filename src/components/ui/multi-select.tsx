@@ -10,6 +10,7 @@ interface MultiSelectProps {
   selected: SelectData[];
   setSelected: React.Dispatch<React.SetStateAction<SelectData[]>>;
   placeholder: string;
+  setEditedFlag?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function MultiSelect({
@@ -17,6 +18,7 @@ export function MultiSelect({
   selected,
   setSelected,
   placeholder,
+  setEditedFlag,
 }: MultiSelectProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
@@ -34,8 +36,9 @@ export function MultiSelect({
   const handleUnselect = React.useCallback(
     (option: SelectData) => {
       setSelected((prev) => prev.filter((f) => f !== option));
+      setEditedFlag && setEditedFlag(true);
     },
-    [setSelected],
+    [setSelected, setEditedFlag],
   );
 
   const handleKeyDown = React.useCallback(
@@ -112,6 +115,7 @@ export function MultiSelect({
                   onSelect={() => {
                     setInputValue("");
                     setSelected((prev) => [...prev, option]);
+                    setEditedFlag && setEditedFlag(true);
                   }}
                   className="cursor-pointer"
                 >

@@ -28,3 +28,45 @@ export type RowActionHookRet = {
   handleAccept: (nim: string) => void;
   handleReject: (nim: string) => void;
 };
+
+export type Pengajuan = {
+  id: string;
+  jalurPilihan: string;
+  waktuPengiriman: Date;
+  jadwalInterview?: Date;
+  waktuKeputusan?: Date;
+  status: StatusPendaftaranEnum;
+  topik: {
+    id: string;
+    judul: string;
+    deskripsi: string;
+    idPengaju: string;
+    periode: string;
+  };
+  penerima: {
+    // Dosen pembimbing
+    id: string;
+    nama: string;
+    email: string;
+  };
+};
+
+export type RiwayatPendaftaranData = {
+  nim: "13521149";
+  nama: "Rava Maulana Azzikri";
+  email: "13521149@std.stei.itb.ac.id";
+  listPengajuan: Pengajuan[];
+};
+
+export type RiwayatPendaftaranHookRet = {
+  data: RiwayatPendaftaranData;
+  setData: React.Dispatch<React.SetStateAction<RiwayatPendaftaranData>>;
+  wawancaraDialogOpen: boolean;
+  setWawancaraDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  ubahStatusDialogOpen: boolean;
+  setUbahStatusDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  ubahDosenPembimbingDialogOpen: boolean;
+  setUbahDosenPembimbingDialogOpen: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
+};
