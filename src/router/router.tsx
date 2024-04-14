@@ -27,6 +27,7 @@ import {
   SubmissionTugas,
   Topik,
 } from "./imports";
+import TopicAllocation from "@/pages/tugas-akhir/topik/Topik";
 
 export const router = createBrowserRouter(
   [
@@ -114,7 +115,7 @@ export const router = createBrowserRouter(
         },
         {
           path: "/manajemen/daftar-topik",
-          element: <DaftarTopikTimTugas />,
+          element: <Topik />,
         },
         {
           path: "/log",
@@ -134,10 +135,10 @@ export const router = createBrowserRouter(
         },
         {
           path: "/tugas-akhir",
-          element: <Navigate to="/tugas-akhir/topik/2" replace />,
+          element: <Navigate to="/tugas-akhir/topik" replace />,
         },
         {
-          path: "/tugas-akhir/topik/:role",
+          path: "/tugas-akhir/topik",
           element: <Topik />,
         },
         {
