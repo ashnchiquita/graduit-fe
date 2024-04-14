@@ -15,6 +15,8 @@ import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import EditStatusPengajuanDialog from "../components/EditStatusPengajuanDialog";
 import EditDosenPembimbingDialog from "../components/EditDosenPembimbingDialog";
 import EditWawancaraDialog from "../components/EditWawancaraDialog";
+import NoDataImg from "../../../assets/no-data/no-data-pengajuan.svg";
+import { useEffect } from "react";
 
 export default function RiwayatPendaftaran(): JSX.Element {
   const {
@@ -29,6 +31,16 @@ export default function RiwayatPendaftaran(): JSX.Element {
   }: RiwayatPendaftaranHookRet = useRiwayatPendaftaran();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // For testing, empty the list of pengajuan
+    setData({
+      nim: "13521149",
+      nama: "Rava Maulana Azzikri",
+      email: "13521149@std.stei.itb.ac.id",
+      listPengajuan: [],
+    });
+  }, [data, setData]);
 
   return (
     <div className="flex w-full flex-col gap-2 overflow-y-scroll px-4 pb-6">
@@ -192,8 +204,15 @@ export default function RiwayatPendaftaran(): JSX.Element {
             </div>
           ))
         ) : (
-          <div>
-            <h2>Belum ada pengajuan</h2>
+          <div className="flex size-full flex-col items-center justify-center gap-1 rounded-lg bg-white px-8 py-20">
+            <img
+              src={NoDataImg}
+              alt="Belum ada pengajuan"
+              className="size-32 md:size-40"
+            />
+            <h2 className="text-base font-medium text-gray-600 md:text-lg">
+              Belum ada pengajuan
+            </h2>
           </div>
         )}
       </section>
