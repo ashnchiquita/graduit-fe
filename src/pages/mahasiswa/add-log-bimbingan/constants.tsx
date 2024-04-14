@@ -14,7 +14,9 @@ export const berkasTitle = "Berkas Terkait";
 export const berkasDesc = "Silakan unggah berkas-berkas terkait bimbingan ini.";
 
 export const AddLogBimbinganFormSchema = z.object({
-  date: z.date(),
+  date: z.date().refine((date) => date !== undefined, {
+    message: "Tanggal bimbingan tidak boleh kosong",
+  }),
   laporan_kemajuan: z.string().min(1, "Laporan kemajuan tidak boleh kosong"),
   todo: z.string().min(1, "To-do tidak boleh kosong"),
   next_bimbingan: z.date().optional(),

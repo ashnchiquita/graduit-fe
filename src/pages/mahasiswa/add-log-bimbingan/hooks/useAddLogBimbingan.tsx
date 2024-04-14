@@ -7,8 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
 import { PostLogBimbinganReqData } from "../types";
 import { postLogBimbingan } from "../client";
+import { toast } from "react-toastify";
 
 const useAddLogBimbigan = () => {
+  //TODO bahas page selanjutnya habis nambah log bimbingan apa
   const form = useForm<AddLogBimbinganFormData>({
     defaultValues: {
       date: undefined,
@@ -29,7 +31,6 @@ const useAddLogBimbigan = () => {
   );
 
   const onSubmit = async (values: AddLogBimbinganFormData) => {
-    console.log("submitting");
     const data: PostLogBimbinganReqData = {
       date: values.date,
       laporan_kemajuan: values.laporan_kemajuan,
@@ -41,8 +42,10 @@ const useAddLogBimbigan = () => {
 
     try {
       await trigger(data);
+      toast.success("Bimbingan log submitted successfully.");
     } catch (error) {
       console.error("Failed to submit Bimbingan Log");
+      toast.error("Failed to submit Bimbingan Log.");
     }
   };
 

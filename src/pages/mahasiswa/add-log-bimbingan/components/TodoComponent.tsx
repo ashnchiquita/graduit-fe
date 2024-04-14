@@ -1,6 +1,11 @@
 import { UseFormReturn } from "react-hook-form";
 import { AddLogBimbinganFormData } from "../constants";
-import { FormField, FormItem, FormControl } from "@/components/ui/form/form";
+import {
+  FormField,
+  FormItem,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form/form";
 import { Textarea } from "@/components/ui/textarea";
 export function TodoComponent({
   form,
@@ -16,6 +21,7 @@ export function TodoComponent({
           <FormControl>
             <Textarea {...field} />
           </FormControl>
+          <FormMessage />
         </FormItem>
       )}
     />
