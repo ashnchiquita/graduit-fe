@@ -54,6 +54,7 @@ export default function RowAction({
           <EditDosenPembimbingDialog
             open={editDosenPembimbingDialogOpen}
             setOpen={setEditDosenPembimbingDialogOpen}
+            nim={row.original.nim}
           />
 
           <div className="w-full p-3">

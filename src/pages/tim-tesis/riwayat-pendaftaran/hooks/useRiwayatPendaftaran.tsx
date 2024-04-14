@@ -24,7 +24,7 @@ export default function useRiwayatPendaftaran(): RiwayatPendaftaranHookRet {
         waktuPengiriman: new Date(),
         jadwalInterview: new Date(),
         waktuKeputusan: new Date(),
-        status: StatusPendaftaranEnum.ACCEPTED,
+        status: StatusPendaftaranEnum.PROCESS,
         topik: {
           id: "1",
           judul:
@@ -46,7 +46,7 @@ export default function useRiwayatPendaftaran(): RiwayatPendaftaranHookRet {
         waktuPengiriman: new Date(),
         jadwalInterview: new Date(),
         waktuKeputusan: new Date(),
-        status: StatusPendaftaranEnum.PROCESS,
+        status: StatusPendaftaranEnum.ACCEPTED,
         topik: {
           id: "2",
           judul:

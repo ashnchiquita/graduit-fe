@@ -13,11 +13,13 @@ import { MultiSelect } from "@/components/ui/multi-select";
 interface EditDosenPembimbingDialogProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  nim: string;
 }
 
 export default function EditDosenPembimbingDialog({
   open,
   setOpen,
+  nim,
 }: EditDosenPembimbingDialogProps): JSX.Element {
   const [dosenPembimbingList, setDosenPembimbingList] = useState<SelectData[]>(
     [],
@@ -79,7 +81,7 @@ export default function EditDosenPembimbingDialog({
             className="bg-blue-500 text-gray-100 hover:bg-blue-600 disabled:bg-slate-200 disabled:text-primary-foreground"
             disabled={!isChanged}
           >
-            Ubah
+            Simpan
           </Button>
         </div>
       </DialogContent>

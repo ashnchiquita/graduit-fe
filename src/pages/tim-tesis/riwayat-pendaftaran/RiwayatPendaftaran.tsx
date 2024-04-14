@@ -12,14 +12,43 @@ import {
   TooltipContent,
 } from "@/components/ui/tooltip";
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
+import EditStatusPengajuanDialog from "../components/EditStatusPengajuanDialog";
+import EditDosenPembimbingDialog from "../components/EditDosenPembimbingDialog";
+import EditWawancaraDialog from "../components/EditWawancaraDialog";
 
 export default function RiwayatPendaftaran(): JSX.Element {
-  const { data }: RiwayatPendaftaranHookRet = useRiwayatPendaftaran();
+  const {
+    data,
+    setData,
+    wawancaraDialogOpen,
+    setWawancaraDialogOpen,
+    ubahStatusDialogOpen,
+    setUbahStatusDialogOpen,
+    ubahDosenPembimbingDialogOpen,
+    setUbahDosenPembimbingDialogOpen,
+  }: RiwayatPendaftaranHookRet = useRiwayatPendaftaran();
 
   const navigate = useNavigate();
 
   return (
     <div className="flex w-full flex-col gap-2 overflow-y-scroll px-4 pb-6">
+      {/* Dialogs */}
+      <EditStatusPengajuanDialog
+        open={ubahStatusDialogOpen}
+        setOpen={setUbahStatusDialogOpen}
+        nim={data?.nim}
+      />
+      <EditDosenPembimbingDialog
+        open={ubahDosenPembimbingDialogOpen}
+        setOpen={setUbahDosenPembimbingDialogOpen}
+        nim={data?.nim}
+      />
+      <EditWawancaraDialog
+        open={wawancaraDialogOpen}
+        setOpen={setWawancaraDialogOpen}
+        nim={data?.nim}
+      />
+
       {/* Identity Section */}
       <section className="flex w-full items-center gap-4 rounded-lg bg-white p-4">
         <button onClick={() => navigate("/rekap-pendaftaran-tim-tesis")}>
@@ -65,7 +94,11 @@ export default function RiwayatPendaftaran(): JSX.Element {
                         <TooltipProvider>
                           <Tooltip delayDuration={10}>
                             <TooltipTrigger>
-                              <button onClick={() => {}}>
+                              <button
+                                onClick={() =>
+                                  setUbahDosenPembimbingDialogOpen(true)
+                                }
+                              >
                                 <Pencil size={13} className="text-blue-500" />
                               </button>
                             </TooltipTrigger>
@@ -113,7 +146,9 @@ export default function RiwayatPendaftaran(): JSX.Element {
                           <TooltipProvider>
                             <Tooltip delayDuration={10}>
                               <TooltipTrigger>
-                                <button onClick={() => {}}>
+                                <button
+                                  onClick={() => setWawancaraDialogOpen(true)}
+                                >
                                   <Pencil size={14} className="text-gray-500" />
                                 </button>
                               </TooltipTrigger>
@@ -137,7 +172,9 @@ export default function RiwayatPendaftaran(): JSX.Element {
                           <TooltipProvider>
                             <Tooltip delayDuration={10}>
                               <TooltipTrigger>
-                                <button onClick={() => {}}>
+                                <button
+                                  onClick={() => setUbahStatusDialogOpen(true)}
+                                >
                                   <Pencil size={14} className="text-gray-500" />
                                 </button>
                               </TooltipTrigger>
