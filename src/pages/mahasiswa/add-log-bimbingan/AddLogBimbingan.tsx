@@ -15,21 +15,20 @@ import {
   laporanKemajuanDesc,
   todoTitle,
   todoDesc,
+  berkasTitle,
+  berkasDesc,
 } from "./constants";
 import { Form } from "@/components/ui/form/form";
 
 export default function AddLogBimbingan() {
-  const { form } = useAddLogBimbigan();
-  const test = () => {
-    console.log("test");
-  };
+  const { form, onSubmit } = useAddLogBimbigan();
 
   return (
     <main>
       <Form {...form}>
         <form
           className="pl-5 pr-3 flex flex-col gap-6 pb-10"
-          onSubmit={form.handleSubmit(test)}
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           <Card
             leftHighlight
@@ -46,37 +45,37 @@ export default function AddLogBimbingan() {
 
           <AddLogBimbinganCard
             title={tanggalBimbinganTitle}
-            descriprion={tanggalBimbinganDesc}
+            description={tanggalBimbinganDesc}
             optional={false}
-            type="date"
+            type="bimbingan_date"
             form={form}
           />
           <AddLogBimbinganCard
             title={laporanKemajuanTitle}
-            descriprion={laporanKemajuanDesc}
+            description={laporanKemajuanDesc}
             optional={false}
-            type="text"
+            type="laporan_kemajuan"
             form={form}
           />
           <AddLogBimbinganCard
             title={todoTitle}
-            descriprion={todoDesc}
+            description={todoDesc}
             optional={false}
-            type="text"
+            type="todo"
             form={form}
           />
           <AddLogBimbinganCard
-            title={todoTitle}
-            descriprion={todoDesc}
+            title={berkasTitle}
+            description={berkasDesc}
             optional={true}
             type="berkas"
             form={form}
           />
           <AddLogBimbinganCard
             title={rencanaBimbinganTitle}
-            descriprion={rencanaBimbinganDesc}
+            description={rencanaBimbinganDesc}
             optional={true}
-            type="date"
+            type="next_bimbingan_date"
             form={form}
           />
           <div className="px-4 flex flex-col gap-5">

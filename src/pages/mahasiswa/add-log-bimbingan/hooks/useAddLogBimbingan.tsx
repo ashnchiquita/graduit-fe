@@ -11,10 +11,10 @@ import { postLogBimbingan } from "../client";
 const useAddLogBimbigan = () => {
   const form = useForm<AddLogBimbinganFormData>({
     defaultValues: {
-      date: "",
+      date: undefined,
       laporan_kemajuan: "",
       todo: "",
-      next_bimbingan: "",
+      next_bimbingan: undefined,
       status: false,
       berkas: [],
     },
@@ -34,7 +34,7 @@ const useAddLogBimbigan = () => {
       date: values.date,
       laporan_kemajuan: values.laporan_kemajuan,
       todo: values.todo,
-      next_bimbingan: values.next_bimbingan || "",
+      next_bimbingan: values.next_bimbingan || undefined,
       status: false,
       berkas: values.berkas || [],
     };

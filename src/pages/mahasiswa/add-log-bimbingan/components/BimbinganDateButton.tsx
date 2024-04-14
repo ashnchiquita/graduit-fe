@@ -9,7 +9,7 @@ import { format } from "date-fns";
 import { UseFormReturn } from "react-hook-form";
 import { AddLogBimbinganFormData } from "../constants";
 import { FormField, FormItem } from "@/components/ui/form";
-export function PickDateButton({
+export function BimbinganDateButton({
   form,
 }: {
   form: UseFormReturn<AddLogBimbinganFormData>;

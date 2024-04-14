@@ -10,13 +10,15 @@ export const laporanKemajuanDesc =
   "Tuliskan kemajuan progres pengerjaan Tugas Akhir Anda.";
 export const todoTitle = "To-do";
 export const todoDesc = "Tuliskan hal-hal yang harus Anda lakukan selanjutnya";
+export const berkasTitle = "Berkas Terkait";
+export const berkasDesc = "Silakan unggah berkas-berkas terkait bimbingan ini.";
 
 export const AddLogBimbinganFormSchema = z.object({
-  date: z.string().min(1, "Tanggal bimbingan tidak boleh kosong"),
+  date: z.date(),
   laporan_kemajuan: z.string().min(1, "Laporan kemajuan tidak boleh kosong"),
   todo: z.string().min(1, "To-do tidak boleh kosong"),
-  next_bimbingan: z.string().optional(),
-  status: z.boolean(),
+  next_bimbingan: z.date().optional(),
+  status: z.boolean().optional(),
   berkas: z
     .array(
       z.object({

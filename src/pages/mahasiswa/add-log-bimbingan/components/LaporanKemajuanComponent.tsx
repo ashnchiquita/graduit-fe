@@ -1,8 +1,9 @@
 import { UseFormReturn } from "react-hook-form";
 import { AddLogBimbinganFormData } from "../constants";
-import { FormField, FormItem } from "@/components/ui/form";
+import { FormField, FormItem, FormControl } from "@/components/ui/form/form";
 import { Textarea } from "@/components/ui/textarea";
-export function TextAreaComponent({
+
+export function LaporanKemajuanComponent({
   form,
 }: {
   form: UseFormReturn<AddLogBimbinganFormData>;
@@ -11,9 +12,11 @@ export function TextAreaComponent({
     <FormField
       control={form.control}
       name="laporan_kemajuan"
-      render={() => (
+      render={({ field }) => (
         <FormItem>
-          <Textarea />
+          <FormControl>
+            <Textarea {...field} />
+          </FormControl>
         </FormItem>
       )}
     />

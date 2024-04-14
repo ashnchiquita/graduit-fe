@@ -1,30 +1,35 @@
 import { CardDescription, CardTitle } from "@/components/Card";
-// import { Textarea } from "@/components/ui/textarea";
-import { PickDateButton } from "./PickDateButton";
+import { BimbinganDateButton } from "./BimbinganDateButton";
 import { AddBerkas } from "./AddBerkas";
 import { UseFormReturn } from "react-hook-form";
 import { AddLogBimbinganFormData } from "../constants";
-import { TextAreaComponent } from "./TextAreaComponent";
+import { LaporanKemajuanComponent } from "./LaporanKemajuanComponent";
+import { TodoComponent } from "./TodoComponent";
+import { NextBimbinganDateButton } from "./NextBimbinganDateButton";
 
 export default function AddLogBimbinganCard({
   title,
-  descriprion,
+  description,
   optional,
   type,
   form,
 }: {
   title: string;
-  descriprion: string;
+  description: string;
   optional: boolean;
   type: string;
   form: UseFormReturn<AddLogBimbinganFormData>;
 }) {
   const renderComponent = () => {
     switch (type) {
-      case "date":
-        return <PickDateButton form={form} />;
-      case "text":
-        return <TextAreaComponent form={form} />;
+      case "bimbingan_date":
+        return <BimbinganDateButton form={form} />;
+      case "next_bimbingan_date":
+        return <NextBimbinganDateButton form={form} />;
+      case "laporan_kemajuan":
+        return <LaporanKemajuanComponent form={form} />;
+      case "todo":
+        return <TodoComponent form={form} />;
       case "berkas":
         return <AddBerkas form={form} />;
       default:
@@ -45,11 +50,11 @@ export default function AddLogBimbinganCard({
       {optional ? (
         <CardDescription className="">
           {" "}
-          {descriprion}{" "}
+          {description}{" "}
           <span className="font-bold"> Bagian ini bersifat opsional </span>{" "}
         </CardDescription>
       ) : (
-        <CardDescription> {descriprion} </CardDescription>
+        <CardDescription> {description} </CardDescription>
       )}
       <div>{renderComponent()}</div>
     </div>

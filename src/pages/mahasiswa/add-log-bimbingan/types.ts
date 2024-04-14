@@ -11,10 +11,10 @@ export type PostLogBimbinganRespData = {
 };
 
 export type PostLogBimbinganReqData = {
-  date: string;
+  date: Date;
   laporan_kemajuan: string;
   todo: string;
-  next_bimbingan: string;
+  next_bimbingan?: Date;
   status: boolean;
   berkas: Berkas[];
 };
