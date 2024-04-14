@@ -1,3 +1,4 @@
+import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
 import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
@@ -156,6 +157,10 @@ export const router = createBrowserRouter(
         {
           path: "/kelas/input-nilai",
           element: <InputNilai />,
+        },
+        {
+          path: "/add-log-bimbingan",
+          element: <AddLogBimbingan />,
         },
       ],
     },
