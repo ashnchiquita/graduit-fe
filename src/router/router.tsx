@@ -29,6 +29,7 @@ import {
   RekapPendaftaranTimTesis,
   RiwayatPendaftaran,
 } from "./imports";
+import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
 
 export const router = createBrowserRouter(
   [
@@ -161,6 +162,10 @@ export const router = createBrowserRouter(
         {
           path: "/manajemen/periode-pendidikan",
           element: <KonfigurasiPeriode />,
+        },
+        {
+          path: "/add-log-bimbingan",
+          element: <AddLogBimbingan />,
         },
       ],
     },
