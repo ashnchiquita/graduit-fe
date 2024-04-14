@@ -78,9 +78,7 @@ export const SubmissionTugas = lazy(
 
 export const RekapPendaftaranTimTesis = lazy(
   () =>
-    import(
-      "../pages/tim-tesis/rekap-pendaftaran/RekapPendaftaranTimTesis.tsx"
-    ),
+    import("../pages/tim-tesis/rekap-pendaftaran/RekapPendaftaranTimTesis.tsx"),
 );
 
 export const RiwayatPendaftaran = lazy(
