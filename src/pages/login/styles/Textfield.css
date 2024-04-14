@@ -1,47 +1,29 @@
-import "./styles/Login.css";
-import "./styles/globals.css";
+.textfield-container {
+  padding-bottom: 4vh;
+}
+.textfield-input-container {
+  position: relative;
+}
 
-import LoginKiri from "./components/organism/LoginKiri";
-import LoginKanan from "./components/organism/LoginKanan";
-import LoginMobile from "./components/organism/LoginMobile";
-import useLogin from "./hooks/useLogin";
+.textfield-input-container img {
+  width: 2.5vh;
+}
 
-export default function Login(): JSX.Element {
-  const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    handleCredentials,
-    handleMicrosoft,
-  } = useLogin();
+.input-icon {
+  position: absolute;
+  left: 0;
+  bottom: 8px;
+}
 
-  return (
-    <div className="login">
-      <div className="login-wrapper">
-        <div className="login-desktop">
-          <LoginKiri />
-            <LoginKanan
-              email={email}
-              password={password}
-              handleEmailChange={setEmail}
-              handlePasswordChange={setPassword}
-              handleCredentials={handleCredentials}
-              handleMicrosoft={handleMicrosoft}
-            />
-        </div>
-        <div className="login-mobile">
-          <LoginMobile
-            email={email}
-            password={password}
-            handleEmailChange={setEmail}
-            handlePasswordChange={setPassword}
-            handleCredentials={handleCredentials}
-            handleMicrosoft={handleMicrosoft}
-          />
-      </div>
-      </div>
-      
-    </div>
-  );
+.textfield-input {
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  padding-left: 5vh;
+  width: 95%;
+  background-color: transparent;
+}
+
+.textfield-input:focus {
+  border-bottom: 2px solid blue;
 }
