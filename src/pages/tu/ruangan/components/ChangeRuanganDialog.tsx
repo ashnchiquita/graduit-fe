@@ -15,11 +15,13 @@ import { useState } from "react";
 import { GoPencil } from "react-icons/go";
 
 interface ChangeRuanganDialogProps {
+  name: string;
   handleSubmit: (ruangan: string) => void;
   handleSendMail: () => void;
 }
 
 const ChangeRuanganDialog = ({
+  name,
   handleSubmit,
   handleSendMail,
 }: ChangeRuanganDialogProps) => {
@@ -87,7 +89,9 @@ const ChangeRuanganDialog = ({
           <DialogContent>
             <DialogClose onClick={handleConfirmationClose} />
             <DialogHeader className=" items-start">
-              <DialogTitle>Yakin untuk mengubah ruangan sidang?</DialogTitle>
+              <DialogTitle>
+                Yakin untuk mengubah ruangan sidang {name}?
+              </DialogTitle>
               <DialogDescription className=" text-left">
                 Ketika Anda mengubah ruangan, mahasiswa akan mendapatkan
                 notifikasi via email.

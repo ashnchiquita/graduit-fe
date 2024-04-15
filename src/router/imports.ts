@@ -77,3 +77,6 @@ export const SubmissionTugas = lazy(
 );
 
 export const Ruangan = lazy(() => import("../pages/tu/ruangan/Ruangan.tsx"));
+export const DetailPengajuanSidang = lazy(
+  () => import("../pages/tu/detail_pengajuan/DetailPengajuan.tsx"),
+);

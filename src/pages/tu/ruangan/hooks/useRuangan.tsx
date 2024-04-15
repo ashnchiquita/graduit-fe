@@ -147,8 +147,9 @@ export default function useRuangan() {
     },
     {
       id: "change_room",
-      cell: () => (
+      cell: ({ row }) => (
         <ChangeRuanganDialog
+          name={row.original.nama}
           handleSubmit={handleSubmitChangeRuangan}
           handleSendMail={handleSendMail}
         />

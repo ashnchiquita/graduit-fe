@@ -9,6 +9,7 @@ import {
   DaftarPengajuan,
   DaftarTopikTimTugas,
   Dashboard,
+  DetailPengajuanSidang,
   DetailRekapPendaftaran,
   DetailSubmissionTugas,
   KelolaAkun,
@@ -101,6 +102,10 @@ export const router = createBrowserRouter(
         {
           path: "/ruangan-sidang",
           element: <Ruangan />,
+        },
+        {
+          path: "/ruangan-sidang/:id",
+          element: <DetailPengajuanSidang />,
         },
         {
           path: "/manajemen/kelola-akun",
