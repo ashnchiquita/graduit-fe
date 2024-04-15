@@ -24,14 +24,19 @@ export type User = {
   profpic: string;
 };
 
+type Status = "Sah" | "Menunggu" | "Tidak Sah";
+
 export type MahasiswaLogs = {
   tanggal: string;
   laporanKemajuan: string;
   toDo: string;
-  berkas: React.ReactNode;
-  status: React.ReactNode;
-  rencana: string
-}
+  berkas: {
+    nama: string;
+    url: string;
+  };
+  status: Status;
+  rencana: string;
+};
 
 export type SystemLogs = {
   id: string;
