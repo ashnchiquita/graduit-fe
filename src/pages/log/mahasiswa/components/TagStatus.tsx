@@ -1,4 +1,3 @@
-
 interface TagStatusType {
   status: "SAH" | "MENUNGGU" | "TIDAKSAH";
 }
