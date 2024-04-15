@@ -44,7 +44,7 @@ export default function TopicAllocation() {
           <Button
           size="sm"
           onClick={() => (isAbleToCreate ? handleClickImportFromTemplate : undefined)}
-          className="flex gap-2 border border-blue-500 bg-white px-2 py-1 hover:border-blue-600 hover:bg-gray-300"
+          className="hidden md:block flex gap-2 border border-blue-500 bg-white px-2 py-1 hover:border-blue-600 hover:bg-gray-300"
           >
           <Download color={"blue"} size={16} />
           <div className="hidden md:block md:text-blue-500">Import Topik (.xlsx)</div>
