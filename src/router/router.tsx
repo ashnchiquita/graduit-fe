@@ -5,6 +5,7 @@ import {
   AccountTimTesisLayout,
   AkunCreate,
   AkunDetail,
+  AssignKelas,
   BatchUbahRole,
   DaftarPengajuan,
   DaftarTopikTimTugas,
@@ -116,6 +117,10 @@ export const router = createBrowserRouter(
         {
           path: "/manajemen/daftar-topik",
           element: <DaftarTopikTimTugas />,
+        },
+        {
+          path: "/manajemen/assign-kelas",
+          element: <AssignKelas />,
         },
         {
           path: "/log",
