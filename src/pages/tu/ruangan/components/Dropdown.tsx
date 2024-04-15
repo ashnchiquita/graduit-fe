@@ -23,7 +23,7 @@ const Dropdown = ({ selectedOption, handleChange, options }: DropdownProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {options.map((opt) => (
-          <DropdownMenuItem onClick={() => handleChange(opt)}>
+          <DropdownMenuItem onClick={() => handleChange(opt)} key={opt}>
             {opt}
           </DropdownMenuItem>
         ))}
