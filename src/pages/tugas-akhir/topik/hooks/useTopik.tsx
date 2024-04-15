@@ -181,6 +181,7 @@ export default function useTopik() {
     columns,
     data,
     columnResizeMode: "onChange",
+    enableSort: false,
     getCoreRowModel: getCoreRowModel(),
   });
 
