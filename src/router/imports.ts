@@ -75,3 +75,12 @@ export const DetailSubmissionTugas = lazy(
 export const SubmissionTugas = lazy(
   () => import("../pages/dosen/submission-tugas/SubmissionTugas.tsx"),
 );
+
+export const RekapPendaftaranTimTesis = lazy(
+  () =>
+    import("../pages/tim-tesis/rekap-pendaftaran/RekapPendaftaranTimTesis.tsx"),
+);
+
+export const RiwayatPendaftaran = lazy(
+  () => import("../pages/tim-tesis/riwayat-pendaftaran/RiwayatPendaftaran.tsx"),
+);

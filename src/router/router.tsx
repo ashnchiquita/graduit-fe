@@ -26,6 +26,8 @@ import {
   RekapPendaftaranDosbim,
   SubmissionTugas,
   Topik,
+  RekapPendaftaranTimTesis,
+  RiwayatPendaftaran,
 } from "./imports";
 import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
 
@@ -59,6 +61,14 @@ export const router = createBrowserRouter(
         {
           path: "/rekap-pendaftaran",
           element: <RekapPendaftaranDosbim />,
+        },
+        {
+          path: "/rekap-pendaftaran-tim-tesis",
+          element: <RekapPendaftaranTimTesis />,
+        },
+        {
+          path: "/rekap-pendaftaran-tim-tesis/:nim",
+          element: <RiwayatPendaftaran />,
         },
         {
           path: "/rekap-pendaftaran/:nim",
