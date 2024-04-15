@@ -17,6 +17,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
+import SelectData from "@/types/select-data";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -26,15 +28,8 @@ import {
 import { flexRender } from "@tanstack/react-table";
 
 import type { Table as TableType } from "@tanstack/react-table";
-import {
-  ChevronDown,
-  ChevronUp,
-  ChevronsUpDown,
-  ListFilter,
-  Plus,
-  Search,
-  Trash2,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, ChevronsUpDown, Search } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface DataTableProps<TData> {
   table: TableType<TData>;
@@ -43,9 +38,13 @@ interface DataTableProps<TData> {
   searchValue?: string;
   searchPlaceholder?: string;
   setSearchValue?: (value: string) => void;
-  onClickDelete?: () => void;
-  onClickFilter?: () => void;
-  onClickCreate?: () => void;
+  customElementsLeft?: JSX.Element;
+  customElementsRight?: JSX.Element;
+  allowHorizontalOverflow?: boolean;
+  selectFilterValue?: string;
+  selectFilterPlaceholder?: string;
+  selectFilterOptions?: SelectData[];
+  setSelectFilterValue?: (value: string) => void;
 }
 
 export function DataTable<TData>({
@@ -55,9 +54,13 @@ export function DataTable<TData>({
   searchValue,
   searchPlaceholder,
   setSearchValue,
-  onClickCreate,
-  onClickDelete,
-  onClickFilter,
+  customElementsLeft,
+  customElementsRight,
+  allowHorizontalOverflow = false,
+  selectFilterOptions,
+  selectFilterPlaceholder,
+  selectFilterValue,
+  setSelectFilterValue,
 }: DataTableProps<TData>) {
   const useTableConfig =
     !!headline ||
@@ -65,17 +68,40 @@ export function DataTable<TData>({
     !!searchValue ||
     !!searchPlaceholder ||
     !!setSearchValue ||
-    !!onClickCreate ||
-    !!onClickDelete ||
-    !!onClickFilter;
+    !!customElementsLeft ||
+    !!customElementsRight ||
+    !!selectFilterOptions ||
+    !!selectFilterValue ||
+    !!setSelectFilterValue;
 
-  // TODO resize
+  const columnSizeVars = React.useMemo(() => {
+    const headers = table.getFlatHeaders();
+    const colSizes: { [key: string]: number } = {};
+    for (let i = 0; i < headers.length; i++) {
+      const header = headers[i]!;
+      colSizes[`--header-${header.id}-size`] = header.getSize();
+      colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
+    }
+    return colSizes;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [table.getState().columnSizingInfo]);
+
+  const containerRef = useRef<HTMLTableElement>(null);
+
+  const [fullWidth, setFullWidth] = useState(0);
+  useEffect(() => {
+    if (containerRef.current) {
+      setFullWidth(containerRef.current.offsetWidth);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [containerRef.current]);
+
   // TODO loading state
   return (
     <div>
-      <div className="rounded-md border bg-white">
+      <div className="mb-3 rounded-md border bg-white" ref={containerRef}>
         {useTableConfig && (
-          <div className="flex px-6 py-5">
+          <div className="flex flex-wrap gap-x-3 gap-y-4 px-6 py-5">
             <div className="flex-1">
               {headline && (
                 <div className="text-lg font-semibold">{headline}</div>
@@ -86,13 +112,14 @@ export function DataTable<TData>({
                 </div>
               )}
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              {customElementsLeft}
               {searchValue !== undefined && !!setSearchValue && (
-                <div className="group flex w-[235px] items-center gap-2 rounded-md border border-input bg-transparent px-2 py-1 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+                <div className="group flex flex-1 items-center gap-2 rounded-md border border-input bg-transparent px-2 py-1 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:flex-none">
                   <Search size={14} className="text-muted-foreground" />
                   <input
                     type="text"
-                    className="outline-none"
+                    className="flex-1 outline-none md:w-[225px] md:flex-auto"
                     placeholder={searchPlaceholder}
                     value={searchValue}
                     onChange={(e) => {
@@ -101,45 +128,46 @@ export function DataTable<TData>({
                   />
                 </div>
               )}
-              {!!onClickDelete && (
-                <Button
-                  onClick={() => {
-                    onClickDelete();
-                  }}
-                  variant="outline"
-                  className="flex h-fit gap-2 bg-transparent px-2 py-1"
-                >
-                  <Trash2 size={14} />
-                  <div>Delete</div>
-                </Button>
-              )}
-              {!!onClickFilter && (
-                <Button
-                  onClick={() => {
-                    onClickFilter();
-                  }}
-                  variant="outline"
-                  className="flex h-fit gap-2 bg-transparent px-2 py-1"
-                >
-                  <ListFilter size={14} />
-                  <div>Filter</div>
-                </Button>
-              )}
-              {!!onClickCreate && (
-                <Button
-                  onClick={() => {
-                    onClickCreate();
-                  }}
-                  className="flex h-fit gap-2 border border-blue-500 bg-blue-500 px-2 py-1 hover:border-blue-600 hover:bg-blue-600"
-                >
-                  <Plus size={14} />
-                  <div>Create</div>
-                </Button>
-              )}
+              {selectFilterOptions !== undefined &&
+                selectFilterValue !== undefined &&
+                !!setSelectFilterValue && (
+                  <Select
+                    value={selectFilterValue}
+                    onValueChange={setSelectFilterValue}
+                  >
+                    <SelectTrigger className="h-fit w-[180px] text-xs">
+                      <SelectValue placeholder={selectFilterPlaceholder} />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {Object.values(selectFilterOptions).map(
+                        ({ label, value }) => (
+                          <SelectItem
+                            key={value}
+                            value={value}
+                            className="text-xs"
+                          >
+                            {label}
+                          </SelectItem>
+                        ),
+                      )}
+                    </SelectContent>
+                  </Select>
+                )}
+              {customElementsRight}
             </div>
           </div>
         )}
-        <Table>
+
+        <Table
+          style={{
+            ...columnSizeVars,
+            width: allowHorizontalOverflow
+              ? Math.max(fullWidth, table.getTotalSize()) - 2
+              : undefined,
+          }}
+          className="text-xs md:text-sm"
+        >
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
@@ -156,7 +184,10 @@ export function DataTable<TData>({
                             header.column.getIsSorted() === "asc",
                           );
                       }}
-                      className="cursor-pointer"
+                      className="relative cursor-pointer"
+                      style={{
+                        width: `calc(var(--header-${header?.id}-size) * 1px)`,
+                      }}
                     >
                       <div className="flex items-center gap-4">
                         {header.isPlaceholder
@@ -174,6 +205,16 @@ export function DataTable<TData>({
                         ) : (
                           <ChevronDown size={16} />
                         )}
+                        {header.column.getCanResize() && (
+                          <div
+                            onDoubleClick={() => header.column.resetSize()}
+                            onMouseDown={header.getResizeHandler()}
+                            onTouchStart={header.getResizeHandler()}
+                            className={cn(
+                              "absolute top-0 right-0 h-full w-4 group-hover:bg-black/10 cursor-col-resize select-none touch-none",
+                            )}
+                          />
+                        )}
                       </div>
                     </TableHead>
                   );
@@ -181,36 +222,13 @@ export function DataTable<TData>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={table.getAllColumns().length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+          {table.getState().columnSizingInfo.isResizingColumn ? (
+            <MemoizedDataTableBody table={table} />
+          ) : (
+            <DataTableBody table={table} />
+          )}
         </Table>
-        <div className="flex h-12 items-center justify-between space-x-6 border-t px-4 text-gray-500 lg:space-x-8">
+        <div className="flex min-h-12 items-center justify-between space-x-6 border-t px-4 py-1 text-gray-500 lg:space-x-8">
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium">Rows per page</p>
             <Select
@@ -241,42 +259,89 @@ export function DataTable<TData>({
             <Button
               variant="outline"
               className="hidden size-8 p-0 lg:flex"
-              onClick={() => table.setPageIndex(0)}
+              onClick={() => {
+                table.setPageIndex(0);
+                table.resetRowSelection();
+              }}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to first page</span>
+              {/* <span className="sr-only">Go to first page</span> */}
               <DoubleArrowLeftIcon className="size-4" />
             </Button>
             <Button
               variant="outline"
               className="size-8 p-0"
-              onClick={() => table.previousPage()}
+              onClick={() => {
+                table.previousPage();
+                table.resetRowSelection();
+              }}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to previous page</span>
+              {/* <span className="sr-only">Go to previous page</span> */}
               <ChevronLeftIcon className="size-4" />
             </Button>
             <Button
               variant="outline"
               className="size-8 p-0"
-              onClick={() => table.nextPage()}
+              onClick={() => {
+                table.nextPage();
+                table.resetRowSelection();
+              }}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to next page</span>
+              {/* <span className="sr-only">Go to next page</span> */}
               <ChevronRightIcon className="size-4" />
             </Button>
             <Button
               variant="outline"
               className="hidden size-8 p-0 lg:flex"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              onClick={() => {
+                table.setPageIndex(table.getPageCount() - 1);
+                table.resetRowSelection();
+              }}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to last page</span>
+              {/* <span className="sr-only">Go to last page</span> */}
               <DoubleArrowRightIcon className="size-4" />
             </Button>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+const MemoizedDataTableBody = React.memo(
+  DataTableBody,
+  (prev, next) => prev.table.options.data === next.table.options.data,
+) as typeof DataTableBody;
+
+function DataTableBody<TData>({ table }: { table: TableType<TData> }) {
+  return (
+    <TableBody>
+      {table.getRowModel().rows?.length ? (
+        table.getRowModel().rows.map((row) => (
+          <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+            {row.getVisibleCells().map((cell) => (
+              <TableCell
+                key={cell.id}
+                align={(cell.column.columnDef.meta as any)?.align ?? "left"}
+              >
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))
+      ) : (
+        <TableRow>
+          <TableCell
+            colSpan={table.getAllColumns().length}
+            className="h-24 text-center"
+          >
+            No results.
+          </TableCell>
+        </TableRow>
+      )}
+    </TableBody>
   );
 }

@@ -21,7 +21,6 @@ export type User = {
   name: string;
   email: string;
   major: string;
-  profpic: string;
 };
 
 type Status = "Sah" | "Menunggu" | "Tidak Sah";

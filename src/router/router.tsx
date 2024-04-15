@@ -2,9 +2,17 @@ import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import {
+  AccountTimTesisLayout,
   AkunCreate,
   AkunDetail,
+  BatchUbahRole,
+  DaftarPengajuan,
+  DaftarTopikTimTugas,
+  Dashboard,
+  DetailRekapPendaftaran,
+  DetailSubmissionTugas,
   KelolaAkun,
+  KonfigurasiPeriode,
   LogBimbingan,
   LogBimbinganMahasiswa,
   LogSistem,
@@ -14,24 +22,26 @@ import {
   NotFound,
   Pengumuman,
   Penjadwalan,
-  RegistrationRecap,
-  StatusMahasiswa,
-  ThesisRegistration,
+  Registration,
+  RekapPendaftaranDosbim,
+  SubmissionTugas,
   Topik,
-  AccountTimTesisLayout,
-  KonfigurasiPeriode,
 } from "./imports";
-import DashboardDosbing from "@/pages/dashboard-dosbing/DashboardDosbing";
+import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
 
 export const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: <Navigate to="/tesis/registrasi" replace />,
+      element: <Navigate to="/dashboard" replace />,
     },
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <Suspense fallback={<LoaderIcon />}>
+          <Login />
+        </Suspense>
+      ),
     },
     {
       path: "/timtesis",
@@ -43,8 +53,32 @@ export const router = createBrowserRouter(
       element: <MainLayout />,
       children: [
         {
-          path: "/dashboard-dosbing",
-          element: <DashboardDosbing />,
+          path: "/dashboard",
+          element: <Dashboard />,
+        },
+        {
+          path: "/rekap-pendaftaran",
+          element: <RekapPendaftaranDosbim />,
+        },
+        {
+          path: "/rekap-pendaftaran/:nim",
+          element: <DetailRekapPendaftaran />,
+        },
+        {
+          path: "/daftar-pengajuan",
+          element: <DaftarPengajuan></DaftarPengajuan>,
+        },
+        {
+          path: "/tugas/:idTugas",
+          element: <SubmissionTugas />,
+        },
+        {
+          path: "/tugas/:idTugas/submisi/:idSubmisi",
+          element: <DetailSubmissionTugas />,
+        },
+        {
+          path: "/registrasi",
+          element: <Registration></Registration>,
         },
         {
           path: "/tesis",
@@ -52,39 +86,12 @@ export const router = createBrowserRouter(
         },
         {
           path: "/tesis/registrasi",
-          element: <ThesisRegistration></ThesisRegistration>,
+          element: <Registration></Registration>,
         },
-        {
-          path: "/tesis/rekap",
-          element: <RegistrationRecap></RegistrationRecap>,
-        },
+
         {
           path: "/tesis/status",
           element: <MhsDashboard />,
-        },
-        {
-          path: "/tugas",
-          element: <Navigate to="/tugas/kelas" replace />,
-        },
-        {
-          path: "/tugas/kelas",
-          element: <></>,
-        },
-        {
-          path: "/tugas/logbook",
-          element: <></>,
-        },
-        {
-          path: "/informasi",
-          element: <Navigate to="/informasi/seminar" replace />,
-        },
-        {
-          path: "/informasi/seminar",
-          element: <></>,
-        },
-        {
-          path: "/informasi/pengujian",
-          element: <></>,
         },
         {
           path: "/manajemen",
@@ -103,6 +110,14 @@ export const router = createBrowserRouter(
           element: <AkunCreate />,
         },
         {
+          path: "/manajemen/role-pengguna",
+          element: <BatchUbahRole />,
+        },
+        {
+          path: "/manajemen/daftar-topik",
+          element: <DaftarTopikTimTugas />,
+        },
+        {
           path: "/log",
           element: <Navigate to="/log/bimbingan" replace />,
         },
@@ -111,7 +126,7 @@ export const router = createBrowserRouter(
           element: <LogBimbingan />,
         },
         {
-          path: "/log/bimbingan/:id",
+          path: "/dosen/bimbingan/:strata/:id",
           element: <LogBimbinganMahasiswa />,
         },
         {
@@ -121,10 +136,6 @@ export const router = createBrowserRouter(
         {
           path: "/tugas-akhir",
           element: <Navigate to="/tugas-akhir/topik/2" replace />,
-        },
-        {
-          path: "/tugas-akhir/status/:id",
-          element: <StatusMahasiswa />,
         },
         {
           path: "/tugas-akhir/topik/:role",
@@ -141,6 +152,10 @@ export const router = createBrowserRouter(
         {
           path: "/manajemen/periode-pendidikan",
           element: <KonfigurasiPeriode />,
+        },
+        {
+          path: "/add-log-bimbingan",
+          element: <AddLogBimbingan />,
         },
       ],
     },

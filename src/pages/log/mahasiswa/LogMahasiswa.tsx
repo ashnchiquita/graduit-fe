@@ -9,12 +9,7 @@ export default function LogMahasiswa(): JSX.Element {
   return (
     <div className="flex flex-col gap-4 px-4 pb-20">
       <TagStatus status="SAH" />
-      <DataTable
-        headline="Log Bimbingan"
-        table={table}
-        onClickCreate={onClickCreate}
-        onClickFilter={onClickFilter}
-      />
+      <DataTable headline="Log Bimbingan" table={table} />
     </div>
   );
 }

@@ -36,16 +36,18 @@ export default function MainLayout(): JSX.Element {
       {!loading ? (
         <div className="flex h-screen w-full overflow-hidden bg-slate-100">
           <Sidebar closed={sidebarClosed} />
-          <div className="flex h-screen w-full flex-col overflow-y-scroll">
+          <div className="flex w-full flex-col overflow-y-scroll">
             <TopNav closed={sidebarClosed} setClosed={setSidebarClosed} />
             <Breadcrumb closed={sidebarClosed} setClosed={setSidebarClosed} />
             <Suspense fallback={<MainLayoutLoader />}>
-              <Outlet />
+              <div className="flex-1">
+                <Outlet />
+              </div>
             </Suspense>
           </div>
         </div>
       ) : (
-        <div></div>
+        <></>
       )}
     </>
   );
