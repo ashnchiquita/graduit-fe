@@ -24,6 +24,7 @@ import {
   Penjadwalan,
   Registration,
   RekapPendaftaranDosbim,
+  Ruangan,
   SubmissionTugas,
   Topik,
 } from "./imports";
@@ -96,6 +97,10 @@ export const router = createBrowserRouter(
         {
           path: "/manajemen",
           element: <Navigate to="/manajemen/kelola-akun" replace />,
+        },
+        {
+          path: "/ruangan-sidang",
+          element: <Ruangan />,
         },
         {
           path: "/manajemen/kelola-akun",

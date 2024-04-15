@@ -1,6 +1,7 @@
 import { RoleEnum } from "@/types/session-data";
 import { IoSchoolOutline } from "react-icons/io5";
 import { VscNotebook, VscPieChart } from "react-icons/vsc";
+import { BsLayoutSidebarReverse } from "react-icons/bs";
 import { NavItem } from "../types";
 
 const NAV_ITEMS: NavItem[] = [
@@ -14,6 +15,7 @@ const NAV_ITEMS: NavItem[] = [
       RoleEnum.S2_PEMBIMBING,
       RoleEnum.S1_MAHASISWA,
       RoleEnum.S2_MAHASISWA,
+      RoleEnum.TU,
     ],
   },
   {
@@ -98,6 +100,12 @@ const NAV_ITEMS: NavItem[] = [
   //     { label: "Sistem", path: "/log/sistem" },
   //   ],
   // },
+  {
+    label: "Ruang Sidang",
+    path: "/ruangan-sidang",
+    icon: <BsLayoutSidebarReverse className="text-slate-700" />,
+    roleAccess: [RoleEnum.TU],
+  },
   {
     label: "Manajemen",
     icon: <IoSchoolOutline className="text-slate-700" />,
