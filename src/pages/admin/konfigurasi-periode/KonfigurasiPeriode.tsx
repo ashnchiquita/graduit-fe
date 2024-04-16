@@ -145,6 +145,7 @@ export default function KonfigurasiPeriode(): JSX.Element {
                         className="w-full"
                         id="minimal-bimbingan"
                         placeholder="Jumlah minimal bimbingan"
+                        min={0}
                         {...field}
                       />
                     </FormControl>
