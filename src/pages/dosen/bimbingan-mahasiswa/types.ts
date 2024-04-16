@@ -5,8 +5,13 @@ export type BimbinganLogs = {
   laporan_kemajuan: string;
   todo: string;
   rencana: string;
-  berkas: string[];
+  berkas: Berkas[];
   status: boolean;
+};
+
+export type Berkas = {
+  nama: string;
+  link: string;
 };
 
 export type BimbinganData = {
@@ -30,7 +35,30 @@ export type BimbinganS2Res = {
   laporanKemajuan: string;
   todo: string;
   bimbinganBerikutnya: string;
-  berkasLinks: string[];
+  berkas: Berkas[];
+};
+
+export type BimbinganS1Res = {
+  date: string;
+  laporan_kemajuan: string;
+  todo: string;
+  next_bimbingan: string;
+  berkas: Berkas[];
+  status: boolean;
+};
+
+export type GetLogBimbinganS1Res = {
+  data: BimbinganS1Res[];
+};
+
+export type GetMahasiswaInfoS1Res = {
+  data: {
+    id: string;
+    nama: string;
+    email: string;
+    nim: string;
+    jalurPilihan: string;
+  };
 };
 
 export type GetLogBimbinganS2Res = {

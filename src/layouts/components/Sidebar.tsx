@@ -8,7 +8,6 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ closed }: SidebarProps): JSX.Element {
-
   return (
     <aside
       className={cn(

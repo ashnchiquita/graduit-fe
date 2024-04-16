@@ -154,7 +154,7 @@ export const router = createBrowserRouter(
           element: <KonfigurasiPeriode />,
         },
         {
-          path: "/add-log-bimbingan",
+          path: "/add-log-bimbingan/:strata",
           element: <AddLogBimbingan />,
         },
       ],
