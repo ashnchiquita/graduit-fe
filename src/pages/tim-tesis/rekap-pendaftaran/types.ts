@@ -86,3 +86,15 @@ export type GetStatisticsRes = {
     percentage: number | null;
   };
 };
+
+export type GetRekapPendaftaranTableRes = {
+  data: {
+    pendaftaran_id: string;
+    nim: string;
+    mahasiswa_id: string;
+    mahasiswa_nama: string;
+    pembimbing_nama: string;
+    status: StatusPendaftaranEnum;
+  }[];
+  count: number;
+};

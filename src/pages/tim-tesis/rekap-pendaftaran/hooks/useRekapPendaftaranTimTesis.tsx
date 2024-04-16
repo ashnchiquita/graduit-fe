@@ -1,5 +1,4 @@
 import StatusPendaftaranBadge from "@/components/StatusPendaftaranBadge";
-import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import {
   ColumnDef,
   getCoreRowModel,
@@ -14,9 +13,13 @@ import {
   RekapPendaftaranTimTesisHookRet,
 } from "../types";
 import useSWR from "swr";
-import { getRekapPendaftaranStatistics } from "../clients";
+import {
+  getRekapPendaftaranStatistics,
+  getRekapPendaftaranTable,
+} from "../clients";
 import { toast } from "react-toastify";
 import { RoleEnum } from "@/types/session-data";
+import { convertStatus } from "../helper";
 
 const defaultStatistics: GetStatisticsRes = {
   diterima: {
@@ -50,39 +53,6 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     setSearchParams(obj);
     setSearchValue(value);
   };
-
-  const [data, setData] = useState<Mahasiswa[]>([
-    {
-      nim: "23521149",
-      nama: "Rava James Maulana",
-      dosenPembimbing: "Dr. Johnny Rava Maulana",
-      status: StatusPendaftaranEnum.ACCEPTED,
-    },
-    {
-      nim: "23521148",
-      nama: "Maulana James Rava",
-      dosenPembimbing: "Dr. Johnny Rava Maulana",
-      status: StatusPendaftaranEnum.PROCESS,
-    },
-    {
-      nim: "23521147",
-      nama: "James Rava Maulana",
-      dosenPembimbing: "Dr. Johnny Rava Maulana",
-      status: StatusPendaftaranEnum.REJECTED,
-    },
-    {
-      nim: "23521146",
-      nama: "Rava James Maulana",
-      dosenPembimbing: "Dr. Johnny Rava Maulana",
-      status: StatusPendaftaranEnum.ACCEPTED,
-    },
-    {
-      nim: "23521145",
-      nama: "Maulana James Rava",
-      dosenPembimbing: "Dr. Johnny Rava Maulana",
-      status: StatusPendaftaranEnum.PROCESS,
-    },
-  ]);
 
   const handleStatusFilterChange = (value: string) => {
     const obj: any = {};
@@ -119,20 +89,13 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     },
     {
       id: "aksi",
-      cell: ({ row }) => <RowAction row={row} setData={setData} />,
+      cell: ({ row }) => <RowAction row={row} setData={() => {}} />,
       enableSorting: false,
       meta: {
         align: "right",
       },
     },
   ];
-
-  const table = useReactTable({
-    columns,
-    data,
-    columnResizeMode: "onChange",
-    getCoreRowModel: getCoreRowModel(),
-  });
 
   const { data: statisticsData } = useSWR<GetStatisticsRes>(
     "/registrasi-tesis/statistics",
@@ -151,6 +114,41 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
       fallbackData: defaultStatistics,
     },
   );
+
+  // Get page number from search params
+  const page = Number(searchParams.get("page")) || 1;
+
+  const { data: s2MahasiswaData = [] } = useSWR<Mahasiswa[]>(
+    "/registrasi-tesis",
+    async () => {
+      try {
+        const response = await getRekapPendaftaranTable({
+          view: RoleEnum.S2_TIM_TESIS,
+          page: page,
+        });
+
+        // Map GetRekapPendaftaranTableRes to Mahasiswa
+        const data = response.data.data.map((item) => ({
+          nim: item.nim,
+          nama: item.mahasiswa_nama,
+          dosenPembimbing: item.pembimbing_nama,
+          status: convertStatus(item.status),
+        }));
+
+        return data;
+      } catch (error) {
+        toast.error("Gagal memuat data tabel");
+        return [];
+      }
+    },
+  );
+
+  const table = useReactTable({
+    columns,
+    data: s2MahasiswaData,
+    columnResizeMode: "onChange",
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return {
     table,

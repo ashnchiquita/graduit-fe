@@ -13,24 +13,28 @@ export default function useRowAction({ setData }: HookProps): RowActionHookRet {
     useState(false);
 
   const handleAccept = (nim: string) => {
-    setData((prev) =>
-      prev.map((mhs) =>
-        mhs.nim === nim
-          ? { ...mhs, status: StatusPendaftaranEnum.ACCEPTED }
-          : mhs,
-      ),
-    );
+    // setData((prev) =>
+    //   prev.map((mhs) =>
+    //     mhs.nim === nim
+    //       ? { ...mhs, status: StatusPendaftaranEnum.ACCEPTED }
+    //       : mhs,
+    //   ),
+    // );
+
+    // API call to accept the student
     setAcceptDialogOpen(false);
   };
 
   const handleReject = (nim: string) => {
-    setData((prev) =>
-      prev.map((mhs) =>
-        mhs.nim === nim
-          ? { ...mhs, status: StatusPendaftaranEnum.REJECTED }
-          : mhs,
-      ),
-    );
+    // setData((prev) =>
+    //   prev.map((mhs) =>
+    //     mhs.nim === nim
+    //       ? { ...mhs, status: StatusPendaftaranEnum.REJECTED }
+    //       : mhs,
+    //   ),
+    // );
+
+    // API call to reject the student
     setRejectDialogOpen(false);
   };
 

@@ -9,10 +9,9 @@ import { Link } from "react-router-dom";
 import { Mahasiswa } from "../types";
 import useRowAction from "../hooks/useRowAction";
 import { PiClockCounterClockwise } from "react-icons/pi";
-import { HiOutlineDocument } from "react-icons/hi2";
 import RegAcceptDialog from "@/pages/dosen/components/RegAcceptDialog";
 import RegRejectDialog from "@/pages/dosen/components/RegRejectDialog";
-import { Pencil } from "lucide-react";
+import { Check, Pencil, X } from "lucide-react";
 import EditDosenPembimbingDialog from "../../components/EditDosenPembimbingDialog";
 
 interface ComponentProps {
@@ -47,9 +46,9 @@ export default function RowAction({
       <PopoverContent
         align="start"
         side="left"
-        className="w-[183px] overflow-hidden rounded-md p-0"
+        className="w-[220px] overflow-hidden rounded-md p-0"
       >
-        <div className="w-48 bg-white">
+        <div className="w-full bg-white">
           {/* Edit Dialog */}
           <EditDosenPembimbingDialog
             open={editDosenPembimbingDialogOpen}
@@ -57,10 +56,28 @@ export default function RowAction({
             nim={row.original.nim}
           />
 
+          {/* Accept Dialog */}
+          <RegAcceptDialog
+            acceptDialogOpen={acceptDialogOpen}
+            setAcceptDialogOpen={setAcceptDialogOpen}
+            name={row.original.nama}
+            onAccept={() => handleAccept(row.original.nim)}
+            dialogTrigger={<></>}
+          />
+
+          {/* Reject Dialog */}
+          <RegRejectDialog
+            rejectDialogOpen={rejectDialogOpen}
+            setRejectDialogOpen={setRejectDialogOpen}
+            name={row.original.nama}
+            onReject={() => handleReject(row.original.nim)}
+            dialogTrigger={<></>}
+          />
+
           <div className="w-full p-3">
             <Link
               to={`/rekap-pendaftaran-tim-tesis/${row.original.nim}`}
-              className="flex w-full items-center gap-3 text-xs font-medium text-slate-700"
+              className="flex w-full items-center gap-3 text-sm font-medium text-slate-700"
             >
               <PiClockCounterClockwise className="size-4" />
               Lihat Riwayat Pengajuan
@@ -72,50 +89,36 @@ export default function RowAction({
           <div className="w-full p-3">
             <button
               onClick={() => setEditDosenPembimbingDialogOpen(true)}
-              className="flex w-full items-center gap-3 text-xs font-medium text-slate-700"
+              className="flex w-full items-center gap-3 text-sm font-medium text-slate-700"
             >
-              <Pencil className="mr-1 size-3" />
+              <Pencil className="mr-1 size-4" />
               Edit Dosen Pembimbing
             </button>
           </div>
 
           <hr />
 
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="flex w-full items-center gap-3 p-3 text-xs font-medium text-red-400">
-                <HiOutlineDocument className="size-4" />
-                Ubah Status Pengajuan
-              </button>
-            </PopoverTrigger>
-            <PopoverContent align="end" className="w-[100px] p-0">
-              {/* Accept Dialog */}
-              <RegAcceptDialog
-                acceptDialogOpen={acceptDialogOpen}
-                setAcceptDialogOpen={setAcceptDialogOpen}
-                name={row.original.nama}
-                onAccept={() => handleAccept(row.original.nim)}
-                dialogTrigger={
-                  <button className="w-full p-3 text-left text-xs font-medium">
-                    Diterima
-                  </button>
-                }
-              />
+          <div className="w-full p-3">
+            <button
+              onClick={() => setAcceptDialogOpen(true)}
+              className="flex w-full items-center gap-3 text-sm font-medium text-blue-500"
+            >
+              <Check className="mr-1 size-4" />
+              Terima Pengajuan
+            </button>
+          </div>
 
-              {/* Reject Dialog */}
-              <RegRejectDialog
-                rejectDialogOpen={rejectDialogOpen}
-                setRejectDialogOpen={setRejectDialogOpen}
-                name={row.original.nama}
-                onReject={() => handleReject(row.original.nim)}
-                dialogTrigger={
-                  <button className="w-full p-3 text-left text-xs font-medium text-red-500">
-                    Ditolak
-                  </button>
-                }
-              />
-            </PopoverContent>
-          </Popover>
+          <hr />
+
+          <div className="w-full p-3">
+            <button
+              onClick={() => setRejectDialogOpen(true)}
+              className="flex w-full items-center gap-3 text-sm font-medium text-red-500"
+            >
+              <X className="mr-1 size-4" />
+              Tolak Pengajuan
+            </button>
+          </div>
         </div>
       </PopoverContent>
     </Popover>
