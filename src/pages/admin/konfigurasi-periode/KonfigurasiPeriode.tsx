@@ -29,10 +29,10 @@ export default function KonfigurasiPeriode(): JSX.Element {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="flex flex-col gap-6"
+            className="flex w-full flex-col gap-6"
           >
             <div className="flex flex-col gap-2">
-              <h2 className="text-sm text-slate-500">
+              <h2 className="text-sm font-medium text-slate-500">
                 Periode pendidikan saat ini
               </h2>
 
@@ -117,7 +117,7 @@ export default function KonfigurasiPeriode(): JSX.Element {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex w-1/2 flex-col gap-2 pr-2.5">
               <FormField
                 control={form.control}
                 name="minimalBimbingan"
@@ -132,7 +132,7 @@ export default function KonfigurasiPeriode(): JSX.Element {
                     <FormControl>
                       <Input
                         type="number"
-                        className="w-full lg:w-[500px]"
+                        className="w-full"
                         id="minimal-bimbingan"
                         placeholder="Jumlah minimal bimbingan"
                         {...field}
