@@ -243,10 +243,11 @@ export default function useInputNilai() {
         <Button
           variant="outline"
           size="sm"
-          className="border-none text-blue-500 hover:text-blue-600"
+          className="border-none bg-transparent text-blue-500 hover:text-blue-600"
           onClick={() => {
             handleClickSingleUbahNilai(row.original);
           }}
+          disabled={row.getIsSelected()}
         >
           Ubah Nilai
         </Button>
