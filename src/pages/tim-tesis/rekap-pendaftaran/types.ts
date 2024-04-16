@@ -14,6 +14,7 @@ export type RekapPendaftaranTimTesisHookRet = {
   handleSearchValueChange: (value: string) => void;
   statusFilter: string;
   handleStatusFilterChange: (value: string) => void;
+  statisticsData: GetStatisticsRes;
 };
 
 export type RowActionHookRet = {
@@ -69,4 +70,19 @@ export type RiwayatPendaftaranHookRet = {
   setUbahDosenPembimbingDialogOpen: React.Dispatch<
     React.SetStateAction<boolean>
   >;
+};
+
+export type GetStatisticsRes = {
+  diterima: {
+    amount: number;
+    percentage: number | null;
+  };
+  sedang_proses: {
+    amount: number;
+    percentage: number | null;
+  };
+  ditolak: {
+    amount: number;
+    percentage: number | null;
+  };
 };

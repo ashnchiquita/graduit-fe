@@ -8,7 +8,30 @@ import {
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import RowAction from "../components/RowAction";
-import { Mahasiswa, RekapPendaftaranTimTesisHookRet } from "../types";
+import {
+  GetStatisticsRes,
+  Mahasiswa,
+  RekapPendaftaranTimTesisHookRet,
+} from "../types";
+import useSWR from "swr";
+import { getRekapPendaftaranStatistics } from "../clients";
+import { toast } from "react-toastify";
+import { RoleEnum } from "@/types/session-data";
+
+const defaultStatistics: GetStatisticsRes = {
+  diterima: {
+    amount: 0,
+    percentage: null,
+  },
+  sedang_proses: {
+    amount: 0,
+    percentage: null,
+  },
+  ditolak: {
+    amount: 0,
+    percentage: null,
+  },
+};
 
 export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisHookRet {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -111,11 +134,30 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const { data: statisticsData } = useSWR<GetStatisticsRes>(
+    "/registrasi-tesis/statistics",
+    async () => {
+      try {
+        const response = await getRekapPendaftaranStatistics({
+          view: RoleEnum.S2_TIM_TESIS,
+        });
+        return response.data;
+      } catch (error) {
+        toast.error("Gagal memuat data statistik");
+        return defaultStatistics;
+      }
+    },
+    {
+      fallbackData: defaultStatistics,
+    },
+  );
+
   return {
     table,
     searchValue,
     handleSearchValueChange,
     statusFilter,
     handleStatusFilterChange,
+    statisticsData: statisticsData ?? defaultStatistics,
   };
 }

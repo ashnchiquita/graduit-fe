@@ -28,6 +28,7 @@ export default function RekapPendaftaranTimTesis(): JSX.Element {
     handleSearchValueChange,
     statusFilter,
     handleStatusFilterChange,
+    statisticsData,
   } = useRekapPendaftaranTimTesis();
 
   return (
@@ -38,20 +39,32 @@ export default function RekapPendaftaranTimTesis(): JSX.Element {
         <div className="flex items-center justify-around">
           <StatisticCard
             title="Diterima"
-            count={234}
-            percentage={8}
+            count={statisticsData.diterima.amount}
+            percentage={
+              statisticsData.diterima.percentage
+                ? statisticsData.diterima.percentage
+                : 0
+            }
             color="GREEN"
           />
           <StatisticCard
             title="Sedang Proses"
-            count={234}
-            percentage={8}
+            count={statisticsData.sedang_proses.amount}
+            percentage={
+              statisticsData.sedang_proses.percentage
+                ? statisticsData.sedang_proses.percentage
+                : 0
+            }
             color="ORANGE"
           />
           <StatisticCard
             title="Ditolak"
-            count={234}
-            percentage={8}
+            count={statisticsData.ditolak.amount}
+            percentage={
+              statisticsData.ditolak.percentage
+                ? statisticsData.ditolak.percentage
+                : 0
+            }
             color="RED"
           />
         </div>
