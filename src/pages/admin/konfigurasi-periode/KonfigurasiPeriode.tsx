@@ -17,13 +17,23 @@ import { Semester } from "./constants";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import RentangMasa from "./components/RentangMasa";
+import { useState } from "react";
+import TutupPeriodeDialog from "./components/TutupPeriodeDialog";
 
 export default function KonfigurasiPeriode(): JSX.Element {
   const { form, handleSubmit, years } = useKonfigurasiPeriode();
+  const [showTutupPeriodeDialog, setShowTutupPeriodeDialog] = useState(false);
 
   return (
-    <main className="w-full px-4 pb-3">
-      <div className="flex w-full flex-col gap-6 rounded-2xl bg-white p-8">
+    <main className="flex w-full flex-col gap-3 px-4 pb-3">
+      {/* Dialog */}
+      <TutupPeriodeDialog
+        period={`${form.getValues().semester} ${form.getValues().tahun}`}
+        dialogOpen={showTutupPeriodeDialog}
+        setDialogOpen={setShowTutupPeriodeDialog}
+      />
+
+      <div className="flex w-full flex-col gap-6 rounded-xl bg-white p-8">
         <h1 className="text-3xl font-bold">Pengaturan Periode Pendidikan</h1>
 
         <Form {...form}>
@@ -185,6 +195,33 @@ export default function KonfigurasiPeriode(): JSX.Element {
             </div>
           </form>
         </Form>
+      </div>
+
+      <div className="flex w-full flex-col gap-3 rounded-xl bg-white p-4">
+        <div className="flex w-full flex-col justify-between gap-4 rounded-lg border border-red-500 p-4 md:flex-row md:justify-between">
+          <div className="flex flex-col gap-1">
+            <h3 className="font-bold text-slate-800">
+              Tutup Periode Pendidikan
+            </h3>
+            <p className="text-sm font-medium text-slate-500">
+              Menutup periode pendidikan akan membatasi seluruh akses pengguna
+              untuk mengubah data.
+            </p>
+          </div>
+          <Button
+            className="w-full self-end rounded-lg border border-red-500 bg-transparent py-2 text-red-500 hover:bg-red-500 hover:text-white md:w-fit md:self-start md:px-8"
+            onClick={() => setShowTutupPeriodeDialog(true)}
+            // Disable if periode is not set
+            disabled={!form.getValues().semester || !form.getValues().tahun}
+            title={
+              form.getValues().semester && form.getValues().tahun
+                ? ""
+                : "Pilih periode pendidikan terlebih dahulu"
+            }
+          >
+            <p className="font-bold">Tutup Periode Pendidikan</p>
+          </Button>
+        </div>
       </div>
     </main>
   );
