@@ -9,7 +9,7 @@ import { useSearchParams } from "react-router-dom";
 import RowAction from "../components/RowAction";
 import {
   GetStatisticsRes,
-  Mahasiswa,
+  PendaftaranTopik,
   RekapPendaftaranTimTesisHookRet,
 } from "../types";
 import useSWR from "swr";
@@ -44,6 +44,7 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
   const [statusFilter, setStatusFilter] = useState(
     searchParams.get("filter") ?? "",
   );
+  const page = Number(searchParams.get("page")) || 1;
 
   const handleSearchValueChange = (value: string) => {
     const obj: any = {};
@@ -63,7 +64,13 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     setStatusFilter(value);
   };
 
-  const columns: ColumnDef<Mahasiswa>[] = [
+  const columns: ColumnDef<PendaftaranTopik>[] = [
+    {
+      header: "ID",
+      accessorKey: "id",
+      enableSorting: false,
+      enableHiding: true,
+    },
     {
       header: "NIM",
       accessorKey: "nim",
@@ -89,7 +96,7 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     },
     {
       id: "aksi",
-      cell: ({ row }) => <RowAction row={row} setData={() => {}} />,
+      cell: ({ row }) => <RowAction row={row} />,
       enableSorting: false,
       meta: {
         align: "right",
@@ -115,10 +122,7 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     },
   );
 
-  // Get page number from search params
-  const page = Number(searchParams.get("page")) || 1;
-
-  const { data: s2MahasiswaData = [] } = useSWR<Mahasiswa[]>(
+  const { data: s2MahasiswaData = [] } = useSWR<PendaftaranTopik[]>(
     "/registrasi-tesis",
     async () => {
       try {
@@ -129,6 +133,7 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
 
         // Map GetRekapPendaftaranTableRes to Mahasiswa
         const data = response.data.data.map((item) => ({
+          id: item.pendaftaran_id,
           nim: item.nim,
           nama: item.mahasiswa_nama,
           dosenPembimbing: item.pembimbing_nama,
@@ -146,6 +151,11 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
   const table = useReactTable({
     columns,
     data: s2MahasiswaData,
+    state: {
+      columnVisibility: {
+        id: false,
+      },
+    },
     columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
   });

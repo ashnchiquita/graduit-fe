@@ -1,7 +1,8 @@
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import { Table } from "@tanstack/react-table";
 
-export type Mahasiswa = {
+export type PendaftaranTopik = {
+  id: string; // This is the pendaftaran_id
   nim: string;
   nama: string;
   dosenPembimbing: string;
@@ -9,7 +10,7 @@ export type Mahasiswa = {
 };
 
 export type RekapPendaftaranTimTesisHookRet = {
-  table: Table<Mahasiswa>;
+  table: Table<PendaftaranTopik>;
   searchValue: string;
   handleSearchValueChange: (value: string) => void;
   statusFilter: string;
@@ -26,8 +27,8 @@ export type RowActionHookRet = {
   setEditDosenPembimbingDialogOpen: React.Dispatch<
     React.SetStateAction<boolean>
   >;
-  handleAccept: (nim: string) => void;
-  handleReject: (nim: string) => void;
+  handleAccept: (id: string) => void;
+  handleReject: (id: string) => void;
 };
 
 export type Pengajuan = {
@@ -94,7 +95,16 @@ export type GetRekapPendaftaranTableRes = {
     mahasiswa_id: string;
     mahasiswa_nama: string;
     pembimbing_nama: string;
-    status: StatusPendaftaranEnum;
+    status: "NOT_ASSIGNED" | "INTERVIEW" | "APPROVED" | "REJECTED";
   }[];
   count: number;
+};
+
+export type ApproveRejectRes = {
+  id: string;
+  jalurPilihan: string;
+  waktuPengiriman: Date;
+  jadwalInterview: Date;
+  waktuKeputusan: Date;
+  status: "NOT_ASSIGNED" | "INTERVIEW" | "APPROVED" | "REJECTED";
 };

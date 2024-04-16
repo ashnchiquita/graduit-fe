@@ -1,41 +1,67 @@
 import { useState } from "react";
-import { Mahasiswa, RowActionHookRet } from "../types";
-import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
+import { RowActionHookRet } from "../types";
+import { approvePendaftaran } from "../clients";
+import { toast } from "react-toastify";
+import useSWRMutation from "swr/mutation";
 
-type HookProps = {
-  setData: React.Dispatch<React.SetStateAction<Mahasiswa[]>>;
+type RowActionHookParams = {
+  nim: string;
 };
 
-export default function useRowAction({ setData }: HookProps): RowActionHookRet {
+export default function useRowAction({
+  nim,
+}: RowActionHookParams): RowActionHookRet {
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [editDosenPembimbingDialogOpen, setEditDosenPembimbingDialogOpen] =
     useState(false);
 
-  const handleAccept = (nim: string) => {
-    // setData((prev) =>
-    //   prev.map((mhs) =>
-    //     mhs.nim === nim
-    //       ? { ...mhs, status: StatusPendaftaranEnum.ACCEPTED }
-    //       : mhs,
-    //   ),
-    // );
+  const { trigger: acceptTrigger, error: acceptError } = useSWRMutation(
+    `/approval/${nim}/approve`,
+    async (_, { arg }: { arg: { id: string } }) => {
+      try {
+        const res = await approvePendaftaran(arg.id);
+        return res.data;
+      } catch (error) {
+        toast.error("Gagal menerima pendaftaran");
+      }
+    },
+  );
 
-    // API call to accept the student
-    setAcceptDialogOpen(false);
+  const { trigger: rejectTrigger, error: rejectError } = useSWRMutation(
+    `/approval/${nim}/reject`,
+    async (_, { arg }: { arg: { id: string } }) => {
+      try {
+        const res = await approvePendaftaran(arg.id);
+        return res.data;
+      } catch (error) {
+        toast.error("Gagal menolak pendaftaran");
+      }
+    },
+  );
+
+  const handleAccept = async (id: string) => {
+    await acceptTrigger({
+      id: id,
+    });
+
+    if (acceptError) {
+      toast.error(acceptError);
+    } else {
+      setAcceptDialogOpen(false);
+    }
   };
 
-  const handleReject = (nim: string) => {
-    // setData((prev) =>
-    //   prev.map((mhs) =>
-    //     mhs.nim === nim
-    //       ? { ...mhs, status: StatusPendaftaranEnum.REJECTED }
-    //       : mhs,
-    //   ),
-    // );
+  const handleReject = async (id: string) => {
+    await rejectTrigger({
+      id: id,
+    });
 
-    // API call to reject the student
-    setRejectDialogOpen(false);
+    if (rejectError) {
+      toast.error(rejectError);
+    } else {
+      setRejectDialogOpen(false);
+    }
   };
 
   return {

@@ -6,7 +6,7 @@ import {
 import { Row } from "@tanstack/react-table";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { Mahasiswa } from "../types";
+import { PendaftaranTopik } from "../types";
 import useRowAction from "../hooks/useRowAction";
 import { PiClockCounterClockwise } from "react-icons/pi";
 import RegAcceptDialog from "@/pages/dosen/components/RegAcceptDialog";
@@ -15,14 +15,10 @@ import { Check, Pencil, X } from "lucide-react";
 import EditDosenPembimbingDialog from "../../components/EditDosenPembimbingDialog";
 
 interface ComponentProps {
-  row: Row<Mahasiswa>;
-  setData: React.Dispatch<React.SetStateAction<Mahasiswa[]>>;
+  row: Row<PendaftaranTopik>;
 }
 
-export default function RowAction({
-  row,
-  setData,
-}: ComponentProps): JSX.Element {
+export default function RowAction({ row }: ComponentProps): JSX.Element {
   const {
     acceptDialogOpen,
     setAcceptDialogOpen,
@@ -33,7 +29,7 @@ export default function RowAction({
     handleAccept,
     handleReject,
   } = useRowAction({
-    setData,
+    nim: row.original.nim,
   });
 
   return (
@@ -61,7 +57,7 @@ export default function RowAction({
             acceptDialogOpen={acceptDialogOpen}
             setAcceptDialogOpen={setAcceptDialogOpen}
             name={row.original.nama}
-            onAccept={() => handleAccept(row.original.nim)}
+            onAccept={() => handleAccept(row.original.id)}
             dialogTrigger={<></>}
           />
 
@@ -70,7 +66,7 @@ export default function RowAction({
             rejectDialogOpen={rejectDialogOpen}
             setRejectDialogOpen={setRejectDialogOpen}
             name={row.original.nama}
-            onReject={() => handleReject(row.original.nim)}
+            onReject={() => handleReject(row.original.id)}
             dialogTrigger={<></>}
           />
 

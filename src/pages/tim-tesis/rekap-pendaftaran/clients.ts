@@ -28,3 +28,15 @@ export async function getRekapPendaftaranStatistics(params: { view: string }) {
     },
   );
 }
+
+export async function approvePendaftaran(id: string) {
+  return await s2Instance.patch(`/approval/${id}/approve`, null, {
+    withCredentials: true,
+  });
+}
+
+export async function rejectPendaftaran(id: string) {
+  return await s2Instance.patch(`/approval/${id}/reject`, null, {
+    withCredentials: true,
+  });
+}
