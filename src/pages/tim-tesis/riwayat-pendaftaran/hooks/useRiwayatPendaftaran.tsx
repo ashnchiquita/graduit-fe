@@ -1,73 +1,77 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  RiwayatPendaftaranData,
+  GetAccountMahasiswaRes,
+  Pengajuan,
   RiwayatPendaftaranHookRet,
-} from "../../rekap-pendaftaran/types";
-import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
+} from "../types";
+import useSWR from "swr";
+import { getAccount, getRiwayatPendaftaran } from "../clients";
+import { toast } from "react-toastify";
+import useSWRImmutable from "swr/immutable";
+import { convertStatus } from "../../rekap-pendaftaran/helper";
 
 export default function useRiwayatPendaftaran(): RiwayatPendaftaranHookRet {
   const [wawancaraDialogOpen, setWawancaraDialogOpen] = useState(false);
   const [ubahStatusDialogOpen, setUbahStatusDialogOpen] = useState(false);
   const [ubahDosenPembimbingDialogOpen, setUbahDosenPembimbingDialogOpen] =
     useState(false);
+  const [idMahasiswa, setIdMahasiswa] = useState<string | null>();
 
-  // TODO: Fetch data from API, dont forget to sort the listPengajuan by waktuPengiriman from most recent to oldest
+  useEffect(() => {
+    const path = window.location.pathname.split("/");
+    const id = path[path.length - 1];
+    setIdMahasiswa(id);
+  }, []);
 
-  const [data, setData] = useState<RiwayatPendaftaranData>({
-    nim: "13521149",
-    nama: "Rava Maulana Azzikri",
-    email: "13521149@std.stei.itb.ac.id",
-    listPengajuan: [
-      {
-        id: "1",
-        jalurPilihan: "Tesis",
-        waktuPengiriman: new Date(),
-        jadwalInterview: new Date(),
-        waktuKeputusan: new Date(),
-        status: StatusPendaftaranEnum.PROCESS,
-        topik: {
-          id: "1",
-          judul:
-            "Pengembangan Algoritma Pemrosesan Citra Berbasis Deep Learning untuk Deteksi Objek dalam Lingkungan Tidak Terstruktur",
-          deskripsi:
-            "Tesis ini bertujuan untuk mengembangkan algoritma pemrosesan citra yang menggunakan pendekatan deep learning untuk mendeteksi objek dalam lingkungan yang tidak terstruktur, seperti lingkungan luar ruangan yang kompleks atau ruang yang tidak terkontrol dengan baik. Metode konvensional untuk deteksi objek mungkin tidak efektif dalam situasi-situasi tersebut karena berbagai tantangan seperti variasi pencahayaan, perubahan sudut pandang, dan adanya objek yang tumpang tindih. Penelitian ini akan fokus pada pengembangan arsitektur jaringan saraf tiruan yang mendalam (deep neural networks) yang mampu memahami konteks visual dari lingkungan yang tidak terstruktur dan secara akurat mendeteksi objek di dalamnya.",
-          idPengaju: "13521149",
-          periode: "2021/2022",
-        },
-        penerima: {
-          id: "1",
-          nama: "Mr. Donald Trump",
-          email: "dosbim@gmail.com",
-        },
-      },
-      {
-        id: "2",
-        jalurPilihan: "Tesis",
-        waktuPengiriman: new Date(),
-        jadwalInterview: new Date(),
-        waktuKeputusan: new Date(),
-        status: StatusPendaftaranEnum.ACCEPTED,
-        topik: {
-          id: "2",
-          judul:
-            "Pengembangan Algoritma Pemrosesan Citra Berbasis Deep Learning untuk Deteksi Objek dalam Lingkungan Tidak Terstruktur",
-          deskripsi:
-            "Tesis ini bertujuan untuk mengembangkan algoritma pemrosesan citra yang menggunakan pendekatan deep learning untuk mendeteksi objek dalam lingkungan yang tidak terstruktur, seperti lingkungan luar ruangan yang kompleks atau ruang yang tidak terkontrol dengan baik. Metode konvensional untuk deteksi objek mungkin tidak efektif dalam situasi-situasi tersebut karena berbagai tantangan seperti variasi pencahayaan, perubahan sudut pandang, dan adanya objek yang tumpang tindih. Penelitian ini akan fokus pada pengembangan arsitektur jaringan saraf tiruan yang mendalam (deep neural networks) yang mampu memahami konteks visual dari lingkungan yang tidak terstruktur dan secara akurat mendeteksi objek di dalamnya.",
-          idPengaju: "13521149",
-          periode: "2021/2022",
-        },
-        penerima: {
-          id: "2",
-          nama: "Mr. Joe Biden",
-          email: "joebiden@gmail.com",
-        },
-      },
-    ],
-  });
+  const { data: listPengajuan } = useSWR<Pengajuan[]>(
+    idMahasiswa ? `/registrasi-tesis/mahasiswa/${idMahasiswa}` : null,
+    async () => {
+      try {
+        const response = await getRiwayatPendaftaran(idMahasiswa!);
+
+        // Map the response data to the Pengajuan type
+        const mappedData = response.data.map((data) => {
+          return {
+            id: data.id,
+            jadwalInterview: data.jadwalInterview,
+            jalurPilihan: data.jalurPilihan,
+            status: convertStatus(data.status),
+            waktuPengiriman: data.waktuPengiriman
+              ? new Date(data.waktuPengiriman)
+              : new Date(),
+            judulTopik: data.judulTopik,
+            deskripsiTopik: data.deskripsiTopik,
+            dosenPembimbing: {
+              id: data.dosenPembimbing.id,
+              nama: data.dosenPembimbing.nama,
+            },
+          };
+        });
+
+        return mappedData;
+      } catch (error) {
+        toast.error("Error mendapatkan riwayat pendaftaran data");
+        return [];
+      }
+    },
+  );
+
+  const { data: dataMahasiswa } = useSWRImmutable<GetAccountMahasiswaRes>(
+    idMahasiswa ? `/akun/${idMahasiswa}` : null,
+    async () => {
+      const res = await getAccount(idMahasiswa!);
+      return res.data;
+    },
+  );
 
   return {
-    data,
-    setData,
+    dataMahasiswa: dataMahasiswa ?? {
+      id: "",
+      nama: "",
+      email: "",
+      nim: "",
+    },
+    listPengajuan: listPengajuan ?? [],
     wawancaraDialogOpen,
     setWawancaraDialogOpen,
     ubahStatusDialogOpen,

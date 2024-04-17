@@ -13,6 +13,8 @@ import RegAcceptDialog from "@/pages/dosen/components/RegAcceptDialog";
 import RegRejectDialog from "@/pages/dosen/components/RegRejectDialog";
 import { Check, Pencil, X } from "lucide-react";
 import EditDosenPembimbingDialog from "../../components/EditDosenPembimbingDialog";
+import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
+import { mutate } from "swr";
 
 interface ComponentProps {
   row: Row<PendaftaranTopik>;
@@ -20,6 +22,8 @@ interface ComponentProps {
 
 export default function RowAction({ row }: ComponentProps): JSX.Element {
   const {
+    isPopoverOpen,
+    setIsPopoverOpen,
     acceptDialogOpen,
     setAcceptDialogOpen,
     rejectDialogOpen,
@@ -29,11 +33,11 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
     handleAccept,
     handleReject,
   } = useRowAction({
-    nim: row.original.nim,
+    idMahasiswa: row.original.id,
   });
 
   return (
-    <Popover>
+    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
         <button onClick={() => console.log(row)}>
           <IoEllipsisVertical className="text-[#94A3B8]" />
@@ -49,7 +53,7 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
           <EditDosenPembimbingDialog
             open={editDosenPembimbingDialogOpen}
             setOpen={setEditDosenPembimbingDialogOpen}
-            nim={row.original.nim}
+            nim={row.original.id}
           />
 
           {/* Accept Dialog */}
@@ -57,7 +61,11 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
             acceptDialogOpen={acceptDialogOpen}
             setAcceptDialogOpen={setAcceptDialogOpen}
             name={row.original.nama}
-            onAccept={() => handleAccept(row.original.id)}
+            onAccept={() => {
+              handleAccept(row.original.id);
+              setIsPopoverOpen(false);
+              mutate("/registrasi-tesis");
+            }}
             dialogTrigger={<></>}
           />
 
@@ -66,13 +74,17 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
             rejectDialogOpen={rejectDialogOpen}
             setRejectDialogOpen={setRejectDialogOpen}
             name={row.original.nama}
-            onReject={() => handleReject(row.original.id)}
+            onReject={() => {
+              handleReject(row.original.id);
+              setIsPopoverOpen(false);
+              mutate("/registrasi-tesis");
+            }}
             dialogTrigger={<></>}
           />
 
           <div className="w-full p-3">
             <Link
-              to={`/rekap-pendaftaran-tim-tesis/${row.original.nim}`}
+              to={`/rekap-pendaftaran-tim-tesis/${row.original.id}`}
               className="flex w-full items-center gap-3 text-sm font-medium text-slate-700"
             >
               <PiClockCounterClockwise className="size-4" />
@@ -94,27 +106,36 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
 
           <hr />
 
-          <div className="w-full p-3">
-            <button
-              onClick={() => setAcceptDialogOpen(true)}
-              className="flex w-full items-center gap-3 text-sm font-medium text-blue-500"
-            >
-              <Check className="mr-1 size-4" />
-              Terima Pengajuan
-            </button>
-          </div>
+          {/* Accept and Reject Options */}
+          {(row.original.status === StatusPendaftaranEnum.PROCESS ||
+            row.original.status === StatusPendaftaranEnum.REJECTED) && (
+            <div className="w-full p-3">
+              <button
+                onClick={() => setAcceptDialogOpen(true)}
+                className="flex w-full items-center gap-3 text-sm font-medium text-blue-500"
+              >
+                <Check className="mr-1 size-4" />
+                Terima Pengajuan
+              </button>
+            </div>
+          )}
 
-          <hr />
+          {(row.original.status === StatusPendaftaranEnum.PROCESS ||
+            row.original.status === StatusPendaftaranEnum.ACCEPTED) && (
+            <>
+              <hr />
 
-          <div className="w-full p-3">
-            <button
-              onClick={() => setRejectDialogOpen(true)}
-              className="flex w-full items-center gap-3 text-sm font-medium text-red-500"
-            >
-              <X className="mr-1 size-4" />
-              Tolak Pengajuan
-            </button>
-          </div>
+              <div className="w-full p-3">
+                <button
+                  onClick={() => setRejectDialogOpen(true)}
+                  className="flex w-full items-center gap-3 text-sm font-medium text-red-500"
+                >
+                  <X className="mr-1 size-4" />
+                  Tolak Pengajuan
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </PopoverContent>
     </Popover>

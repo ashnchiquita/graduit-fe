@@ -1,23 +1,24 @@
 import { useState } from "react";
 import { RowActionHookRet } from "../types";
-import { approvePendaftaran } from "../clients";
+import { approvePendaftaran, rejectPendaftaran } from "../clients";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
 
 type RowActionHookParams = {
-  nim: string;
+  idMahasiswa: string;
 };
 
 export default function useRowAction({
-  nim,
+  idMahasiswa,
 }: RowActionHookParams): RowActionHookRet {
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [editDosenPembimbingDialogOpen, setEditDosenPembimbingDialogOpen] =
     useState(false);
 
   const { trigger: acceptTrigger, error: acceptError } = useSWRMutation(
-    `/approval/${nim}/approve`,
+    `/registrasi-tesis/${idMahasiswa}/status`,
     async (_, { arg }: { arg: { id: string } }) => {
       try {
         const res = await approvePendaftaran(arg.id);
@@ -29,10 +30,10 @@ export default function useRowAction({
   );
 
   const { trigger: rejectTrigger, error: rejectError } = useSWRMutation(
-    `/approval/${nim}/reject`,
+    `/registrasi-tesis/${idMahasiswa}/status`,
     async (_, { arg }: { arg: { id: string } }) => {
       try {
-        const res = await approvePendaftaran(arg.id);
+        const res = await rejectPendaftaran(arg.id);
         return res.data;
       } catch (error) {
         toast.error("Gagal menolak pendaftaran");
@@ -65,6 +66,8 @@ export default function useRowAction({
   };
 
   return {
+    isPopoverOpen,
+    setIsPopoverOpen,
     acceptDialogOpen,
     setAcceptDialogOpen,
     rejectDialogOpen,

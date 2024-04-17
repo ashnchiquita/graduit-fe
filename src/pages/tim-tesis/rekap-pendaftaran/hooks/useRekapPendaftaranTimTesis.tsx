@@ -122,7 +122,7 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     },
   );
 
-  const { data: s2MahasiswaData = [] } = useSWR<PendaftaranTopik[]>(
+  const { data: s2MahasiswaData = [], mutate } = useSWR<PendaftaranTopik[]>(
     "/registrasi-tesis",
     async () => {
       try {
@@ -133,7 +133,7 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
 
         // Map GetRekapPendaftaranTableRes to Mahasiswa
         const data = response.data.data.map((item) => ({
-          id: item.pendaftaran_id,
+          id: item.mahasiswa_id,
           nim: item.nim,
           nama: item.mahasiswa_nama,
           dosenPembimbing: item.pembimbing_nama,
@@ -147,6 +147,10 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
       }
     },
   );
+
+  const refreshData = () => {
+    mutate();
+  };
 
   const table = useReactTable({
     columns,
@@ -167,5 +171,6 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     statusFilter,
     handleStatusFilterChange,
     statisticsData: statisticsData ?? defaultStatistics,
+    refreshData,
   };
 }

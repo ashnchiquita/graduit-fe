@@ -25,7 +25,6 @@ export default function EditWawancaraDialog({
   // TOOD: Fetch wawancara data from API
   useEffect(() => {
     // Fetch wawancara data
-    console.log(nim);
     setWawancara(new Date());
   }, [setWawancara, nim]);
 

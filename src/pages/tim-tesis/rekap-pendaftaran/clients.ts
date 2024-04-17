@@ -30,13 +30,25 @@ export async function getRekapPendaftaranStatistics(params: { view: string }) {
 }
 
 export async function approvePendaftaran(id: string) {
-  return await s2Instance.patch(`/approval/${id}/approve`, null, {
-    withCredentials: true,
-  });
+  return await s2Instance.patch(
+    `/registrasi-tesis/${id}/status`,
+    {
+      status: "APPROVED",
+    },
+    {
+      withCredentials: true,
+    },
+  );
 }
 
 export async function rejectPendaftaran(id: string) {
-  return await s2Instance.patch(`/approval/${id}/reject`, null, {
-    withCredentials: true,
-  });
+  return await s2Instance.patch(
+    `/registrasi-tesis/${id}/status`,
+    {
+      status: "REJECTED",
+    },
+    {
+      withCredentials: true,
+    },
+  );
 }

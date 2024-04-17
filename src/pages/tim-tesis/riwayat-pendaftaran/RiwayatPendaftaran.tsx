@@ -1,9 +1,7 @@
 import { ArrowLeft, Pencil } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useRiwayatPendaftaran from "./hooks/useRiwayatPendaftaran";
-import { RiwayatPendaftaranHookRet } from "../rekap-pendaftaran/types";
-import { formatDate } from "@/lib/dateformat";
-import StatusPendaftaranBadge from "@/components/StatusPendaftaranBadge";
+import { RiwayatPendaftaranHookRet } from "./types";
 import { useNavigate } from "react-router-dom";
 import {
   Tooltip,
@@ -11,15 +9,18 @@ import {
   TooltipProvider,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import EditStatusPengajuanDialog from "../components/EditStatusPengajuanDialog";
 import EditDosenPembimbingDialog from "../components/EditDosenPembimbingDialog";
 import EditWawancaraDialog from "../components/EditWawancaraDialog";
 import NoDataImg from "../../../assets/no-data/no-data-pengajuan.svg";
+import { formatDate } from "@/lib/dateformat";
+import StatusPendaftaranBadge from "@/components/StatusPendaftaranBadge";
+import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 
 export default function RiwayatPendaftaran(): JSX.Element {
   const {
-    data,
+    dataMahasiswa,
+    listPengajuan,
     wawancaraDialogOpen,
     setWawancaraDialogOpen,
     ubahStatusDialogOpen,
@@ -36,17 +37,17 @@ export default function RiwayatPendaftaran(): JSX.Element {
       <EditStatusPengajuanDialog
         open={ubahStatusDialogOpen}
         setOpen={setUbahStatusDialogOpen}
-        nim={data?.nim}
+        nim={dataMahasiswa.nim}
       />
       <EditDosenPembimbingDialog
         open={ubahDosenPembimbingDialogOpen}
         setOpen={setUbahDosenPembimbingDialogOpen}
-        nim={data?.nim}
+        nim={dataMahasiswa.nim}
       />
       <EditWawancaraDialog
         open={wawancaraDialogOpen}
         setOpen={setWawancaraDialogOpen}
-        nim={data?.nim}
+        nim={dataMahasiswa.nim}
       />
 
       {/* Identity Section */}
@@ -56,22 +57,26 @@ export default function RiwayatPendaftaran(): JSX.Element {
         </button>
         <Avatar className="z-0 size-10">
           <AvatarFallback className="z-0 bg-violet-500 text-lg text-white">
-            {data && data.nama.length > 0 && data.nama[0]}
+            {dataMahasiswa.nama &&
+              dataMahasiswa.nama.length > 0 &&
+              dataMahasiswa.nama[0]}
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <h1 className="font-medium">{data && data.nama}</h1>
-          <p className="text-sm text-gray-500">{data && data.email}</p>
+          <h1 className="font-medium">{dataMahasiswa && dataMahasiswa.nama}</h1>
+          <p className="text-sm text-gray-500">
+            {dataMahasiswa && dataMahasiswa.email}
+          </p>
         </div>
       </section>
 
       {/* Daftar Pengajuan Section */}
       <section className="flex w-full flex-col gap-2">
-        {data && data.listPengajuan.length > 0 ? (
-          data.listPengajuan.map((pengajuan, index) => (
+        {listPengajuan && listPengajuan.length > 0 ? (
+          listPengajuan.map((pengajuan, index) => (
             <div className="flex w-full flex-col gap-4 rounded-lg bg-white p-4 font-medium">
               {/* Title Pengajuan */}
-              <h2>Pengajuan {data.listPengajuan.length - index} </h2>
+              <h2>Pengajuan {listPengajuan.length - index} </h2>
 
               {/* Info Pengajuan */}
               <div className="flex flex-col gap-4 md:flex-row md:justify-between md:gap-8">
@@ -82,7 +87,7 @@ export default function RiwayatPendaftaran(): JSX.Element {
                       Topik
                     </label>
                     <p className="text-sm font-normal text-slate-800">
-                      {pengajuan.topik.judul}
+                      {pengajuan.judulTopik}
                     </p>
                   </div>
                   <div className="flex flex-col gap-1">
@@ -110,7 +115,7 @@ export default function RiwayatPendaftaran(): JSX.Element {
                       )}
                     </div>
                     <p className="text-sm font-normal text-slate-800">
-                      {pengajuan.penerima.nama}
+                      {pengajuan.dosenPembimbing.nama}
                     </p>
                   </div>
                 </div>

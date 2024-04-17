@@ -34,7 +34,6 @@ export default function EditStatusPengajuanDialog({
   // TODO: Fetch pengajuan data from API
   useEffect(() => {
     // Fetch pengajuan data
-    console.log(nim);
     setStatus(StatusPendaftaranEnum.ACCEPTED);
   }, [setStatus, nim]);
 
