@@ -3,14 +3,6 @@ import StatisticCard from "@/components/StatisticCard";
 import StatusPendaftaranBadge from "@/components/StatusPendaftaranBadge";
 import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
-import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DoubleArrowLeftIcon,
@@ -27,8 +19,6 @@ export default function RekapPendaftaranTimTesis(): JSX.Element {
     table,
     searchValue,
     handleSearchValueChange,
-    statusFilter,
-    handleStatusFilterChange,
     statisticsData,
     refreshData,
   } = useRekapPendaftaranTimTesis();
@@ -80,9 +70,7 @@ export default function RekapPendaftaranTimTesis(): JSX.Element {
             searchValue={searchValue}
             setSearchValue={handleSearchValueChange}
             searchPlaceholder="Cari nama atau NIM mahasiswa"
-            selectFilterValue={statusFilter}
             selectFilterPlaceholder="Semua Bimbingan"
-            setSelectFilterValue={handleStatusFilterChange}
             selectFilterOptions={StatusPendaftaranOptions}
           />
         </section>
@@ -92,26 +80,6 @@ export default function RekapPendaftaranTimTesis(): JSX.Element {
 
           <div className="flex w-full items-center justify-between">
             <p className="text-xs text-slate-700">Status Pengajuan</p>
-
-            <Select
-              value={statusFilter}
-              onValueChange={handleStatusFilterChange}
-            >
-              <SelectTrigger className="w-[120px] border-none text-xs">
-                <SelectValue placeholder="Semua" />
-              </SelectTrigger>
-
-              <SelectContent>
-                <SelectItem value="semua" className="text-xs">
-                  Semua
-                </SelectItem>
-                {Object.values(StatusPendaftaranEnum).map((status) => (
-                  <SelectItem key={status} value={status} className="text-xs">
-                    {status}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
           </div>
 
           <div className="group flex w-full items-center gap-2 rounded-md border border-input bg-transparent p-2 text-xs outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50">

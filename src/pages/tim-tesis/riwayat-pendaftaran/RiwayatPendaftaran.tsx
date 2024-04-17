@@ -125,7 +125,7 @@ export default function RiwayatPendaftaran(): JSX.Element {
                 </div>
 
                 {/* Status Pengajuan */}
-                <div className="flex w-full flex-col gap-2">
+                <div className="flex w-full flex-col gap-2 md:max-w-[60%]">
                   <label className="text-sm font-medium text-slate-600">
                     Status Pendaftaran
                   </label>

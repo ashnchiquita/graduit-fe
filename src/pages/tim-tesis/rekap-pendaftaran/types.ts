@@ -13,8 +13,6 @@ export type RekapPendaftaranTimTesisHookRet = {
   table: Table<PendaftaranTopik>;
   searchValue: string;
   handleSearchValueChange: (value: string) => void;
-  statusFilter: string;
-  handleStatusFilterChange: (value: string) => void;
   statisticsData: GetStatisticsRes;
   refreshData: () => void;
 };

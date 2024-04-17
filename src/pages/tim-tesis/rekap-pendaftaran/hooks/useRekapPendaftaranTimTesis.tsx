@@ -4,7 +4,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import RowAction from "../components/RowAction";
 import {
@@ -41,27 +41,14 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",
   );
-  const [statusFilter, setStatusFilter] = useState(
-    searchParams.get("filter") ?? "",
-  );
-  const page = Number(searchParams.get("page")) || 1;
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
 
   const handleSearchValueChange = (value: string) => {
     const obj: any = {};
     value && (obj.search = value);
-    statusFilter && statusFilter !== "semua" && (obj.filter = statusFilter);
 
     setSearchParams(obj);
     setSearchValue(value);
-  };
-
-  const handleStatusFilterChange = (value: string) => {
-    const obj: any = {};
-    value && value !== "semua" && (obj.filter = value);
-    searchValue && (obj.search = searchValue);
-
-    setSearchParams(obj);
-    setStatusFilter(value);
   };
 
   const columns: ColumnDef<PendaftaranTopik>[] = [
@@ -130,6 +117,7 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
       const response = await getRekapPendaftaranTable({
         view: RoleEnum.S2_TIM_TESIS,
         page: page,
+        search: searchValue,
       });
 
       // Map GetRekapPendaftaranTableRes to Mahasiswa
@@ -165,12 +153,20 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     getCoreRowModel: getCoreRowModel(),
   });
 
+  // On search change
+  useEffect(() => {
+    const debouncedSearch = setTimeout(() => {
+      mutateTable();
+      setPage(1);
+    }, 500);
+
+    return () => clearTimeout(debouncedSearch);
+  }, [searchValue, mutateTable]);
+
   return {
     table,
     searchValue,
     handleSearchValueChange,
-    statusFilter,
-    handleStatusFilterChange,
     statisticsData: statisticsData ?? defaultStatistics,
     refreshData,
   };
