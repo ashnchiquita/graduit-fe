@@ -4,6 +4,7 @@ import {
   GetLogBimbinganS2Res,
   GetLogBimbinganS1Res,
   GetMahasiswaInfoS1Res,
+  UpdateStatusBimbinganLogRes,
 } from "./types";
 
 export async function getLogBimbinganS2(id: string) {
@@ -24,6 +25,18 @@ export async function getLogBimbinganS1(id: string) {
 export async function getMahasiswaInfoS1(id: string) {
   return await s1Instance.get<GetMahasiswaInfoS1Res>(
     `/admin/pengguna?id_mahasiswa=${id}`,
+    {
+      withCredentials: true,
+    },
+  );
+}
+
+export async function updateStatusBimbinganLog(id: string, status: boolean) {
+  return await s1Instance.post<UpdateStatusBimbinganLogRes>(
+    `/dosbing/update-status-bimbingan-log?id_log=${id}`,
+    {
+      status: status,
+    },
     {
       withCredentials: true,
     },

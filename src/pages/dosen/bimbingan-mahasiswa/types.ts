@@ -1,6 +1,7 @@
 import { Table } from "@tanstack/react-table";
 
 export type BimbinganLogs = {
+  id: string;
   tanggal: string;
   laporan_kemajuan: string;
   todo: string;
@@ -39,6 +40,7 @@ export type BimbinganS2Res = {
 };
 
 export type BimbinganS1Res = {
+  id: string;
   date: string;
   laporan_kemajuan: string;
   todo: string;
@@ -58,6 +60,12 @@ export type GetMahasiswaInfoS1Res = {
     email: string;
     nim: string;
     jalurPilihan: string;
+  };
+};
+
+export type UpdateStatusBimbinganLogRes = {
+  data: {
+    message: string;
   };
 };
 

@@ -56,6 +56,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
 
       data = {
         bimbingan: resBimbingan.data.data.map((item: BimbinganS1Res) => ({
+          id: item.id,
           tanggal: item.date,
           laporan_kemajuan: item.laporan_kemajuan,
           todo: item.todo,
@@ -83,6 +84,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
 
       data = {
         bimbingan: res.data.bimbingan.map((item) => ({
+          id: item.id,
           tanggal: item.waktuBimbingan,
           laporan_kemajuan: item.laporanKemajuan,
           todo: item.todo,
