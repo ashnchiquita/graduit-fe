@@ -115,7 +115,11 @@ export default function RiwayatPendaftaran(): JSX.Element {
                       )}
                     </div>
                     <p className="text-sm font-normal text-slate-800">
-                      {pengajuan.dosenPembimbing.nama}
+                      {pengajuan.dosenPembimbing &&
+                        pengajuan.dosenPembimbing.length > 0 &&
+                        pengajuan.dosenPembimbing
+                          .map((dosen) => dosen.nama)
+                          .join(", ")}
                     </p>
                   </div>
                 </div>

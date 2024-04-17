@@ -12,7 +12,7 @@ export type Pengajuan = {
     // Dosen pembimbing
     id: string;
     nama: string;
-  };
+  }[];
 };
 
 export type RiwayatPendaftaranData = {

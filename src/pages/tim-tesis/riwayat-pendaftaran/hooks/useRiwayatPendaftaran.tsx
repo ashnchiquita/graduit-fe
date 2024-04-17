@@ -31,6 +31,7 @@ export default function useRiwayatPendaftaran(): RiwayatPendaftaranHookRet {
 
         // Map the response data to the Pengajuan type
         const mappedData = response.data.map((data) => {
+          console.log(data);
           return {
             id: data.id,
             jadwalInterview: data.jadwalInterview,
@@ -41,10 +42,10 @@ export default function useRiwayatPendaftaran(): RiwayatPendaftaranHookRet {
               : new Date(),
             judulTopik: data.judulTopik,
             deskripsiTopik: data.deskripsiTopik,
-            dosenPembimbing: {
-              id: data.dosenPembimbing.id,
-              nama: data.dosenPembimbing.nama,
-            },
+            dosenPembimbing: data.dosenPembimbing.map((dosen) => ({
+              id: dosen.id,
+              nama: dosen.nama,
+            })),
           };
         });
 
