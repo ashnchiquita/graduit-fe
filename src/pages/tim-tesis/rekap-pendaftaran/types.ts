@@ -24,10 +24,6 @@ export type RowActionHookRet = {
   setAcceptDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   rejectDialogOpen: boolean;
   setRejectDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  editDosenPembimbingDialogOpen: boolean;
-  setEditDosenPembimbingDialogOpen: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
   handleAccept: (id: string) => void;
   handleReject: (id: string) => void;
 };
@@ -53,7 +49,7 @@ export type GetRekapPendaftaranTableRes = {
     nim: string;
     mahasiswa_id: string;
     mahasiswa_nama: string;
-    pembimbing_nama: string;
+    pembimbing_nama: string; // Dosen penerima (only 1)
     status: "NOT_ASSIGNED" | "INTERVIEW" | "APPROVED" | "REJECTED";
   }[];
   count: number;
@@ -67,3 +63,9 @@ export type ApproveRejectRes = {
   waktuKeputusan: Date;
   status: "NOT_ASSIGNED" | "INTERVIEW" | "APPROVED" | "REJECTED";
 };
+
+export type GetAllDosenPembimbingRespData = {
+  id: string;
+  nama: string;
+  email: string;
+}[];

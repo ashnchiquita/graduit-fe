@@ -3,7 +3,7 @@ import { RowActionHookRet } from "../types";
 import { approvePendaftaran, rejectPendaftaran } from "../clients";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
-import { useData } from "../context/DataContext";
+import { useData } from "../../context/DataContext";
 
 type RowActionHookParams = {
   idMahasiswa: string;
@@ -15,8 +15,6 @@ export default function useRowAction({
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
-  const [editDosenPembimbingDialogOpen, setEditDosenPembimbingDialogOpen] =
-    useState(false);
 
   const { refreshData } = useData();
 
@@ -77,8 +75,6 @@ export default function useRowAction({
     setAcceptDialogOpen,
     rejectDialogOpen,
     setRejectDialogOpen,
-    editDosenPembimbingDialogOpen,
-    setEditDosenPembimbingDialogOpen,
     handleAccept,
     handleReject,
   };

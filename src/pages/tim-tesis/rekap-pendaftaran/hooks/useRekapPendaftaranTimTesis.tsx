@@ -19,7 +19,7 @@ import {
 } from "../clients";
 import { toast } from "react-toastify";
 import { RoleEnum } from "@/types/session-data";
-import { convertStatus } from "../helper";
+import { convertStatus } from "../../helper";
 
 const defaultStatistics: GetStatisticsRes = {
   diterima: {
@@ -120,7 +120,7 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
         search: searchValue,
       });
 
-      // Map GetRekapPendaftaranTableRes to Mahasiswa
+      // Map GetRekapPendaftaranTableRes to PendaftaranTopik
       const data = response.data.data.map((item) => ({
         id: item.mahasiswa_id,
         nim: item.nim,

@@ -8,7 +8,7 @@ import useSWR from "swr";
 import { getAccount, getRiwayatPendaftaran } from "../clients";
 import { toast } from "react-toastify";
 import useSWRImmutable from "swr/immutable";
-import { convertStatus } from "../../rekap-pendaftaran/helper";
+import { convertStatus } from "../../helper";
 
 export default function useRiwayatPendaftaran(): RiwayatPendaftaranHookRet {
   const [wawancaraDialogOpen, setWawancaraDialogOpen] = useState(false);
@@ -23,7 +23,9 @@ export default function useRiwayatPendaftaran(): RiwayatPendaftaranHookRet {
     setIdMahasiswa(id);
   }, []);
 
-  const { data: listPengajuan } = useSWR<Pengajuan[]>(
+  const { data: listPengajuan, mutate: mutateListPengajuan } = useSWR<
+    Pengajuan[]
+  >(
     idMahasiswa ? `/registrasi-tesis/mahasiswa/${idMahasiswa}` : null,
     async () => {
       try {
@@ -65,6 +67,10 @@ export default function useRiwayatPendaftaran(): RiwayatPendaftaranHookRet {
     },
   );
 
+  const refreshData = () => {
+    mutateListPengajuan();
+  };
+
   return {
     dataMahasiswa: dataMahasiswa ?? {
       id: "",
@@ -79,5 +85,6 @@ export default function useRiwayatPendaftaran(): RiwayatPendaftaranHookRet {
     setUbahStatusDialogOpen,
     ubahDosenPembimbingDialogOpen,
     setUbahDosenPembimbingDialogOpen,
+    refreshData,
   };
 }

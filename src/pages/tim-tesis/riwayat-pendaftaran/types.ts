@@ -9,7 +9,6 @@ export type Pengajuan = {
   judulTopik: string;
   deskripsiTopik: string;
   dosenPembimbing: {
-    // Dosen pembimbing
     id: string;
     nama: string;
   }[];
@@ -33,6 +32,7 @@ export type RiwayatPendaftaranHookRet = {
   setUbahDosenPembimbingDialogOpen: React.Dispatch<
     React.SetStateAction<boolean>
   >;
+  refreshData: () => void;
 };
 
 export type GetAccountMahasiswaRes = {

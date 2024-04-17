@@ -11,8 +11,7 @@ import useRowAction from "../hooks/useRowAction";
 import { PiClockCounterClockwise } from "react-icons/pi";
 import RegAcceptDialog from "@/pages/dosen/components/RegAcceptDialog";
 import RegRejectDialog from "@/pages/dosen/components/RegRejectDialog";
-import { Check, Pencil, X } from "lucide-react";
-import EditDosenPembimbingDialog from "../../components/EditDosenPembimbingDialog";
+import { Check, X } from "lucide-react";
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 
 interface ComponentProps {
@@ -27,8 +26,6 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
     setAcceptDialogOpen,
     rejectDialogOpen,
     setRejectDialogOpen,
-    editDosenPembimbingDialogOpen,
-    setEditDosenPembimbingDialogOpen,
     handleAccept,
     handleReject,
   } = useRowAction({
@@ -48,13 +45,6 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
         className="w-[220px] overflow-hidden rounded-md p-0"
       >
         <div className="w-full bg-white">
-          {/* Edit Dialog */}
-          <EditDosenPembimbingDialog
-            open={editDosenPembimbingDialogOpen}
-            setOpen={setEditDosenPembimbingDialogOpen}
-            nim={row.original.id}
-          />
-
           {/* Accept Dialog */}
           <RegAcceptDialog
             acceptDialogOpen={acceptDialogOpen}
@@ -87,18 +77,6 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
               <PiClockCounterClockwise className="size-4" />
               Lihat Riwayat Pengajuan
             </Link>
-          </div>
-
-          <hr />
-
-          <div className="w-full p-3">
-            <button
-              onClick={() => setEditDosenPembimbingDialogOpen(true)}
-              className="flex w-full items-center gap-3 text-sm font-medium text-slate-700"
-            >
-              <Pencil className="mr-1 size-4" />
-              Edit Dosen Pembimbing
-            </button>
           </div>
 
           <hr />

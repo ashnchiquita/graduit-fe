@@ -12,7 +12,7 @@ import { Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import useRekapPendaftaranTimTesis from "./hooks/useRekapPendaftaranTimTesis";
 import { StatusPendaftaranOptions } from "./constants";
-import DataContext from "./context/DataContext";
+import DataContext from "../context/DataContext";
 
 export default function RekapPendaftaranTimTesis(): JSX.Element {
   const {

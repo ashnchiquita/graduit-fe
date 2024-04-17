@@ -9,49 +9,92 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import SelectData from "@/types/select-data";
 import { MultiSelect } from "@/components/ui/multi-select";
+import useSWR from "swr";
+import {
+  getAllDosenPembimbing,
+  updateDosenPembimbing,
+} from "../rekap-pendaftaran/clients";
+import useSWRMutation from "swr/mutation";
+import { toast } from "react-toastify";
+import { areArraysEqualByValue } from "../helper";
+import { useData } from "../context/DataContext";
 
 interface EditDosenPembimbingDialogProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  nim: string;
+  id: string;
+  initialDosenPembimbing: SelectData[];
 }
 
 export default function EditDosenPembimbingDialog({
   open,
   setOpen,
-  nim,
+  id,
+  initialDosenPembimbing,
 }: EditDosenPembimbingDialogProps): JSX.Element {
-  const [dosenPembimbingList, setDosenPembimbingList] = useState<SelectData[]>(
-    [],
-  );
-
   const [selectedDosenPembimbing, setSelectedDosenPembimbing] = useState<
     SelectData[]
   >([]);
 
   const [isChanged, setIsChanged] = useState(false);
 
-  // TODO: Get dosen pembimbing data from API
-  useEffect(() => {
-    // Fetch dosen pembimbing data
-    setDosenPembimbingList([
-      { value: "1", label: "Dosen 1" },
-      { value: "2", label: "Dosen 2" },
-      { value: "3", label: "Dosen 3" },
-    ]);
-  }, []);
+  const { refreshData } = useData();
 
-  // TODO: Fetch current dosen pembimbing data from API
+  // Set selected dosen pembimbing to initial dosen pembimbing when dialog is opened
   useEffect(() => {
-    // Fetch current dosen pembimbing data
-    setSelectedDosenPembimbing([
-      { value: "1", label: "Dosen 1" },
-      { value: "2", label: "Dosen 2" },
-    ]);
-  }, []);
+    setSelectedDosenPembimbing(initialDosenPembimbing);
+  }, [open, initialDosenPembimbing]);
 
-  const onSubmitDosenPembimbing = () => {
-    // TODO: POST request to API to update dosen pembimbing
+  // Set initial selected dosen pembimbing
+  useState(() => {
+    setSelectedDosenPembimbing(initialDosenPembimbing);
+  });
+
+  // Check if selected dosen pembimbing has changed
+  useEffect(() => {
+    if (
+      areArraysEqualByValue(selectedDosenPembimbing, initialDosenPembimbing)
+    ) {
+      setIsChanged(false);
+    } else {
+      setIsChanged(true);
+    }
+  }, [selectedDosenPembimbing, initialDosenPembimbing]);
+
+  const { data: dosenPembimbingList = [] } = useSWR(
+    "/dosen-bimbingan",
+    async () => {
+      const res = await getAllDosenPembimbing();
+
+      const options: SelectData[] = res.data.map(({ id, nama }) => ({
+        label: nama,
+        value: id,
+      }));
+
+      return options;
+    },
+  );
+
+  const { trigger: updateDosenPembimbingTrigger } = useSWRMutation(
+    `registrasi-tesis/${id}/pembimbing`,
+    async (_) => {
+      try {
+        const res = await updateDosenPembimbing(
+          id,
+          selectedDosenPembimbing.map((dosen) => dosen.value),
+        );
+
+        toast.success("Berhasil mengubah dosen pembimbing");
+        return res.data;
+      } catch (error) {
+        toast.error("Gagal mengubah dosen pembimbing");
+      }
+    },
+  );
+
+  const onSubmitDosenPembimbing = async () => {
+    await updateDosenPembimbingTrigger();
+    refreshData();
   };
 
   return (
@@ -79,7 +122,7 @@ export default function EditDosenPembimbingDialog({
               setOpen(false);
             }}
             className="bg-blue-500 text-gray-100 hover:bg-blue-600 disabled:bg-slate-200 disabled:text-primary-foreground"
-            disabled={!isChanged}
+            disabled={!isChanged || selectedDosenPembimbing.length === 0}
           >
             Simpan
           </Button>

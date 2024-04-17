@@ -18,10 +18,10 @@ export default function StatisticCard({
   color,
 }: StatisticCardProps): JSX.Element {
   return (
-    <div className="flex w-[22.2vw] flex-col gap-4 rounded-xl p-6 shadow-[6px_6px_54px_0_rgba(0,0,0,0.05)]">
+    <div className="flex w-[22.2vw] flex-col gap-4 rounded-xl p-6 shadow-[inset_1px_1px_12px_0_rgba(0,0,0,0.05)] transition-all duration-200 ease-in-out hover:scale-[1.02]">
       <div className="flex justify-between">
         <div className="flex flex-col gap-1.5">
-          <h4 className="max-w-[160px] text-[#202224]">
+          <h4 className="max-w-[160px] font-medium text-[#202224]">
             Total Pengajuan <span className="font-bold">{title}</span>
           </h4>
           <p className="text-3xl font-bold text-[#202224]">{count}</p>
@@ -40,7 +40,7 @@ export default function StatisticCard({
         />
       </div>
 
-      <p className="text-base font-semibold">
+      <p className="text-base font-medium">
         <span
           className={clsx(
             color === "GREEN"
