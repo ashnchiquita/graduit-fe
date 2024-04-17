@@ -1,6 +1,7 @@
 import { RoleEnum } from "@/types/session-data";
 import { IoSchoolOutline } from "react-icons/io5";
 import { VscNotebook, VscPieChart } from "react-icons/vsc";
+import { BsBook } from "react-icons/bs";
 import { NavItem } from "../types";
 
 const NAV_ITEMS: NavItem[] = [
@@ -54,6 +55,35 @@ const NAV_ITEMS: NavItem[] = [
       RoleEnum.S1_MAHASISWA,
       RoleEnum.S2_MAHASISWA,
     ],
+  },
+  {
+    label: "Tugas",
+    icon: <VscNotebook className="text-slate-700" />,
+    children: [
+      {
+        label: "Daftar Kelas",
+        path: `/tugas/daftar-kelas?view=${RoleEnum.S2_MAHASISWA}`,
+        roleAccess: [RoleEnum.S2_MAHASISWA],
+      },
+      {
+        label: "Daftar Kelas",
+        path: `/tugas/daftar-kelas?view=${RoleEnum.S2_KULIAH}`,
+        roleAccess: [RoleEnum.S2_KULIAH],
+      },
+    ],
+    roleAccess: [RoleEnum.S2_MAHASISWA, RoleEnum.S2_KULIAH],
+  },
+  {
+    label: "Kelas",
+    icon: <BsBook className="text-slate-700" />,
+    children: [
+      {
+        label: "Daftar Kelas",
+        path: `/kelas/daftar-kelas?view=${RoleEnum.S2_TIM_TESIS}`,
+        roleAccess: [RoleEnum.S2_TIM_TESIS],
+      },
+    ],
+    roleAccess: [RoleEnum.S2_TIM_TESIS],
   },
   // {
   //   label: "Tesis",

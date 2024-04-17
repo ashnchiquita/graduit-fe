@@ -75,3 +75,6 @@ export const DetailSubmissionTugas = lazy(
 export const SubmissionTugas = lazy(
   () => import("../pages/dosen/submission-tugas/SubmissionTugas.tsx"),
 );
+export const DaftarKelas = lazy(
+  () => import("../pages/daftar-kelas/DaftarKelas.tsx"),
+);
