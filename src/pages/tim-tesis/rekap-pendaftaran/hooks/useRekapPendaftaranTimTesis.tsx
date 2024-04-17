@@ -104,52 +104,53 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     },
   ];
 
-  const { data: statisticsData } = useSWR<GetStatisticsRes>(
-    "/registrasi-tesis/statistics",
-    async () => {
-      try {
-        const response = await getRekapPendaftaranStatistics({
-          view: RoleEnum.S2_TIM_TESIS,
-        });
-        return response.data;
-      } catch (error) {
-        toast.error("Gagal memuat data statistik");
-        return defaultStatistics;
-      }
-    },
-    {
-      fallbackData: defaultStatistics,
-    },
-  );
+  const { data: statisticsData, mutate: mutateStats } =
+    useSWR<GetStatisticsRes>(
+      "/registrasi-tesis/statistics",
+      async () => {
+        try {
+          const response = await getRekapPendaftaranStatistics({
+            view: RoleEnum.S2_TIM_TESIS,
+          });
+          return response.data;
+        } catch (error) {
+          toast.error("Gagal memuat data statistik");
+          return defaultStatistics;
+        }
+      },
+      {
+        fallbackData: defaultStatistics,
+      },
+    );
 
-  const { data: s2MahasiswaData = [], mutate } = useSWR<PendaftaranTopik[]>(
-    "/registrasi-tesis",
-    async () => {
-      try {
-        const response = await getRekapPendaftaranTable({
-          view: RoleEnum.S2_TIM_TESIS,
-          page: page,
-        });
+  const { data: s2MahasiswaData = [], mutate: mutateTable } = useSWR<
+    PendaftaranTopik[]
+  >("/registrasi-tesis", async () => {
+    try {
+      const response = await getRekapPendaftaranTable({
+        view: RoleEnum.S2_TIM_TESIS,
+        page: page,
+      });
 
-        // Map GetRekapPendaftaranTableRes to Mahasiswa
-        const data = response.data.data.map((item) => ({
-          id: item.mahasiswa_id,
-          nim: item.nim,
-          nama: item.mahasiswa_nama,
-          dosenPembimbing: item.pembimbing_nama,
-          status: convertStatus(item.status),
-        }));
+      // Map GetRekapPendaftaranTableRes to Mahasiswa
+      const data = response.data.data.map((item) => ({
+        id: item.mahasiswa_id,
+        nim: item.nim,
+        nama: item.mahasiswa_nama,
+        dosenPembimbing: item.pembimbing_nama,
+        status: convertStatus(item.status),
+      }));
 
-        return data;
-      } catch (error) {
-        toast.error("Gagal memuat data tabel");
-        return [];
-      }
-    },
-  );
+      return data;
+    } catch (error) {
+      toast.error("Gagal memuat data tabel");
+      return [];
+    }
+  });
 
   const refreshData = () => {
-    mutate();
+    mutateStats();
+    mutateTable();
   };
 
   const table = useReactTable({

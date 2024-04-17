@@ -3,6 +3,7 @@ import { RowActionHookRet } from "../types";
 import { approvePendaftaran, rejectPendaftaran } from "../clients";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
+import { useData } from "../context/DataContext";
 
 type RowActionHookParams = {
   idMahasiswa: string;
@@ -16,6 +17,8 @@ export default function useRowAction({
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [editDosenPembimbingDialogOpen, setEditDosenPembimbingDialogOpen] =
     useState(false);
+
+  const { refreshData } = useData();
 
   const { trigger: acceptTrigger, error: acceptError } = useSWRMutation(
     `/registrasi-tesis/${idMahasiswa}/status`,
@@ -49,6 +52,7 @@ export default function useRowAction({
     if (acceptError) {
       toast.error(acceptError);
     } else {
+      refreshData();
       setAcceptDialogOpen(false);
     }
   };
@@ -61,6 +65,7 @@ export default function useRowAction({
     if (rejectError) {
       toast.error(rejectError);
     } else {
+      refreshData();
       setRejectDialogOpen(false);
     }
   };

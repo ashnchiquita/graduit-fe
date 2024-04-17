@@ -14,7 +14,6 @@ import RegRejectDialog from "@/pages/dosen/components/RegRejectDialog";
 import { Check, Pencil, X } from "lucide-react";
 import EditDosenPembimbingDialog from "../../components/EditDosenPembimbingDialog";
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
-import { mutate } from "swr";
 
 interface ComponentProps {
   row: Row<PendaftaranTopik>;
@@ -64,7 +63,6 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
             onAccept={() => {
               handleAccept(row.original.id);
               setIsPopoverOpen(false);
-              mutate("/registrasi-tesis");
             }}
             dialogTrigger={<></>}
           />
@@ -77,7 +75,6 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
             onReject={() => {
               handleReject(row.original.id);
               setIsPopoverOpen(false);
-              mutate("/registrasi-tesis");
             }}
             dialogTrigger={<></>}
           />
