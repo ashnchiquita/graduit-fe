@@ -1,6 +1,5 @@
 import s2Instance from "@/config/s2-axios-config";
 import { GetRekapPendaftaranTableRes, GetStatisticsRes } from "./types";
-import { GetAllDosenPembimbingRespData } from "./types";
 
 export async function getRekapPendaftaranTable(params: {
   view: string;
@@ -53,18 +52,3 @@ export async function rejectPendaftaran(id: string) {
     },
   );
 }
-
-export const getAllDosenPembimbing = () => {
-  return s2Instance.get<GetAllDosenPembimbingRespData>("/dosen-bimbingan", {
-    withCredentials: true,
-  });
-};
-
-export const updateDosenPembimbing = (
-  id: string,
-  dosenPembimbingIds: string[],
-) => {
-  return s2Instance.patch(`/registrasi-tesis/${id}/pembimbing`, {
-    pembimbing_ids: dosenPembimbingIds,
-  });
-};

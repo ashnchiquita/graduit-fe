@@ -63,9 +63,3 @@ export type ApproveRejectRes = {
   waktuKeputusan: Date;
   status: "NOT_ASSIGNED" | "INTERVIEW" | "APPROVED" | "REJECTED";
 };
-
-export type GetAllDosenPembimbingRespData = {
-  id: string;
-  nama: string;
-  email: string;
-}[];

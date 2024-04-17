@@ -13,7 +13,7 @@ import useSWR from "swr";
 import {
   getAllDosenPembimbing,
   updateDosenPembimbing,
-} from "../rekap-pendaftaran/clients";
+} from "../riwayat-pendaftaran/clients";
 import useSWRMutation from "swr/mutation";
 import { toast } from "react-toastify";
 import { areArraysEqualByValue } from "../helper";

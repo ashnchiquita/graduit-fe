@@ -41,3 +41,9 @@ export type GetAccountMahasiswaRes = {
   email: string;
   nim: string;
 };
+
+export type GetAllDosenPembimbingRespData = {
+  id: string;
+  nama: string;
+  email: string;
+}[];

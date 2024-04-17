@@ -68,7 +68,8 @@ export default function RiwayatPendaftaran(): JSX.Element {
                 <EditStatusPengajuanDialog
                   open={ubahStatusDialogOpen}
                   setOpen={setUbahStatusDialogOpen}
-                  nim={dataMahasiswa.id}
+                  id={dataMahasiswa.id}
+                  initialStatus={pengajuan.status}
                 />
                 <EditDosenPembimbingDialog
                   open={ubahDosenPembimbingDialogOpen}
