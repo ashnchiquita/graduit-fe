@@ -52,10 +52,6 @@ export default function EditStatusPengajuanDialog({
   }, [status, initialStatus]);
 
   useEffect(() => {
-    setStatus(initialStatus);
-  }, [setStatus, initialStatus]);
-
-  useEffect(() => {
     if (!open) {
       setStatus(initialStatus);
     }

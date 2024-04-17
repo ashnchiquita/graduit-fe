@@ -33,3 +33,9 @@ export const updateDosenPembimbing = (
     pembimbing_ids: dosenPembimbingIds,
   });
 };
+
+export const updateInterviewDate = (id: string, date: Date) => {
+  return s2Instance.patch(`/registrasi-tesis/${id}/interview`, {
+    date,
+  });
+};

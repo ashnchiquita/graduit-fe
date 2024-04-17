@@ -7,26 +7,40 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
+import { useData } from "../context/DataContext";
+import useSWRMutation from "swr/mutation";
+import { updateInterviewDate } from "../riwayat-pendaftaran/clients";
+import { toast } from "react-toastify";
 
 interface EditWawaWancaraDialogProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  nim: string;
+  id: string;
+  initialWawancara: Date | undefined;
 }
 
 export default function EditWawancaraDialog({
   open,
   setOpen,
-  nim,
+  id,
+  initialWawancara,
 }: EditWawaWancaraDialogProps): JSX.Element {
   const [wawancara, setWawancara] = useState<Date>();
   const [disabled, setDisabled] = useState<boolean>(true);
 
-  // TOOD: Fetch wawancara data from API
+  const { refreshData } = useData();
+
   useEffect(() => {
-    // Fetch wawancara data
-    setWawancara(new Date());
-  }, [setWawancara, nim]);
+    if (wawancara === initialWawancara) {
+      setDisabled(true);
+    }
+  }, [wawancara, initialWawancara]);
+
+  useEffect(() => {
+    if (initialWawancara && !open) {
+      setWawancara(initialWawancara);
+    }
+  }, [setWawancara, initialWawancara, open]);
 
   // Check if date is minimum 2 days after today
   useEffect(() => {
@@ -41,6 +55,25 @@ export default function EditWawancaraDialog({
       }
     }
   }, [wawancara]);
+
+  const { trigger: wawancaraTrigger } = useSWRMutation(
+    `registrasi-tesis/${id}/interview`,
+    async (_) => {
+      try {
+        const res = await updateInterviewDate(id, wawancara as Date);
+
+        toast.success("Berhasil mengubah jadwal wawancara");
+        return res.data;
+      } catch (error) {
+        toast.error("Gagal mengubah jadwal wawancara");
+      }
+    },
+  );
+
+  const handleSave = async () => {
+    await wawancaraTrigger();
+    refreshData();
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -75,6 +108,7 @@ export default function EditWawancaraDialog({
         <div className="flex w-full items-center justify-end">
           <Button
             onClick={() => {
+              handleSave();
               setOpen(false);
             }}
             className="bg-blue-500 text-gray-100 hover:bg-blue-600 disabled:bg-slate-200 disabled:text-primary-foreground"

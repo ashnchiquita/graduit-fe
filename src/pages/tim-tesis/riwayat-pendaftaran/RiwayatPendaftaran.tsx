@@ -87,7 +87,8 @@ export default function RiwayatPendaftaran(): JSX.Element {
                 <EditWawancaraDialog
                   open={wawancaraDialogOpen}
                   setOpen={setWawancaraDialogOpen}
-                  nim={dataMahasiswa.id}
+                  id={dataMahasiswa.id}
+                  initialWawancara={pengajuan.jadwalInterview}
                 />
 
                 {/* Title Pengajuan */}
@@ -150,9 +151,7 @@ export default function RiwayatPendaftaran(): JSX.Element {
                         <p className="text-sm font-medium text-slate-600">
                           Pengiriman Registrasi
                         </p>
-                        <p
-                          className={`${index === 0 && "mr-[26px]"} text-sm font-medium text-slate-600`}
-                        >
+                        <p className={`text-sm font-medium text-slate-600`}>
                           {formatDate(pengajuan.waktuPengiriman)}
                         </p>
                       </div>
@@ -162,30 +161,34 @@ export default function RiwayatPendaftaran(): JSX.Element {
                           Jadwal Interview
                         </p>
                         <div className="flex items-center gap-3">
-                          <p className="text-sm font-medium text-slate-600">
+                          <p className={`text-sm font-medium text-slate-600 `}>
                             {pengajuan.jadwalInterview
                               ? formatDate(pengajuan.jadwalInterview)
                               : "Belum ditentukan"}
                           </p>
-                          {index === 0 && (
-                            <TooltipProvider>
-                              <Tooltip delayDuration={10}>
-                                <TooltipTrigger>
-                                  <button
-                                    onClick={() => setWawancaraDialogOpen(true)}
-                                  >
-                                    <Pencil
-                                      size={14}
-                                      className="text-gray-500"
-                                    />
-                                  </button>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  Ubah Jadwal Interview
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          )}
+                          {index === 0 &&
+                            pengajuan.status ===
+                              StatusPendaftaranEnum.PROCESS && (
+                              <TooltipProvider>
+                                <Tooltip delayDuration={10}>
+                                  <TooltipTrigger>
+                                    <button
+                                      onClick={() =>
+                                        setWawancaraDialogOpen(true)
+                                      }
+                                    >
+                                      <Pencil
+                                        size={14}
+                                        className="text-gray-500"
+                                      />
+                                    </button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    Ubah Jadwal Interview
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            )}
                         </div>
                       </div>
                       <div className="flex w-full items-center justify-between p-4">
