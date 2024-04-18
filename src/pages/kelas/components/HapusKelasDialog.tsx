@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
-import { deleteClass } from "../client";
+import { deleteClass } from "../daftar-kelas/client";
 import { useData } from "../context/DataContext";
 
 interface HapusKelasDialogProps {

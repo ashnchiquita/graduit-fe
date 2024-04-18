@@ -1,10 +1,10 @@
 import { Plus, Search } from "lucide-react";
-import CardKelas from "./components/CardKelas";
+import CardKelas from "../components/CardKelas";
 import { Button } from "@/components/ui/button";
-import TambahKelasDialog from "./components/TambahKelasDialog";
+import TambahKelasDialog from "../components/TambahKelasDialog";
 import { RoleEnum } from "@/types/session-data";
 import useDaftarKelas from "./hooks/useDaftarKelas";
-import DataContext from "./context/DataContext";
+import DataContext from "../context/DataContext";
 
 export default function DaftarKelas(): JSX.Element {
   const {

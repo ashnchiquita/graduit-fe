@@ -17,9 +17,9 @@ import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { toast } from "react-toastify";
-import { addKelas, getDaftarMataKuliah } from "../client";
+import { addKelas, getDaftarMataKuliah } from "../daftar-kelas/client";
 import useSWRMutation from "swr/mutation";
-import { MataKuliah } from "../types";
+import { MataKuliah } from "../daftar-kelas/types";
 import { useData } from "../context/DataContext";
 
 interface TambahKelasDialogProps {

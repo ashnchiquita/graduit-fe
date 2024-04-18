@@ -76,7 +76,7 @@ export const SubmissionTugas = lazy(
   () => import("../pages/dosen/submission-tugas/SubmissionTugas.tsx"),
 );
 export const DaftarKelas = lazy(
-  () => import("../pages/daftar-kelas/DaftarKelas.tsx"),
+  () => import("../pages/kelas/daftar-kelas/DaftarKelas.tsx"),
 );
 export const InputNilai = lazy(
   () => import("../pages/admin/input-nilai/InputNilai.tsx"),
