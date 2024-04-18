@@ -27,3 +27,12 @@ export async function addKelas(
     nomor,
   });
 }
+
+export async function deleteClass(mataKuliahKode: string, nomor: number) {
+  return await s2Instance.delete(`/kelas`, {
+    data: {
+      mataKuliahKode,
+      nomor,
+    },
+  });
+}

@@ -78,6 +78,8 @@ export default function TambahKelasDialog({
 
     await triggerAddKelas();
     refreshData();
+
+    toast.success("Kelas berhasil ditambahkan");
   };
 
   return (
