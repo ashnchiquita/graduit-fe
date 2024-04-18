@@ -26,8 +26,8 @@ import {
   RekapPendaftaranDosbim,
   SubmissionTugas,
   Topik,
+  DaftarKelasTimTesis,
 } from "./imports";
-import DaftarKelasTimTesis from "@/pages/daftar-kelas/DaftarKelasTimTesis";
 
 export const router = createBrowserRouter(
   [
@@ -154,7 +154,7 @@ export const router = createBrowserRouter(
           element: <KonfigurasiPeriode />,
         },
         {
-          path: "daftar-kelas",
+          path: "kelas/tim-tesis",
           element: <DaftarKelasTimTesis />,
         },
       ],
