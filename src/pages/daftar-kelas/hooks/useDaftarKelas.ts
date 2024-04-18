@@ -19,11 +19,7 @@ export default function useDaftarKelas() {
     setSearchVal(value);
   };
 
-  const handleTambahKelas = () => {
-    setDialogOpen(false);
-  };
-
-  const { data, isLoading } = useSWR(
+  const { data, isLoading, mutate } = useSWR(
     `/daftar-kelas?view=${viewVal}&search=${searchVal}`,
     async () => {
       const res = await getDaftarKelas(viewVal, searchVal);
@@ -41,6 +37,10 @@ export default function useDaftarKelas() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewVal]);
 
+  const refreshData = () => {
+    mutate();
+  };
+
   return {
     data,
     sessionData,
@@ -50,6 +50,6 @@ export default function useDaftarKelas() {
     handleSearchValChange,
     dialogOpen,
     setDialogOpen,
-    handleTambahKelas,
+    refreshData,
   };
 }

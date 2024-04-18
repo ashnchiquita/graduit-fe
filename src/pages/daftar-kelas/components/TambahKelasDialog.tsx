@@ -14,23 +14,71 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { toast } from "react-toastify";
+import { addKelas, getDaftarMataKuliah } from "../client";
+import useSWRMutation from "swr/mutation";
+import { MataKuliah } from "../types";
+import { useData } from "../context/DataContext";
 
 interface TambahKelasDialogProps {
   dialogOpen: boolean;
   setDialogOpen: (open: boolean) => void;
-  handleAddKelas: () => void;
 }
 
 export default function TambahKelasDialog({
   dialogOpen,
   setDialogOpen,
-  handleAddKelas,
 }: TambahKelasDialogProps): JSX.Element {
-  const [mataKuliah, setMataKuliah] = useState<string>("");
+  const [mataKuliah, setMataKuliah] = useState<MataKuliah>({
+    kode: "",
+    nama: "",
+  });
   const [nomorKelas, setNomorKelas] = useState<number>();
 
-  // TODO: Get matakuliah from API
+  const { refreshData } = useData();
+
+  useEffect(() => {
+    if (!dialogOpen) {
+      setTimeout(() => {
+        setMataKuliah({
+          kode: "",
+          nama: "",
+        });
+        setNomorKelas(undefined);
+      }, 100);
+    }
+  }, [dialogOpen]);
+
+  const { data: mataKuliahOptions } = useSWR("/kelas/mata-kuliah", async () => {
+    try {
+      const res = await getDaftarMataKuliah();
+
+      return res.data;
+    } catch (error) {
+      toast.error("Gagal memuat data mata kuliah");
+    }
+  });
+
+  const { trigger: triggerAddKelas } = useSWRMutation("/kelas", async () => {
+    try {
+      await addKelas(mataKuliah.kode, nomorKelas);
+      setDialogOpen(false);
+    } catch (error) {
+      toast.error("Gagal menambahkan kelas");
+    }
+  });
+
+  const handleSubmit = async () => {
+    if (!mataKuliah || mataKuliah.kode.length === 0) {
+      toast.error("Mata kuliah harus diisi");
+      return;
+    }
+
+    await triggerAddKelas();
+    refreshData();
+  };
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -45,40 +93,32 @@ export default function TambahKelasDialog({
             <DropdownMenuTrigger>
               <button className="flex w-full items-center justify-between rounded-md border border-gray-300 px-2 py-1">
                 <span
-                  className={`${mataKuliah.length === 0 ? "text-slate-400" : "text-slate-800"} text-sm`}
+                  className={`${!mataKuliah || mataKuliah.nama.length === 0 ? "text-slate-400" : "text-slate-800"} text-sm`}
                 >
-                  {mataKuliah.length === 0 ? "Pilih mata kuliah" : mataKuliah}
+                  {!mataKuliah || mataKuliah.nama.length === 0
+                    ? "Pilih mata kuliah"
+                    : `${mataKuliah.kode} ${mataKuliah.nama}`}
                 </span>
                 <ChevronDown size={16} />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem
-                onClick={() => {
-                  setMataKuliah("IF1234 Algoritma dan Struktur Data");
-                }}
-              >
-                <DropdownMenuLabel>IF1234</DropdownMenuLabel>
-                <p>Algoritma dan Struktur Data</p>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  setMataKuliah("IF5678 Rekayasa Perangkat Lunak");
-                }}
-              >
-                <DropdownMenuLabel>IF5678</DropdownMenuLabel>
-                <p>Rekayasa Perangkat Lunak</p>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  setMataKuliah("IF9101 Manajemen Proyek Perangkat Lunak");
-                }}
-              >
-                <DropdownMenuLabel>IF9101</DropdownMenuLabel>
-                <p>Manajemen Proyek Perangkat Lunak</p>
-              </DropdownMenuItem>
+              {mataKuliahOptions?.map((mataKuliah, index) => (
+                <>
+                  <DropdownMenuItem
+                    key={mataKuliah.kode}
+                    onClick={() => {
+                      setMataKuliah(mataKuliah);
+                    }}
+                  >
+                    <DropdownMenuLabel>{mataKuliah.kode}</DropdownMenuLabel>
+                    <p>{mataKuliah.nama}</p>
+                  </DropdownMenuItem>
+                  {index < mataKuliahOptions.length - 1 && (
+                    <DropdownMenuSeparator />
+                  )}
+                </>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -100,7 +140,10 @@ export default function TambahKelasDialog({
           <Button
             className="flex h-full border border-gray-300 bg-transparent px-2 text-gray-500 hover:bg-gray-100"
             onClick={() => {
-              setMataKuliah("");
+              setMataKuliah({
+                kode: "",
+                nama: "",
+              });
               setNomorKelas(undefined);
             }}
           >
@@ -109,8 +152,7 @@ export default function TambahKelasDialog({
           <Button
             className="flex h-full bg-blue-500 px-2 text-gray-100 hover:bg-blue-600"
             onClick={() => {
-              handleAddKelas();
-              setDialogOpen(false);
+              handleSubmit();
             }}
           >
             <p className="text-xs">Tambah</p>

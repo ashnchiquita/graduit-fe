@@ -16,3 +16,13 @@ export type GetDaftarKelasQuery = {
   search?: string;
   kodeMatkul?: string;
 };
+
+export type MataKuliah = {
+  kode: string;
+  nama: string;
+};
+
+export type GetMataKuliahRes = {
+  kode: string;
+  nama: string;
+}[];
