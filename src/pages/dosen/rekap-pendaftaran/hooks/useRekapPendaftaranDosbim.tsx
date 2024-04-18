@@ -7,12 +7,25 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GoPencil } from "react-icons/go";
 import { useSearchParams } from "react-router-dom";
 import WawancaraModal from "../../components/WawancaraModal";
 import RowAction from "../components/RowAction";
-import { Mahasiswa, RekapPendaftaranDosbimHookRet } from "../types";
+import {
+  Mahasiswa,
+  RegStatistic,
+  RekapPendaftaranDosbimHookRet,
+} from "../types";
+import useSWR from "swr";
+import { getRegMhsS2, getStatisticS2 } from "../clients";
+
+const STATUS_MAP_S2 = new Map<string, StatusPendaftaranEnum>([
+  ["NOT_ASSIGNED", StatusPendaftaranEnum.PROCESS],
+  ["INTERVIEW", StatusPendaftaranEnum.PROCESS],
+  ["APPROVED", StatusPendaftaranEnum.ACCEPTED],
+  ["REJECTED", StatusPendaftaranEnum.REJECTED],
+]);
 
 export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookRet {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,44 +45,138 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
     setSearchValue(value);
   };
 
-  const [data, setData] = useState<Mahasiswa[]>([
-    {
-      nim: "23521149",
-      nama: "Rava James Maulana",
-      jadwalWawancara: new Date("2003-03-14"),
-      status: StatusPendaftaranEnum.ACCEPTED,
+  const { data: s2MhsData = [] } = useSWR(
+    ["/rekap-pendaftaran/dosbim/s2", searchValue],
+    async ([_, search]) => {
+      const { data } = await getRegMhsS2(search);
+
+      return data.data.map((d) => ({
+        nim: d.nim,
+        nama: d.mahasiswa_nama,
+        jadwalWawancara: d.jadwal_interview
+          ? new Date(d.jadwal_interview)
+          : null,
+        status: STATUS_MAP_S2.get(d.status) ?? StatusPendaftaranEnum.PROCESS,
+        strata: "S2" as "S2",
+      }));
     },
-    {
-      nim: "23521148",
-      nama: "Maulana James Rava",
-      jadwalWawancara: null,
-      status: StatusPendaftaranEnum.PROCESS,
+  );
+
+  const { data: s1MhsData = [] } = useSWR(
+    "/rekap-pendaftaran/dosbim/s1",
+    async () => {
+      const { data } = await getRegMhsS2();
+
+      return data.data.map((d) => ({
+        nim: d.nim,
+        nama: d.mahasiswa_nama + "(s1)",
+        jadwalWawancara: d.jadwal_interview
+          ? new Date(d.jadwal_interview)
+          : null,
+        status: STATUS_MAP_S2.get(d.status) ?? StatusPendaftaranEnum.PROCESS,
+        strata: "S1" as "S1",
+      }));
     },
-    {
-      nim: "23521147",
-      nama: "James Rava Maulana",
-      jadwalWawancara: new Date("2003-03-14"),
-      status: StatusPendaftaranEnum.REJECTED,
+  );
+
+  const defaultStatistic = {
+    diterima: { amount: 0, percentage: 0 },
+    sedang_proses: { amount: 0, percentage: 0 },
+    ditolak: { amount: 0, percentage: 0 },
+  };
+
+  const { data: s2Statistic = defaultStatistic } = useSWR(
+    "/rekap-pendaftaran/dosbim/s2/statistic",
+    async () => {
+      const { data } = await getStatisticS2();
+
+      return {
+        diterima: data.diterima,
+        sedang_proses: data.sedang_proses,
+        ditolak: data.ditolak,
+        strata: "S2" as "S2",
+      };
     },
-    {
-      nim: "23521146",
-      nama: "Rava James Maulana",
-      jadwalWawancara: new Date("2003-03-14"),
-      status: StatusPendaftaranEnum.ACCEPTED,
+  );
+
+  const { data: s1Statistic = defaultStatistic } = useSWR(
+    "/rekap-pendaftaran/dosbim/s2/statistic",
+    async () => {
+      const { data } = await getStatisticS2();
+
+      return {
+        diterima: data.diterima,
+        sedang_proses: data.sedang_proses,
+        ditolak: data.ditolak,
+        strata: "S1" as "S1",
+      };
     },
-    {
-      nim: "23521145",
-      nama: "Maulana James Rava",
-      jadwalWawancara: null,
-      status: StatusPendaftaranEnum.PROCESS,
+  );
+
+  useEffect(() => {
+    setRegData((prev) => {
+      const prevData = prev.filter((mahasiswa) => mahasiswa.strata === "S2");
+      return [...prevData, ...s1MhsData];
+    });
+  }, [s1MhsData]);
+
+  useEffect(() => {
+    setRegData((prev) => {
+      const prevData = prev.filter((mahasiswa) => mahasiswa.strata === "S1");
+      return [...prevData, ...s2MhsData];
+    });
+  }, [s2MhsData]);
+
+  useEffect(
+    () =>
+      setStatData({
+        diterima: {
+          amount: s1Statistic.diterima.amount + s2Statistic.diterima.amount,
+          percentage:
+            (s1Statistic.diterima.percentage *
+              s2Statistic.diterima.percentage) /
+            100,
+        },
+        sedang_proses: {
+          amount:
+            s1Statistic.sedang_proses.amount + s2Statistic.sedang_proses.amount,
+          percentage:
+            (s1Statistic.sedang_proses.percentage *
+              s2Statistic.sedang_proses.percentage) /
+            100,
+        },
+        ditolak: {
+          amount: s1Statistic.ditolak.amount + s2Statistic.ditolak.amount,
+          percentage:
+            (s1Statistic.ditolak.percentage * s2Statistic.ditolak.percentage) /
+            100,
+        },
+      }),
+    [s1Statistic, s2Statistic],
+  );
+
+  const [regData, setRegData] = useState<Mahasiswa[]>([]);
+  const [statData, setStatData] = useState<RegStatistic>({
+    diterima: {
+      amount: s1Statistic.diterima.amount + s2Statistic.diterima.amount,
+      percentage:
+        (s1Statistic.diterima.percentage * s2Statistic.diterima.percentage) /
+        100,
     },
-    {
-      nim: "23521144",
-      nama: "James Rava Maulana",
-      jadwalWawancara: new Date("2003-03-14"),
-      status: StatusPendaftaranEnum.REJECTED,
+    sedang_proses: {
+      amount:
+        s1Statistic.sedang_proses.amount + s2Statistic.sedang_proses.amount,
+      percentage:
+        (s1Statistic.sedang_proses.percentage *
+          s2Statistic.sedang_proses.percentage) /
+        100,
     },
-  ]);
+    ditolak: {
+      amount: s1Statistic.ditolak.amount + s2Statistic.ditolak.amount,
+      percentage:
+        (s1Statistic.ditolak.percentage * s2Statistic.ditolak.percentage) / 100,
+    },
+  });
 
   const handleStatusFilterChange = (value: string) => {
     const obj: any = {};
@@ -112,7 +219,7 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
           <WawancaraModal
             dateInit={row.original.jadwalWawancara}
             onChange={(date: Date) =>
-              setData((prev) =>
+              setRegData((prev) =>
                 prev.map((mhs) =>
                   mhs.nim === row.original.nim
                     ? { ...mhs, jadwalWawancara: date }
@@ -138,7 +245,7 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
     },
     {
       id: "aksi",
-      cell: ({ row }) => <RowAction row={row} setData={setData} />,
+      cell: ({ row }) => <RowAction row={row} setData={setRegData} />,
       enableSorting: false,
       meta: {
         align: "right",
@@ -148,7 +255,7 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
 
   const table = useReactTable({
     columns,
-    data,
+    data: regData,
     columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
   });
@@ -159,5 +266,6 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
     handleSearchValueChange,
     statusFilter,
     handleStatusFilterChange,
+    statistic: statData,
   };
 }

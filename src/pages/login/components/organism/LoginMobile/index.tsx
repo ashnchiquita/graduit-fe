@@ -16,13 +16,13 @@ interface LoginMobileProps {
 }
 
 const LoginMobile: React.FC<LoginMobileProps> = ({
-    email,
-    password,
-    handleEmailChange,
-    handlePasswordChange,
-    handleCredentials,
-    handleMicrosoft,
-  }) => {
+  email,
+  password,
+  handleEmailChange,
+  handlePasswordChange,
+  handleCredentials,
+  handleMicrosoft,
+}) => {
   return (
     <div className="mobile">
       <div className="mobile-wrapper-dark">
@@ -39,43 +39,40 @@ const LoginMobile: React.FC<LoginMobileProps> = ({
             <h1>GraduIT</h1>
             <h2>Thesis & TA Monitoring</h2>
           </div>
-          
+
           <div className="bawah">
             <div className="isian">
-                <Textfield
+              <Textfield
                 placeholder="alisha@timtesis.itb.ac.id"
                 value={email}
                 onChange={handleEmailChange}
-                />
-                <Textfield
+              />
+              <Textfield
                 placeholder="******"
                 value={password}
                 onChange={handlePasswordChange}
                 isPassword={true}
-                />
+              />
             </div>
 
             <Button text="Sign in" onClick={handleCredentials} />
             <div className="tulisan-or">
-                <p className="line"></p>
-                <p>or</p>
-                <p className="line"></p>
+              <p className="line"></p>
+              <p>or</p>
+              <p className="line"></p>
             </div>
             <div className="sso">
-                <Button2
+              <Button2
                 text="Sign in with SSO"
                 onClick={handleMicrosoft}
                 className="red-button"
-                />
+              />
             </div>
-            </div>
+          </div>
         </div>
-
-        
       </div>
     </div>
   );
-}
-
+};
 
 export default LoginMobile;
