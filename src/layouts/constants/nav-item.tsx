@@ -1,5 +1,5 @@
 import { RoleEnum } from "@/types/session-data";
-import { BookOpen } from "lucide-react";
+import { BsBook } from "react-icons/bs";
 import { IoSchoolOutline } from "react-icons/io5";
 import { VscNotebook, VscPieChart } from "react-icons/vsc";
 import { NavItem } from "../types";
@@ -75,7 +75,7 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     label: "Kelas",
-    icon: <BookOpen size={18} className="text-slate-700" />,
+    icon: <BsBook size={16} className="text-slate-700" />,
     children: [
       {
         label: "Daftar Kelas",
