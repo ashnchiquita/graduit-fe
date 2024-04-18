@@ -1,3 +1,4 @@
+import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
 import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
@@ -11,6 +12,7 @@ import {
   Dashboard,
   DetailRekapPendaftaran,
   DetailSubmissionTugas,
+  InputNilai,
   KelolaAkun,
   KonfigurasiPeriode,
   LogBimbingan,
@@ -27,6 +29,8 @@ import {
   SubmissionTugas,
   Topik,
   DaftarKelas,
+  RekapPendaftaranTimTesis,
+  RiwayatPendaftaran,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -59,6 +63,14 @@ export const router = createBrowserRouter(
         {
           path: "/rekap-pendaftaran",
           element: <RekapPendaftaranDosbim />,
+        },
+        {
+          path: "/rekap-pendaftaran-tim-tesis",
+          element: <RekapPendaftaranTimTesis />,
+        },
+        {
+          path: "/rekap-pendaftaran-tim-tesis/:nim",
+          element: <RiwayatPendaftaran />,
         },
         {
           path: "/rekap-pendaftaran/:nim",
@@ -160,6 +172,14 @@ export const router = createBrowserRouter(
         {
           path: "/kelas/daftar-kelas",
           element: <DaftarKelas />,
+        },
+        {
+          path: "/kelas/input-nilai",
+          element: <InputNilai />,
+        },
+        {
+          path: "/add-log-bimbingan",
+          element: <AddLogBimbingan />,
         },
       ],
     },

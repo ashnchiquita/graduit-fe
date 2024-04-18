@@ -21,6 +21,7 @@
   outline: none;
   padding-left: 5vh;
   width: 95%;
+  background-color: transparent;
 }
 
 .textfield-input:focus {

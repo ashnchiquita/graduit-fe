@@ -1,7 +1,7 @@
 import { RoleEnum } from "@/types/session-data";
+import { BookOpen } from "lucide-react";
 import { IoSchoolOutline } from "react-icons/io5";
 import { VscNotebook, VscPieChart } from "react-icons/vsc";
-import { BsBook } from "react-icons/bs";
 import { NavItem } from "../types";
 
 const NAV_ITEMS: NavItem[] = [
@@ -75,11 +75,16 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     label: "Kelas",
-    icon: <BsBook className="text-slate-700" />,
+    icon: <BookOpen size={18} className="text-slate-700" />,
     children: [
       {
         label: "Daftar Kelas",
         path: `/kelas/daftar-kelas?view=${RoleEnum.S2_TIM_TESIS}`,
+        roleAccess: [RoleEnum.S2_TIM_TESIS],
+      },
+      {
+        label: "Nilai Mahasiswa",
+        path: "/kelas/input-nilai",
         roleAccess: [RoleEnum.S2_TIM_TESIS],
       },
     ],
@@ -102,14 +107,6 @@ const NAV_ITEMS: NavItem[] = [
   //     { label: "Status", path: "/tugas-akhir/status/1" },
   //     { label: "Pengumuman", path: "/tugas-akhir/pengumuman" },
   //     { label: "Penjadwalan", path: "/tugas-akhir/penjadwalan" },
-  //   ],
-  // },
-  // {
-  //   label: "Tugas",
-  //   icon: <VscNotebook className="text-slate-700" />,
-  //   children: [
-  //     { label: "Kelas", path: "/tugas/kelas" },
-  //     { label: "Logbook", path: "/tugas/logbook" },
   //   ],
   // },
   // {
