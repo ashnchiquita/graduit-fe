@@ -10,6 +10,8 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import AssignKelasDialog from "./components/AssignKelasDialog";
+import UnassignKelasDialog from "./components/UnassignKelasDialog";
 
 type PageProps = {
   type: "DOSEN" | "MAHASISWA";
@@ -23,10 +25,49 @@ export default function AssignKelas({ type }: PageProps): JSX.Element {
       <section className="hidden md:block">
         <DataTable
           table={table}
-          headline="Pengaturan Role Pengguna"
+          headline={`Assign Kelas ${type.toLowerCase()}`}
           searchValue={searchValue}
           setSearchValue={handleSearchValueChange}
           searchPlaceholder="Cari nama atau email"
+          customElementsRight={
+            <>
+              <AssignKelasDialog
+                searchValue={searchValue}
+                table={table}
+                type={type}
+                title={`Assign Kelas ${type.toLowerCase()}`}
+                penggunaIds={table
+                  .getSelectedRowModel()
+                  .rows.map((row) => row.original.id)}
+                dialogTrigger={
+                  <Button
+                    disabled={table.getSelectedRowModel().rows.length === 0}
+                    className="flex h-fit items-center gap-2 bg-blue-500 text-xs text-gray-100 hover:bg-blue-600"
+                  >
+                    Masukkan Kelas
+                  </Button>
+                }
+              />
+              <UnassignKelasDialog
+                searchValue={searchValue}
+                table={table}
+                type={type}
+                title={`Assign Kelas ${type.toLowerCase()}`}
+                penggunaIds={table
+                  .getSelectedRowModel()
+                  .rows.map((row) => row.original.id)}
+                dialogTrigger={
+                  <Button
+                    disabled={table.getSelectedRowModel().rows.length === 0}
+                    variant="destructive"
+                    className="flex h-fit items-center gap-2 text-xs text-gray-100"
+                  >
+                    Hapus Kelas
+                  </Button>
+                }
+              />
+            </>
+          }
         />
       </section>
 

@@ -5,11 +5,12 @@ import {
 } from "@tanstack/react-table";
 import { KelasPengguna } from "../types";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import useSWR from "swr";
 import { getKelasDosen, getKelasMhs } from "../clients";
+import UbahKelasDialog from "../components/UbahKelasDialog";
 
 export default function useAssignKelas(type: "DOSEN" | "MAHASISWA") {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -26,13 +27,19 @@ export default function useAssignKelas(type: "DOSEN" | "MAHASISWA") {
   };
 
   const { data = [] } = useSWR(
-    `/kelas/${type.toLowerCase()}`,
-    async (): Promise<KelasPengguna[]> => {
+    [`/kelas/${type.toLowerCase()}`, searchValue],
+    async ([_, search]) => {
       const { data } =
-        type === "MAHASISWA" ? await getKelasMhs() : await getKelasDosen();
+        type === "MAHASISWA"
+          ? await getKelasMhs(search)
+          : await getKelasDosen(search);
       return data;
     },
   );
+  const [tableData, setTableData] = useState<KelasPengguna[]>(data);
+  useEffect(() => {
+    setTableData(data);
+  }, [data]);
 
   const columns: ColumnDef<KelasPengguna>[] = [
     {
@@ -106,11 +113,29 @@ export default function useAssignKelas(type: "DOSEN" | "MAHASISWA") {
       header: () => <p className="w-full text-center">Aksi</p>,
       accessorKey: "id",
       cell: ({ row }) => (
-        <div className="flex w-full justify-center">
-          <Button variant="ghost" className="text-xs text-blue-600">
-            Ubah Kelas
-          </Button>
-        </div>
+        <UbahKelasDialog
+          searchValue={searchValue}
+          table={table}
+          type={type}
+          title={`Ubah Kelas ${type.toLowerCase()}`}
+          penggunaId={row.original.id}
+          initKelas={row.original.kelas.map((k) => ({
+            nama: `${k.mataKuliahNama} - K${k.nomor.toString().padStart(2, "0")}`,
+            id: k.id,
+          }))}
+          disabled={table.getSelectedRowModel().rows.length > 1}
+          dialogTrigger={
+            <div className="flex w-full justify-center">
+              <Button
+                disabled={table.getSelectedRowModel().rows.length > 1}
+                variant="ghost"
+                className="text-xs text-blue-600"
+              >
+                Ubah Kelas
+              </Button>
+            </div>
+          }
+        />
       ),
       enableSorting: false,
     },
@@ -118,7 +143,7 @@ export default function useAssignKelas(type: "DOSEN" | "MAHASISWA") {
 
   const table = useReactTable({
     columns,
-    data,
+    data: tableData,
     getCoreRowModel: getCoreRowModel(),
     columnResizeMode: "onChange",
   });

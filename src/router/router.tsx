@@ -134,6 +134,10 @@ export const router = createBrowserRouter(
           element: <AssignKelas type="MAHASISWA" />,
         },
         {
+          path: "/manajemen/assign-kelas/dosen",
+          element: <AssignKelas type="DOSEN" />,
+        },
+        {
           path: "/log",
           element: <Navigate to="/log/bimbingan" replace />,
         },

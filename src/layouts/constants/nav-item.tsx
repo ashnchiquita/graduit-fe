@@ -147,6 +147,16 @@ const NAV_ITEMS: NavItem[] = [
           RoleEnum.S1_TIM_TA,
         ],
       },
+      {
+        label: "Assign Kelas Mahasiswa",
+        path: "/manajemen/assign-kelas/mahasiswa",
+        roleAccess: [RoleEnum.ADMIN, RoleEnum.TU, RoleEnum.S2_TIM_TESIS],
+      },
+      {
+        label: "Assign Kelas Dosen",
+        path: "/manajemen/assign-kelas/dosen",
+        roleAccess: [RoleEnum.ADMIN, RoleEnum.TU, RoleEnum.S2_TIM_TESIS],
+      },
     ],
     roleAccess: [
       RoleEnum.ADMIN,
