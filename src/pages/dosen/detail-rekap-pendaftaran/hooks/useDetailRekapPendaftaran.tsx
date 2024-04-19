@@ -1,35 +1,181 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { RegistrationRecapData } from "../types";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import useSWR from "swr";
+import {
+  getMhsData,
+  getRegS2,
+  updateInterviewS2,
+  updateStatusS2,
+} from "../clients";
+import { toast } from "react-toastify";
+import useSWRMutation from "swr/mutation";
 
 const useDetailRekapPendaftaran = () => {
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
 
   const navigate = useNavigate();
+  const { strata, mahasiswaId } = useParams();
 
-  const [data, setData] = useState<RegistrationRecapData>({
-    id: "23521149",
-    name: "Sundaymorning Okinawa",
+  const defaultMhsData = {
+    id: "",
+    name: "",
+    email: "",
+  };
+  const defaultRegData = {
     apply_date: new Date(),
-    email: "okinawa@std.stei.itb.ac.id",
-    stream: "MMT",
-    topic:
-      "Pengembangan Algoritma Pemrosesan Citra Berbasis Deep Learning untuk Deteksi Objek dalam Lingkungan Tidak Terstruktur",
-    description:
-      "Tesis ini bertujuan untuk mengembangkan algoritma pemrosesan citra yang menggunakan pendekatan deep learning untuk mendeteksi objek dalam lingkungan yang tidak terstruktur, seperti lingkungan luar ruangan yang kompleks atau ruang yang tidak terkontrol dengan baik. Metode konvensional untuk deteksi objek mungkin tidak efektif dalam situasi-situasi tersebut karena berbagai tantangan seperti variasi pencahayaan, perubahan sudut pandang, dan adanya objek yang tumpang tindih. Penelitian ini akan fokus pada pengembangan arsitektur jaringan saraf tiruan yang mendalam (deep neural networks) yang mampu memahami konteks visual dari lingkungan yang tidak terstruktur dan secara akurat mendeteksi objek di dalamnya.",
     interview_date: null,
-    status: "NOT_ASSIGNED",
-  });
+    status: "",
+    stream: "",
+    topic: "",
+    description: "",
+  };
+
+  const { data: mhsData = defaultMhsData } = useSWR(
+    `/mahasiswa/${mahasiswaId}`,
+    async () => {
+      if (!mahasiswaId) return;
+
+      const { data } = await getMhsData(mahasiswaId);
+
+      return {
+        id: data.nim,
+        name: data.nama,
+        email: data.email,
+      };
+    },
+  );
+  const { data: regData = defaultRegData } = useSWR(
+    `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
+    async () => {
+      if (!strata || !mahasiswaId) return;
+
+      // if (strata?.toLowerCase() === "s2") {
+      const { data } = await getRegS2(mahasiswaId);
+
+      return {
+        apply_date: new Date(data.waktuPengiriman),
+        interview_date: data.jadwalInterview
+          ? new Date(data.jadwalInterview)
+          : null,
+        status: data.status,
+        stream: data.jalurPilihan,
+        topic: data.judulTopik,
+        description: data.deskripsiTopik,
+      };
+      // } else {
+
+      // }
+    },
+  );
+
+  const data = useMemo<RegistrationRecapData>(
+    () => ({
+      ...mhsData,
+      ...regData,
+    }),
+    [mhsData, regData],
+  );
+
+  const { trigger: triggerInterview, error: interviewError } = useSWRMutation(
+    `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
+    async (_: string, { arg }: { arg: Date }) => {
+      if (!mahasiswaId) return;
+
+      await updateInterviewS2(mahasiswaId, arg);
+    },
+  );
+  const { trigger: triggerApprove, error: approveError } = useSWRMutation(
+    `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
+    async () => {
+      if (!mahasiswaId) return;
+
+      await updateStatusS2(mahasiswaId, "APPROVED");
+    },
+  );
+  const { trigger: triggerReject, error: rejectError } = useSWRMutation(
+    `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
+    async () => {
+      if (!mahasiswaId) return;
+
+      await updateStatusS2(mahasiswaId, "REJECTED");
+    },
+  );
+
+  const handleInterviewUpdate = async (date: Date) => {
+    const toastId = toast.loading("Menetapkan jadwal interview...");
+    await triggerInterview(date);
+
+    if (interviewError) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menetapkan jadwal interview",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    } else {
+      toast.update(toastId, {
+        render: "Berhasil menetapkan jadwal interview",
+        type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    }
+  };
+
+  const handleApprove = async () => {
+    const toastId = toast.loading("Menerima pendaftaran...");
+    await triggerApprove();
+
+    if (approveError) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menerima pendaftaran",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    } else {
+      toast.update(toastId, {
+        render: "Berhasil menerima pendaftaran",
+        type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    }
+  };
+
+  const handleReject = async () => {
+    const toastId = toast.loading("Menolak pendaftaran...");
+    await triggerReject();
+
+    if (rejectError) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menolak pendaftaran",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    } else {
+      toast.update(toastId, {
+        render: "Penolakan berhasil",
+        type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    }
+  };
 
   return {
     data,
-    setData,
     acceptDialogOpen,
     setAcceptDialogOpen,
     rejectDialogOpen,
     setRejectDialogOpen,
     navigate,
+    handleInterviewUpdate,
+    handleApprove,
+    handleReject,
   };
 };
 

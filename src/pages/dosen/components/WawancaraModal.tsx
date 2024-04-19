@@ -25,6 +25,7 @@ import {
   FormItem,
   Form,
 } from "@/components/ui/form/form";
+import dayjs from "dayjs";
 
 export default function WawancaraModal({
   dateInit,
@@ -64,7 +65,8 @@ export default function WawancaraModal({
                       >
                         <CalendarIcon className="size-4 opacity-50" />
                         {field.value ? (
-                          format(field.value, "PPP")
+                          // format(field.value, "PPP")
+                          dayjs(field.value).format("DD/MM/YYYY HH.mm")
                         ) : (
                           <p>Pilih waktu</p>
                         )}

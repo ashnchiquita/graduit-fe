@@ -2,6 +2,7 @@ import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import { Table } from "@tanstack/react-table";
 
 export type Mahasiswa = {
+  id: string;
   nim: string;
   nama: string;
   jadwalWawancara: Date | null;
@@ -27,6 +28,8 @@ export type RekapPendaftaranDosbimHookRet = {
   statusFilter: string;
   handleStatusFilterChange: (value: string) => void;
   statistic: RegStatistic;
+  infoKontak: string | null;
+  isLoading: boolean;
 };
 
 export type RowActionHookRet = {
@@ -49,4 +52,13 @@ export type GetRegMhsS2Res = {
     jadwal_interview: string;
   }[];
   count: number;
+};
+
+export type SelfDataRes = {
+  id: string;
+  nama: string;
+  email: string;
+  nim: string;
+  roles: string[];
+  kontak: string;
 };

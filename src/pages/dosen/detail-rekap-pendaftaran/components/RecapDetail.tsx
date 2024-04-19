@@ -4,7 +4,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import dayjs from "dayjs";
 import { Lightbulb, Pencil, WrapText } from "lucide-react";
 import { DATETIME_FORMAT, RECAP_FILTER_STATUS_OPTIONS } from "../constants";
-// import useApproval from "../hooks/useApproval";
 import WawancaraModal from "@/pages/dosen/components/WawancaraModal";
 import RegAcceptDialog from "../../components/RegAcceptDialog";
 import useDetailRekapPendaftaran from "../hooks/useDetailRekapPendaftaran";
@@ -14,17 +13,15 @@ import RegRejectDialog from "../../components/RegRejectDialog";
 const RecapDetail = () => {
   const {
     data,
-    setData,
     acceptDialogOpen,
     setAcceptDialogOpen,
     rejectDialogOpen,
     setRejectDialogOpen,
     navigate,
+    handleInterviewUpdate,
+    handleApprove,
+    handleReject,
   } = useDetailRekapPendaftaran();
-
-  // const { handleApprove, handleReject } = useApproval({
-  //   id: data?.id ?? "",
-  // });
 
   return (
     <div className="flex h-full flex-1 flex-col gap-8 overflow-hidden rounded-2xl bg-white p-6 md:px-10 md:py-8">
@@ -117,9 +114,7 @@ const RecapDetail = () => {
               {data?.status !== "APPROVED" && data?.status !== "REJECTED" ? (
                 <WawancaraModal
                   dateInit={data?.interview_date ?? null}
-                  onChange={(date: Date) =>
-                    setData((prev) => ({ ...prev, interview_date: date }))
-                  }
+                  onChange={(date: Date) => handleInterviewUpdate(date)}
                   modalTrigger={
                     <Button
                       variant="outline"
@@ -159,9 +154,7 @@ const RecapDetail = () => {
               acceptDialogOpen={acceptDialogOpen}
               setAcceptDialogOpen={setAcceptDialogOpen}
               name={data.name}
-              onAccept={() =>
-                setData((prev) => ({ ...prev, status: "APPROVED" }))
-              }
+              onAccept={() => handleApprove()}
               dialogTrigger={
                 <Button
                   size="sm"
@@ -176,9 +169,7 @@ const RecapDetail = () => {
               rejectDialogOpen={rejectDialogOpen}
               setRejectDialogOpen={setRejectDialogOpen}
               name={data.name}
-              onReject={() =>
-                setData((prev) => ({ ...prev, status: "REJECTED" }))
-              }
+              onReject={() => handleReject()}
               dialogTrigger={
                 <Button size="sm" className="flex-1" variant="outline">
                   Tolak

@@ -5,9 +5,10 @@ import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import {
   ColumnDef,
   getCoreRowModel,
+  Row,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GoPencil } from "react-icons/go";
 import { useSearchParams } from "react-router-dom";
 import WawancaraModal from "../../components/WawancaraModal";
@@ -18,7 +19,14 @@ import {
   RekapPendaftaranDosbimHookRet,
 } from "../types";
 import useSWR from "swr";
-import { getRegMhsS2, getStatisticS2 } from "../clients";
+import {
+  getRegMhsS2,
+  getSelfData,
+  getStatisticS2,
+  updateInterviewS2,
+} from "../clients";
+import useSWRMutation from "swr/mutation";
+import { toast } from "react-toastify";
 
 const STATUS_MAP_S2 = new Map<string, StatusPendaftaranEnum>([
   ["NOT_ASSIGNED", StatusPendaftaranEnum.PROCESS],
@@ -45,12 +53,21 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
     setSearchValue(value);
   };
 
+  const { data: infoKontak = null, isLoading } = useSWR(
+    `/self/kontak`,
+    async () => {
+      const { data } = await getSelfData();
+      return data.kontak;
+    },
+  );
+
   const { data: s2MhsData = [] } = useSWR(
     ["/rekap-pendaftaran/dosbim/s2", searchValue],
     async ([_, search]) => {
       const { data } = await getRegMhsS2(search);
 
       return data.data.map((d) => ({
+        id: d.mahasiswa_id,
         nim: d.nim,
         nama: d.mahasiswa_nama,
         jadwalWawancara: d.jadwal_interview
@@ -68,6 +85,7 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
       const { data } = await getRegMhsS2();
 
       return data.data.map((d) => ({
+        id: d.mahasiswa_id,
         nim: d.nim,
         nama: d.mahasiswa_nama + "(s1)",
         jadwalWawancara: d.jadwal_interview
@@ -127,56 +145,32 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
     });
   }, [s2MhsData]);
 
-  useEffect(
-    () =>
-      setStatData({
-        diterima: {
-          amount: s1Statistic.diterima.amount + s2Statistic.diterima.amount,
-          percentage:
-            (s1Statistic.diterima.percentage *
-              s2Statistic.diterima.percentage) /
-            100,
-        },
-        sedang_proses: {
-          amount:
-            s1Statistic.sedang_proses.amount + s2Statistic.sedang_proses.amount,
-          percentage:
-            (s1Statistic.sedang_proses.percentage *
-              s2Statistic.sedang_proses.percentage) /
-            100,
-        },
-        ditolak: {
-          amount: s1Statistic.ditolak.amount + s2Statistic.ditolak.amount,
-          percentage:
-            (s1Statistic.ditolak.percentage * s2Statistic.ditolak.percentage) /
-            100,
-        },
-      }),
+  const [regData, setRegData] = useState<Mahasiswa[]>([]);
+  const statData = useMemo<RegStatistic>(
+    () => ({
+      diterima: {
+        amount: s1Statistic.diterima.amount + s2Statistic.diterima.amount,
+        percentage:
+          (s1Statistic.diterima.percentage * s2Statistic.diterima.percentage) /
+          100,
+      },
+      sedang_proses: {
+        amount:
+          s1Statistic.sedang_proses.amount + s2Statistic.sedang_proses.amount,
+        percentage:
+          (s1Statistic.sedang_proses.percentage *
+            s2Statistic.sedang_proses.percentage) /
+          100,
+      },
+      ditolak: {
+        amount: s1Statistic.ditolak.amount + s2Statistic.ditolak.amount,
+        percentage:
+          (s1Statistic.ditolak.percentage * s2Statistic.ditolak.percentage) /
+          100,
+      },
+    }),
     [s1Statistic, s2Statistic],
   );
-
-  const [regData, setRegData] = useState<Mahasiswa[]>([]);
-  const [statData, setStatData] = useState<RegStatistic>({
-    diterima: {
-      amount: s1Statistic.diterima.amount + s2Statistic.diterima.amount,
-      percentage:
-        (s1Statistic.diterima.percentage * s2Statistic.diterima.percentage) /
-        100,
-    },
-    sedang_proses: {
-      amount:
-        s1Statistic.sedang_proses.amount + s2Statistic.sedang_proses.amount,
-      percentage:
-        (s1Statistic.sedang_proses.percentage *
-          s2Statistic.sedang_proses.percentage) /
-        100,
-    },
-    ditolak: {
-      amount: s1Statistic.ditolak.amount + s2Statistic.ditolak.amount,
-      percentage:
-        (s1Statistic.ditolak.percentage * s2Statistic.ditolak.percentage) / 100,
-    },
-  });
 
   const handleStatusFilterChange = (value: string) => {
     const obj: any = {};
@@ -185,6 +179,43 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
 
     setSearchParams(obj);
     setStatusFilter(value);
+  };
+
+  type TriggerInterviewS2Arg = {
+    arg: {
+      date: Date;
+      mhsId: string;
+    };
+  };
+  const { trigger: triggerInterviewS2, error: interviewS2Error } =
+    useSWRMutation(
+      ["/rekap-pendaftaran/dosbim/s2", searchValue],
+      async (_, { arg }: TriggerInterviewS2Arg) => {
+        await updateInterviewS2(arg.mhsId, arg.date);
+      },
+    );
+  const handleInterviewUpdate = async (row: Row<Mahasiswa>, date: Date) => {
+    const toastId = toast.loading("Menetapkan jadwal interview...");
+    await triggerInterviewS2({
+      date,
+      mhsId: row.original.id,
+    });
+
+    if (interviewS2Error) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menetapkan jadwal interview",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    } else {
+      toast.update(toastId, {
+        render: "Berhasil menetapkan jadwal interview",
+        type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    }
   };
 
   const columns: ColumnDef<Mahasiswa>[] = [
@@ -218,15 +249,7 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
         row.original.status === StatusPendaftaranEnum.PROCESS ? (
           <WawancaraModal
             dateInit={row.original.jadwalWawancara}
-            onChange={(date: Date) =>
-              setRegData((prev) =>
-                prev.map((mhs) =>
-                  mhs.nim === row.original.nim
-                    ? { ...mhs, jadwalWawancara: date }
-                    : mhs,
-                ),
-              )
-            }
+            onChange={(date: Date) => handleInterviewUpdate(row, date)}
             modalTrigger={
               <Button variant="outline" className="size-fit gap-2 text-xs">
                 <GoPencil className="size-3" /> Ubah
@@ -245,7 +268,7 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
     },
     {
       id: "aksi",
-      cell: ({ row }) => <RowAction row={row} setData={setRegData} />,
+      cell: ({ row }) => <RowAction row={row} searchValue={searchValue} />,
       enableSorting: false,
       meta: {
         align: "right",
@@ -267,5 +290,7 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
     statusFilter,
     handleStatusFilterChange,
     statistic: statData,
+    infoKontak,
+    isLoading,
   };
 }

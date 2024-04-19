@@ -2,14 +2,14 @@ import { DataTable } from "@/components/DataTable";
 import StatisticCard from "@/components/StatisticCard";
 import StatusPendaftaranBadge from "@/components/StatusPendaftaranBadge";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+// import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -20,7 +20,7 @@ import { Search } from "lucide-react";
 import { FaRegEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import InfoKontakDialog from "./components/InfoKontakDialog";
-import { StatusPendaftaranOptions } from "./cosntants";
+// import { StatusPendaftaranOptions } from "./cosntants";
 import useRekapPendaftaranDosbim from "./hooks/useRekapPendaftaranDosbim";
 
 export default function RekapPendaftaranDosbim(): JSX.Element {
@@ -28,9 +28,11 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
     table,
     searchValue,
     handleSearchValueChange,
-    statusFilter,
-    handleStatusFilterChange,
+    // statusFilter,
+    // handleStatusFilterChange,
     statistic,
+    infoKontak,
+    isLoading,
   } = useRekapPendaftaranDosbim();
 
   return (
@@ -61,30 +63,32 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
       </section>
 
       <section className="hidden pb-8 md:block">
-        <DataTable
-          table={table}
-          headline="Pengajuan Mahasiswa"
-          searchValue={searchValue}
-          setSearchValue={handleSearchValueChange}
-          searchPlaceholder="Cari nama atau NIM mahasiswa"
-          // selectFilterValue={statusFilter}
-          // selectFilterPlaceholder="Semua Bimbingan"
-          // setSelectFilterValue={handleStatusFilterChange}
-          // selectFilterOptions={StatusPendaftaranOptions}
-          customElementsRight={
-            <>
-              <InfoKontakDialog
-                infoKontak=""
-                dialogTrigger={
-                  <Button className="flex h-fit items-center gap-2 bg-blue-500 text-xs text-gray-100 hover:bg-blue-600">
-                    <FaRegEdit className="size-3" />
-                    Informasi Kontak Saya
-                  </Button>
-                }
-              />
-            </>
-          }
-        />
+        {!isLoading && (
+          <DataTable
+            table={table}
+            headline="Pengajuan Mahasiswa"
+            searchValue={searchValue}
+            setSearchValue={handleSearchValueChange}
+            searchPlaceholder="Cari nama atau NIM mahasiswa"
+            // selectFilterValue={statusFilter}
+            // selectFilterPlaceholder="Semua Bimbingan"
+            // setSelectFilterValue={handleStatusFilterChange}
+            // selectFilterOptions={StatusPendaftaranOptions}
+            customElementsRight={
+              <>
+                <InfoKontakDialog
+                  infoKontak={infoKontak ?? ""}
+                  dialogTrigger={
+                    <Button className="flex h-fit items-center gap-2 bg-blue-500 text-xs text-gray-100 hover:bg-blue-600">
+                      <FaRegEdit className="size-3" />
+                      Informasi Kontak Saya
+                    </Button>
+                  }
+                />
+              </>
+            }
+          />
+        )}
       </section>
 
       <section className="flex w-full flex-col gap-2.5 rounded-lg bg-white px-5 py-4 md:hidden">
