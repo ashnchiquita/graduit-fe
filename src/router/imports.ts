@@ -79,3 +79,14 @@ export const SubmissionTugas = lazy(
 export const AssignKelas = lazy(
   () => import("../pages/admin/assign-kelas/AssignKelas.tsx"),
 );
+export const InputNilai = lazy(
+  () => import("../pages/admin/input-nilai/InputNilai.tsx"),
+);
+export const RekapPendaftaranTimTesis = lazy(
+  () =>
+    import("../pages/tim-tesis/rekap-pendaftaran/RekapPendaftaranTimTesis.tsx"),
+);
+
+export const RiwayatPendaftaran = lazy(
+  () => import("../pages/tim-tesis/riwayat-pendaftaran/RiwayatPendaftaran.tsx"),
+);
