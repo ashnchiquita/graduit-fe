@@ -7,8 +7,9 @@ export default function useDeleteDialog(
 ) {
   const { trigger } = useSWRMutation(
     "/alokasi-topik",
-    async (url, { arg }: { arg: string }) => {
+    async (_, { arg }: { arg: string }) => {
       // await s2Instance.delete(url + `/${arg}`);
+      console.log(arg);
     },
   );
 

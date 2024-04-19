@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import useSWRMutation from "swr/mutation";
+// import useSWRMutation from "swr/mutation";
 import { UbahNilaiFormData, UbahNilaiFormSchema } from "../constants";
 import { MahasiswaKelas } from "../types";
 
@@ -30,12 +30,12 @@ export default function useUbahNilaiDialog(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
-  const { trigger: triggerPost } = useSWRMutation(
-    "/registrasi-topik",
-    async () => {
-      // return await updateGrades(arg);
-    },
-  );
+  // const { trigger: triggerPost } = useSWRMutation(
+  //   "/registrasi-topik",
+  //   async () => {
+  //     // return await updateGrades(arg);
+  //   },
+  // );
 
   const onSubmit = async (values: UbahNilaiFormData) => {
     console.log(values);

@@ -19,7 +19,6 @@ interface EditDosenPembimbingDialogProps {
 export default function EditDosenPembimbingDialog({
   open,
   setOpen,
-  nim,
 }: EditDosenPembimbingDialogProps): JSX.Element {
   const [dosenPembimbingList, setDosenPembimbingList] = useState<SelectData[]>(
     [],

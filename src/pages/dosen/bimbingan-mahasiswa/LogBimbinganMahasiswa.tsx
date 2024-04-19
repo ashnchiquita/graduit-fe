@@ -11,7 +11,6 @@ export default function LogBimbinganMahasiswa() {
       <MahasiswaCard
         user={{
           ...mahasiswaData,
-          profpic: "",
           id: "",
         }}
         topik={topik.judul}

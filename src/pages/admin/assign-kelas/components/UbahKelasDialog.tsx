@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Row, Table } from "@tanstack/react-table";
+import { Table } from "@tanstack/react-table";
 import { KelasPengguna } from "../types";
 import useUbahKelasDialog from "../hooks/useUbahKelasDialog";
 
