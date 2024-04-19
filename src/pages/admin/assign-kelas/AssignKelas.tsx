@@ -11,8 +11,12 @@ import {
 } from "@radix-ui/react-icons";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
-export default function AssignKelas(): JSX.Element {
-  const { table, searchValue, handleSearchValueChange } = useAssignKelas();
+type PageProps = {
+  type: "DOSEN" | "MAHASISWA";
+};
+
+export default function AssignKelas({ type }: PageProps): JSX.Element {
+  const { table, searchValue, handleSearchValueChange } = useAssignKelas(type);
 
   return (
     <main className="flex w-full flex-col gap-5 px-4 pb-10">

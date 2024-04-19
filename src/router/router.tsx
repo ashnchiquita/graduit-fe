@@ -130,8 +130,8 @@ export const router = createBrowserRouter(
           element: <DaftarTopikTimTugas />,
         },
         {
-          path: "/manajemen/assign-kelas",
-          element: <AssignKelas />,
+          path: "/manajemen/assign-kelas/mahasiswa",
+          element: <AssignKelas type="MAHASISWA" />,
         },
         {
           path: "/log",

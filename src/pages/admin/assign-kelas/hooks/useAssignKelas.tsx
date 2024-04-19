@@ -8,8 +8,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import useSWR from "swr";
+import { getKelasDosen, getKelasMhs } from "../clients";
 
-export default function useAssignKelas() {
+export default function useAssignKelas(type: "DOSEN" | "MAHASISWA") {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",
@@ -23,40 +25,14 @@ export default function useAssignKelas() {
     setSearchValue(value);
   };
 
-  const [data] = useState<KelasPengguna[]>([
-    {
-      id: "1",
-      email: "23521149@std.stei.itb.ac.id",
-      nama: "Rava James Maulana",
-      kelas: [
-        {
-          nomor: 1,
-          mataKuliahKode: "IF3270",
-        },
-        {
-          nomor: 2,
-          mataKuliahKode: "IF3270",
-        },
-      ],
+  const { data = [] } = useSWR(
+    `/kelas/${type.toLowerCase()}`,
+    async (): Promise<KelasPengguna[]> => {
+      const { data } =
+        type === "MAHASISWA" ? await getKelasMhs() : await getKelasDosen();
+      return data;
     },
-    {
-      id: "3",
-      email: "23521147@std.stei.itb.ac.id",
-      nama: "Maulana James",
-      kelas: [],
-    },
-    {
-      id: "2",
-      email: "23521148@std.stei.itb.ac.id",
-      nama: "James Rava Maulana",
-      kelas: [
-        {
-          nomor: 1,
-          mataKuliahKode: "IF3270",
-        },
-      ],
-    },
-  ]);
+  );
 
   const columns: ColumnDef<KelasPengguna>[] = [
     {
