@@ -1,11 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { DataTable } from "@/components/DataTable";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import useKelolaAkun from "./hooks/useKelolaAkun";
+import FilterPopup from "./components/FilterPopup";
 
 export default function KelolaAkun(): JSX.Element {
-  const { table, searchValue, handleSearchValueChange, onClickCreate } =
+  const { table, searchValue, handleSearchValueChange, fetchData,openFilterDialog, setOpenFilterDialog, namaValue, setNamaValue, emailValue, setEmailValue, roleValue, setRoleValue, handleRoleValueChange } =
     useKelolaAkun();
 
   return (
@@ -15,16 +14,9 @@ export default function KelolaAkun(): JSX.Element {
         headline="Pengaturan Akun Aplikasi Pengguna"
         searchValue={searchValue}
         setSearchValue={handleSearchValueChange}
+        searchPlaceholder="Cari nama atau email"
         customElementsRight={
-          <Button
-            onClick={() => {
-              onClickCreate();
-            }}
-            className="flex h-fit gap-2 border border-blue-500 bg-blue-500 px-2 py-1 hover:border-blue-600 hover:bg-blue-600"
-          >
-            <Plus size={14} />
-            <div>Create</div>
-          </Button>
+          <FilterPopup openFilterDialog={openFilterDialog} setOpenFilterDialog={setOpenFilterDialog} filterNama={namaValue} handleFilterNamaChange={setNamaValue} filterEmail={emailValue} handleFilterEmailChange={setEmailValue} filterRole={roleValue} setFilterRole={setRoleValue} handleRoleValueChange={handleRoleValueChange} fetchData={fetchData} />
         }
       />
     </main>

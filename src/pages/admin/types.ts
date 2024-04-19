@@ -1,3 +1,5 @@
+import { RoleEnum } from "@/types/session-data";
+
 export type Account = {
   id: string;
   email: string;
@@ -16,6 +18,9 @@ export type GetAccountResponseItem = {
 
 export type GetAllAccountsParams = {
   search?: string;
+  nama?: string;
+  email?: string;
+  roles?: RoleEnum[];
   page: number;
   limit: number;
 };
