@@ -59,7 +59,7 @@ export default function DaftarKelas(): JSX.Element {
             {data.map((kelas) => (
               <div
                 onClick={() => {}}
-                className="cursor-pointer sm:mx-auto sm:max-w-xs"
+                className="sm:mx-auto sm:max-w-xs"
                 key={kelas.id}
               >
                 <CardKelas key={kelas.id} dataKelas={kelas} />
