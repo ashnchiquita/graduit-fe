@@ -33,8 +33,8 @@ export default function KonfigurasiPeriode(): JSX.Element {
         setDialogOpen={setShowTutupPeriodeDialog}
       />
 
-      <div className="flex w-full flex-col gap-6 rounded-xl bg-white p-8">
-        <h1 className="text-3xl font-bold">Pengaturan Periode Pendidikan</h1>
+      <div className="flex w-full flex-col gap-6 rounded-xl bg-white p-5">
+        <h1 className="text-xl font-bold">Pengaturan Periode Pendidikan</h1>
 
         <Form {...form}>
           <form
