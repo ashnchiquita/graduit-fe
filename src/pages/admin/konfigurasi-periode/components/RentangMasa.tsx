@@ -17,6 +17,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { VscTrash } from "react-icons/vsc";
+import { useEffect, useState } from "react";
 
 export default function RentangMasa({
   form,
@@ -26,6 +27,16 @@ export default function RentangMasa({
   startPlaceholder,
   endPlaceholder,
 }: RentangMasaProps): JSX.Element {
+  const [disableTrash, setDisableTrash] = useState(false);
+
+  // Use effect to check if rentang masa is inputted
+  useEffect(() => {
+    setDisableTrash(
+      !form.getValues()[startFieldName] && !form.getValues()[endFieldName],
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.getValues()[startFieldName], form.getValues()[endFieldName]]);
+
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-sm font-medium text-slate-500">{label}</h2>
@@ -133,8 +144,7 @@ export default function RentangMasa({
         />
 
         {/* Only show when any of the dates are inputted */}
-        {(form.getValues()[startFieldName] ||
-          form.getValues()[endFieldName]) && (
+        {!disableTrash && (
           <TooltipProvider>
             <Tooltip delayDuration={10}>
               <TooltipTrigger>
