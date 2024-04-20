@@ -1,28 +1,25 @@
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/Card";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form/form";
-import { FormHeaderCard } from "./components/FormHeaderCard/FormHeaderCard";
-import { TugasDetailData } from "./components/FormHeaderCard/types";
+import { FormHeaderCard } from "./components/FormHeaderCard";
+import useSubmisiTugasImpl from "./hooks/useSubmisiTugasImpl";
+import { TugasDetailData } from "./types";
+import { JawabanCard } from "./components/JawabanCard";
+import { BerkasCard } from "./components/BerkasCard";
 
 const Registration = () => {
-  // const { form, onSubmit } = useThesisRegistrationImpl();
+  const { form, onSubmit, onSave } = useSubmisiTugasImpl();
 
   return (
     <div className="flex-1">
       <Form {...form}>
         <form
           className="flex flex-col gap-4 px-4"
-          // onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
           autoComplete="off"
         >
           <FormHeaderCard {...TugasDetailData} />
-          {/* <LecturerCard form={form} />
-          <StreamCard form={form} /> */}
+          <JawabanCard form={form} />
+          <BerkasCard form={form} />
 
           <div className="flex flex-col gap-8 p-6">
             <div className="text-gray-600">
@@ -36,11 +33,12 @@ const Registration = () => {
                 Kirim
               </Button>
               <Button
-                className="text-blue-500 hover:text-blue-600"
-                variant="ghost"
+                className="border border-gray-400 bg-transparent text-gray-600 hover:bg-gray-100"
+                variant="outline"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
+                  onSave(form.getValues());
                 }}
               >
                 Simpan

@@ -28,6 +28,9 @@ import {
   Topik,
   RekapPendaftaranTimTesis,
   RiwayatPendaftaran,
+  KelasDetail,
+  SubmisiTugas,
+  DaftarTugas,
 } from "./imports";
 import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
 
@@ -166,6 +169,18 @@ export const router = createBrowserRouter(
         {
           path: "/add-log-bimbingan",
           element: <AddLogBimbingan />,
+        },
+        {
+          path: "/tugas/kelas/:idKelas",
+          element: <KelasDetail />,
+        },
+        {
+          path: "/tugas/assignment/:idTugas",
+          element: <SubmisiTugas />,
+        },
+        {
+          path: "/tugas/assignment",
+          element: <DaftarTugas />,
         },
       ],
     },
