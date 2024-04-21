@@ -96,7 +96,7 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
           onCheckedChange={(value: boolean) =>
             table.toggleAllPageRowsSelected(value)
           }
-          className="bg-white"
+          className="data-[state=checked]:bg-blue-600"
         />
       ),
       size: 0,
@@ -104,6 +104,7 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value: boolean) => row.toggleSelected(value)}
+          className="data-[state=checked]:bg-sky-800"
         />
       ),
     },
