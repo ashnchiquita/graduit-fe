@@ -21,14 +21,14 @@ export default function Login(): JSX.Element {
       <div className="login-wrapper">
         <div className="login-desktop">
           <LoginKiri />
-            <LoginKanan
-              email={email}
-              password={password}
-              handleEmailChange={setEmail}
-              handlePasswordChange={setPassword}
-              handleCredentials={handleCredentials}
-              handleMicrosoft={handleMicrosoft}
-            />
+          <LoginKanan
+            email={email}
+            password={password}
+            handleEmailChange={setEmail}
+            handlePasswordChange={setPassword}
+            handleCredentials={handleCredentials}
+            handleMicrosoft={handleMicrosoft}
+          />
         </div>
         <div className="login-mobile">
           <LoginMobile
@@ -39,9 +39,8 @@ export default function Login(): JSX.Element {
             handleCredentials={handleCredentials}
             handleMicrosoft={handleMicrosoft}
           />
+        </div>
       </div>
-      </div>
-      
     </div>
   );
 }
