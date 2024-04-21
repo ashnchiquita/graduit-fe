@@ -8,9 +8,16 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
-import { HiOutlineTrash } from "react-icons/hi";
 import { FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { RentangMasaProps } from "../types";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { VscTrash } from "react-icons/vsc";
+import { useEffect, useState } from "react";
 
 export default function RentangMasa({
   form,
@@ -20,16 +27,26 @@ export default function RentangMasa({
   startPlaceholder,
   endPlaceholder,
 }: RentangMasaProps): JSX.Element {
+  const [disableTrash, setDisableTrash] = useState(false);
+
+  // Use effect to check if rentang masa is inputted
+  useEffect(() => {
+    setDisableTrash(
+      !form.getValues()[startFieldName] && !form.getValues()[endFieldName],
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.getValues()[startFieldName], form.getValues()[endFieldName]]);
+
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="text-sm text-slate-500">{label}</h2>
+      <h2 className="text-sm font-medium text-slate-500">{label}</h2>
 
-      <div className="flex flex-col gap-2 lg:flex-row lg:gap-4">
+      <div className="flex w-full flex-col gap-2 lg:flex-row lg:gap-4">
         <FormField
           control={form.control}
           name={startFieldName}
           render={({ field }) => (
-            <FormItem className="flex items-center justify-between gap-4 lg:justify-start">
+            <FormItem className="flex w-full items-center justify-between gap-4 lg:justify-start">
               <FormLabel
                 className="text-sm font-medium text-slate-900"
                 htmlFor={startFieldName}
@@ -44,7 +61,7 @@ export default function RentangMasa({
                     style={{ marginTop: 0 }}
                     variant={"outline"}
                     className={cn(
-                      "w-[240px] pl-3 text-left font-normal",
+                      "w-full pl-3 text-left font-normal",
                       !field.value && "text-muted-foreground",
                     )}
                   >
@@ -80,7 +97,7 @@ export default function RentangMasa({
           control={form.control}
           name={endFieldName}
           render={({ field }) => (
-            <FormItem className="flex items-center justify-between gap-4 lg:justify-start">
+            <FormItem className="flex w-full items-center justify-between gap-4 lg:justify-start">
               <FormLabel
                 className="text-sm font-medium text-slate-900"
                 htmlFor={endFieldName}
@@ -95,7 +112,7 @@ export default function RentangMasa({
                     style={{ marginTop: 0 }}
                     variant={"outline"}
                     className={cn(
-                      "w-[240px] pl-3 text-left font-normal",
+                      "w-full pl-3 text-left font-normal",
                       !field.value && "text-muted-foreground",
                     )}
                   >
@@ -125,20 +142,28 @@ export default function RentangMasa({
             </FormItem>
           )}
         />
-      </div>
 
-      <Button
-        type="button"
-        onClick={() => {
-          form.setValue(startFieldName, undefined);
-          form.setValue(endFieldName, undefined);
-        }}
-        variant="destructive"
-        className="size-fit gap-2 px-3 py-1.5 text-xs"
-      >
-        <HiOutlineTrash />
-        Hapus Rentang Masa
-      </Button>
+        {/* Only show when any of the dates are inputted */}
+        {!disableTrash && (
+          <TooltipProvider>
+            <Tooltip delayDuration={10}>
+              <TooltipTrigger>
+                <Button
+                  type="button"
+                  onClick={() => {
+                    form.setValue(startFieldName, undefined);
+                    form.setValue(endFieldName, undefined);
+                  }}
+                  className="aspect-square w-full rounded border border-red-500 bg-transparent p-2 hover:bg-red-500/10"
+                >
+                  <VscTrash size={20} className="text-red-500" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Hapus Rentang Masa</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+      </div>
     </div>
   );
 }
