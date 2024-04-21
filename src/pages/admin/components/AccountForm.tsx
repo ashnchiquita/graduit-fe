@@ -1,6 +1,7 @@
 import LockLogo from "@/assets/account-form/lock-logo.svg";
 import MailLogo from "@/assets/account-form/mail-logo.svg";
 import UserLogo from "@/assets/account-form/user-logo.svg";
+import CheckLogo from "@/assets/account-form/check-logo.svg";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +14,6 @@ import { Form, FormControl, FormField, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FaChevronLeft } from "react-icons/fa";
 import { VscChromeClose } from "react-icons/vsc";
-// import CheckLogo from "@/assets/check-logo.svg";
 import { UseFormReturn } from "react-hook-form";
 import { Link } from "react-router-dom";
 
@@ -22,7 +22,8 @@ interface ComponentProps {
     {
       email: string;
       name: string;
-      access: string[];
+      access: { name: string; id: number }[];
+      nim?: string;
     },
     any,
     undefined
@@ -30,9 +31,10 @@ interface ComponentProps {
   handleSubmit: (values: {
     email: string;
     name: string;
-    access: string[];
+    access: { name: string; id: number }[];
+    nim?: string;
   }) => void;
-  roleAccess: string[];
+  roleAccess: { name: string; id: number }[];
   title: string;
 }
 
@@ -120,14 +122,14 @@ export default function AccountForm({
                         variant="secondary"
                         className="flex items-center gap-2 rounded-md py-1 text-xs font-medium text-primary"
                       >
-                        {access}
+                        {access.name}
                         <button
                           onClick={() => {
                             form.setValue(
                               "access",
                               form
                                 .getValues()
-                                .access.filter((v) => v !== access),
+                                .access.filter((v) => v.id !== access.id),
                             );
                           }}
                         >
@@ -143,7 +145,7 @@ export default function AccountForm({
                       {roleAccess.map((access, index) => (
                         <CommandItem
                           className="px-8 py-2 text-sm font-medium"
-                          value={access}
+                          value={access.name}
                           key={index}
                           onSelect={() => {
                             if (
@@ -159,7 +161,7 @@ export default function AccountForm({
                             }
                           }}
                         >
-                          {access}
+                          {access.name}
                         </CommandItem>
                       ))}
                     </CommandGroup>
