@@ -58,7 +58,7 @@ const LoginKanan: React.FC<LoginKananProps> = ({
             <div className="flex w-full justify-between border-b border-gray-300 py-2">
               <div className="flex w-full items-center gap-3">
                 <VscLock className="text-2xl text-gray-400" />
-                {showPassword ? (
+                {!showPassword ? (
                   <>
                     <input
                       type="password"
