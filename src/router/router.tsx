@@ -1,3 +1,4 @@
+import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
 import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
@@ -5,12 +6,14 @@ import {
   AccountTimTesisLayout,
   AkunCreate,
   AkunDetail,
+  AssignKelas,
   BatchUbahRole,
   DaftarPengajuan,
   DaftarTopikTimTugas,
   Dashboard,
   DetailRekapPendaftaran,
   DetailSubmissionTugas,
+  InputNilai,
   KelolaAkun,
   KonfigurasiPeriode,
   LogBimbingan,
@@ -26,8 +29,10 @@ import {
   RekapPendaftaranDosbim,
   SubmissionTugas,
   Topik,
+  DaftarKelas,
+  RekapPendaftaranTimTesis,
+  RiwayatPendaftaran,
 } from "./imports";
-import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
 
 export const router = createBrowserRouter(
   [
@@ -59,6 +64,14 @@ export const router = createBrowserRouter(
         {
           path: "/rekap-pendaftaran",
           element: <RekapPendaftaranDosbim />,
+        },
+        {
+          path: "/rekap-pendaftaran-tim-tesis",
+          element: <RekapPendaftaranTimTesis />,
+        },
+        {
+          path: "/rekap-pendaftaran-tim-tesis/:nim",
+          element: <RiwayatPendaftaran />,
         },
         {
           path: "/rekap-pendaftaran/:nim",
@@ -118,6 +131,14 @@ export const router = createBrowserRouter(
           element: <DaftarTopikTimTugas />,
         },
         {
+          path: "/manajemen/assign-kelas/mahasiswa",
+          element: <AssignKelas type="MAHASISWA" />,
+        },
+        {
+          path: "/manajemen/assign-kelas/dosen",
+          element: <AssignKelas type="DOSEN" />,
+        },
+        {
           path: "/log",
           element: <Navigate to="/log/bimbingan" replace />,
         },
@@ -152,6 +173,18 @@ export const router = createBrowserRouter(
         {
           path: "/manajemen/periode-pendidikan",
           element: <KonfigurasiPeriode />,
+        },
+        {
+          path: "/tugas/daftar-kelas",
+          element: <DaftarKelas />,
+        },
+        {
+          path: "/kelas/daftar-kelas",
+          element: <DaftarKelas />,
+        },
+        {
+          path: "/kelas/input-nilai",
+          element: <InputNilai />,
         },
         {
           path: "/add-log-bimbingan/:strata",

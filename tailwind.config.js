@@ -74,4 +74,10 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
+  safelist: [
+    {
+      pattern:
+        /bg-(blue|yellow|green|red|purple|pink|indigo|cyan|amber|lime|emerald|teal|violet|fuschia|rose|sky)-600\/20/,
+    },
+  ],
 };
