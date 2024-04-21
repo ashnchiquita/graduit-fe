@@ -79,7 +79,7 @@ const table = useReactTable({
   getCoreRowModel: getCoreRowModel(),
   columnResizeMode: "onChange",
   onPaginationChange: setPagination,
-  initialState: {
+  state: {
     pagination,
   },
 });

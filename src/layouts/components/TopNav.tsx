@@ -12,7 +12,7 @@ export default function TopNav({
   setClosed,
 }: TopNavProps): JSX.Element {
   return (
-    <div className="sticky top-0 flex w-screen justify-between border-b-[1px] border-b-gray-300 bg-white px-4 py-2 md:hidden">
+    <div className="sticky top-0 flex w-full justify-between border-b-[1px] border-b-gray-300 bg-white px-4 py-2 md:hidden">
       <div className="flex items-center gap-2">
         <img
           src={Logo}

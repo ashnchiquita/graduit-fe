@@ -1,6 +1,5 @@
 import useWindowSize from "@/hooks/useWindowSize";
 import SelectData from "@/types/select-data";
-import { RoleEnum } from "@/types/session-data";
 import {
   PaginationState,
   createColumnHelper,
@@ -13,7 +12,11 @@ import { toast } from "react-toastify";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import * as XLSX from "xlsx";
-import { getAllDosenPembimbing, postNewTopicBulk } from "../clients";
+import {
+  getAllDosenPembimbing,
+  getAllTopics,
+  postNewTopicBulk,
+} from "../clients";
 import RowAction from "../components/RowAction";
 import { EXCEL_HEADERS } from "../constants";
 import {
@@ -21,118 +24,6 @@ import {
   LoadedExcelData,
   PostNewTopicBulkReqData,
 } from "../types";
-
-const DUMMY_DATA: DaftarTopikData[] = [
-  {
-    id: "1",
-    deskripsi:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    judul: "yeehaw",
-    pengaju: {
-      id: "d682f596-9ee3-485d-89bb-402e54106b60",
-      nama: "Rafa Maulana 1",
-      email: "gmail@gmail.com",
-      roles: [RoleEnum.S2_PEMBIMBING],
-    },
-    periode: "PRABOWO",
-  },
-  {
-    id: "1",
-    deskripsi: "desk 2",
-    judul: "topik 2",
-    pengaju: {
-      id: "d682f596-9ee3-485d-89bb-402e54106b60",
-      nama: "Rafa Maulana 1",
-      email: "gmail@gmail.com",
-      roles: [RoleEnum.S2_PEMBIMBING],
-    },
-    periode: "PRABOWO",
-  },
-  {
-    id: "1",
-    deskripsi: "no",
-    judul: "yeehaw",
-    pengaju: {
-      id: "d682f596-9ee3-485d-89bb-402e54106b60",
-      nama: "Rafa Maulana 1",
-      email: "gmail@gmail.com",
-      roles: [RoleEnum.S2_PEMBIMBING],
-    },
-    periode: "PRABOWO",
-  },
-  {
-    id: "1",
-    deskripsi: "no",
-    judul: "yeehaw",
-    pengaju: {
-      id: "d682f596-9ee3-485d-89bb-402e54106b60",
-      nama: "Rafa Maulana 1",
-      email: "gmail@gmail.com",
-      roles: [RoleEnum.S2_PEMBIMBING],
-    },
-    periode: "PRABOWO",
-  },
-  {
-    id: "1",
-    deskripsi: "no",
-    judul: "yeehaw",
-    pengaju: {
-      id: "d682f596-9ee3-485d-89bb-402e54106b60",
-      nama: "Rafa Maulana 1",
-      email: "gmail@gmail.com",
-      roles: [RoleEnum.S2_PEMBIMBING],
-    },
-    periode: "PRABOWO",
-  },
-  {
-    id: "1",
-    deskripsi: "no",
-    judul: "yeehaw",
-    pengaju: {
-      id: "d682f596-9ee3-485d-89bb-402e54106b60",
-      nama: "Rafa Maulana 1",
-      email: "gmail@gmail.com",
-      roles: [RoleEnum.S2_PEMBIMBING],
-    },
-    periode: "PRABOWO",
-  },
-  {
-    id: "1",
-    deskripsi: "no",
-    judul: "yeehaw",
-    pengaju: {
-      id: "d682f596-9ee3-485d-89bb-402e54106b60",
-      nama: "Rafa Maulana 1",
-      email: "gmail@gmail.com",
-      roles: [RoleEnum.S2_PEMBIMBING],
-    },
-    periode: "PRABOWO",
-  },
-  {
-    id: "1",
-    deskripsi: "no",
-    judul: "yeehaw",
-    pengaju: {
-      id: "d682f596-9ee3-485d-89bb-402e54106b60",
-      nama: "Rafa Maulana 1",
-      email: "gmail@gmail.com",
-      roles: [RoleEnum.S2_PEMBIMBING],
-    },
-    periode: "PRABOWO",
-  },
-  {
-    id: "1",
-    deskripsi: "no",
-    judul: "yeehaw",
-    pengaju: {
-      id: "d682f596-9ee3-485d-89bb-402e54106b60",
-      nama: "Rafa Maulana 1",
-      email: "gmail@gmail.com",
-      roles: [RoleEnum.S2_PEMBIMBING],
-    },
-    periode: "PRABOWO",
-  },
-];
 
 const columHelper = createColumnHelper<DaftarTopikData>();
 
@@ -155,18 +46,16 @@ export default function useDaftarTopikTimTugas() {
     setSearchValue(value);
   };
 
-  // TODO wire actual data
   const { data = { data: [], maxPage: 1 }, mutate: updateData } = useSWR(
     ["/alokasi-topik", pagination, searchValue],
     async () => {
-      // const res = await getAllTopics({
-      //   page: pagination.pageIndex,
-      //   limit: pagination.pageSize,
-      //   search: searchValue === "" ? undefined : searchValue,
-      // });
+      const res = await getAllTopics({
+        page: pagination.pageIndex + 1,
+        limit: pagination.pageSize,
+        search: searchValue === "" ? undefined : searchValue,
+      });
 
-      return { data: DUMMY_DATA, maxPage: 1 };
-      //   return { data: res.data.data, maxPage: res.data.maxPage };
+      return { data: res.data.data, maxPage: res.data.maxPage };
     },
   );
 
@@ -198,16 +87,15 @@ export default function useDaftarTopikTimTugas() {
     }),
   ];
 
-  // TODO on pagination change
   const table = useReactTable({
     data: data.data,
     columns,
     pageCount: data.maxPage,
-    rowCount: 1,
     columnResizeMode: "onChange",
-    initialState: {
+    state: {
       pagination,
     },
+    onPaginationChange: setPagination,
     manualPagination: true,
     getCoreRowModel: getCoreRowModel(),
   });
