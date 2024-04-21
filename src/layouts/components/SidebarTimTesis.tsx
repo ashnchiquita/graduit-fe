@@ -1,6 +1,6 @@
 // Library imports
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+// import { useNavigate } from "react-router-dom";
+// import Cookies from "js-cookie";
 
 // Local imports
 import Logo from "@/assets/logo.svg";

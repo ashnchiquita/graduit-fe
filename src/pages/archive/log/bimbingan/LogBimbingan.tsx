@@ -7,14 +7,12 @@ const dummyUsers: User[] = [
     name: "Ariel Jovananda",
     email: "135210856@mahasiswa.itb.ac.id",
     major: "Teknik Informatika",
-    profpic: "",
   },
   {
     id: "2",
     name: "Ariel Jovananda",
     email: "135210856@mahasiswa.itb.ac.id",
     major: "Teknik Informatika",
-    profpic: "",
   },
 ];
 
