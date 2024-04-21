@@ -14,10 +14,7 @@ interface ReturnType {
     {
       email: string;
       name: string;
-      access: {
-        name: string;
-        id: number;
-      }[];
+      access: string[];
     },
     any,
     undefined
@@ -25,12 +22,9 @@ interface ReturnType {
   handleSubmit: (values: {
     email: string;
     name: string;
-    access: {
-      name: string;
-      id: number;
-    }[];
+    access: string[];
   }) => Promise<void>;
-  roleAccess: { id: number; name: string }[];
+  roleAccess: string[];
   initialDataReady: boolean;
 }
 
@@ -38,12 +32,7 @@ export default function useAkunDetail(): ReturnType {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const roleAccess = Object.keys(RoleEnum)
-    .filter((v) => isNaN(Number(v)))
-    .map((role, idx) => ({
-      id: idx,
-      name: role,
-    }));
+  const roleAccess = Object.values(RoleEnum) as string[];
 
   const { data: initialData, isLoading: isInitialDataLoading } =
     useSWRImmutable(`/akun/${id}`, async () => {
@@ -55,7 +44,7 @@ export default function useAkunDetail(): ReturnType {
     if (initialData !== undefined)
       form.reset({
         access: initialData.roles.map((v: string) =>
-          roleAccess.find((y) => y.name === v),
+          roleAccess.find((y) => y === v),
         ),
         email: initialData.email,
         name: initialData.nama,
@@ -65,12 +54,7 @@ export default function useAkunDetail(): ReturnType {
   const formSchema = z.object({
     email: z.string().email(),
     name: z.string().min(1),
-    access: z
-      .object({
-        id: z.number(),
-        name: z.string(),
-      })
-      .array(),
+    access: z.string().array(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -91,10 +75,11 @@ export default function useAkunDetail(): ReturnType {
   );
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log("values", values);
     await trigger({
       nama: values.name,
       email: values.email,
-      access: values.access.map((item) => item.name),
+      access: values.access,
       id: id ?? "",
     });
 

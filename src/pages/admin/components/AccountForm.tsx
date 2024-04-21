@@ -22,10 +22,7 @@ interface ComponentProps {
     {
       email: string;
       name: string;
-      access: {
-        name: string;
-        id: number;
-      }[];
+      access: string[];
     },
     any,
     undefined
@@ -33,15 +30,9 @@ interface ComponentProps {
   handleSubmit: (values: {
     email: string;
     name: string;
-    access: {
-      name: string;
-      id: number;
-    }[];
+    access: string[];
   }) => void;
-  roleAccess: {
-    id: number;
-    name: string;
-  }[];
+  roleAccess: string[];
   title: string;
 }
 
@@ -129,14 +120,14 @@ export default function AccountForm({
                         variant="secondary"
                         className="flex items-center gap-2 rounded-md py-1 text-xs font-medium text-primary"
                       >
-                        {access.name}
+                        {access}
                         <button
                           onClick={() => {
                             form.setValue(
                               "access",
                               form
                                 .getValues()
-                                .access.filter((v) => v.id !== access.id),
+                                .access.filter((v) => v !== access),
                             );
                           }}
                         >
@@ -152,14 +143,14 @@ export default function AccountForm({
                       {roleAccess.map((access, index) => (
                         <CommandItem
                           className="px-8 py-2 text-sm font-medium"
-                          value={access.name}
+                          value={access}
                           key={index}
                           onSelect={() => {
                             if (
                               !form
                                 .getValues()
-                                .access.map((v) => v.id)
-                                .includes(access.id)
+                                .access.map((v) => v)
+                                .includes(access)
                             ) {
                               form.setValue("access", [
                                 ...form.getValues().access,
@@ -168,7 +159,7 @@ export default function AccountForm({
                             }
                           }}
                         >
-                          {access.name}
+                          {access}
                         </CommandItem>
                       ))}
                     </CommandGroup>

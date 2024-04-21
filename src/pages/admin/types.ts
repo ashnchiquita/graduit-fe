@@ -34,6 +34,7 @@ export type PutAccountRequestData = {
   id?: string;
   nama: string;
   email: string;
+  nim?: string;
   access: string[];
 };
 
