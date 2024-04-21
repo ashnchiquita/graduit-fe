@@ -1,7 +1,10 @@
+import { RoleEnum } from "@/types/session-data";
+
 export type Account = {
   id: string;
   email: string;
   name: string;
+  nim?: string;
   access: string[];
 };
 
@@ -9,11 +12,15 @@ export type GetAccountResponseItem = {
   id: string;
   nama: string;
   email: string;
+  nim?: string;
   roles: string[];
 };
 
 export type GetAllAccountsParams = {
   search?: string;
+  nama?: string;
+  email?: string;
+  roles?: RoleEnum[];
   page: number;
   limit: number;
 };
@@ -27,6 +34,7 @@ export type PutAccountRequestData = {
   id?: string;
   nama: string;
   email: string;
+  nim?: string;
   access: string[];
 };
 
@@ -54,6 +62,10 @@ export type DeleteAccountResponseData = {
 export type PatchBatchUpdateRole = {
   ids: string[];
   newRoles: string[];
+};
+
+export type RemoveBatchUpdateRole = {
+  ids: string[];
 };
 
 export type SuccessResponse = {

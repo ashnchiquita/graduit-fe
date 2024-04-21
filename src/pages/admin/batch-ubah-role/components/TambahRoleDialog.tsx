@@ -18,9 +18,9 @@ import {
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { RoleDialogProps } from "../types";
 
-export default function RoleDialog({
-  dialogOpen,
-  setDialogOpen,
+export default function TambahRoleDialog({
+  tambahRoleDialogOpen,
+  setTambahRoleDialogOpen,
   isSubmitDisabled,
   setSubmitDisabled,
   table,
@@ -29,7 +29,7 @@ export default function RoleDialog({
   roleAccess,
 }: RoleDialogProps): JSX.Element {
   return (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog open={tambahRoleDialogOpen} onOpenChange={setTambahRoleDialogOpen}>
       <DialogContent className="max-w-[330px] rounded-md md:max-w-[425px]">
         <DialogHeader className="gap-2">
           <DialogTitle className="text-left">Ubah Role Pengguna</DialogTitle>
