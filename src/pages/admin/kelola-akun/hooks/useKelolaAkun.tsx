@@ -240,6 +240,7 @@ export default function useKelolaAkun() {
       id: "action",
       cell: ({ row }) => <RowAction row={row} refetchAccounts={fetchData} />,
       enableSorting: false,
+      size: 0,
     },
   ];
 

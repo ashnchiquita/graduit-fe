@@ -64,6 +64,10 @@ export type PatchBatchUpdateRole = {
   newRoles: string[];
 };
 
+export type RemoveBatchUpdateRole = {
+  ids: string[];
+};
+
 export type SuccessResponse = {
   message: string;
 };

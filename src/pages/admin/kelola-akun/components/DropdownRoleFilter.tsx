@@ -6,6 +6,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { RoleEnum } from "@/types/session-data";
 import { ChevronDown } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
@@ -22,24 +29,22 @@ const DropdownRoleFilter = ({ handleRoleChange }: ComponentProps) => {
   };
 
   return (
-    <DropdownMenu onOpenChange={handleOpenChange}>
-      <DropdownMenuTrigger className="w-full">
-        <Button
-          className="flex w-full flex-row justify-between rounded-md border border-input text-sm font-normal text-muted-foreground"
-          variant={"ghost"}
-        >
-          <p>Pilih role disini</p>
-          <ChevronDown size={16} />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
+    <Select
+      onValueChange={(val) => {
+        handleRoleChange(val as RoleEnum);
+      }}
+    >
+      <SelectTrigger>
+        <SelectValue placeholder="Pilih role disini" />
+      </SelectTrigger>
+      <SelectContent>
         {Object.values(RoleEnum).map((role) => (
-          <DropdownMenuItem key={role} onSelect={() => handleRoleChange(role)}>
+          <SelectItem key={role} value={role}>
             {role}
-          </DropdownMenuItem>
+          </SelectItem>
         ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </SelectContent>
+    </Select>
   );
 };
 

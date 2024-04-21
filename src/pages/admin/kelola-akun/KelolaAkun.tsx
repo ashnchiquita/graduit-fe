@@ -1,7 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { DataTable } from "@/components/DataTable";
 import useKelolaAkun from "./hooks/useKelolaAkun";
-import FilterPopup from "./components/FilterPopup";
+import FilterPopup from "../components/FilterPopup";
+import { Button } from "@/components/ui/button";
+import { VscListFilter } from "react-icons/vsc";
 
 export default function KelolaAkun(): JSX.Element {
   const { table, searchValue, handleSearchValueChange, fetchData,openFilterDialog, setOpenFilterDialog, namaValue, setNamaValue, emailValue, setEmailValue, roleValue, setRoleValue, handleRoleValueChange } =
@@ -16,9 +18,17 @@ export default function KelolaAkun(): JSX.Element {
         setSearchValue={handleSearchValueChange}
         searchPlaceholder="Cari nama atau email"
         customElementsRight={
-          <FilterPopup openFilterDialog={openFilterDialog} setOpenFilterDialog={setOpenFilterDialog} filterNama={namaValue} handleFilterNamaChange={setNamaValue} filterEmail={emailValue} handleFilterEmailChange={setEmailValue} filterRole={roleValue} setFilterRole={setRoleValue} handleRoleValueChange={handleRoleValueChange} fetchData={fetchData} />
+        <Button
+        onClick={()=>setOpenFilterDialog(true)}
+          variant={"ghost"}
+          className="flex h-fit flex-row items-center gap-2 rounded-md border border-gray-300 px-3 py-1 text-gray-600 hover:bg-gray-200"
+        >
+          <VscListFilter size={14} />
+          Filter
+        </Button>
         }
       />
+      <FilterPopup {...{fetchData,openFilterDialog, setOpenFilterDialog, namaValue, setNamaValue, emailValue, setEmailValue, roleValue, setRoleValue, handleRoleValueChange}}/>
     </main>
   );
 }

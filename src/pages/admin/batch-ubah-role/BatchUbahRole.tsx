@@ -10,30 +10,89 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import { IoFilterOutline } from "react-icons/io5";
-import RoleDialog from "./components/RoleDialog";
 import useBatchUbahRole from "./hooks/useBatchUbahRole";
-import useRoleDialog from "./hooks/useRoleDialog";
+import useRoleDialog from "./hooks/useTambahRoleDialog";
+import FilterPopup from "../components/FilterPopup";
+import { VscListFilter } from "react-icons/vsc";
+import TambahRoleDialog from "./components/TambahRoleDialog";
+import HapusRoleDialog from "./components/HapusRoleDialog";
+import useHapusRoleDialog from "./hooks/useHapusRoleDialog";
 
 export default function BatchUbahRole(): JSX.Element {
   const {
     table,
     searchValue,
     handleSearchValueChange,
-    dialogOpen,
-    setDialogOpen,
+    tambahRoleDialogOpen,
+    setTambahRoleDialogOpen,
+    hapusRoleDialogOpen,
+    setHapusRoleDialogOpen,
     fetchData,
+    openFilterDialog,
+    setOpenFilterDialog,
+    namaValue,
+    setNamaValue,
+    emailValue,
+    setEmailValue,
+    roleValue,
+    setRoleValue,
+    handleRoleValueChange,
+    handleAddAccountButton,
   } = useBatchUbahRole();
 
-  const roleDialogHookRet = useRoleDialog({ table, fetchData, setDialogOpen });
+  const roleDialogHookRet = useRoleDialog({
+    table,
+    fetchData,
+    setTambahRoleDialogOpen,
+  });
+
+  const hapusRoleDialogHookRet = useHapusRoleDialog({
+    table,
+    fetchData,
+    setHapusRoleDialogOpen,
+  });
 
   return (
     <main className="flex w-full flex-col gap-5 px-4 pb-10">
       <section className="hidden md:block">
         <DataTable
           table={table}
-          headline="Pengaturan Role Pengguna"
+          headline="Pengaturan Akun Aplikasi Pengguna"
           searchValue={searchValue}
           setSearchValue={handleSearchValueChange}
+          searchPlaceholder="Cari nama atau email"
+          customElementsRight={
+            <>
+              <Button
+                onClick={() => setOpenFilterDialog(true)}
+                variant={"ghost"}
+                className="flex h-fit flex-row items-center gap-2 rounded-md border border-gray-300 px-3 py-1 text-gray-600 hover:bg-gray-200"
+              >
+                <VscListFilter size={14} />
+                Filter
+              </Button>
+              <Button
+                disabled={table.getSelectedRowModel().flatRows.length === 0}
+                onClick={() => setTambahRoleDialogOpen(true)}
+                className="h-fit bg-blue-600 px-3 py-1 text-white transition-all"
+              >
+                Ubah Role
+              </Button>
+              <Button
+                disabled={table.getSelectedRowModel().flatRows.length === 0}
+                onClick={() => setHapusRoleDialogOpen(true)}
+                className="h-fit bg-red-500 px-3 py-1 text-white transition-all"
+              >
+                Hapus Role
+              </Button>
+              <Button
+                onClick={() => handleAddAccountButton()}
+                className="h-fit bg-teal-600 px-3 py-1 text-white"
+              >
+                Tambah Akun
+              </Button>
+            </>
+          }
         />
       </section>
 
@@ -51,7 +110,7 @@ export default function BatchUbahRole(): JSX.Element {
             disabled={table.getSelectedRowModel().rows.length === 0}
             className="flex-auto bg-blue-500 text-gray-100 hover:bg-blue-600"
             type="submit"
-            onClick={() => setDialogOpen(true)}
+            onClick={() => setTambahRoleDialogOpen(true)}
           >
             Ubah Role
           </Button>
@@ -86,7 +145,7 @@ export default function BatchUbahRole(): JSX.Element {
                       };
                     });
 
-                    setDialogOpen(true);
+                    setTambahRoleDialogOpen(true);
                   }}
                 >
                   Ubah Role
@@ -172,8 +231,36 @@ export default function BatchUbahRole(): JSX.Element {
         </div>
       </section>
 
-      <RoleDialog
-        {...{ dialogOpen, setDialogOpen, table, ...roleDialogHookRet }}
+      {/* DIALOG(S) */}
+      <TambahRoleDialog
+        {...{
+          tambahRoleDialogOpen,
+          setTambahRoleDialogOpen,
+          table,
+          ...roleDialogHookRet,
+        }}
+      />
+      <HapusRoleDialog
+        {...{
+          hapusRoleDialogOpen,
+          setHapusRoleDialogOpen,
+          table,
+          ...hapusRoleDialogHookRet,
+        }}
+      />
+      <FilterPopup
+        {...{
+          fetchData,
+          openFilterDialog,
+          setOpenFilterDialog,
+          namaValue,
+          setNamaValue,
+          emailValue,
+          setEmailValue,
+          roleValue,
+          setRoleValue,
+          handleRoleValueChange,
+        }}
       />
     </main>
   );
