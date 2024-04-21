@@ -33,7 +33,7 @@ export type BatchUbahRoleHookRet = {
 };
 
 export type RoleDialogProps = {
-  roleDialogOpen: boolean;
+  tambahRoleDialogOpen: boolean;
   setTambahRoleDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   table: Table<Account>;
 } & RoleDialogHookRet;

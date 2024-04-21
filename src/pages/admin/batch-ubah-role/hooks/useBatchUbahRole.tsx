@@ -1,8 +1,7 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   ColumnDef,
+  Row,
   Table,
   getCoreRowModel,
   useReactTable,
@@ -10,10 +9,11 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useSWR from "swr";
-import { getAllAccounts } from "../../clients";
-import { GetAccountResponseItem } from "../../types";
+import { getAllAccounts, putAccount } from "../../clients";
+import { GetAccountResponseItem, PutAccountRequestData } from "../../types";
 import { Account, BatchUbahRoleHookRet } from "../types";
 import { RoleEnum } from "@/types/session-data";
+import useSWRMutation from "swr/mutation";
 
 export default function useBatchUbahRole(): BatchUbahRoleHookRet {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -64,6 +64,28 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
     navigate("/manajemen/tambah-akun");
   };
 
+  const handleCheckboxChecked = async (row: Row<Account>, role: string) => {
+    const { id, name, email, access, nim } = row.original;
+
+    await trigger({
+      id: id,
+      nama: name,
+      email: email,
+      nim: nim,
+      access: access.includes(role)
+        ? access.filter((r) => r !== role)
+        : [...access, role],
+    });
+  };
+
+  const { trigger, error } = useSWRMutation(
+    "/akun",
+    async (_, { arg }: { arg: PutAccountRequestData }) => {
+      const res = await putAccount(arg);
+      return res.data;
+    },
+  );
+
   const columns: ColumnDef<Account>[] = [
     {
       id: "select",
@@ -107,9 +129,8 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
             handleCheckboxRoleAccess(row.original.access, "S1_PEMBIMBING") ||
             handleCheckboxRoleAccess(row.original.access, "S2_PEMBIMBING")
           }
-          onCheckedChange={(value: boolean) => {
-            // handleCheckboxChecked(row, "S1_PEMBIMBING");
-            row.toggleSelected(value);
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S1_PEMBIMBING");
           }}
         />
       ),
@@ -125,9 +146,8 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
             handleCheckboxRoleAccess(row.original.access, "S1_PENGUJI") ||
             handleCheckboxRoleAccess(row.original.access, "S2_PENGUJI")
           }
-          onCheckedChange={(value: boolean) => {
-            // handleCheckboxChecked(row, "S1_PENGUJI");
-            row.toggleSelected(value);
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S1_PENGUJI");
           }}
         />
       ),
@@ -140,9 +160,8 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
           checked={handleCheckboxRoleAccess(row.original.access, "S2_KULIAH")}
-          onCheckedChange={(value: boolean) => {
-            // handleCheckboxChecked(row, "S2_KULIAH");
-            row.toggleSelected(value);
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S2_KULIAH");
           }}
         />
       ),
@@ -155,12 +174,11 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
           checked={
-            handleCheckboxRoleAccess(row.original.access, "S1_TIM_TESIS") ||
-            handleCheckboxRoleAccess(row.original.access, "S2_TIM_TA")
+            handleCheckboxRoleAccess(row.original.access, "S2_TIM_TESIS") ||
+            handleCheckboxRoleAccess(row.original.access, "S1_TIM_TA")
           }
-          onCheckedChange={(value: boolean) => {
-            // handleCheckboxChecked(row, "S1_TIM_TESIS");
-            row.toggleSelected(value);
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S1_TIM_TA");
           }}
         />
       ),
@@ -176,9 +194,8 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
             handleCheckboxRoleAccess(row.original.access, "S1_MAHASISWA") ||
             handleCheckboxRoleAccess(row.original.access, "S2_MAHASISWA")
           }
-          onCheckedChange={(value: boolean) => {
-            // handleCheckboxChecked(row, "S1_MAHASISWA");
-            row.toggleSelected(value);
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S1_MAHASISWA");
           }}
         />
       ),
@@ -191,9 +208,8 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
           checked={handleCheckboxRoleAccess(row.original.access, "TU")}
-          onCheckedChange={(value: boolean) => {
-            // handleCheckboxChecked(row, "TU");
-            row.toggleSelected(value);
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "TU");
           }}
         />
       ),
@@ -206,9 +222,8 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
           checked={handleCheckboxRoleAccess(row.original.access, "ADMIN")}
-          onCheckedChange={(value: boolean) => {
-            // handleCheckboxChecked(row, "ADMIN");
-            row.toggleSelected(value);
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "ADMIN");
           }}
         />
       ),

@@ -30,12 +30,6 @@ export default function useKelolaAkun() {
   const [roleValue, setRoleValue] = useState<RoleEnum[]>([]);
   const [openFilterDialog, setOpenFilterDialog] = useState(false);
 
-  const navigate = useNavigate();
-
-  const onClickCreate = () => {
-    navigate("/manajemen/tambah-akun");
-  };
-
   const handleSearchValueChange = (value: string) => {
     setSearchParams(value ? { search: value } : {});
     setSearchValue(value);
@@ -129,9 +123,8 @@ export default function useKelolaAkun() {
             handleCheckboxRoleAccess(row.original.access, "S1_PEMBIMBING") ||
             handleCheckboxRoleAccess(row.original.access, "S2_PEMBIMBING")
           }
-          onCheckedChange={(value: boolean) => {
+          onCheckedChange={() => {
             handleCheckboxChecked(row, "S1_PEMBIMBING");
-            row.toggleSelected(value);
           }}
         />
       ),
@@ -147,9 +140,8 @@ export default function useKelolaAkun() {
             handleCheckboxRoleAccess(row.original.access, "S1_PENGUJI") ||
             handleCheckboxRoleAccess(row.original.access, "S2_PENGUJI")
           }
-          onCheckedChange={(value: boolean) => {
+          onCheckedChange={() => {
             handleCheckboxChecked(row, "S1_PENGUJI");
-            row.toggleSelected(value);
           }}
         />
       ),
@@ -162,9 +154,8 @@ export default function useKelolaAkun() {
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
           checked={handleCheckboxRoleAccess(row.original.access, "S2_KULIAH")}
-          onCheckedChange={(value: boolean) => {
+          onCheckedChange={() => {
             handleCheckboxChecked(row, "S2_KULIAH");
-            row.toggleSelected(value);
           }}
         />
       ),
@@ -177,12 +168,11 @@ export default function useKelolaAkun() {
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
           checked={
-            handleCheckboxRoleAccess(row.original.access, "S1_TIM_TESIS") ||
-            handleCheckboxRoleAccess(row.original.access, "S2_TIM_TA")
+            handleCheckboxRoleAccess(row.original.access, "S2_TIM_TESIS") ||
+            handleCheckboxRoleAccess(row.original.access, "S1_TIM_TA")
           }
-          onCheckedChange={(value: boolean) => {
-            handleCheckboxChecked(row, "S1_TIM_TESIS");
-            row.toggleSelected(value);
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S1_TIM_TA");
           }}
         />
       ),
@@ -198,9 +188,8 @@ export default function useKelolaAkun() {
             handleCheckboxRoleAccess(row.original.access, "S1_MAHASISWA") ||
             handleCheckboxRoleAccess(row.original.access, "S2_MAHASISWA")
           }
-          onCheckedChange={(value: boolean) => {
+          onCheckedChange={() => {
             handleCheckboxChecked(row, "S1_MAHASISWA");
-            row.toggleSelected(value);
           }}
         />
       ),
@@ -213,9 +202,8 @@ export default function useKelolaAkun() {
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
           checked={handleCheckboxRoleAccess(row.original.access, "TU")}
-          onCheckedChange={(value: boolean) => {
+          onCheckedChange={() => {
             handleCheckboxChecked(row, "TU");
-            row.toggleSelected(value);
           }}
         />
       ),
@@ -228,9 +216,8 @@ export default function useKelolaAkun() {
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
           checked={handleCheckboxRoleAccess(row.original.access, "ADMIN")}
-          onCheckedChange={(value: boolean) => {
+          onCheckedChange={() => {
             handleCheckboxChecked(row, "ADMIN");
-            row.toggleSelected(value);
           }}
         />
       ),
@@ -257,7 +244,6 @@ export default function useKelolaAkun() {
     searchValue,
     handleSearchValueChange,
     fetchData,
-    // onClickCreate,
     openFilterDialog,
     setOpenFilterDialog,
     namaValue,
