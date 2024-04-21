@@ -28,6 +28,7 @@ import {
   RekapPendaftaranDosbim,
   SubmissionTugas,
   Topik,
+  DaftarKelas,
   RekapPendaftaranTimTesis,
   RiwayatPendaftaran,
 } from "./imports";
@@ -163,6 +164,14 @@ export const router = createBrowserRouter(
         {
           path: "/manajemen/periode-pendidikan",
           element: <KonfigurasiPeriode />,
+        },
+        {
+          path: "/tugas/daftar-kelas",
+          element: <DaftarKelas />,
+        },
+        {
+          path: "/kelas/daftar-kelas",
+          element: <DaftarKelas />,
         },
         {
           path: "/kelas/input-nilai",
