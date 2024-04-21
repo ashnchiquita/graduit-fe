@@ -30,8 +30,21 @@ export default function useKelolaAkun() {
   const [roleValue, setRoleValue] = useState<RoleEnum[]>([]);
   const [openFilterDialog, setOpenFilterDialog] = useState(false);
 
+  const [rowCount, setRowCount] = useState(0);
+
   const handleSearchValueChange = (value: string) => {
-    setSearchParams(value ? { search: value } : {});
+    setSearchParams(
+      value
+        ? {
+            search: value,
+            page: (tablePagination.pageIndex + 1).toString(),
+            limit: tablePagination.pageSize.toString(),
+          }
+        : {
+            page: (tablePagination.pageIndex + 1).toString(),
+            limit: tablePagination.pageSize.toString(),
+          },
+    );
     setSearchValue(value);
     fetchData();
   };
@@ -89,6 +102,8 @@ export default function useKelolaAkun() {
       }),
     );
 
+    setRowCount(res.data.count);
+
     return data;
   });
 
@@ -104,6 +119,8 @@ export default function useKelolaAkun() {
     {
       header: "Nama",
       accessorKey: "name",
+      // TODO : SORTING BERDASARKAN NAMA
+      enableSorting: false,
       cell: ({ row }) => (
         <div>
           <div>{row.original.nim ?? row.original.email}</div>
@@ -237,7 +254,35 @@ export default function useKelolaAkun() {
     data,
     manualPagination: true,
     getCoreRowModel: getCoreRowModel(),
+    rowCount: rowCount,
+    initialState: {
+      pagination: {
+        pageIndex: +(searchParams?.get("page") ?? 1) - 1,
+        pageSize: +(searchParams?.get("limit") ?? 10),
+      },
+    },
   });
+
+  const tablePagination = table.getState().pagination;
+  useEffect(
+    () => {
+      fetchData();
+      setSearchParams(
+        searchValue
+          ? {
+              search: searchValue,
+              page: (tablePagination.pageIndex + 1).toString(),
+              limit: tablePagination.pageSize.toString(),
+            }
+          : {
+              page: (tablePagination.pageIndex + 1).toString(),
+              limit: tablePagination.pageSize.toString(),
+            },
+      );
+    },
+    // eslint-disable-next-line
+    [tablePagination],
+  );
 
   return {
     table,

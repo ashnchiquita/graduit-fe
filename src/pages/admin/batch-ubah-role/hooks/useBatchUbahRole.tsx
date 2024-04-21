@@ -111,6 +111,8 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
     {
       header: "Nama",
       accessorKey: "name",
+      // TODO : SORTING BERDASARKAN NAMA
+      enableSorting: false,
       cell: ({ row }) => (
         <div>
           <div>{row.original.nim ?? row.original.email}</div>
