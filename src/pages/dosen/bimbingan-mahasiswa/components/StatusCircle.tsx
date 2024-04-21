@@ -12,6 +12,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import { toast } from "react-toastify";
 
 export default function StatusCircle({
   row,
@@ -21,8 +22,13 @@ export default function StatusCircle({
   const [status, setStatus] = useState(row.original.status);
 
   const updateBimbinganLogStatus = async (id: string, status: boolean) => {
-    await updateStatusBimbinganLog(id, status);
-    setStatus(status);
+    const resUpdate = await updateStatusBimbinganLog(id, status);
+    if (resUpdate.data.success) {
+      toast.success("Bimbingan log status updated successfully.");
+      setStatus(status);
+    } else {
+      toast.success("Failed to update bimbingan log status updated.");
+    }
   };
 
   return (

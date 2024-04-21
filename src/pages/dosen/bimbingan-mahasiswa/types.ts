@@ -65,7 +65,7 @@ export type GetMahasiswaInfoS1Res = {
 
 export type UpdateStatusBimbinganLogRes = {
   data: {
-    message: string;
+    success: string;
   };
 };
 
