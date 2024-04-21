@@ -9,12 +9,18 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
-import { getLogBimbinganS2 } from "../clients";
+import {
+  getLogBimbinganS2,
+  getLogBimbinganS1,
+  getMahasiswaInfoS1,
+} from "../clients";
 import DownloadBox from "../components/DownloadBox";
 import StatusCircle from "../components/StatusCircle";
 import {
   BimbinganData,
   BimbinganLogs,
+  Berkas,
+  BimbinganS1Res,
   LogBimbinganMahasiswaHookRet,
 } from "../types";
 
@@ -43,38 +49,50 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
     let data: BimbinganData;
 
     if (strata?.toUpperCase() === "S1") {
-      // TODO-S1: Update this to fetch from S1 service
-      const res = await getLogBimbinganS2(id ?? "");
+      const resBimbingan = await getLogBimbinganS1(id ?? "");
+      const resMahasiswa = await getMahasiswaInfoS1(id ?? "");
+
+      console.log(resBimbingan.data.data);
 
       data = {
-        bimbingan: res.data.bimbingan.map((item) => ({
-          tanggal: item.waktuBimbingan,
-          laporan_kemajuan: item.laporanKemajuan,
+        bimbingan: resBimbingan.data.data.map((item: BimbinganS1Res) => ({
+          id: item.id,
+          tanggal: item.date,
+          laporan_kemajuan: item.laporan_kemajuan,
           todo: item.todo,
-          rencana: item.bimbinganBerikutnya,
-          berkas: item.berkasLinks,
-          status: true,
+          rencana: item.next_bimbingan,
+          berkas: item.berkas.map((berkasItem: Berkas) => ({
+            nama: berkasItem.nama,
+            link: berkasItem.link,
+          })),
+          status: item.status,
         })),
         mahasiswa: {
-          name: res.data.mahasiswa.nama,
-          email: res.data.mahasiswa.email,
-          major: res.data.mahasiswa.jalurPilihan,
+          name: resMahasiswa.data.data.nama,
+          email: resMahasiswa.data.data.email,
+          major: "dummy jurusan",
         },
         topik: {
-          judul: res.data.topik.judul,
-          deskripsi: res.data.topik.deskripsi,
+          judul: "dummy judul",
+          deskripsi: "dummy desc",
         },
       };
+
+      console.log(data);
     } else {
       const res = await getLogBimbinganS2(id ?? "");
 
       data = {
         bimbingan: res.data.bimbingan.map((item) => ({
+          id: item.id,
           tanggal: item.waktuBimbingan,
           laporan_kemajuan: item.laporanKemajuan,
           todo: item.todo,
           rencana: item.bimbinganBerikutnya,
-          berkas: item.berkasLinks,
+          berkas: item.berkas.map((berkasItem: Berkas) => ({
+            nama: berkasItem.nama,
+            link: berkasItem.link,
+          })),
           status: true,
         })),
         mahasiswa: {
@@ -104,11 +122,6 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
       minSize: 1000,
     },
     {
-      header: "To-do",
-      accessorKey: "todo",
-      minSize: 1000,
-    },
-    {
       header: "Rencana",
       accessorKey: "rencana",
       minSize: 1000,
@@ -120,7 +133,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
       minSize: 1000,
     },
     {
-      header: "Status",
+      header: "Status Bimbingan",
       accessorKey: "status",
       cell: ({ row }) => <StatusCircle row={row} />,
       minSize: 1000,

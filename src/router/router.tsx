@@ -187,7 +187,7 @@ export const router = createBrowserRouter(
           element: <InputNilai />,
         },
         {
-          path: "/add-log-bimbingan",
+          path: "/add-log-bimbingan/:strata",
           element: <AddLogBimbingan />,
         },
       ],

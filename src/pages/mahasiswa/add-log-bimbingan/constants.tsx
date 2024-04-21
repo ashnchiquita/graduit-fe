@@ -14,6 +14,7 @@ export const berkasTitle = "Berkas Terkait";
 export const berkasDesc = "Silakan unggah berkas-berkas terkait bimbingan ini.";
 
 export const AddLogBimbinganFormSchema = z.object({
+  id_mahasiswa: z.string(),
   date: z.date().refine((date) => date !== undefined, {
     message: "Tanggal bimbingan tidak boleh kosong",
   }),
