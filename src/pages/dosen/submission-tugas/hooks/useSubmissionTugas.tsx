@@ -1,10 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import {
-  SubmisiMahasiswa,
-  SubmisiTugas,
-  SubmissionTugasHookRet,
-} from "../types";
+import { SubmisiMahasiswa, SubmissionTugasHookRet } from "../types";
 import {
   ColumnDef,
   getCoreRowModel,
@@ -13,6 +9,8 @@ import {
 import BerkasBadge from "@/components/BerkasBadge";
 import StatusTugasBadge from "../components/StatusTugasBadge";
 import { Button } from "@/components/ui/button";
+import { getListMhs, getTugas } from "../clients";
+import useSWR from "swr";
 
 export default function useSubmissionTugas(): SubmissionTugasHookRet {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -34,91 +32,18 @@ export default function useSubmissionTugas(): SubmissionTugasHookRet {
     setSearchValue(value);
   };
 
-  const [data] = useState<SubmisiTugas>({
-    tugas: "Pengumpulan Bagian B",
-    deskripsiTugas:
-      "Perhatikan hanya satu orang saja yang perlu mengumpul (NIM terkecil) supaya memudahkan asisten untuk memeriksa dan mendokumentasi. Jika dalam bentuk file, jawablah dengan tautan atau link tugas.",
-    berkasTugas: [
-      {
-        nama: "Youtube",
-        link: "https://www.youtube.com/",
-      },
-      {
-        nama: "Youtube",
-        link: "https://www.youtube.com/",
-      },
-      {
-        nama: "Youtube",
-        link: "https://www.youtube.com/",
-      },
-    ],
-    namaMatkul: "IF3260 Komputasi Masyarakat",
+  const defaultData = {
+    tugas: "",
+    deskripsiTugas: "",
+    berkasTugas: [],
+    namaMatkul: "",
     waktuMulai: new Date(),
     waktuSelesai: new Date(),
-    namaPembuat: "Dr. Rinaldy Adin, S.T., M.T.",
+    namaPembuat: "",
     waktuDibuat: new Date(),
-    namaPengubah: "Dr. Rinaldy Adin, S.T., M.T.",
+    namaPengubah: "",
     waktuDiubah: new Date(),
-    jawaban: "Jawaban saya adalah sebagai berikut. File terlampir.",
-    mahasiswa: [
-      {
-        id: "111",
-        nim: "23521149",
-        nama: "Rava James Maulana",
-        berkas: [
-          {
-            nama: "Youtube",
-            link: "https://www.youtube.com/",
-          },
-          {
-            nama: "Youtube",
-            link: "https://www.youtube.com/",
-          },
-        ],
-        selesai: true,
-      },
-      {
-        id: "222",
-        nim: "23521148",
-        nama: "Maulana James Rava",
-        berkas: [],
-        selesai: false,
-      },
-      {
-        id: "333",
-        nim: "23521147",
-        nama: "James Rava Maulana",
-        berkas: [],
-        selesai: false,
-      },
-      {
-        id: "444",
-        nim: "23521146",
-        nama: "Rava James Maulana",
-        berkas: [
-          {
-            nama: "Youtube",
-            link: "https://www.youtube.com/",
-          },
-        ],
-        selesai: true,
-      },
-      {
-        id: "555",
-        nim: "23521145",
-        nama: "Maulana James Rava",
-        berkas: [],
-        selesai: false,
-      },
-      {
-        id: "666",
-        nim: "23521144",
-        nama: "James Rava Maulana",
-        berkas: [],
-        selesai: false,
-      },
-    ],
-  });
+  };
 
   const handleStatusFilterChange = (value: string) => {
     const obj: any = {};
@@ -128,6 +53,62 @@ export default function useSubmissionTugas(): SubmissionTugasHookRet {
     setSearchParams(obj);
     setStatusFilter(value);
   };
+
+  const { data: listMhs = [] } = useSWR(
+    [`/tugas/${idTugas}/submisi`, searchValue, statusFilter],
+    async (): Promise<SubmisiMahasiswa[]> => {
+      if (!idTugas) return [];
+
+      const { data } = await getListMhs(
+        idTugas,
+        searchValue,
+        statusFilter === "true"
+          ? true
+          : statusFilter === "false"
+            ? false
+            : undefined,
+      );
+
+      return data.map((d) => ({
+        id: d.id,
+        nim: d.nim,
+        nama: d.nama,
+        idSubmisi: d.submisiTugas?.id,
+        berkas:
+          d?.submisiTugas?.berkasSubmisiTugas.map((b) => ({
+            nama: b.nama,
+            link: b.url,
+          })) ?? [],
+        selesai: d?.submisiTugas?.isSubmitted ?? false,
+      }));
+    },
+  );
+
+  const { data = defaultData } = useSWR(`/tugas/${idTugas}`, async () => {
+    if (!idTugas) return defaultData;
+
+    const { data } = await getTugas(idTugas);
+    return {
+      tugas: data.judul,
+      deskripsiTugas: data.deskripsi,
+      berkasTugas: data.berkasTugas.map((b) => ({
+        nama: b.nama,
+        link: b.url,
+      })),
+      namaMatkul: `${data.kelas.mataKuliah.kode} ${data.kelas.mataKuliah.nama}`,
+      waktuMulai: new Date(data.waktuMulai),
+      waktuSelesai: new Date(data.waktuSelesai),
+      namaPembuat: data.pembuat.nama,
+      waktuDibuat: new Date(data.createdAt),
+      namaPengubah: data.pengubah.nama,
+      waktuDiubah: new Date(data.updatedAt),
+    };
+  });
+
+  const [tableData, setTableData] = useState<SubmisiMahasiswa[]>([]);
+  useEffect(() => {
+    setTableData(listMhs);
+  }, [listMhs]);
 
   const columns: ColumnDef<SubmisiMahasiswa>[] = [
     {
@@ -160,16 +141,17 @@ export default function useSubmissionTugas(): SubmissionTugasHookRet {
     },
     {
       id: "link",
-      cell: ({ row }) => (
-        <Link to={`/tugas/${idTugas}/submisi/${row.original.id}`}>
-          <Button
-            variant="outline"
-            className="size-fit border-blue-300 text-xs text-blue-500 hover:text-blue-500"
-          >
-            Buka
-          </Button>
-        </Link>
-      ),
+      cell: ({ row }) =>
+        row.original.selesai ? (
+          <Link to={`/tugas/${idTugas}/submisi/${row.original.idSubmisi}`}>
+            <Button
+              variant="outline"
+              className="size-fit border-blue-300 text-xs text-blue-500 hover:text-blue-500"
+            >
+              Buka
+            </Button>
+          </Link>
+        ) : null,
       meta: {
         align: "right",
       },
@@ -178,7 +160,7 @@ export default function useSubmissionTugas(): SubmissionTugasHookRet {
 
   const table = useReactTable({
     columns,
-    data: data.mahasiswa,
+    data: tableData,
     columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
   });

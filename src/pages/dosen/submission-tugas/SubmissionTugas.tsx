@@ -60,7 +60,7 @@ export default function SubmissionTugas(): JSX.Element {
                 value={statusFilter}
                 onValueChange={handleStatusFilterChange}
               >
-                <SelectTrigger className="h-fit text-xs">
+                <SelectTrigger className="h-fit w-[150px] text-xs">
                   <SelectValue placeholder="Semua" />
                 </SelectTrigger>
 
