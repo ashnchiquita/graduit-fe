@@ -1,5 +1,5 @@
 import { RoleEnum } from "@/types/session-data";
-import { BookOpen } from "lucide-react";
+import { BsBook } from "react-icons/bs";
 import { IoSchoolOutline } from "react-icons/io5";
 import { VscNotebook, VscPieChart } from "react-icons/vsc";
 import { NavItem } from "../types";
@@ -57,9 +57,31 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    label: "Kelas",
-    icon: <BookOpen size={18} className="text-slate-700" />,
+    label: "Tugas",
+    icon: <VscNotebook className="text-slate-700" />,
     children: [
+      {
+        label: "Daftar Kelas",
+        path: `/tugas/daftar-kelas?view=${RoleEnum.S2_MAHASISWA}`,
+        roleAccess: [RoleEnum.S2_MAHASISWA],
+      },
+      {
+        label: "Daftar Kelas",
+        path: `/tugas/daftar-kelas?view=${RoleEnum.S2_KULIAH}`,
+        roleAccess: [RoleEnum.S2_KULIAH],
+      },
+    ],
+    roleAccess: [RoleEnum.S2_MAHASISWA, RoleEnum.S2_KULIAH],
+  },
+  {
+    label: "Kelas",
+    icon: <BsBook size={16} className="text-slate-700" />,
+    children: [
+      {
+        label: "Daftar Kelas",
+        path: `/kelas/daftar-kelas?view=${RoleEnum.S2_TIM_TESIS}`,
+        roleAccess: [RoleEnum.S2_TIM_TESIS],
+      },
       {
         label: "Nilai Mahasiswa",
         path: "/kelas/input-nilai",
@@ -77,16 +99,27 @@ const NAV_ITEMS: NavItem[] = [
   //     { label: "Rekap", path: "/tesis/rekap" },
   //   ],
   // },
-  // {
-  //   label: "Tugas Akhir",
-  //   icon: <IoSchoolOutline className="text-slate-700" />,
-  //   children: [
-  //     { label: "Topik", path: "/tugas-akhir/topik/2" },
-  //     { label: "Status", path: "/tugas-akhir/status/1" },
-  //     { label: "Pengumuman", path: "/tugas-akhir/pengumuman" },
-  //     { label: "Penjadwalan", path: "/tugas-akhir/penjadwalan" },
-  //   ],
-  // },
+  {
+    label: "Tugas Akhir",
+    icon: <IoSchoolOutline className="text-slate-700" />,
+    children: [
+      { 
+        label: "Topik", 
+        path: "/tugas-akhir/topik", 
+        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S1_PEMBIMBING, RoleEnum.S1_TIM_TA, RoleEnum.ADMIN]
+      },
+      // { label: "Status", path: "/tugas-akhir/status/1" },
+      // { label: "Pengumuman", path: "/tugas-akhir/pengumuman" },
+      // { label: "Penjadwalan", path: "/tugas-akhir/penjadwalan" },
+    ],
+    roleAccess: [
+      RoleEnum.S1_MAHASISWA,
+      RoleEnum.S1_TIM_TA,
+      RoleEnum.ADMIN,
+      RoleEnum.TU,
+      RoleEnum.S1_PENGUJI,
+    ],
+  },
   // {
   //   label: "Informasi",
   //   icon: <VscInfo className="text-slate-700" />,
@@ -146,6 +179,16 @@ const NAV_ITEMS: NavItem[] = [
           RoleEnum.S2_TIM_TESIS,
           RoleEnum.S1_TIM_TA,
         ],
+      },
+      {
+        label: "Assign Kelas Mahasiswa",
+        path: "/manajemen/assign-kelas/mahasiswa",
+        roleAccess: [RoleEnum.ADMIN, RoleEnum.TU, RoleEnum.S2_TIM_TESIS],
+      },
+      {
+        label: "Assign Kelas Dosen",
+        path: "/manajemen/assign-kelas/dosen",
+        roleAccess: [RoleEnum.ADMIN, RoleEnum.TU, RoleEnum.S2_TIM_TESIS],
       },
     ],
     roleAccess: [

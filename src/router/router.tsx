@@ -6,6 +6,7 @@ import {
   AccountTimTesisLayout,
   AkunCreate,
   AkunDetail,
+  AssignKelas,
   BatchUbahRole,
   DaftarPengajuan,
   DaftarTopikTimTugas,
@@ -28,6 +29,7 @@ import {
   RekapPendaftaranDosbim,
   SubmissionTugas,
   Topik,
+  DaftarKelas,
   RekapPendaftaranTimTesis,
   RiwayatPendaftaran,
   KelasDetail,
@@ -75,7 +77,7 @@ export const router = createBrowserRouter(
           element: <RiwayatPendaftaran />,
         },
         {
-          path: "/rekap-pendaftaran/:nim",
+          path: "/rekap-pendaftaran/:strata/:mahasiswaId",
           element: <DetailRekapPendaftaran />,
         },
         {
@@ -132,6 +134,14 @@ export const router = createBrowserRouter(
           element: <DaftarTopikTimTugas />,
         },
         {
+          path: "/manajemen/assign-kelas/mahasiswa",
+          element: <AssignKelas type="MAHASISWA" />,
+        },
+        {
+          path: "/manajemen/assign-kelas/dosen",
+          element: <AssignKelas type="DOSEN" />,
+        },
+        {
           path: "/log",
           element: <Navigate to="/log/bimbingan" replace />,
         },
@@ -149,10 +159,10 @@ export const router = createBrowserRouter(
         },
         {
           path: "/tugas-akhir",
-          element: <Navigate to="/tugas-akhir/topik/2" replace />,
+          element: <Navigate to="/tugas-akhir/topik" replace />,
         },
         {
-          path: "/tugas-akhir/topik/:role",
+          path: "/tugas-akhir/topik",
           element: <Topik />,
         },
         {
@@ -168,11 +178,19 @@ export const router = createBrowserRouter(
           element: <KonfigurasiPeriode />,
         },
         {
+          path: "/tugas/daftar-kelas",
+          element: <DaftarKelas />,
+        },
+        {
+          path: "/kelas/daftar-kelas",
+          element: <DaftarKelas />,
+        },
+        {
           path: "/kelas/input-nilai",
           element: <InputNilai />,
         },
         {
-          path: "/add-log-bimbingan",
+          path: "/add-log-bimbingan/:strata",
           element: <AddLogBimbingan />,
         },
         {

@@ -33,10 +33,13 @@ export default function InfoKontakDialog({
       <DialogTrigger asChild>{dialogTrigger}</DialogTrigger>
       <DialogContent className="max-w-[330px] rounded-md md:max-w-[425px]">
         <DialogHeader className="gap-2">
-          <DialogTitle className="text-left">Ubah Informasi Kontak</DialogTitle>
+          <DialogTitle className="text-left">
+            {infoKontak ? "Ubah Kontak" : "Selamat datang ke Rekap Pendaftaran"}
+          </DialogTitle>
           <DialogDescription className="text-left">
-            Anda akan mengubah informasi kontak Anda yang bisa dilihat oleh
-            mahasiswa.
+            {infoKontak
+              ? "Ubah informasi kontak Anda di sini."
+              : "Masukkan informasi kontak Anda agar dapat dihubungi oleh mahasiswa."}
           </DialogDescription>
         </DialogHeader>
 

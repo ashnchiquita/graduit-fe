@@ -1,3 +1,4 @@
+import { RoleEnum } from "@/types/session-data";
 import { Table } from "@tanstack/react-table";
 import { UseFormReturn } from "react-hook-form";
 import { KeyedMutator } from "swr";
@@ -6,6 +7,7 @@ export type Account = {
   id: string;
   email: string;
   name: string;
+  nim?: string;
   access: string[];
 };
 
@@ -14,20 +16,32 @@ export type BatchUbahRoleHookRet = {
   searchValue: string;
   handleSearchValueChange: (value: string) => void;
   fetchData: KeyedMutator<Account[]>;
-  dialogOpen: boolean;
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  tambahRoleDialogOpen: boolean;
+  setTambahRoleDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  hapusRoleDialogOpen: boolean;
+  setHapusRoleDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  openFilterDialog: boolean;
+  setOpenFilterDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  namaValue: string;
+  setNamaValue: React.Dispatch<React.SetStateAction<string>>;
+  emailValue: string;
+  setEmailValue: React.Dispatch<React.SetStateAction<string>>;
+  roleValue: RoleEnum[];
+  setRoleValue: React.Dispatch<React.SetStateAction<RoleEnum[]>>;
+  handleRoleValueChange: (val: RoleEnum) => void;
+  handleAddAccountButton: () => void;
 };
 
 export type RoleDialogProps = {
-  dialogOpen: boolean;
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  tambahRoleDialogOpen: boolean;
+  setTambahRoleDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   table: Table<Account>;
 } & RoleDialogHookRet;
 
 export type RoleDialogHookProps = {
   table: Table<Account>;
   fetchData: KeyedMutator<Account[]>;
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setTambahRoleDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type RoleDialogHookRet = {
@@ -55,4 +69,21 @@ export type RoleDialogHookRet = {
     id: number;
     name: string;
   }[];
+};
+
+export type HapusRoleDialogProps = {
+  hapusRoleDialogOpen: boolean;
+  setHapusRoleDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  table: Table<Account>;
+} & HapusRoleDialogHookRet;
+
+export type HapusRoleDialogHookProps = {
+  table: Table<Account>;
+  fetchData: KeyedMutator<Account[]>;
+  setHapusRoleDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type HapusRoleDialogHookRet = {
+  form: UseFormReturn<{}, any, undefined>;
+  handleSubmit: () => Promise<void>;
 };

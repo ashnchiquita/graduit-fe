@@ -1,3 +1,4 @@
+import { Eye, EyeOff } from "lucide-react";
 import "../../styles/Textfield.css";
 import React, { useState } from "react";
 
@@ -14,15 +15,11 @@ const Textfield: React.FC<TextfieldProps> = ({
   onChange,
   isPassword = false,
 }) => {
-  const [showPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
   };
-
-  // const togglePasswordVisibility = () => {
-  //   setShowPassword(!showPassword);
-  // };
 
   return (
     <div className="textfield-container">
@@ -39,14 +36,19 @@ const Textfield: React.FC<TextfieldProps> = ({
           value={value}
           onChange={handleChange}
         />
-        {/* {isPassword && (
-          <img
-            src="/icon/eye.png"
-            alt={showPassword ? 'Hide' : 'Show'}
-            className="toggle-password-button"
-            onClick={togglePasswordVisibility}
-          />
-        )} */}
+        {isPassword && (
+          <>
+            {showPassword ? (
+              <button onClick={() => setShowPassword(!showPassword)}>
+                <Eye size={12} />
+              </button>
+            ) : (
+              <button onClick={() => setShowPassword(!showPassword)}>
+                <EyeOff size={12} />
+              </button>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

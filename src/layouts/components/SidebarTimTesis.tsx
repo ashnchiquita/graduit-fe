@@ -1,6 +1,6 @@
 // Library imports
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+// import { useNavigate } from "react-router-dom";
+// import Cookies from "js-cookie";
 
 // Local imports
 import Logo from "@/assets/logo.svg";
@@ -17,7 +17,6 @@ interface SidebarTimTesisProps {
 export default function SidebarTimTesis({
   closed,
 }: SidebarTimTesisProps): JSX.Element {
-
   const sidebarClasses = closed
     ? "fixed left-[-100%] md:relative md:w-0 pointer-events-none"
     : "fixed left-0 z-40 md:relative pointer-events-auto";

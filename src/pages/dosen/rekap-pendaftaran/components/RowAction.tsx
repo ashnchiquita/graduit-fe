@@ -16,12 +16,12 @@ import RegRejectDialog from "../../components/RegRejectDialog";
 
 interface ComponentProps {
   row: Row<Mahasiswa>;
-  setData: React.Dispatch<React.SetStateAction<Mahasiswa[]>>;
+  searchValue: string;
 }
 
 export default function RowAction({
   row,
-  setData,
+  searchValue,
 }: ComponentProps): JSX.Element {
   const {
     acceptDialogOpen,
@@ -31,13 +31,14 @@ export default function RowAction({
     handleAccept,
     handleReject,
   } = useRowAction({
-    setData,
+    row,
+    searchValue,
   });
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button onClick={() => console.log(row)}>
+        <button>
           <IoEllipsisVertical className="text-[#94A3B8]" />
         </button>
       </PopoverTrigger>
@@ -49,7 +50,7 @@ export default function RowAction({
         <div className="size-full bg-white">
           <div className="w-full p-3">
             <Link
-              to={`/rekap-pendaftaran/${row.original.nim}`}
+              to={`/rekap-pendaftaran/${row.original.strata}/${row.original.id}`}
               className="flex w-full items-center gap-3 text-xs font-medium text-slate-700"
             >
               <PiClockCounterClockwise className="size-4" />

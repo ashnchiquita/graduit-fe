@@ -8,6 +8,7 @@ import { z } from "zod";
 import { getAccount, putAccount } from "../../clients";
 import { PutAccountRequestData } from "../../types";
 import { RoleEnum } from "@/types/session-data";
+import { toast } from "react-toastify";
 
 interface ReturnType {
   form: UseFormReturn<
@@ -18,6 +19,7 @@ interface ReturnType {
         name: string;
         id: number;
       }[];
+      nim?: string;
     },
     any,
     undefined
@@ -29,6 +31,7 @@ interface ReturnType {
       name: string;
       id: number;
     }[];
+    nim?: string;
   }) => Promise<void>;
   roleAccess: { id: number; name: string }[];
   initialDataReady: boolean;
@@ -59,6 +62,7 @@ export default function useAkunDetail(): ReturnType {
         ),
         email: initialData.email,
         name: initialData.nama,
+        nim: initialData.nim,
       });
   }, [initialData]);
 
@@ -71,6 +75,7 @@ export default function useAkunDetail(): ReturnType {
         name: z.string(),
       })
       .array(),
+    nim: z.string().optional(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -79,6 +84,7 @@ export default function useAkunDetail(): ReturnType {
       email: "",
       name: "",
       access: [],
+      nim: undefined,
     },
   });
 
@@ -91,6 +97,7 @@ export default function useAkunDetail(): ReturnType {
   );
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log("values", values);
     await trigger({
       nama: values.name,
       email: values.email,
@@ -100,6 +107,7 @@ export default function useAkunDetail(): ReturnType {
 
     if (error) {
       // TODO: Add toast
+      toast.success("Gagal menyimpan perubahan");
       console.error(error);
     } else {
       navigate("/manajemen/kelola-akun");

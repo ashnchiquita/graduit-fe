@@ -17,26 +17,93 @@ import {
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import { useEffect, useState } from "react";
 import { VscChevronDown } from "react-icons/vsc";
+import { useData } from "../context/DataContext";
+import useSWRMutation from "swr/mutation";
+import { toast } from "react-toastify";
+import {
+  approvePendaftaran,
+  rejectPendaftaran,
+} from "../rekap-pendaftaran/clients";
 
 interface EditStatusPengajuanDialogProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  nim: string;
+  id: string;
+  initialStatus: StatusPendaftaranEnum;
 }
 
 export default function EditStatusPengajuanDialog({
   open,
   setOpen,
-  nim,
+  id,
+  initialStatus,
 }: EditStatusPengajuanDialogProps): JSX.Element {
   const [status, setStatus] = useState<StatusPendaftaranEnum>();
+  const [isChanged, setIsChanged] = useState(false);
 
-  // TODO: Fetch pengajuan data from API
+  const { refreshData } = useData();
+
   useEffect(() => {
-    // Fetch pengajuan data
-    console.log(nim);
-    setStatus(StatusPendaftaranEnum.ACCEPTED);
-  }, [setStatus, nim]);
+    if (status !== initialStatus) {
+      setIsChanged(true);
+    } else {
+      setIsChanged(false);
+    }
+  }, [status, initialStatus]);
+
+  useEffect(() => {
+    if (!open) {
+      setStatus(initialStatus);
+    }
+  }, [open, initialStatus]);
+
+  const { trigger: acceptTrigger, error: acceptError } = useSWRMutation(
+    `/registrasi-tesis/${id}/status`,
+    async (_, { arg }: { arg: { id: string } }) => {
+      try {
+        const res = await approvePendaftaran(arg.id);
+        return res.data;
+      } catch (error) {
+        toast.error("Gagal menerima pendaftaran");
+      }
+    },
+  );
+
+  const { trigger: rejectTrigger, error: rejectError } = useSWRMutation(
+    `/registrasi-tesis/${id}/status`,
+    async (_, { arg }: { arg: { id: string } }) => {
+      try {
+        const res = await rejectPendaftaran(arg.id);
+        return res.data;
+      } catch (error) {
+        toast.error("Gagal menolak pendaftaran");
+      }
+    },
+  );
+
+  const handleAccept = async (id: string) => {
+    await acceptTrigger({
+      id: id,
+    });
+
+    if (acceptError) {
+      toast.error(acceptError);
+    } else {
+      refreshData();
+    }
+  };
+
+  const handleReject = async (id: string) => {
+    await rejectTrigger({
+      id: id,
+    });
+
+    if (rejectError) {
+      toast.error(rejectError);
+    } else {
+      refreshData();
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -81,9 +148,15 @@ export default function EditStatusPengajuanDialog({
         <div className="flex w-full items-center justify-end">
           <Button
             onClick={() => {
+              if (status === StatusPendaftaranEnum.ACCEPTED) {
+                handleAccept(id);
+              } else {
+                handleReject(id);
+              }
               setOpen(false);
             }}
             className="bg-blue-500 text-gray-100 hover:bg-blue-600 disabled:bg-slate-200 disabled:text-primary-foreground"
+            disabled={!isChanged}
           >
             Simpan
           </Button>

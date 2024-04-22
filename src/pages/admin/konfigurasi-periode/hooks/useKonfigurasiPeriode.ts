@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { getKonfigurasi, putKonfigurasi } from "../clients";
 import { useEffect } from "react";
 import useSWRMutation from "swr/mutation";
+import { toast } from "react-toastify";
 
 export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
   const { data } = useSWR("/konfigurasi", async () => {
@@ -175,8 +176,9 @@ export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
     await trigger(payload);
 
     if (error) {
-      // TODO: Add toast
-      console.error(error);
+      toast.error(error);
+    } else {
+      toast.success("Konfigurasi periode berhasil disimpan");
     }
   };
 
