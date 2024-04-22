@@ -32,6 +32,9 @@ import {
   DaftarKelas,
   RekapPendaftaranTimTesis,
   RiwayatPendaftaran,
+  KelasDetail,
+  SubmisiTugas,
+  DaftarTugas,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -189,6 +192,18 @@ export const router = createBrowserRouter(
         {
           path: "/add-log-bimbingan/:strata",
           element: <AddLogBimbingan />,
+        },
+        {
+          path: "/tugas/kelas/:idKelas",
+          element: <KelasDetail />,
+        },
+        {
+          path: "/tugas/assignment/:idTugas",
+          element: <SubmisiTugas />,
+        },
+        {
+          path: "/tugas/assignment",
+          element: <DaftarTugas />,
         },
       ],
     },

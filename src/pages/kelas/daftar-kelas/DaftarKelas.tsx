@@ -5,6 +5,7 @@ import TambahKelasDialog from "../components/TambahKelasDialog";
 import { RoleEnum } from "@/types/session-data";
 import useDaftarKelas from "./hooks/useDaftarKelas";
 import DataContext from "../context/DataContext";
+import { useNavigate } from "react-router-dom";
 
 export default function DaftarKelas(): JSX.Element {
   const {
@@ -16,6 +17,8 @@ export default function DaftarKelas(): JSX.Element {
     setDialogOpen,
     refreshData,
   } = useDaftarKelas();
+
+  const navigate = useNavigate();
 
   return (
     <DataContext.Provider value={{ refreshData: refreshData }}>
@@ -58,7 +61,9 @@ export default function DaftarKelas(): JSX.Element {
           <div className="flex w-full flex-col gap-2 sm:grid sm:w-fit sm:grid-cols-3 sm:gap-x-4 sm:gap-y-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
             {data.map((kelas) => (
               <div
-                onClick={() => {}}
+                onClick={() => {
+                  navigate(`/tugas/kelas/${kelas.id}`);
+                }}
                 className="sm:mx-auto sm:max-w-xs"
                 key={kelas.id}
               >
