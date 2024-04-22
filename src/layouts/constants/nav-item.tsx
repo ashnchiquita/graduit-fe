@@ -66,6 +66,11 @@ const NAV_ITEMS: NavItem[] = [
         roleAccess: [RoleEnum.S2_MAHASISWA],
       },
       {
+        label: "Assignment",
+        path: `/tugas/assignment`,
+        roleAccess: [RoleEnum.S2_MAHASISWA],
+      },
+      {
         label: "Daftar Kelas",
         path: `/tugas/daftar-kelas?view=${RoleEnum.S2_KULIAH}`,
         roleAccess: [RoleEnum.S2_KULIAH],
@@ -103,10 +108,15 @@ const NAV_ITEMS: NavItem[] = [
     label: "Tugas Akhir",
     icon: <IoSchoolOutline className="text-slate-700" />,
     children: [
-      { 
-        label: "Topik", 
-        path: "/tugas-akhir/topik", 
-        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S1_PEMBIMBING, RoleEnum.S1_TIM_TA, RoleEnum.ADMIN]
+      {
+        label: "Topik",
+        path: "/tugas-akhir/topik",
+        roleAccess: [
+          RoleEnum.S1_MAHASISWA,
+          RoleEnum.S1_PEMBIMBING,
+          RoleEnum.S1_TIM_TA,
+          RoleEnum.ADMIN,
+        ],
       },
       // { label: "Status", path: "/tugas-akhir/status/1" },
       // { label: "Pengumuman", path: "/tugas-akhir/pengumuman" },

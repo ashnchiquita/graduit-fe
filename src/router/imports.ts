@@ -92,3 +92,15 @@ export const RekapPendaftaranTimTesis = lazy(
 export const RiwayatPendaftaran = lazy(
   () => import("../pages/tim-tesis/riwayat-pendaftaran/RiwayatPendaftaran.tsx"),
 );
+
+export const KelasDetail = lazy(
+  () => import("../pages/mahasiswa/kelas-detail/KelasDetail.tsx"),
+);
+
+export const SubmisiTugas = lazy(
+  () => import("../pages/mahasiswa/submisi-tugas/SubmisiTugas.tsx"),
+);
+
+export const DaftarTugas = lazy(
+  () => import("../pages/mahasiswa/daftar-tugas/DaftarTugas.tsx"),
+);
