@@ -1,23 +1,25 @@
 import s2Instance from "@/config/s2-axios-config";
-import { GetPendaftaranRes } from "./types";
+import { GetPendaftaranRes, MhsDataRes } from "./types";
+import loginInstance from "@/config/login-axios-config";
 
-export async function getPendaftaran() {
+export async function getRegS2(mhsId: string) {
   return await s2Instance.get<GetPendaftaranRes>(
-    `/registrasi-tesis/?page=1&limit=10&sort=DESC&view=S2_PEMBIMBING`,
-    {
-      withCredentials: true,
-    },
+    `/registrasi-tesis/mahasiswa/${mhsId}/newest`,
   );
 }
 
-export async function approvePendaftaran(id: string) {
-  return await s2Instance.patch(`/approval/${id}/approve`, null, {
-    withCredentials: true,
+export async function getMhsData(mhsId: string) {
+  return await loginInstance.get<MhsDataRes>(`/akun/${mhsId}`);
+}
+
+export async function updateInterviewS2(mhsId: string, date: Date) {
+  return await s2Instance.patch(`/registrasi-tesis/${mhsId}/interview`, {
+    date,
   });
 }
 
-export async function rejectPendaftaran(id: string) {
-  return await s2Instance.patch(`/approval/${id}/reject`, null, {
-    withCredentials: true,
+export async function updateStatusS2(mhsId: string, status: string) {
+  return await s2Instance.patch(`/registrasi-tesis/${mhsId}/status`, {
+    status,
   });
 }

@@ -74,7 +74,7 @@ export const router = createBrowserRouter(
           element: <RiwayatPendaftaran />,
         },
         {
-          path: "/rekap-pendaftaran/:nim",
+          path: "/rekap-pendaftaran/:strata/:mahasiswaId",
           element: <DetailRekapPendaftaran />,
         },
         {

@@ -1,3 +1,5 @@
+import { KeyedMutator } from "swr";
+
 export type RegistrationRecapData = {
   id: string;
   name: string;
@@ -11,21 +13,27 @@ export type RegistrationRecapData = {
 };
 
 export type GetPendaftaranRes = {
-  data: {
+  id: string;
+  jalurPilihan: string;
+  waktuPengiriman: string;
+  jadwalInterview: string;
+  status: string;
+  judulTopik: string;
+  deskripsiTopik: string;
+  dosenPembimbing: {
     id: string;
-    mahasiswa: {
-      nama: string;
-      email: string;
-    };
-    waktuPengiriman: string;
-    jadwalInterview: string;
-    jalurPilihan: string;
-    topik: {
-      judul: string;
-      deskripsi: string;
-    };
-    status: string;
+    nama: string;
+    kontak: string;
   }[];
+};
+
+export type MhsDataRes = {
+  id: string;
+  nama: string;
+  email: string;
+  nim: string;
+  roles: string[];
+  kontak: string;
 };
 
 export type ApprovalHookRet = {

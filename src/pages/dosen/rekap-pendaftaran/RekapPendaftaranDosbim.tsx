@@ -2,14 +2,14 @@ import { DataTable } from "@/components/DataTable";
 import StatisticCard from "@/components/StatisticCard";
 import StatusPendaftaranBadge from "@/components/StatusPendaftaranBadge";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+// import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -20,7 +20,7 @@ import { Search } from "lucide-react";
 import { FaRegEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import InfoKontakDialog from "./components/InfoKontakDialog";
-import { StatusPendaftaranOptions } from "./cosntants";
+// import { StatusPendaftaranOptions } from "./cosntants";
 import useRekapPendaftaranDosbim from "./hooks/useRekapPendaftaranDosbim";
 
 export default function RekapPendaftaranDosbim(): JSX.Element {
@@ -28,8 +28,11 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
     table,
     searchValue,
     handleSearchValueChange,
-    statusFilter,
-    handleStatusFilterChange,
+    // statusFilter,
+    // handleStatusFilterChange,
+    statistic,
+    infoKontak,
+    isLoading,
   } = useRekapPendaftaranDosbim();
 
   return (
@@ -40,50 +43,52 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
         <div className="flex items-center justify-around">
           <StatisticCard
             title="Diterima"
-            count={234}
-            percentage={8}
+            count={statistic.diterima.amount}
+            percentage={statistic.diterima.percentage}
             color="GREEN"
           />
           <StatisticCard
             title="Sedang Proses"
-            count={234}
-            percentage={8}
+            count={statistic.sedang_proses.amount}
+            percentage={statistic.sedang_proses.percentage}
             color="ORANGE"
           />
           <StatisticCard
             title="Ditolak"
-            count={234}
-            percentage={8}
+            count={statistic.ditolak.amount}
+            percentage={statistic.ditolak.percentage}
             color="RED"
           />
         </div>
       </section>
 
       <section className="hidden pb-8 md:block">
-        <DataTable
-          table={table}
-          headline="Pengajuan Mahasiswa"
-          searchValue={searchValue}
-          setSearchValue={handleSearchValueChange}
-          searchPlaceholder="Cari nama atau NIM mahasiswa"
-          selectFilterValue={statusFilter}
-          selectFilterPlaceholder="Semua Bimbingan"
-          setSelectFilterValue={handleStatusFilterChange}
-          selectFilterOptions={StatusPendaftaranOptions}
-          customElementsRight={
-            <>
-              <InfoKontakDialog
-                infoKontak=""
-                dialogTrigger={
-                  <Button className="flex h-fit items-center gap-2 bg-blue-500 text-xs text-gray-100 hover:bg-blue-600">
-                    <FaRegEdit className="size-3" />
-                    Informasi Kontak Saya
-                  </Button>
-                }
-              />
-            </>
-          }
-        />
+        {!isLoading && (
+          <DataTable
+            table={table}
+            headline="Pengajuan Mahasiswa"
+            searchValue={searchValue}
+            setSearchValue={handleSearchValueChange}
+            searchPlaceholder="Cari nama atau NIM mahasiswa"
+            // selectFilterValue={statusFilter}
+            // selectFilterPlaceholder="Semua Bimbingan"
+            // setSelectFilterValue={handleStatusFilterChange}
+            // selectFilterOptions={StatusPendaftaranOptions}
+            customElementsRight={
+              <>
+                <InfoKontakDialog
+                  infoKontak={infoKontak ?? ""}
+                  dialogTrigger={
+                    <Button className="flex h-fit items-center gap-2 bg-blue-500 text-xs text-gray-100 hover:bg-blue-600">
+                      <FaRegEdit className="size-3" />
+                      Informasi Kontak Saya
+                    </Button>
+                  }
+                />
+              </>
+            }
+          />
+        )}
       </section>
 
       <section className="flex w-full flex-col gap-2.5 rounded-lg bg-white px-5 py-4 md:hidden">
@@ -92,7 +97,7 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
         <div className="flex w-full items-center justify-between">
           <p className="text-xs text-slate-700">Status Pengajuan</p>
 
-          <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
+          {/* <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
             <SelectTrigger className="w-[120px] border-none text-xs">
               <SelectValue placeholder="Semua" />
             </SelectTrigger>
@@ -107,7 +112,7 @@ export default function RekapPendaftaranDosbim(): JSX.Element {
                 </SelectItem>
               ))}
             </SelectContent>
-          </Select>
+          </Select> */}
         </div>
 
         <div className="group flex w-full items-center gap-2 rounded-md border border-input bg-transparent p-2 text-xs outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
