@@ -31,7 +31,7 @@ export default function useDaftarTopikTimTugas() {
   const [width] = useWindowSize();
 
   const [isInsertDialogOpen, setIsInsertDialogOpen] = useState(false);
-  const [pagination] = useState<PaginationState>({
+  const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });

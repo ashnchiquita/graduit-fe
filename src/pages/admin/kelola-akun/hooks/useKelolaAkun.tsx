@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-table";
 
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
 import { getAllAccounts, putAccount } from "../../clients";
 import {
@@ -15,7 +15,6 @@ import {
   GetAccountResponseItem,
   PutAccountRequestData,
 } from "../../types";
-import AccessCell from "../components/AccessCell";
 import RowAction from "../components/RowAction";
 import { RoleEnum } from "@/types/session-data";
 import useSWRMutation from "swr/mutation";
@@ -107,7 +106,7 @@ export default function useKelolaAkun() {
     return data;
   });
 
-  const { trigger, error } = useSWRMutation(
+  const { trigger } = useSWRMutation(
     "/akun",
     async (_, { arg }: { arg: PutAccountRequestData }) => {
       const res = await putAccount(arg);

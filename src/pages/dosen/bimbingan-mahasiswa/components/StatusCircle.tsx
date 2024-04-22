@@ -23,7 +23,7 @@ export default function StatusCircle({
 
   const updateBimbinganLogStatus = async (id: string, status: boolean) => {
     const resUpdate = await updateStatusBimbinganLog(id, status);
-    if (resUpdate.data.success) {
+    if ((resUpdate.data as any).success) {
       toast.success("Bimbingan log status updated successfully.");
       setStatus(status);
     } else {

@@ -78,7 +78,7 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
     });
   };
 
-  const { trigger, error } = useSWRMutation(
+  const { trigger } = useSWRMutation(
     "/akun",
     async (_, { arg }: { arg: PutAccountRequestData }) => {
       const res = await putAccount(arg);

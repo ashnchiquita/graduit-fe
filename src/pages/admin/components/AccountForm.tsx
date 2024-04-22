@@ -1,7 +1,6 @@
 import LockLogo from "@/assets/account-form/lock-logo.svg";
 import MailLogo from "@/assets/account-form/mail-logo.svg";
 import UserLogo from "@/assets/account-form/user-logo.svg";
-import CheckLogo from "@/assets/account-form/check-logo.svg";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {

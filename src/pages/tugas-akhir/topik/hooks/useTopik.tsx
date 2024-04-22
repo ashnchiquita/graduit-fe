@@ -7,9 +7,9 @@ import {
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
-import { getAllS1Topics, getAllDosenPembimbing, postTopics } from "../cleints";
+import { getAllDosenPembimbing, postTopics } from "../clients";
 import { PostNewTopicBulkReqData, Topic } from "../types";
-import * as XLSX from 'xlsx';
+import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
 import { EXCEL_HEADERS } from "@/pages/admin/daftar-topik/constants";
@@ -23,8 +23,8 @@ const DUMMY_DATA: Topic[] = [
     title: "test",
     description: "test",
     period: "test",
-  }
-]
+  },
+];
 
 export default function useTopik() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -128,7 +128,6 @@ export default function useTopik() {
     },
   );
 
-
   const handleSearchValueChange = (value: string) => {
     setSearchParams(value ? { search: value } : {});
     setSearchValue(value);
@@ -137,28 +136,29 @@ export default function useTopik() {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
-  const { data: data = [], mutate: fetchData } = useSWR(
+  const { data = [], mutate: fetchData } = useSWR(
     "/api/admin/alokasi-topik",
     async () => {
       return DUMMY_DATA;
-      
+
       // TODO: Fix wiring
 
-      const res = await getAllS1Topics({
-        search: searchValue === "" ? undefined : searchValue,
-      });
+      // const res = await getAllS1Topics({
+      //   search: searchValue === "" ? undefined : searchValue,
+      // });
 
-      const dataS1: Topic[] = res.data.data.map((resTopic) => ({
-        id: resTopic.id,
-        lect_name: resTopic.lect_name,
-        title: resTopic.title,
-        description: resTopic.description,
-        period: resTopic.period
-      }));
+      // const dataS1: Topic[] = res.data.data.map((resTopic) => ({
+      //   id: resTopic.id,
+      //   lect_name: resTopic.lect_name,
+      //   title: resTopic.title,
+      //   description: resTopic.description,
+      //   period: resTopic.period,
+      // }));
 
-      return dataS1;
+      // return dataS1;
     },
   );
 
@@ -181,7 +181,7 @@ export default function useTopik() {
     columns,
     data,
     columnResizeMode: "onChange",
-    enableSort: false,
+    enableSorting: false,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -192,6 +192,6 @@ export default function useTopik() {
     handleSearchValueChange,
     fetchData,
     setIsInsertDialogOpen,
-    handleClickImportFromTemplate
+    handleClickImportFromTemplate,
   };
 }

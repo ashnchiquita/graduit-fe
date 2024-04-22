@@ -30,9 +30,9 @@ export type GetTopicResponse = {
 };
 
 export type GetDosenResponse = {
-  id: string
-  nama: string
-}[]
+  id: string;
+  nama: string;
+}[];
 
 export type PostNewTopicReqData = {
   judul: string;
