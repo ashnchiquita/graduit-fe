@@ -99,16 +99,27 @@ const NAV_ITEMS: NavItem[] = [
   //     { label: "Rekap", path: "/tesis/rekap" },
   //   ],
   // },
-  // {
-  //   label: "Tugas Akhir",
-  //   icon: <IoSchoolOutline className="text-slate-700" />,
-  //   children: [
-  //     { label: "Topik", path: "/tugas-akhir/topik/2" },
-  //     { label: "Status", path: "/tugas-akhir/status/1" },
-  //     { label: "Pengumuman", path: "/tugas-akhir/pengumuman" },
-  //     { label: "Penjadwalan", path: "/tugas-akhir/penjadwalan" },
-  //   ],
-  // },
+  {
+    label: "Tugas Akhir",
+    icon: <IoSchoolOutline className="text-slate-700" />,
+    children: [
+      { 
+        label: "Topik", 
+        path: "/tugas-akhir/topik", 
+        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S1_PEMBIMBING, RoleEnum.S1_TIM_TA, RoleEnum.ADMIN]
+      },
+      // { label: "Status", path: "/tugas-akhir/status/1" },
+      // { label: "Pengumuman", path: "/tugas-akhir/pengumuman" },
+      // { label: "Penjadwalan", path: "/tugas-akhir/penjadwalan" },
+    ],
+    roleAccess: [
+      RoleEnum.S1_MAHASISWA,
+      RoleEnum.S1_TIM_TA,
+      RoleEnum.ADMIN,
+      RoleEnum.TU,
+      RoleEnum.S1_PENGUJI,
+    ],
+  },
   // {
   //   label: "Informasi",
   //   icon: <VscInfo className="text-slate-700" />,
