@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { DetailSubmisi, DetailSubmissionTugasHookRet } from "../types";
+import { DetailSubmissionTugasHookRet } from "../types";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import { getDetailSubmisi } from "../clients";

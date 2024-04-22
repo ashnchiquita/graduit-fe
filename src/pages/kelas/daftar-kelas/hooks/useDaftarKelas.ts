@@ -7,10 +7,10 @@ import useSWR from "swr";
 import useSession from "@/hooks/useSession";
 
 export default function useDaftarKelas() {
-  const [rawSearchParams, setSearchParams] = useSearchParams({});
+  const [rawSearchParams] = useSearchParams({});
   const searchParams = useDebounce(rawSearchParams, 1000);
   const [searchVal, setSearchVal] = useState(searchParams.get("search") || "");
-  const [viewVal, setViewVal] = useState(searchParams.get("view") as RoleEnum);
+  const [viewVal] = useState(searchParams.get("view") as RoleEnum);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const { data: sessionData } = useSession();

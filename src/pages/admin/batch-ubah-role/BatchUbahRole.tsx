@@ -9,7 +9,6 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { IoFilterOutline } from "react-icons/io5";
 import useBatchUbahRole from "./hooks/useBatchUbahRole";
 import useRoleDialog from "./hooks/useTambahRoleDialog";
 import FilterPopup from "../components/FilterPopup";

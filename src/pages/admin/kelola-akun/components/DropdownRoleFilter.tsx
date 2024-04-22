@@ -1,11 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Select,
   SelectContent,
@@ -14,19 +6,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RoleEnum } from "@/types/session-data";
-import { ChevronDown } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+// import { useState } from "react";
 
 interface ComponentProps {
   handleRoleChange: (role: RoleEnum) => void;
 }
 
 const DropdownRoleFilter = ({ handleRoleChange }: ComponentProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
 
-  const handleOpenChange = (open: boolean) => {
-    setIsOpen(open);
-  };
+  // const handleOpenChange = (open: boolean) => {
+  //   setIsOpen(open);
+  // };
 
   return (
     <Select

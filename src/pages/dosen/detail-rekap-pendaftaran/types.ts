@@ -1,5 +1,3 @@
-import { KeyedMutator } from "swr";
-
 export type RegistrationRecapData = {
   id: string;
   name: string;
