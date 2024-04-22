@@ -7,11 +7,12 @@ import useSWRMutation from "swr/mutation";
 import { patchBatchUpdateRole } from "../../clients";
 import { PatchBatchUpdateRole } from "../../types";
 import { RoleEnum } from "@/types/session-data";
+import { toast } from "react-toastify";
 
-export default function useRoleDialog({
+export default function useTambahRoleDialog({
   table,
   fetchData,
-  setDialogOpen,
+  setTambahRoleDialogOpen,
 }: RoleDialogHookProps): RoleDialogHookRet {
   const formSchema = z.object({
     access: z
@@ -41,7 +42,7 @@ export default function useRoleDialog({
   );
 
   const { trigger, error } = useSWRMutation(
-    "/akun/roles-batch",
+    "/akun/roles/batch-add",
     async (_, { arg }: { arg: PatchBatchUpdateRole }) => {
       const res = await patchBatchUpdateRole(arg);
       return res.data;
@@ -55,13 +56,14 @@ export default function useRoleDialog({
     });
 
     if (error) {
-      // TODO: Add toast
       console.error(error);
+      toast.error("Gagal mengubah role");
     } else {
+      toast.success("Berhasil mengubah role");
       await fetchData();
       form.reset();
       table.toggleAllRowsSelected(false);
-      setDialogOpen(false);
+      setTambahRoleDialogOpen(false);
     }
   };
 

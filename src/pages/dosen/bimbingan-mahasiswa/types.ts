@@ -1,12 +1,18 @@
 import { Table } from "@tanstack/react-table";
 
 export type BimbinganLogs = {
+  id: string;
   tanggal: string;
   laporan_kemajuan: string;
   todo: string;
   rencana: string;
-  berkas: string[];
+  berkas: Berkas[];
   status: boolean;
+};
+
+export type Berkas = {
+  nama: string;
+  link: string;
 };
 
 export type BimbinganData = {
@@ -30,7 +36,37 @@ export type BimbinganS2Res = {
   laporanKemajuan: string;
   todo: string;
   bimbinganBerikutnya: string;
-  berkasLinks: string[];
+  berkas: Berkas[];
+};
+
+export type BimbinganS1Res = {
+  id: string;
+  date: string;
+  laporan_kemajuan: string;
+  todo: string;
+  next_bimbingan: string;
+  berkas: Berkas[];
+  status: boolean;
+};
+
+export type GetLogBimbinganS1Res = {
+  data: BimbinganS1Res[];
+};
+
+export type GetMahasiswaInfoS1Res = {
+  data: {
+    id: string;
+    nama: string;
+    email: string;
+    nim: string;
+    jalurPilihan: string;
+  };
+};
+
+export type UpdateStatusBimbinganLogRes = {
+  data: {
+    success: string;
+  };
 };
 
 export type GetLogBimbinganS2Res = {
