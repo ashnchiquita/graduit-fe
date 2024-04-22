@@ -6,6 +6,7 @@ const BerkasSchema = z.object({
 });
 
 export const SubmitTugasFormSchema = z.object({
+  id: z.string().optional(),
   jawaban: z.string().min(1, "Jawaban tidak boleh kosong"),
   berkas: z.array(BerkasSchema).default([]),
 });
@@ -26,6 +27,51 @@ export type TugasDetail = {
   namaPembuat: string;
   namaPengubah: string;
   matakuliah: string;
+};
+
+export type TugasDetailResp = {
+  judul: string;
+  waktuMulai: string;
+  waktuSelesai: string;
+  deskripsi: string;
+  berkasTugas: {
+    nama: string;
+    url: string;
+  }[];
+  createdAt: string;
+  updatedAt: string;
+  pembuat: {
+    nama: string;
+  };
+  pengubah: {
+    nama: string;
+  };
+  kelas: {
+    mataKuliah: {
+      kode: string;
+      nama: string;
+    };
+  };
+};
+
+export type SubmisiTugasResp = {
+  id: string;
+  jawaban: string;
+  berkasSubmisiTugas: {
+    nama: string;
+    url: string;
+  }[];
+};
+
+export type SubmisiTugasBody = {
+  id?: string;
+  jawaban: string;
+  isSubmitted: boolean;
+  tugasId: string;
+  berkasSubmisiTugas: {
+    nama: string;
+    url: string;
+  }[];
 };
 
 export const TugasDetailData: TugasDetail = {

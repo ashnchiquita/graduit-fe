@@ -2,12 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form/form";
 import { FormHeaderCard } from "./components/FormHeaderCard";
 import useSubmisiTugasImpl from "./hooks/useSubmisiTugasImpl";
-import { TugasDetailData } from "./types";
 import { JawabanCard } from "./components/JawabanCard";
 import { BerkasCard } from "./components/BerkasCard";
 
 const Registration = () => {
-  const { form, onSubmit, onSave } = useSubmisiTugasImpl();
+  const { form, onSubmit, onSave, dataTugas } = useSubmisiTugasImpl();
 
   return (
     <div className="flex-1">
@@ -17,7 +16,7 @@ const Registration = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           autoComplete="off"
         >
-          <FormHeaderCard {...TugasDetailData} />
+          {dataTugas && <FormHeaderCard {...dataTugas} />}
           <JawabanCard form={form} />
           <BerkasCard form={form} />
 

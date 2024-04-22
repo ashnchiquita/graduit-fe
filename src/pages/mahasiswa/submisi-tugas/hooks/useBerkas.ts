@@ -38,5 +38,6 @@ export default function useBerkas(form: UseFormReturn<SubmitTugasFormData>) {
     isTambah,
     namaBerkas,
     linkBerkas,
+    append,
   };
 }

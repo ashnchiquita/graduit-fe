@@ -1,6 +1,5 @@
 import { Card, CardHeader, CardTitle } from "@/components/Card";
 import { TugasDetail } from "../types";
-import { Link } from "react-router-dom";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import BerkasBadge from "@/components/BerkasBadge";
 

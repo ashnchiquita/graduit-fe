@@ -3,23 +3,23 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import RowAction from "../components/RowAction";
+import useSWR from "swr";
+import { getDaftarTugas } from "../clients";
+import StatusTugasBadge from "@/pages/dosen/submission-tugas/components/StatusTugasBadge";
 
 export type Tugas = {
   nomor: number;
+  id: string;
   judul: string;
-  start: string;
-  end: string;
-  statusPengerjaan: string;
-  submisi?: {
-    isSubmitted: boolean;
-    submissionId: string;
-  };
+  waktuMulai: string;
+  waktuSelesai: string;
+  selesai: boolean;
 };
 
-export default function useDaftarTugas() {
+export default function useDaftarTugas(idKelas: string) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",
@@ -37,59 +37,38 @@ export default function useDaftarTugas() {
     setSearchValue(value);
   };
 
-  const [data, setData] = useState<Tugas[]>([
-    {
-      nomor: 1,
-      judul: "Tugas 1",
-      start: "2021-01-01",
-      end: "2021-01-10",
-      statusPengerjaan: "Selesai",
-      submisi: {
-        isSubmitted: true,
-        submissionId: "1",
-      },
+  const [data, setData] = useState<Tugas[]>([]);
+
+  const { data: fetchedTugas } = useSWR(
+    `/tugas/kelas/${idKelas}/daftar-tugas`,
+    async () => {
+      const res = await getDaftarTugas();
+      const filtered = res.data.filter((tugas) => tugas.kelasId === idKelas);
+
+      const mapped = filtered.map((tugas, idx) => {
+        return {
+          id: tugas.id,
+          judul: tugas.judul,
+          waktuMulai: tugas.waktuMulai,
+          waktuSelesai: tugas.waktuSelesai,
+          nomor: idx + 1,
+          selesai: tugas.isSubmitted === true,
+        } as Tugas;
+      });
+
+      return mapped;
     },
-    {
-      nomor: 2,
-      judul: "Tugas 2",
-      start: "2021-01-01",
-      end: "2021-01-10",
-      statusPengerjaan: "Belum dikerjakan",
-      submisi: {
-        isSubmitted: false,
-        submissionId: "2",
-      },
-    },
-    {
-      nomor: 3,
-      judul: "Tugas 3",
-      start: "2021-01-01",
-      end: "2021-01-10",
-      statusPengerjaan: "Belum dikerjakan",
-    },
-    {
-      nomor: 4,
-      judul: "Tugas 4",
-      start: "2021-01-01",
-      end: "2021-01-10",
-      statusPengerjaan: "Selesai",
-      submisi: {
-        isSubmitted: true,
-        submissionId: "4",
-      },
-    },
-    {
-      nomor: 5,
-      judul: "Tugas 5",
-      start: "2021-01-01",
-      end: "2021-01-10",
-      statusPengerjaan: "Selesai",
-      submisi: {
-        isSubmitted: true,
-        submissionId: "5",
-      },
-    },
-  ]);
+  );
+
+  useEffect(() => {
+    if (fetchedTugas) {
+      setData([...fetchedTugas]);
+    }
+  }, [fetchedTugas]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   const handleStatusFilterChange = (value: string) => {
     setStatusFilter(value);
@@ -100,33 +79,32 @@ export default function useDaftarTugas() {
       header: "Nomor",
       accessorKey: "nomor",
       enableSorting: false,
-      maxSize: 1,
     },
     {
       header: "Judul",
       accessorKey: "judul",
       enableSorting: false,
-      maxSize: 10,
     },
     {
       header: "Start",
-      accessorKey: "start",
+      accessorKey: "waktuMulai",
       enableSorting: false,
     },
     {
       header: "End",
-      accessorKey: "end",
+      accessorKey: "waktuSelesai",
       enableSorting: false,
     },
     {
       header: "Status Pengerjaan",
-      accessorKey: "statusPengerjaan",
+      cell: ({ row }) => <StatusTugasBadge selesai={row.original.selesai} />,
       enableSorting: false,
     },
     {
-      id: "aksi",
-      cell: () => "Buka",
-      enableSorting: false,
+      id: "link",
+      cell: ({ row }) => (
+        <RowAction url={`/tugas/assignment/${row.original.id}`} />
+      ),
       meta: {
         align: "right",
       },

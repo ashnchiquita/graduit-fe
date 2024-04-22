@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { KelasDialogProps } from "../components/KelasDialog";
+import useSWR from "swr";
+import { getKelas, getKelasDetail } from "../clients";
 
 export type KelasHeader = {
   nomor: string;
@@ -9,49 +11,51 @@ export type KelasHeader = {
   totalMahasiswa: number;
 };
 
-export default function useKelasHeader() {
-  const [dataKelasHeader, setDataKelasHeader] = useState<KelasHeader>({
-    nomor: "K03",
-    kodeMataKuliah: "IF4031",
-    namaMataKuliah: "Pengembangan Aplikasi Terdistribusi",
-    warna: "bg-yellow-600/20",
-    totalMahasiswa: 0,
+export default function useKelasHeader(idKelas: string) {
+  const [dataKelasHeader, setDataKelasHeader] = useState<KelasHeader | null>(
+    null,
+  );
+
+  const { data } = useSWR(`/tugas/kelas/${idKelas}`, async () => {
+    const res = await getKelas(idKelas);
+    return res.data;
   });
 
-  const [dataKelasDetail, setDataKelasDetail] = useState<KelasDialogProps>({
-    dosen: [
-      {
-        id: "1",
-        nama: "Ayayayayayayayyaya",
-      },
-      {
-        id: "2",
-        nama: "Dr. Eng. Aniati Murni",
-      },
-    ],
-    mahasiswa: [
-      {
-        id: "1",
-        nama: "Muhammad Fauzan",
-        nim: "G64180001",
-      },
-      {
-        id: "2",
-        nama: "Muhammad Fauzan",
-        nim: "G64180001",
-      },
-      {
-        id: "3",
-        nama: "Na Yuyeon Pacar Chi",
-        nim: "G64180001",
-      },
-      {
-        id: "4",
-        nama: "Bareum",
-        nim: "G64180001",
-      },
-    ],
-  });
+  useEffect(() => {
+    if (data) {
+      const {
+        nomor,
+        kode_mata_kuliah,
+        nama_mata_kuliah,
+        jumlah_mahasiswa,
+        warna,
+      } = data;
+      setDataKelasHeader({
+        nomor,
+        kodeMataKuliah: kode_mata_kuliah,
+        namaMataKuliah: nama_mata_kuliah,
+        warna,
+        totalMahasiswa: jumlah_mahasiswa,
+      });
+    }
+  }, [data]);
+
+  const [dataKelasDetail, setDataKelasDetail] =
+    useState<KelasDialogProps | null>(null);
+
+  const { data: detailData } = useSWR(
+    `/tugas/kelas/${idKelas}/detail`,
+    async () => {
+      const res = await getKelasDetail(idKelas);
+      return res.data;
+    },
+  );
+
+  useEffect(() => {
+    if (detailData) {
+      setDataKelasDetail(detailData);
+    }
+  }, [detailData]);
 
   return {
     dataKelasHeader,

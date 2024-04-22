@@ -1,11 +1,8 @@
 import { DataTable } from "@/components/DataTable";
 import { StatusPengerjaanOptions } from "./constants";
 import useDaftarTugas from "./hooks/useDaftarTugas";
-// import { useParams } from "react-router-dom";
 
 export default function Kelas() {
-  // const { idKelas } = useParams<{ idKelas: string }>();
-
   const {
     table,
     searchValue,

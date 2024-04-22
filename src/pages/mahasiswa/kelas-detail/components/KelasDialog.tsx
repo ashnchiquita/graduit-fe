@@ -4,7 +4,7 @@ import { MdOutlineClass } from "react-icons/md";
 import { VscInfo } from "react-icons/vsc";
 
 export type KelasDialogProps = {
-  dosen: {
+  pengajar: {
     id: string;
     nama: string;
   }[];
@@ -29,7 +29,7 @@ export default function KelasDialog(props: KelasDialogProps) {
         <div className="w-[50%] rounded-l-lg bg-[#F3F3F3] py-11 pl-4 pr-5">
           <h1 className="pb-3 text-lg font-semibold">Dosen Kelas</h1>
           <ul className="flex max-h-[300px] flex-col gap-2 overflow-y-auto">
-            {props.dosen.map((dosen) => (
+            {props.pengajar.map((dosen) => (
               <li
                 key={dosen.id}
                 className="flex gap-4 rounded-lg bg-gray-200 py-3 pl-4 pr-5"

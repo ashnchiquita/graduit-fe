@@ -11,3 +11,15 @@ export type Tugas = {
     submissionId: string;
   };
 };
+
+export type DataTugas = {
+  kodeMataKuliah: string;
+  namaMataKuliah: string;
+  kelasId: string;
+  id: string;
+  judul: string;
+  waktuMulai: string;
+  waktuSelesai: string;
+  submisiTugasId?: string;
+  isSubmitted?: boolean;
+};

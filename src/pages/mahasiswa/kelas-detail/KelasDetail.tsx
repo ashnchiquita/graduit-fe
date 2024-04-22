@@ -3,10 +3,10 @@ import { StatusPengerjaanOptions } from "./constants";
 import useDaftarTugas from "./hooks/useDaftarTugas";
 import KelasHeader from "./components/KelasHeader";
 import useKelasHeader from "./hooks/useKelasHeader";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function Kelas() {
-  // const { idKelas } = useParams<{ idKelas: string }>();
+  const { idKelas } = useParams<{ idKelas: string }>();
 
   const {
     table,
@@ -14,15 +14,17 @@ export default function Kelas() {
     handleSearchValueChange,
     statusFilter,
     handleStatusFilterChange,
-  } = useDaftarTugas();
+  } = useDaftarTugas(idKelas || "");
 
-  const { dataKelasHeader, dataKelasDetail } = useKelasHeader();
+  const { dataKelasHeader, dataKelasDetail } = useKelasHeader(idKelas || "");
 
   return (
     <main className="flex flex-col gap-6 px-6">
-      <section>
-        <KelasHeader {...dataKelasHeader} detail={dataKelasDetail} />
-      </section>
+      {dataKelasHeader && dataKelasDetail && (
+        <section>
+          <KelasHeader {...dataKelasHeader} detail={dataKelasDetail} />
+        </section>
+      )}
 
       <section className="hidden pb-8 md:block">
         <DataTable
