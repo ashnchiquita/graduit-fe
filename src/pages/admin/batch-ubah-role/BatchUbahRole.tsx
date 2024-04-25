@@ -9,52 +9,144 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { IoFilterOutline } from "react-icons/io5";
-import RoleDialog from "./components/RoleDialog";
 import useBatchUbahRole from "./hooks/useBatchUbahRole";
-import useRoleDialog from "./hooks/useRoleDialog";
+import useRoleDialog from "./hooks/useTambahRoleDialog";
+import FilterPopup from "../components/FilterPopup";
+import { VscListFilter } from "react-icons/vsc";
+import TambahRoleDialog from "./components/TambahRoleDialog";
+import HapusRoleDialog from "./components/HapusRoleDialog";
+import useHapusRoleDialog from "./hooks/useHapusRoleDialog";
+import { Search } from "lucide-react";
 
 export default function BatchUbahRole(): JSX.Element {
   const {
     table,
     searchValue,
     handleSearchValueChange,
-    dialogOpen,
-    setDialogOpen,
+    tambahRoleDialogOpen,
+    setTambahRoleDialogOpen,
+    hapusRoleDialogOpen,
+    setHapusRoleDialogOpen,
     fetchData,
+    openFilterDialog,
+    setOpenFilterDialog,
+    namaValue,
+    setNamaValue,
+    emailValue,
+    setEmailValue,
+    roleValue,
+    setRoleValue,
+    handleRoleValueChange,
+    handleAddAccountButton,
   } = useBatchUbahRole();
 
-  const roleDialogHookRet = useRoleDialog({ table, fetchData, setDialogOpen });
+  const roleDialogHookRet = useRoleDialog({
+    table,
+    fetchData,
+    setTambahRoleDialogOpen,
+  });
+
+  const hapusRoleDialogHookRet = useHapusRoleDialog({
+    table,
+    fetchData,
+    setHapusRoleDialogOpen,
+  });
 
   return (
     <main className="flex w-full flex-col gap-5 px-4 pb-10">
       <section className="hidden md:block">
         <DataTable
           table={table}
-          headline="Pengaturan Role Pengguna"
+          headline="Pengaturan Akun Aplikasi Pengguna"
           searchValue={searchValue}
           setSearchValue={handleSearchValueChange}
+          searchPlaceholder="Cari nama atau email"
+          customElementsRight={
+            <>
+              <Button
+                onClick={() => setOpenFilterDialog(true)}
+                variant={"ghost"}
+                className="flex h-fit flex-row items-center gap-2 rounded-md border border-gray-300 px-3 py-1 text-gray-600 hover:bg-gray-200"
+              >
+                <VscListFilter size={14} />
+                Filter
+              </Button>
+              <Button
+                disabled={table.getSelectedRowModel().flatRows.length === 0}
+                onClick={() => setTambahRoleDialogOpen(true)}
+                className="h-fit bg-blue-600 px-3 py-1 text-white transition-all"
+              >
+                Ubah Role
+              </Button>
+              <Button
+                disabled={table.getSelectedRowModel().flatRows.length === 0}
+                onClick={() => setHapusRoleDialogOpen(true)}
+                className="h-fit bg-red-500 px-3 py-1 text-white transition-all"
+              >
+                Hapus Role
+              </Button>
+              <Button
+                onClick={() => handleAddAccountButton()}
+                className="h-fit bg-teal-600 px-3 py-1 text-white"
+              >
+                Tambah Akun
+              </Button>
+            </>
+          }
         />
       </section>
 
+      {/* MOBILE */}
+
       <section className="flex w-full flex-col gap-4 rounded-lg bg-white px-5 py-6 md:hidden">
         <div className="flex gap-4">
+          <div className="group flex flex-1 items-center gap-2 rounded-md border border-input bg-transparent px-2 py-1 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:flex-none">
+            <Search size={14} className="text-muted-foreground" />
+            <input
+              type="text"
+              className="flex-1 outline-none md:w-[225px] md:flex-auto"
+              placeholder="Cari nama atau email..."
+              value={searchValue}
+              onChange={(e) => {
+                handleSearchValueChange(e.target.value);
+              }}
+            />
+          </div>
           <Button
-            variant="outline"
-            className="flex flex-auto items-center gap-2 border-blue-500 text-blue-500 hover:bg-muted hover:text-blue-500"
+            onClick={() => setOpenFilterDialog(true)}
+            variant={"ghost"}
+            className="flex flex-row items-center gap-2 rounded-md border border-gray-300 px-3 py-1 text-gray-600 hover:bg-gray-200"
           >
-            <IoFilterOutline />
-            <p>Filter</p>
+            <VscListFilter size={14} />
           </Button>
-
-          <Button
-            disabled={table.getSelectedRowModel().rows.length === 0}
-            className="flex-auto bg-blue-500 text-gray-100 hover:bg-blue-600"
-            type="submit"
-            onClick={() => setDialogOpen(true)}
-          >
-            Ubah Role
-          </Button>
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              checked={table.getIsAllPageRowsSelected()}
+              onCheckedChange={(value: boolean) =>
+                table.toggleAllPageRowsSelected(value)
+              }
+              className="size-[20px] border-blue-600 data-[state=checked]:bg-blue-600"
+            />
+            <p className="text-muted-foreground">Select All</p>
+          </div>
+          <div className="flex gap-4">
+            <Button
+              disabled={table.getSelectedRowModel().flatRows.length === 0}
+              onClick={() => setTambahRoleDialogOpen(true)}
+              className=" bg-blue-600 px-3 py-1 text-white transition-all"
+            >
+              Ubah Role
+            </Button>
+            <Button
+              disabled={table.getSelectedRowModel().flatRows.length === 0}
+              onClick={() => setHapusRoleDialogOpen(true)}
+              className=" bg-red-500 px-3 py-1 text-white transition-all"
+            >
+              Hapus Role
+            </Button>
+          </div>
         </div>
 
         {table.getRowModel().rows.map((row, index) => (
@@ -65,6 +157,7 @@ export default function BatchUbahRole(): JSX.Element {
                   <Checkbox
                     checked={row.getIsSelected()}
                     onCheckedChange={() => row.toggleSelected()}
+                    className="border-muted-foreground data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600"
                   />
                   <div>
                     <p className="text-sm font-semibold text-gray-600">
@@ -86,7 +179,7 @@ export default function BatchUbahRole(): JSX.Element {
                       };
                     });
 
-                    setDialogOpen(true);
+                    setTambahRoleDialogOpen(true);
                   }}
                 >
                   Ubah Role
@@ -172,8 +265,36 @@ export default function BatchUbahRole(): JSX.Element {
         </div>
       </section>
 
-      <RoleDialog
-        {...{ dialogOpen, setDialogOpen, table, ...roleDialogHookRet }}
+      {/* DIALOG(S) */}
+      <TambahRoleDialog
+        {...{
+          tambahRoleDialogOpen,
+          setTambahRoleDialogOpen,
+          table,
+          ...roleDialogHookRet,
+        }}
+      />
+      <HapusRoleDialog
+        {...{
+          hapusRoleDialogOpen,
+          setHapusRoleDialogOpen,
+          table,
+          ...hapusRoleDialogHookRet,
+        }}
+      />
+      <FilterPopup
+        {...{
+          fetchData,
+          openFilterDialog,
+          setOpenFilterDialog,
+          namaValue,
+          setNamaValue,
+          emailValue,
+          setEmailValue,
+          roleValue,
+          setRoleValue,
+          handleRoleValueChange,
+        }}
       />
     </main>
   );

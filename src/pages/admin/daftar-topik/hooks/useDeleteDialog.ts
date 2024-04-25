@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
+import { deleteTopic } from "../clients";
 
 export default function useDeleteDialog(
   updateData: () => Promise<any>,
@@ -7,8 +8,8 @@ export default function useDeleteDialog(
 ) {
   const { trigger } = useSWRMutation(
     "/alokasi-topik",
-    async (url, { arg }: { arg: string }) => {
-      // await s2Instance.delete(url + `/${arg}`);
+    async (_, { arg }: { arg: string }) => {
+      await deleteTopic(arg);
     },
   );
 

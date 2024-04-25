@@ -1,3 +1,4 @@
+import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
 import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
@@ -5,12 +6,14 @@ import {
   AccountTimTesisLayout,
   AkunCreate,
   AkunDetail,
+  AssignKelas,
   BatchUbahRole,
   DaftarPengajuan,
   DaftarTopikTimTugas,
   Dashboard,
   DetailRekapPendaftaran,
   DetailSubmissionTugas,
+  InputNilai,
   KelolaAkun,
   KonfigurasiPeriode,
   LogBimbingan,
@@ -26,8 +29,13 @@ import {
   RekapPendaftaranDosbim,
   SubmissionTugas,
   Topik,
+  DaftarKelas,
+  RekapPendaftaranTimTesis,
+  RiwayatPendaftaran,
+  KelasDetail,
+  SubmisiTugas,
+  DaftarTugas,
 } from "./imports";
-import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
 
 export const router = createBrowserRouter(
   [
@@ -61,7 +69,15 @@ export const router = createBrowserRouter(
           element: <RekapPendaftaranDosbim />,
         },
         {
-          path: "/rekap-pendaftaran/:nim",
+          path: "/rekap-pendaftaran-tim-tesis",
+          element: <RekapPendaftaranTimTesis />,
+        },
+        {
+          path: "/rekap-pendaftaran-tim-tesis/:nim",
+          element: <RiwayatPendaftaran />,
+        },
+        {
+          path: "/rekap-pendaftaran/:strata/:mahasiswaId",
           element: <DetailRekapPendaftaran />,
         },
         {
@@ -118,6 +134,14 @@ export const router = createBrowserRouter(
           element: <DaftarTopikTimTugas />,
         },
         {
+          path: "/manajemen/assign-kelas/mahasiswa",
+          element: <AssignKelas type="MAHASISWA" />,
+        },
+        {
+          path: "/manajemen/assign-kelas/dosen",
+          element: <AssignKelas type="DOSEN" />,
+        },
+        {
           path: "/log",
           element: <Navigate to="/log/bimbingan" replace />,
         },
@@ -135,10 +159,10 @@ export const router = createBrowserRouter(
         },
         {
           path: "/tugas-akhir",
-          element: <Navigate to="/tugas-akhir/topik/2" replace />,
+          element: <Navigate to="/tugas-akhir/topik" replace />,
         },
         {
-          path: "/tugas-akhir/topik/:role",
+          path: "/tugas-akhir/topik",
           element: <Topik />,
         },
         {
@@ -154,8 +178,32 @@ export const router = createBrowserRouter(
           element: <KonfigurasiPeriode />,
         },
         {
-          path: "/add-log-bimbingan",
+          path: "/tugas/daftar-kelas",
+          element: <DaftarKelas />,
+        },
+        {
+          path: "/kelas/daftar-kelas",
+          element: <DaftarKelas />,
+        },
+        {
+          path: "/kelas/input-nilai",
+          element: <InputNilai />,
+        },
+        {
+          path: "/add-log-bimbingan/:strata",
           element: <AddLogBimbingan />,
+        },
+        {
+          path: "/tugas/kelas/:idKelas",
+          element: <KelasDetail />,
+        },
+        {
+          path: "/tugas/assignment/:idTugas",
+          element: <SubmisiTugas />,
+        },
+        {
+          path: "/tugas/assignment",
+          element: <DaftarTugas />,
         },
       ],
     },

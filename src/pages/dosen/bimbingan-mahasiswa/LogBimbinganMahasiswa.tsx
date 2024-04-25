@@ -1,23 +1,25 @@
 import { DataTable } from "@/components/DataTable";
 import useLogBimbinganMahasiswa from "./hooks/useLogBimbinganMahasiswa";
-import MahasiswaCard from "../components/MahasiswaCard";
+import ExpandableMahasiswaCard from "@/components/ExpandableMahasiswaCard";
 
 export default function LogBimbinganMahasiswa() {
   const { table, mahasiswaData, searchValue, handleSearchValueChange, topik } =
     useLogBimbinganMahasiswa();
 
   return (
+    //TODO mobile screen
     <main className="flex min-h-screen flex-col gap-4 p-5">
-      <MahasiswaCard
+      <ExpandableMahasiswaCard
         user={{
-          ...mahasiswaData,
-          profpic: "",
-          id: "",
+          id: "dummy id",
+          name: mahasiswaData.name,
+          email: mahasiswaData.email,
+          major: "dummy major",
+          submissionTime: new Date(),
         }}
+        backArrow
         topik={topik.judul}
-        deskripsiTopik={topik.deskripsi}
-        backArrow={true}
-        logs={false}
+        deskripsi={topik.deskripsi}
       />
       <DataTable
         table={table}

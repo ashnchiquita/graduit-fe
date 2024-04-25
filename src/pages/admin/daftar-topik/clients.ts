@@ -21,8 +21,15 @@ export async function postNewTopicBulk(data: PostNewTopicBulkReqData) {
   return await s2Instance.post("/alokasi-topik/bulk", data);
 }
 
-export async function putExistingTopic(data: PutExistingTopicReqData) {
-  return await s2Instance.put("/alokasi-topik", data);
+export async function putExistingTopic(
+  id: string,
+  data: PutExistingTopicReqData,
+) {
+  return await s2Instance.put("/alokasi-topik/" + id, data);
+}
+
+export async function deleteTopic(id: string) {
+  return await s2Instance.delete("/alokasi-topik/" + id);
 }
 
 export const getAllDosenPembimbing = () => {

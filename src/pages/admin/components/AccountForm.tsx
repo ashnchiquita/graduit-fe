@@ -13,7 +13,6 @@ import { Form, FormControl, FormField, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FaChevronLeft } from "react-icons/fa";
 import { VscChromeClose } from "react-icons/vsc";
-// import CheckLogo from "@/assets/check-logo.svg";
 import { UseFormReturn } from "react-hook-form";
 import { Link } from "react-router-dom";
 
@@ -22,10 +21,8 @@ interface ComponentProps {
     {
       email: string;
       name: string;
-      access: {
-        name: string;
-        id: number;
-      }[];
+      access: { name: string; id: number }[];
+      nim?: string;
     },
     any,
     undefined
@@ -33,15 +30,10 @@ interface ComponentProps {
   handleSubmit: (values: {
     email: string;
     name: string;
-    access: {
-      name: string;
-      id: number;
-    }[];
+    access: { name: string; id: number }[];
+    nim?: string;
   }) => void;
-  roleAccess: {
-    id: number;
-    name: string;
-  }[];
+  roleAccess: { name: string; id: number }[];
   title: string;
 }
 
@@ -158,8 +150,8 @@ export default function AccountForm({
                             if (
                               !form
                                 .getValues()
-                                .access.map((v) => v.id)
-                                .includes(access.id)
+                                .access.map((v) => v)
+                                .includes(access)
                             ) {
                               form.setValue("access", [
                                 ...form.getValues().access,

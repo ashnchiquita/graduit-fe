@@ -75,3 +75,32 @@ export const DetailSubmissionTugas = lazy(
 export const SubmissionTugas = lazy(
   () => import("../pages/dosen/submission-tugas/SubmissionTugas.tsx"),
 );
+
+export const AssignKelas = lazy(
+  () => import("../pages/admin/assign-kelas/AssignKelas.tsx"),
+);
+export const DaftarKelas = lazy(
+  () => import("../pages/kelas/daftar-kelas/DaftarKelas.tsx"),
+);
+export const InputNilai = lazy(
+  () => import("../pages/admin/input-nilai/InputNilai.tsx"),
+);
+export const RekapPendaftaranTimTesis = lazy(
+  () =>
+    import("../pages/tim-tesis/rekap-pendaftaran/RekapPendaftaranTimTesis.tsx"),
+);
+export const RiwayatPendaftaran = lazy(
+  () => import("../pages/tim-tesis/riwayat-pendaftaran/RiwayatPendaftaran.tsx"),
+);
+
+export const KelasDetail = lazy(
+  () => import("../pages/mahasiswa/kelas-detail/KelasDetail.tsx"),
+);
+
+export const SubmisiTugas = lazy(
+  () => import("../pages/mahasiswa/submisi-tugas/SubmisiTugas.tsx"),
+);
+
+export const DaftarTugas = lazy(
+  () => import("../pages/mahasiswa/daftar-tugas/DaftarTugas.tsx"),
+);

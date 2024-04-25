@@ -11,10 +11,15 @@ export type PostLogBimbinganRespData = {
 };
 
 export type PostLogBimbinganReqData = {
+  id_mahasiswa: string;
   date: Date;
   laporan_kemajuan: string;
   todo: string;
   next_bimbingan?: Date;
   status: boolean;
   berkas: Berkas[];
+};
+
+export type NIM = {
+  nim: string;
 };
