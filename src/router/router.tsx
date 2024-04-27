@@ -16,7 +16,6 @@ import {
   InputNilai,
   KelolaAkun,
   KonfigurasiPeriode,
-  LogBimbingan,
   LogBimbinganMahasiswa,
   LogSistem,
   Login,

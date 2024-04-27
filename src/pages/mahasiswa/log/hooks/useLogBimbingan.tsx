@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DateRange } from "react-day-picker";
 import useSWR from "swr";
-import { getLogBimbinganStatusForS1, } from "../client";
+import { getLogBimbinganStatusForS1 } from "../client";
 import type {
   Berkas,
   LogBimbinganData,
@@ -23,7 +23,6 @@ import { getSession } from "@/layouts/clients";
 import { formatDateNotHour } from "../utils";
 
 const useLogBimbingan = () => {
-
   const defaultData: LogBimbinganStatusData = {
     status: false,
     bimbingan_logs: [],
