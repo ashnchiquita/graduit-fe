@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
 import { Row } from "@tanstack/react-table";
 import { MahasiswaLogs } from "@/lib/entity";
+import { LogBimbinganData } from "../types";
 
 export const badgeVariants = cva(
   "flex justify-center items-center font-medium text-xs",
@@ -27,12 +28,13 @@ export const badgeVariants = cva(
 interface badgeProps
   extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {
-  row?: Row<MahasiswaLogs>;
+  row?: Row<LogBimbinganData>;
 }
 
 export const Badge = forwardRef<HTMLDivElement, badgeProps>(
   ({ row, size, variant, className, ...props }, ref) => {
-    const status = row?.original.status ?? "Sah";
+    const status = row?.original.status ?? false;
+    const statusName = status ? "Sah" : "Tidak Sah"
     return (
       <>
         <div
@@ -41,9 +43,9 @@ export const Badge = forwardRef<HTMLDivElement, badgeProps>(
           ref={ref}
         >
           <span
-            className={`flex w-2 h-2 me-2 ${status == "Sah" ? "bg-[#037847]" : status == "Menunggu" ? "bg-amber-400" : "bg-red-500"} rounded-full`}
+            className={`flex w-2 h-2 me-2 ${status ? "bg-[#037847]": "bg-red-500"} rounded-full`}
           ></span>
-          <p className="text-[10px]">{status}</p>
+          <p className="text-[10px]">{statusName}</p>
         </div>
       </>
     );

@@ -36,6 +36,7 @@ import {
   SubmisiTugas,
   DaftarTugas,
 } from "./imports";
+import LogMahasiswa from "@/pages/mahasiswa/log/LogMahasiswa";
 
 export const router = createBrowserRouter(
   [
@@ -147,7 +148,7 @@ export const router = createBrowserRouter(
         },
         {
           path: "/log/bimbingan",
-          element: <LogBimbingan />,
+          element: <LogMahasiswa />,
         },
         {
           path: "/dosen/bimbingan/:strata/:id",
