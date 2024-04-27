@@ -57,10 +57,14 @@ const useLogBimbingan = () => {
           (item: LogBimbinganData) => ({
             id: item.id,
             date: new Date(item.date)
-            .toLocaleDateString("en-ID", { year: 'numeric', month: '2-digit', day: '2-digit' })
-            .split("/")
-            .reverse()
-            .join("/"),
+              .toLocaleDateString("en-ID", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })
+              .split("/")
+              .reverse()
+              .join("/"),
             laporan_kemajuan: item.laporan_kemajuan,
             todo: item.todo,
             next_bimbingan: item.next_bimbingan,
