@@ -8,23 +8,21 @@ import {
 } from "@tanstack/react-table";
 import { Badge } from "../components/BadgeTable";
 import { ButtonDownload } from "../components/ButtonTable";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { DateRange } from "react-day-picker";
 import useSWR from "swr";
-import { getLogBimbinganStatusForS1, getMahasiswaLogin } from "../client";
+import { getLogBimbinganStatusForS1, } from "../client";
 import type {
   Berkas,
-  GetLogBimbinganStatusResData,
   LogBimbinganData,
   LogBimbinganStatusData,
 } from "../types";
-import { MahasiswaLogs } from "@/lib/entity";
-import { SessionData } from "@/types/session-data";
+
 import { getSession } from "@/layouts/clients";
+import { formatDateNotHour } from "../utils";
 
 const useLogBimbingan = () => {
-  const { id } = useParams();
 
   const defaultData: LogBimbinganStatusData = {
     status: false,
@@ -56,15 +54,7 @@ const useLogBimbingan = () => {
         bimbingan_logs: resLog.data.data.bimbingan_logs.map(
           (item: LogBimbinganData) => ({
             id: item.id,
-            date: new Date(item.date)
-              .toLocaleDateString("en-ID", {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-              })
-              .split("/")
-              .reverse()
-              .join("/"),
+            date: formatDateNotHour(new Date(item.date)),
             laporan_kemajuan: item.laporan_kemajuan,
             todo: item.todo,
             next_bimbingan: item.next_bimbingan,

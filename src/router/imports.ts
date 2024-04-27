@@ -53,7 +53,7 @@ export const AccountTimTesisLayout = lazy(
 );
 
 export const LogMahasiswa = lazy(
-  () => import("../pages/mahasiswa/log/LogMahasiswa.tsx")
+  () => import("../pages/mahasiswa/log/LogMahasiswa.tsx"),
 );
 
 export const BatchUbahRole = lazy(
