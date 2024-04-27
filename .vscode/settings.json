@@ -9,5 +9,7 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "editor.fontFamily": "'Cascadia Code',Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontWeight": "normal"
 }
