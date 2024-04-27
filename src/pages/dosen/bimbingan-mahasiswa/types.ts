@@ -59,7 +59,9 @@ export type GetMahasiswaInfoS1Res = {
     nama: string;
     email: string;
     nim: string;
-    jalurPilihan: string;
+    jalur_pilihan: string;
+    judul: string;
+    deskripsi: string;
   };
 };
 

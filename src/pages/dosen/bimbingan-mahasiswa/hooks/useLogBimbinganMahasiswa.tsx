@@ -52,7 +52,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
       const resBimbingan = await getLogBimbinganS1(id ?? "");
       const resMahasiswa = await getMahasiswaInfoS1(id ?? "");
 
-      console.log(resBimbingan.data.data);
+      console.log(resBimbingan);
 
       data = {
         bimbingan: resBimbingan.data.data.map((item: BimbinganS1Res) => ({
@@ -70,14 +70,13 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
         mahasiswa: {
           name: resMahasiswa.data.data.nama,
           email: resMahasiswa.data.data.email,
-          major: "dummy jurusan",
+          major: resMahasiswa.data.data.jalur_pilihan,
         },
         topik: {
-          judul: "dummy judul",
-          deskripsi: "dummy desc",
+          judul: resMahasiswa.data.data.judul,
+          deskripsi: resMahasiswa.data.data.deskripsi,
         },
       };
-
       console.log(data);
     } else {
       const res = await getLogBimbinganS2(id ?? "");
@@ -123,7 +122,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
     },
     {
       header: "Rencana",
-      accessorKey: "rencana",
+      accessorKey: "todo",
       minSize: 1000,
     },
     {
