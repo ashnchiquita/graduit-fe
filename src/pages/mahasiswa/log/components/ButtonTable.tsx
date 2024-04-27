@@ -13,9 +13,8 @@ export const ButtonDownload = forwardRef<HTMLDivElement, ButtonDownloadProps>(
   ({ row, className, ...props }, ref) => {
     return (
       <>
-      {
-        row.original.berkas.map((item:Berkas)=>{
-          return(
+        {row.original.berkas.map((item: Berkas) => {
+          return (
             <div
               className={cn(
                 "flex flex-col xl:flex-row items-center gap-2 justify-center bg-[#F1F5F9] w-fit py-2 px-3 rounded-sm",
@@ -32,13 +31,14 @@ export const ButtonDownload = forwardRef<HTMLDivElement, ButtonDownloadProps>(
                 </p>
                 <a href={item.link} className="flex gap-1">
                   <AiOutlineCloudDownload className="text-blue-500 text-sm" />
-                  <p className="text-[10px] font-medium text-blue-500">Download</p>
+                  <p className="text-[10px] font-medium text-blue-500">
+                    Download
+                  </p>
                 </a>
               </div>
             </div>
           );
-        })
-      }
+        })}
       </>
     );
   },

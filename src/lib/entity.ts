@@ -26,9 +26,9 @@ export type User = {
 type Status = "Sah" | "Menunggu" | "Tidak Sah";
 
 export type MahasiswaLogStatusData = {
-  status : boolean;
-  log : MahasiswaLogs[]
-}
+  status: boolean;
+  log: MahasiswaLogs[];
+};
 
 export type MahasiswaLogs = {
   tanggal: string;

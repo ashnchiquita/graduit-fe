@@ -35,6 +35,7 @@ import {
   KelasDetail,
   SubmisiTugas,
   DaftarTugas,
+  KonfigurasiPeriodePendidikan,
 } from "./imports";
 import LogMahasiswa from "@/pages/mahasiswa/log/LogMahasiswa";
 

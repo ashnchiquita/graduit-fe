@@ -34,7 +34,7 @@ interface badgeProps
 export const Badge = forwardRef<HTMLDivElement, badgeProps>(
   ({ row, size, variant, className, ...props }, ref) => {
     const status = row?.original.status ?? false;
-    const statusName = status ? "Sah" : "Tidak Sah"
+    const statusName = status ? "Sah" : "Tidak Sah";
     return (
       <>
         <div
@@ -43,7 +43,7 @@ export const Badge = forwardRef<HTMLDivElement, badgeProps>(
           ref={ref}
         >
           <span
-            className={`flex w-2 h-2 me-2 ${status ? "bg-[#037847]": "bg-red-500"} rounded-full`}
+            className={`flex w-2 h-2 me-2 ${status ? "bg-[#037847]" : "bg-red-500"} rounded-full`}
           ></span>
           <p className="text-[10px]">{statusName}</p>
         </div>
