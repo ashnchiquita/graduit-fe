@@ -50,7 +50,6 @@ export default function AddLogBimbingan() {
             type="bimbingan_date"
             form={form}
           />
-
           <AddLogBimbinganCard
             title={laporanKemajuanTitle}
             description={laporanKemajuanDesc}

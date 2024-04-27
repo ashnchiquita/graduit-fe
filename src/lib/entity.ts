@@ -1,7 +1,5 @@
 //type/entity kalian dibuat disini
 
-import React from "react";
-
 export type SidenavItem = {
   title: string;
   path: string;
@@ -41,7 +39,6 @@ export type MahasiswaLogs = {
   status: Status;
   rencana: string;
 };
-
 export type SystemLogs = {
   id: string;
   idPengguna: string;
