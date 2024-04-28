@@ -8,8 +8,15 @@ import {
 } from "./types";
 
 export async function getLogBimbinganS2(id: string) {
-  return await s2Instance.get<GetLogBimbinganS2Res>(`/bimbingan/${id}`, {
-    withCredentials: true,
+  return await s2Instance.get<GetLogBimbinganS2Res>(
+    `/bimbingan/mahasiswa/${id}`,
+  );
+}
+
+export async function updatePengesahanS2(id: string, status: boolean) {
+  return await s2Instance.patch(`/bimbingan/pengesahan`, {
+    bimbinganId: id,
+    status,
   });
 }
 

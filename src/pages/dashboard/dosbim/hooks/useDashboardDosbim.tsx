@@ -113,10 +113,13 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
     {
       header: "NIM",
       accessorKey: "nim",
+      enableSorting: false,
+      size: 200,
     },
     {
       header: "Nama",
       accessorKey: "nama",
+      enableSorting: false,
     },
     {
       header: "Topik",

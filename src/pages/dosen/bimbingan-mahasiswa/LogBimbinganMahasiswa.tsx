@@ -3,8 +3,7 @@ import useLogBimbinganMahasiswa from "./hooks/useLogBimbinganMahasiswa";
 import ExpandableMahasiswaCard from "@/components/ExpandableMahasiswaCard";
 
 export default function LogBimbinganMahasiswa() {
-  const { table, mahasiswaData, searchValue, handleSearchValueChange, topik } =
-    useLogBimbinganMahasiswa();
+  const { table, mahasiswaData, topik } = useLogBimbinganMahasiswa();
 
   return (
     //TODO mobile screen
@@ -14,7 +13,7 @@ export default function LogBimbinganMahasiswa() {
           id: "dummy id",
           name: mahasiswaData.name,
           email: mahasiswaData.email,
-          major: "dummy major",
+          major: mahasiswaData.major,
           submissionTime: new Date(),
         }}
         backArrow
@@ -25,8 +24,6 @@ export default function LogBimbinganMahasiswa() {
         table={table}
         headline="Log Bimbingan"
         description="Berikut merupakan log bimbingan"
-        setSearchValue={handleSearchValueChange}
-        searchValue={searchValue}
         searchPlaceholder="Search something"
       />
     </main>

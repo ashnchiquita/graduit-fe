@@ -162,7 +162,7 @@ export const router = createBrowserRouter(
           element: <Navigate to="/tugas-akhir/topik" replace />,
         },
         {
-          path: "/tugas-akhir/topik",
+          path: "/topik",
           element: <Topik />,
         },
         {
