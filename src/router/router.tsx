@@ -35,6 +35,7 @@ import {
   KelasDetail,
   SubmisiTugas,
   DaftarTugas,
+  ApprovalPendaftaran,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -75,6 +76,10 @@ export const router = createBrowserRouter(
         {
           path: "/rekap-pendaftaran-tim-tesis/:nim",
           element: <RiwayatPendaftaran />,
+        },
+        {
+          path: "/approval-pendaftaran",
+          element: <ApprovalPendaftaran />,
         },
         {
           path: "/rekap-pendaftaran/:strata/:mahasiswaId",
