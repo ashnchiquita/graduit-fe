@@ -8,6 +8,7 @@ import { RegistrationFormData } from "../../constants";
 export type TopicCardProps = {
   form: UseFormReturn<RegistrationFormData>;
   lecturerId: string;
+  setNewOptionCreated?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const useTopicCardImpl = ({ lecturerId, form }: TopicCardProps) => {

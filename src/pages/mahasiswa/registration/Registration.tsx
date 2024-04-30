@@ -9,10 +9,20 @@ import { Form } from "@/components/ui/form/form";
 import { LecturerCard } from "./components/LecturerCard/LecturerCard";
 import { StreamCard } from "./components/StreamCard/StreamCard";
 import { TopicCard } from "./components/TopicCard/TopicCard";
-import useThesisRegistrationImpl from "./useRegistrationImpl";
+import useRegistrationImpl from "./useRegistrationImpl";
+import { Loader } from "@/components/ui/loader";
 
 const Registration = () => {
-  const { form, onSubmit } = useThesisRegistrationImpl();
+  const { form, onSubmit, setNewOptionCreated, isRegLoading, strata } =
+    useRegistrationImpl();
+
+  if (isRegLoading) {
+    return (
+      <main className="flex h-screen w-full items-center justify-center">
+        <Loader size={64} />
+      </main>
+    );
+  }
 
   return (
     <div className="flex-1">
@@ -26,13 +36,16 @@ const Registration = () => {
             leftHighlight
             HeaderElement={
               <CardHeader>
-                <CardTitle>Registrasi Tesis</CardTitle>
+                <CardTitle>
+                  Registrasi {strata === "S1" ? "Tugas Akhir" : "Tesis"}
+                </CardTitle>
                 <CardDescription>
                   Mahasiswa diberikan kesempatan untuk memilih dosen pembimbing
-                  yang dikehendaki. Akan tetapi, Tim Tesis S2 Informatika yang
-                  akan menetapkan dosen pembimbing (yang dapat berbeda dari
-                  pilihan) berdasarkan proses matchmaking dan ketersediaan sisa
-                  kuota jumlah bimbingan setiap dosen.
+                  yang dikehendaki. Akan tetapi,{" "}
+                  {strata === "S1" ? "Tim Tugas Akhir S1" : "Tim Tesis S2"}{" "}
+                  Informatika yang akan menetapkan dosen pembimbing (yang dapat
+                  berbeda dari pilihan) berdasarkan proses matchmaking dan
+                  ketersediaan sisa kuota jumlah bimbingan setiap dosen.
                 </CardDescription>
               </CardHeader>
             }
@@ -43,8 +56,12 @@ const Registration = () => {
             }
           />
 
-          <LecturerCard form={form} />
-          <TopicCard form={form} lecturerId={form.watch("lecturer")} />
+          <LecturerCard form={form} strata={strata} />
+          <TopicCard
+            form={form}
+            lecturerId={form.watch("lecturer")}
+            setNewOptionCreated={setNewOptionCreated}
+          />
           <StreamCard form={form} />
 
           <div className="flex flex-col gap-8 p-6">
