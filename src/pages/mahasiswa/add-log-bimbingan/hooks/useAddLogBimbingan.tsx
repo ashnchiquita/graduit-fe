@@ -18,18 +18,18 @@ import { useState } from "react";
 
 const useAddLogBimbigan = () => {
   //TODO bahas page selanjutnya habis nambah log bimbingan apa
-  const [nim, setNim] = useState<string>("");
+  const [idMahasiswa, setIdMahasiswa] = useState<string>("");
 
   const {} = useSWR(`/auth/self`, async () => {
     const response = await getNimMahasiswa();
-    setNim(response.data.nim);
+    setIdMahasiswa(response.data.id);
   });
 
   const { strata } = useParams();
 
   const form = useForm<AddLogBimbinganFormData>({
     defaultValues: {
-      id_mahasiswa: nim,
+      id_mahasiswa: idMahasiswa,
       date: undefined,
       laporan_kemajuan: "",
       todo: "",
@@ -52,7 +52,7 @@ const useAddLogBimbigan = () => {
 
   const onSubmit = async (values: AddLogBimbinganFormData) => {
     const data: PostLogBimbinganReqData = {
-      id_mahasiswa: nim,
+      id_mahasiswa: idMahasiswa,
       date: values.date,
       laporan_kemajuan: values.laporan_kemajuan,
       todo: values.todo,

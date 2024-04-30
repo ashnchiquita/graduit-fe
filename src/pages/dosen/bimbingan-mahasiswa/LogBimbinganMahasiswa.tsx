@@ -10,7 +10,7 @@ export default function LogBimbinganMahasiswa() {
     <main className="flex min-h-screen flex-col gap-4 p-5">
       <ExpandableMahasiswaCard
         user={{
-          id: "dummy id",
+          id: "",
           name: mahasiswaData.name,
           email: mahasiswaData.email,
           major: mahasiswaData.major,

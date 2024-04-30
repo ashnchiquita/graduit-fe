@@ -31,7 +31,7 @@ export async function getLogBimbinganS1(id: string) {
 
 export async function getMahasiswaInfoS1(id: string) {
   return await s1Instance.get<GetMahasiswaInfoS1Res>(
-    `/admin/pengguna?id_mahasiswa=${id}`,
+    `/dosbing/info-topik-mahasiswa?id_mahasiswa=${id}`,
     {
       withCredentials: true,
     },
