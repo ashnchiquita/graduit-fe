@@ -1,6 +1,6 @@
 import s1Instance from "@/config/s1-axios-config";
 import loginInstance from "@/config/login-axios-config";
-import { NIM, PostLogBimbinganReqData } from "./types";
+import { IDMahasiswa, PostLogBimbinganReqData } from "./types";
 
 export const postLogBimbingan = (data: PostLogBimbinganReqData) => {
   return s1Instance.post<PostLogBimbinganReqData>(
@@ -11,7 +11,7 @@ export const postLogBimbingan = (data: PostLogBimbinganReqData) => {
 };
 
 export async function getNimMahasiswa() {
-  return await loginInstance.get<NIM>("/auth/self", {
+  return await loginInstance.get<IDMahasiswa>("/auth/self", {
     withCredentials: true,
   });
 }

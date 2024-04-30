@@ -32,7 +32,7 @@ export type MahasiswaData = {
 
 export type BimbinganS2Res = {
   id: string;
-  waktuBimbingan: string;
+  waktuBimbingan: Date;
   laporanKemajuan: string;
   todo: string;
   bimbinganBerikutnya: string;
@@ -41,7 +41,7 @@ export type BimbinganS2Res = {
 
 export type BimbinganS1Res = {
   id: string;
-  date: string;
+  date: Date;
   laporan_kemajuan: string;
   todo: string;
   next_bimbingan: string;

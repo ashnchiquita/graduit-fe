@@ -20,6 +20,6 @@ export type PostLogBimbinganReqData = {
   berkas: Berkas[];
 };
 
-export type NIM = {
-  nim: string;
+export type IDMahasiswa = {
+  id: string;
 };
