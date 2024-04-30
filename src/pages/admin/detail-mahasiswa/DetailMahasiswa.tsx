@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { Lightbulb, WrapText } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useDetailMahasiswa from "./hooks/useDetailMahasiswa";
+import DosenIcon from "@/assets/dash-tim-tugas/dosen.svg";
 
 export default function DetailMahasiswa(): JSX.Element {
   const { navigate, data } = useDetailMahasiswa();
@@ -77,6 +78,20 @@ export default function DetailMahasiswa(): JSX.Element {
                   {data?.description}
                 </div>
               </ScrollArea>
+            </div>
+
+            <div className="space-y-1">
+              <div className="flex w-full items-center gap-3">
+                <img src={DosenIcon} className="size-6" alt="" />
+                <div className="text-muted-foreground">Dosen Pembimbing</div>
+              </div>
+              <ul>
+                {data?.pembimbing.map((dosen, index) => (
+                  <li key={index} className="pl-9 text-sm md:text-base">
+                    {dosen}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
