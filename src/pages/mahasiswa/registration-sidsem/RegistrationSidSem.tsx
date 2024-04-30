@@ -11,11 +11,14 @@ import { useParams } from "react-router-dom";
 import { DataDiriComponent } from "./components/DataDiri";
 import { AddBerkas } from "./components/AddBerkas";
 import { DetailTopikComponent } from "./components/DetailTopik";
+// import { getPlaceholdersS1, getIdMahasiswa } from "./client";
+// import useSWR from "swr";
+// import { Placeholders } from "./types";
 
 export default function RegistrationSidSem() {
-  const { form, onSubmit } = useRegistrationSidSem();
+  const { data, form, onSubmit } = useRegistrationSidSem();
 
-  const { tipe } = useParams();
+  const { tipe, strata } = useParams();
 
   const tipePendaftaran =
     tipe === "sidang"
@@ -23,6 +26,10 @@ export default function RegistrationSidSem() {
       : tipe === "seminar"
         ? "Seminar Proposal"
         : "Not found";
+
+  if (data.name) {
+    console.log(data);
+  }
 
   return (
     <main>
@@ -45,7 +52,7 @@ export default function RegistrationSidSem() {
             }
           />
 
-          <DataDiriComponent form={form} />
+          <DataDiriComponent form={form} data={data} strata={strata || ""} />
           <DetailTopikComponent form={form} />
 
           <AddBerkas form={form} />

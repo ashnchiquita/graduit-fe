@@ -9,11 +9,16 @@ import {
 import { CardTitle, CardDescription } from "@/components/Card";
 // import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { Placeholders } from "../types";
 
 export function DataDiriComponent({
   form,
+  data,
+  strata,
 }: {
   form: UseFormReturn<RegistrationSidSemFormData>;
+  data: Placeholders;
+  strata: string;
 }) {
   return (
     <div className="rounded-lg bg-white px-4 py-3 flex flex-col gap-2">
@@ -27,7 +32,7 @@ export function DataDiriComponent({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Nama anda" {...field} />
+                <Input placeholder={data.name} {...field} disabled />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -42,7 +47,7 @@ export function DataDiriComponent({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="NIM anda" {...field} />
+                <Input placeholder={data.nim} {...field} disabled />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -57,31 +62,33 @@ export function DataDiriComponent({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Program studi anda" {...field} />
+                <Input placeholder={data.program_studi} {...field} disabled />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
       </div>
-      <div>
-        <CardDescription> Jalur Pilihan </CardDescription>
-        <FormField
-          control={form.control}
-          name="jalur_pilihan"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  placeholder="Jalur pilihan anda (jika mahasiswa S1 isi dengan program studi)"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
+      {strata === "S2" && (
+        <div>
+          <CardDescription> Jalur Pilihan </CardDescription>
+          <FormField
+            control={form.control}
+            name="jalur_pilihan"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    placeholder="Jalur pilihan anda (jika mahasiswa S1 isi dengan program studi)"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+      )}
       <div>
         <CardDescription> Topik </CardDescription>
         <FormField
@@ -90,7 +97,7 @@ export function DataDiriComponent({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Topik anda" {...field} />
+                <Input placeholder={data.topik} {...field} disabled />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -105,7 +112,7 @@ export function DataDiriComponent({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Dosen pembimbing anda" {...field} />
+                <Input placeholder={data.dosbing} {...field} disabled />
               </FormControl>
               <FormMessage />
             </FormItem>
