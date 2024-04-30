@@ -45,6 +45,8 @@ interface DataTableProps<TData> {
   selectFilterPlaceholder?: string;
   selectFilterOptions?: SelectData[];
   setSelectFilterValue?: (value: string) => void;
+  strataFilterValue?: string;
+  setStrataFilterValue?: (value: string) => void;
 }
 
 export function DataTable<TData>({
@@ -61,6 +63,8 @@ export function DataTable<TData>({
   selectFilterPlaceholder,
   selectFilterValue,
   setSelectFilterValue,
+  strataFilterValue,
+  setStrataFilterValue,
 }: DataTableProps<TData>) {
   const useTableConfig =
     !!headline ||
@@ -72,7 +76,9 @@ export function DataTable<TData>({
     !!customElementsRight ||
     !!selectFilterOptions ||
     !!selectFilterValue ||
-    !!setSelectFilterValue;
+    !!setSelectFilterValue ||
+    !!strataFilterValue ||
+    !!setStrataFilterValue;
 
   const columnSizeVars = React.useMemo(() => {
     const headers = table.getFlatHeaders();
@@ -96,20 +102,51 @@ export function DataTable<TData>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [containerRef.current]);
 
+  const strataOption = [
+    {
+      label: "S1",
+      value: "S1",
+    },
+    {
+      label: "S2",
+      value: "S2",
+    },
+  ];
+
   // TODO loading state
   return (
     <div>
       <div className="mb-3 rounded-md border bg-white" ref={containerRef}>
         {useTableConfig && (
-          <div className="flex flex-wrap gap-x-3 gap-y-4 px-6 py-5">
-            <div className="flex-1">
-              {headline && (
-                <div className="text-lg font-semibold">{headline}</div>
-              )}
-              {description && (
-                <div className="text-sm text-muted-foreground">
-                  {description}
-                </div>
+          <div className="flex flex-wrap justify-between gap-x-3 gap-y-4 px-6 py-5">
+            <div className="flex items-center gap-3">
+              <div>
+                {headline && (
+                  <div className="text-lg font-semibold">{headline}</div>
+                )}
+                {description && (
+                  <div className="text-sm text-muted-foreground">
+                    {description}
+                  </div>
+                )}
+              </div>
+              {strataFilterValue !== undefined && !!setStrataFilterValue && (
+                <Select
+                  value={strataFilterValue}
+                  onValueChange={setStrataFilterValue}
+                >
+                  <SelectTrigger className="h-8 w-[65px] border bg-slate-100 text-xs">
+                    <SelectValue placeholder="" />
+                  </SelectTrigger>
+
+                  <SelectContent className="min-w-0">
+                    {Object.values(strataOption).map(({ label, value }) => (
+                      <SelectItem key={value} value={value} className="text-xs">
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
             </div>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">

@@ -23,24 +23,12 @@ export default function DashboardTimTugas({
         searchValue={searchValue}
         setSearchValue={handleSearchValueChange}
         searchPlaceholder="Cari nama atau NIM mahasiswa"
-        selectFilterValue={strata === "ALL" ? strataFilter : undefined}
         selectFilterPlaceholder="Semua"
-        setSelectFilterValue={(val: string) =>
-          setStrataFilter(val as "S1" | "S2")
-        }
-        selectFilterOptions={
+        strataFilterValue={strata === "ALL" ? strataFilter : undefined}
+        setStrataFilterValue={
           strata === "ALL"
-            ? [
-                {
-                  value: "S1",
-                  label: "Mahasiswa S1",
-                },
-                {
-                  value: "S2",
-                  label: "Mahasiswa S2",
-                },
-              ]
-            : []
+            ? (val: string) => setStrataFilter(val as "S1" | "S2")
+            : undefined
         }
       />
     </main>
