@@ -9,11 +9,11 @@ import {
   RegistrationSidSemFormSchema,
 } from "../constants";
 import { getPlaceholdersS1, postRegistraionSidSemForS1 } from "../client";
-import { Placeholders } from "../types";
+import { Placeholders, postRegistraionSidSemDataS1 } from "../types";
 import { getIdMahasiswa } from "../client";
 
 const useRegistrationSidSem = () => {
-  const { strata } = useParams();
+  const { strata, tipe } = useParams();
 
   const defaultData: Placeholders = {
     name: "",
@@ -24,14 +24,15 @@ const useRegistrationSidSem = () => {
     dosbing: "",
   };
 
+  // const [idMahasiswa, setIdMahasiswa] = useState<string>("");
+
   const { data = defaultData } = useSWR(`/registration`, async () => {
     let data: Placeholders;
 
     const response = await getIdMahasiswa();
-    const idMahasiswa = response.data.id;
 
     if (strata?.toUpperCase() === "S1") {
-      const resPlaceholders = await getPlaceholdersS1(idMahasiswa ?? "");
+      const resPlaceholders = await getPlaceholdersS1(response.data.id ?? "");
       data = {
         name: resPlaceholders.data.data.nama,
         nim: resPlaceholders.data.data.nim,
@@ -42,7 +43,7 @@ const useRegistrationSidSem = () => {
       };
     } else {
       // TODO get placeholders for S2
-      const resPlaceholders = await getPlaceholdersS1(idMahasiswa ?? "");
+      const resPlaceholders = await getPlaceholdersS1(response.data.id ?? "");
       data = {
         name: resPlaceholders.data.data.nama,
         nim: resPlaceholders.data.data.nim,
@@ -52,19 +53,15 @@ const useRegistrationSidSem = () => {
         dosbing: resPlaceholders.data.data.dosbing,
       };
     }
-    console.log(data);
     return data;
   });
 
   const form = useForm<RegistrationSidSemFormData>({
     defaultValues: {
-      //   id_mahasiswa: nim,
-      //   date: undefined,
-      //   laporan_kemajuan: "",
-      //   todo: "",
-      //   next_bimbingan: undefined,
-      //   status: false,
-      //   berkas: [],
+      tipe: "",
+      judul_proposal: "",
+      deskripsi: "",
+      berkas: [],
     },
     resolver: zodResolver(RegistrationSidSemFormSchema),
   });
@@ -73,28 +70,30 @@ const useRegistrationSidSem = () => {
     strata === "S1" ? postRegistraionSidSemForS1 : postRegistraionSidSemForS1;
 
   const { trigger } = useSWRMutation(
-    "/mahasiswa/add-bimbingan-log",
+    "/mahasiswa/pendaftaran-sidsem",
     async (_, { arg }: { arg: any }) => {
       return await apiFunction(arg);
     },
   );
 
-  const onSubmit = async (values: any) => {
-    const data: any = {
-      values: values,
+  const onSubmit = async (values: postRegistraionSidSemDataS1) => {
+    const response = await getIdMahasiswa();
+    const data: postRegistraionSidSemDataS1 = {
+      id_mahasiswa: response.data.id,
+      tipe: tipe,
+      judul_proposal: values.judul_proposal,
+      deskripsi: values.deskripsi,
+      berkas: values.berkas,
     };
 
     try {
       await trigger(data);
-    } catch (error) {
-      console.error("Failed to submit Bimbingan Log");
-      toast.error("Failed to submit Bimbingan Log.");
-    } finally {
       toast.success("Registration submitted successfully.");
+    } catch (error) {
+      toast.error("Failed to submit Registration");
     }
   };
 
-  console.log(data);
   return {
     data,
     form,

@@ -3,7 +3,7 @@ import loginInstance from "@/config/login-axios-config";
 import { IDMahasiswa } from "./types";
 
 export const postRegistraionSidSemForS1 = (data: any) => {
-  return s1Instance.post<any>("/mahasiswa/add-bimbingan-log", data, {
+  return s1Instance.post<any>("/mahasiswa/pendaftaran-sidsem", data, {
     withCredentials: true,
   });
 };

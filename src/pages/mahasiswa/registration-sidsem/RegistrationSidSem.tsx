@@ -27,10 +27,6 @@ export default function RegistrationSidSem() {
         ? "Seminar Proposal"
         : "Not found";
 
-  if (data.name) {
-    console.log(data);
-  }
-
   return (
     <main>
       <Form {...form}>
@@ -51,12 +47,9 @@ export default function RegistrationSidSem() {
               </CardHeader>
             }
           />
-
-          <DataDiriComponent form={form} data={data} strata={strata || ""} />
+          <DataDiriComponent data={data} strata={strata || ""} />
           <DetailTopikComponent form={form} />
-
           <AddBerkas form={form} />
-
           <div className="px-4 flex flex-col gap-5">
             <CardDescription>
               Mohon periksa kembali seluruh bagian sebelum mengirimkan formulir
