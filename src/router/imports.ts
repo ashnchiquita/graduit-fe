@@ -52,6 +52,10 @@ export const AccountTimTesisLayout = lazy(
   () => import("../layouts/AccountTimTesisLayout.tsx"),
 );
 
+export const LogMahasiswa = lazy(
+  () => import("../pages/mahasiswa/log/LogMahasiswa.tsx"),
+);
+
 export const BatchUbahRole = lazy(
   () => import("../pages/admin/batch-ubah-role/BatchUbahRole.tsx"),
 );

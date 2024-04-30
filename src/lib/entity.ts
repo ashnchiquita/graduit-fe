@@ -21,6 +21,24 @@ export type User = {
   major: string;
 };
 
+type Status = "Sah" | "Menunggu" | "Tidak Sah";
+
+export type MahasiswaLogStatusData = {
+  status: boolean;
+  log: MahasiswaLogs[];
+};
+
+export type MahasiswaLogs = {
+  tanggal: string;
+  laporanKemajuan: string;
+  toDo: string;
+  berkas: {
+    nama: string;
+    url: string;
+  };
+  status: Status;
+  rencana: string;
+};
 export type SystemLogs = {
   id: string;
   idPengguna: string;

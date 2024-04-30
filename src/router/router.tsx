@@ -16,7 +16,6 @@ import {
   InputNilai,
   KelolaAkun,
   KonfigurasiPeriode,
-  LogBimbingan,
   LogBimbinganMahasiswa,
   LogSistem,
   Login,
@@ -36,6 +35,7 @@ import {
   SubmisiTugas,
   DaftarTugas,
   DetailMahasiswa,
+  LogMahasiswa,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -152,7 +152,7 @@ export const router = createBrowserRouter(
         },
         {
           path: "/log/bimbingan",
-          element: <LogBimbingan />,
+          element: <LogMahasiswa />,
         },
         {
           path: "/dosen/bimbingan/:strata/:id",
