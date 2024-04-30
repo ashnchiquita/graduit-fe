@@ -35,6 +35,7 @@ import {
   KelasDetail,
   SubmisiTugas,
   DaftarTugas,
+  DetailMahasiswa,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -63,6 +64,10 @@ export const router = createBrowserRouter(
         {
           path: "/dashboard",
           element: <Dashboard />,
+        },
+        {
+          path: "/detail-mahasiswa/:nim",
+          element: <DetailMahasiswa />,
         },
         {
           path: "/rekap-pendaftaran",

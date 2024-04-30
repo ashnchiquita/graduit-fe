@@ -189,7 +189,19 @@ export function DataTable<TData>({
                         width: `calc(var(--header-${header?.id}-size) * 1px)`,
                       }}
                     >
-                      <div className="flex items-center gap-4">
+                      <div
+                        style={{
+                          justifyContent:
+                            (header.column.columnDef.meta as any)
+                              ?.alignHeader === "center"
+                              ? "center"
+                              : (header.column.columnDef.meta as any)
+                                    ?.alignHeader === "right"
+                                ? "flex-end"
+                                : "flex-start",
+                        }}
+                        className="flex w-full items-center gap-4"
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
