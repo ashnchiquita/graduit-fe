@@ -27,6 +27,8 @@ export default function Dashboard(): JSX.Element {
     return <DashboardTimTugas strata="S1" />;
   } else if (data?.roles.includes(RoleEnum.S2_TIM_TESIS)) {
     return <DashboardTimTugas strata="S2" />;
+  } else if (data?.roles.includes(RoleEnum.ADMIN)) {
+    return <DashboardTimTugas strata="ALL" />;
   } else {
     return <div>gaboleh :o</div>;
   }

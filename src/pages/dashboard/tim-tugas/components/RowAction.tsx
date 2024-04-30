@@ -17,10 +17,7 @@ interface ComponentProps {
   searchValue: string;
 }
 
-export default function RowAction({
-  row,
-  searchValue,
-}: ComponentProps): JSX.Element {
+export default function RowAction({ row }: ComponentProps): JSX.Element {
   const { archiveDialogOpen, setArchiveDialogOpen, handleArchive } =
     useRowAction();
 

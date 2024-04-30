@@ -115,7 +115,7 @@ export function DataTable<TData>({
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               {customElementsLeft}
               {searchValue !== undefined && !!setSearchValue && (
-                <div className="group flex flex-1 items-center gap-2 rounded-md border border-input bg-transparent px-2 py-1 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:flex-none">
+                <div className="group flex flex-1 items-center gap-2 rounded-md border border-input bg-transparent p-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-1 focus-within:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:flex-none">
                   <Search size={14} className="text-muted-foreground" />
                   <input
                     type="text"

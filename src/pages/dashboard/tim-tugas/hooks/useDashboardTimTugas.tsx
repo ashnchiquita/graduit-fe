@@ -4,7 +4,7 @@ import {
   DashboardTimTugasHookRet,
   DashTableData,
 } from "../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ColumnDef,
   getCoreRowModel,
@@ -21,6 +21,7 @@ export default function useDashboardTimTugas({
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",
   );
+  const [strataFilter, setStrataFilter] = useState<"S1" | "S2">("S1");
 
   const handleSearchValueChange = (value: string) => {
     const obj: any = {};
@@ -30,49 +31,60 @@ export default function useDashboardTimTugas({
     setSearchValue(value);
   };
 
-  const { data = [] } = useSWR(["/dashboard-tim-tugas", searchValue], () => {
-    if (strata === "S1") {
-      return [
-        {
-          nim: "13521149",
-          nama: "John Doe",
-          pengajuanTopik: true,
-          seminarProposal: true,
-          seminarTesis: true,
-          sidang: true,
-        },
-        {
-          nim: "13521941",
-          nama: "Jane Doe",
-          pengajuanTopik: true,
-          seminarProposal: false,
-          seminarTesis: false,
-          sidang: false,
-        },
-      ];
-    } else {
-      return [
-        {
-          nim: "13521149",
-          nama: "John Doe",
-          pengajuanTopik: true,
-          seminarProposal: true,
-          seminarTesis: true,
-          sidang: true,
-        },
-        {
-          nim: "13521941",
-          nama: "Jane Doe",
-          pengajuanTopik: true,
-          seminarProposal: true,
-          seminarTesis: false,
-          sidang: false,
-        },
-      ];
-    }
-  });
+  const { data = [], mutate } = useSWR(
+    ["/dashboard-tim-tugas", searchValue],
+    () => {
+      if (strata === "S1" || (strata === "ALL" && strataFilter === "S1")) {
+        return [
+          {
+            nim: "13521149",
+            nama: "John Doe",
+            pengajuanTopik: true,
+            seminarProposal: true,
+            seminarTesis: true,
+            sidang: true,
+          },
+          {
+            nim: "13521941",
+            nama: "Jane Doe",
+            pengajuanTopik: true,
+            seminarProposal: false,
+            seminarTesis: false,
+            sidang: false,
+          },
+        ];
+      } else {
+        return [
+          {
+            nim: "23521149",
+            nama: "John Doe",
+            pengajuanTopik: true,
+            seminarProposal: true,
+            seminarTesis: true,
+            sidang: true,
+          },
+          {
+            nim: "23521941",
+            nama: "Jane Doe",
+            pengajuanTopik: true,
+            seminarProposal: true,
+            seminarTesis: false,
+            sidang: false,
+          },
+          {
+            nim: "23521491",
+            nama: "Kia Mhalifa",
+            pengajuanTopik: true,
+            seminarProposal: true,
+            seminarTesis: true,
+            sidang: false,
+          },
+        ];
+      }
+    },
+  );
 
-  let columns: ColumnDef<DashTableData>[] = [
+  const allColumns: ColumnDef<DashTableData>[] = [
     {
       header: "NIM",
       accessorKey: "nim",
@@ -153,11 +165,16 @@ export default function useDashboardTimTugas({
     },
   ];
 
-  if (strata === "S1") {
+  useEffect(() => {
+    mutate();
+  }, [strataFilter]);
+
+  let columns = allColumns;
+  if (strata === "S1" || (strata === "ALL" && strataFilter === "S1")) {
     columns.splice(4, 1);
   }
 
-  const table = useReactTable({
+  let table = useReactTable({
     columns,
     data,
     columnResizeMode: "onChange",
@@ -168,5 +185,7 @@ export default function useDashboardTimTugas({
     table,
     searchValue,
     handleSearchValueChange,
+    strataFilter,
+    setStrataFilter,
   };
 }

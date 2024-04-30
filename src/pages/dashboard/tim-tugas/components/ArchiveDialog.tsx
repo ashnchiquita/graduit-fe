@@ -8,7 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CircleAlertIcon } from "lucide-react";
 import { useState } from "react";
 import { IoWarningOutline } from "react-icons/io5";
 
