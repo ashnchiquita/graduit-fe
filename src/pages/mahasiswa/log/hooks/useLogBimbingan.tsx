@@ -47,7 +47,6 @@ const useLogBimbingan = () => {
       const resLog = await getLogBimbinganStatusForS1(
         resMahasiswa.data.id ?? "",
       );
-      console.log(resLog.data.data.bimbingan_logs);
       data = {
         status: resLog.data.data.status,
         bimbingan_logs: resLog.data.data.bimbingan_logs.map(

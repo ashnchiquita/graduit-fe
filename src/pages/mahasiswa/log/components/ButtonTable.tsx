@@ -2,7 +2,6 @@ import { HTMLAttributes, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 import { AiOutlineCopy, AiOutlineCloudDownload } from "react-icons/ai";
 import { Row } from "@tanstack/react-table";
-import { MahasiswaLogs } from "@/lib/entity";
 import { Berkas, LogBimbinganData } from "../types";
 
 interface ButtonDownloadProps extends HTMLAttributes<HTMLDivElement> {
@@ -10,7 +9,7 @@ interface ButtonDownloadProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const ButtonDownload = forwardRef<HTMLDivElement, ButtonDownloadProps>(
-  ({ row, className, ...props }, ref) => {
+  ({ row, className, ...props }) => {
     return (
       <>
         {row.original.berkas.map((item: Berkas) => {

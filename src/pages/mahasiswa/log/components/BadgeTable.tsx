@@ -2,7 +2,6 @@ import { HTMLAttributes, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
 import { Row } from "@tanstack/react-table";
-import { MahasiswaLogs } from "@/lib/entity";
 import { LogBimbinganData } from "../types";
 
 export const badgeVariants = cva(

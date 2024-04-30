@@ -11,10 +11,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "lucide-react";
 
 export default function LogMahasiswa(): JSX.Element {
-  const { table, onClickCreate, onClickFilter, range, setRange, data } =
+  const { table, onClickCreate, range, setRange, data } =
     useLogBimbingan();
 
   return (

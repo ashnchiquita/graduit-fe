@@ -1,5 +1,3 @@
-import { boolean } from "zod";
-
 export type Berkas = {
   nama: string;
   link: string;
