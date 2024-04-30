@@ -114,23 +114,26 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
       header: "NIM",
       accessorKey: "nim",
       enableSorting: false,
-      size: 200,
+      minSize: 200,
     },
     {
       header: "Nama",
       accessorKey: "nama",
       enableSorting: false,
+      minSize: 400,
     },
     {
       header: "Topik",
       accessorKey: "topik",
       enableSorting: false,
+      minSize: 1000,
     },
     {
       header: "Status",
       accessorKey: "status",
       enableSorting: false,
       cell: ({ row }) => <StatusCell row={row} />,
+      minSize: 100,
     },
     {
       id: "link",
@@ -141,6 +144,7 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
           <HiOutlineExternalLink className="size-4 hover:text-blue-500" />
         </Link>
       ),
+      minSize: 40,
       meta: {
         align: "right",
       },

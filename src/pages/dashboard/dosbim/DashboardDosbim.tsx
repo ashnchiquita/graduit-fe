@@ -41,8 +41,6 @@ const DashboardDosbim = () => {
           table={table}
           headline="Daftar Mahasiswa"
           description="Daftar mahasiswa bimbingan beserta statusnya."
-          searchValue={searchValue}
-          setSearchValue={handleSearchValueChange}
         />
       </div>
       <div className="block md:hidden">
