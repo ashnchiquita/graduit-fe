@@ -126,7 +126,7 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
       }));
 
       return [...data1, ...data2];
-    }  else if (data.roles.includes(RoleEnum.S1_TIM_TA)) {
+    } else if (data.roles.includes(RoleEnum.S1_TIM_TA)) {
       try {
         const response = await getRekapPendaftaranTableS1({});
 
