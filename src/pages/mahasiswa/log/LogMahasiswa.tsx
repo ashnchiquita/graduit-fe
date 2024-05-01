@@ -13,8 +13,7 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 
 export default function LogMahasiswa(): JSX.Element {
-  const { table, onClickCreate, range, setRange, data } =
-    useLogBimbingan();
+  const { table, onClickCreate, range, setRange, data } = useLogBimbingan();
 
   return (
     <div className="flex flex-col gap-4 px-4 pb-20">
