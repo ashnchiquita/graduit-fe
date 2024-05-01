@@ -23,12 +23,16 @@ export default function Dashboard(): JSX.Element {
     data?.roles.includes(RoleEnum.S1_MAHASISWA)
   ) {
     return <DashboardMahasiswa />;
+  } else if (
+    data?.roles.includes(RoleEnum.ADMIN) ||
+    (data?.roles.includes(RoleEnum.S1_TIM_TA) &&
+      data?.roles.includes(RoleEnum.S2_TIM_TESIS))
+  ) {
+    return <DashboardTimTugas strata="ALL" />;
   } else if (data?.roles.includes(RoleEnum.S1_TIM_TA)) {
     return <DashboardTimTugas strata="S1" />;
   } else if (data?.roles.includes(RoleEnum.S2_TIM_TESIS)) {
     return <DashboardTimTugas strata="S2" />;
-  } else if (data?.roles.includes(RoleEnum.ADMIN)) {
-    return <DashboardTimTugas strata="ALL" />;
   } else {
     return <div>gaboleh :o</div>;
   }
