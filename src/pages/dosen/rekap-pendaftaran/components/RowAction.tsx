@@ -51,7 +51,7 @@ export default function RowAction({
           <div className="w-full p-3">
             <Link
               to={`/rekap-pendaftaran/${row.original.strata}/${row.original.id}`}
-              className="flex w-full items-center gap-3 text-xs font-medium text-slate-700"
+              className="flex w-full items-center gap-3 text-sm font-medium text-slate-700"
             >
               <PiClockCounterClockwise className="size-4" />
               Lihat Detail Pengajuan
@@ -63,7 +63,7 @@ export default function RowAction({
           {row.original.status === StatusPendaftaranEnum.PROCESS && (
             <Popover>
               <PopoverTrigger asChild>
-                <button className="flex w-full items-center gap-3 p-3 text-xs font-medium text-red-400">
+                <button className="flex w-full items-center gap-3 p-3 text-sm font-medium text-red-400">
                   <HiOutlineDocument className="size-4" />
                   Ubah Status Pengajuan
                 </button>
