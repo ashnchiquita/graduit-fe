@@ -27,7 +27,7 @@ export default function RekapPendaftaranTimTesis(): JSX.Element {
         <section className="hidden pb-8 md:block">
           <DataTable
             table={table}
-            headline="Daftar Mahasiswa"
+            headline="Pengajuan Sidang/Seminar Mahasiswa"
             searchValue={searchValue}
             setSearchValue={handleSearchValueChange}
             searchPlaceholder="Cari nama atau NIM mahasiswa"
@@ -37,7 +37,7 @@ export default function RekapPendaftaranTimTesis(): JSX.Element {
         </section>
 
         <section className="flex w-full flex-col gap-2.5 rounded-lg bg-white px-5 py-4 md:hidden">
-          <h2 className="text-lg font-bold">Rekap Pendaftaran</h2>
+          <h2 className="text-lg font-bold">Pengajuan Sidang/Seminar Mahasiswa</h2>
 
           <div className="flex w-full items-center justify-between">
             <p className="text-xs text-slate-700">Status Pengajuan</p>
