@@ -154,7 +154,6 @@
   font-weight: lighter;
 }
 .mobile .mobile-wrapper .bawah {
-  margin-top: 10vh;
 }
 
 .mobile .mobile-wrapper .bawah .isian {
@@ -173,7 +172,7 @@
 
 .mobile .mobile-wrapper .bawah .tulisan-or p {
   margin: 0 10px;
-  color: white;
+  color: black;
 }
 
 .login-desktop {
