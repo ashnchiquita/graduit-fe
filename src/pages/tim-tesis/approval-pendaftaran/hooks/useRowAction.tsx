@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { RowActionHookRet } from "../types";
-import { approvePendaftaran, approvePendaftaranS1, rejectPendaftaran, rejectPendaftaranS1 } from "../clients";
+import {
+  approvePendaftaran,
+  approvePendaftaranS1,
+  rejectPendaftaran,
+  rejectPendaftaranS1,
+} from "../clients";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
 import { useData } from "../../context/DataContext";
@@ -27,26 +32,22 @@ export default function useRowAction({
         return null;
       }
 
-      if (
-        data.roles.includes(RoleEnum.S1_TIM_TA)
-      ){
+      if (data.roles.includes(RoleEnum.S1_TIM_TA)) {
         try {
           const res = await approvePendaftaranS1(arg.id);
           return res.data;
         } catch (error) {
           toast.error("Gagal menerima pendaftaran");
         }
-      }
-      else if(data.roles.includes(RoleEnum.S2_TIM_TESIS)){
+      } else if (data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
         try {
           const res = await approvePendaftaran(arg.id);
           return res.data;
         } catch (error) {
           toast.error("Gagal menerima pendaftaran");
         }
-
-      }else{
-        return null
+      } else {
+        return null;
       }
     },
   );
@@ -54,29 +55,27 @@ export default function useRowAction({
   const { trigger: rejectTrigger, error: rejectError } = useSWRMutation(
     `/registrasi-tesis/${idMahasiswa}/status`,
     async (_, { arg }: { arg: { id: string } }) => {
-      if(!data){
-        return null
+      if (!data) {
+        return null;
       }
 
-      if(data.roles.includes(RoleEnum.S1_TIM_TA)){
+      if (data.roles.includes(RoleEnum.S1_TIM_TA)) {
         try {
           const res = await rejectPendaftaranS1(arg.id);
           return res.data;
         } catch (error) {
           toast.error("Gagal menolak pendaftaran");
         }
-      }else if(data.roles.includes(RoleEnum.S2_TIM_TESIS)){
+      } else if (data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
         try {
           const res = await rejectPendaftaran(arg.id);
           return res.data;
         } catch (error) {
           toast.error("Gagal menolak pendaftaran");
         }
-        
-      }else{
+      } else {
         return null;
       }
-      
     },
   );
 

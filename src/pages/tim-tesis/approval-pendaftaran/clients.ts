@@ -64,8 +64,8 @@ export async function approvePendaftaranS1(id: string) {
   return await s1Instance.patch(
     `/TIMTA/pendaftaran-ditolak`,
     {
-      "id":id,
-      "ditolak": true
+      id: id,
+      ditolak: true,
     },
     {
       withCredentials: true,
@@ -77,8 +77,8 @@ export async function rejectPendaftaranS1(id: string) {
   return await s1Instance.patch(
     `/TIMTA/pendaftaran-ditolak`,
     {
-      "id":`${id}`,
-      "ditolak": false
+      id: `${id}`,
+      ditolak: false,
     },
     {
       withCredentials: true,

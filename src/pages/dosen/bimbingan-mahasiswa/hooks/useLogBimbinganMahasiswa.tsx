@@ -23,6 +23,7 @@ import {
   BimbinganS1Res,
   LogBimbinganMahasiswaHookRet,
 } from "../types";
+import { formatDateWithoutClock } from "@/pages/mahasiswa/add-log-bimbingan/utils";
 
 export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet {
   const [searchValue, setSearchValue] = useState("");
@@ -52,12 +53,10 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
       const resBimbingan = await getLogBimbinganS1(id ?? "");
       const resMahasiswa = await getMahasiswaInfoS1(id ?? "");
 
-      console.log(resBimbingan.data.data);
-
       data = {
         bimbingan: resBimbingan.data.data.map((item: BimbinganS1Res) => ({
           id: item.id,
-          tanggal: item.date,
+          tanggal: formatDateWithoutClock(new Date(item.date)),
           laporan_kemajuan: item.laporan_kemajuan,
           todo: item.todo,
           rencana: item.next_bimbingan,
@@ -70,22 +69,20 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
         mahasiswa: {
           name: resMahasiswa.data.data.nama,
           email: resMahasiswa.data.data.email,
-          major: "dummy jurusan",
+          major: resMahasiswa.data.data.jalur_pilihan,
         },
         topik: {
-          judul: "dummy judul",
-          deskripsi: "dummy desc",
+          judul: resMahasiswa.data.data.judul,
+          deskripsi: resMahasiswa.data.data.deskripsi,
         },
       };
-
-      console.log(data);
     } else {
       const res = await getLogBimbinganS2(id ?? "");
 
       data = {
         bimbingan: res.data.bimbingan.map((item) => ({
           id: item.id,
-          tanggal: item.waktuBimbingan,
+          tanggal: `${item.waktuBimbingan}`,
           laporan_kemajuan: item.laporanKemajuan,
           todo: item.todo,
           rencana: item.bimbinganBerikutnya,
@@ -123,7 +120,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
     },
     {
       header: "Rencana",
-      accessorKey: "rencana",
+      accessorKey: "todo",
       minSize: 1000,
     },
     {
