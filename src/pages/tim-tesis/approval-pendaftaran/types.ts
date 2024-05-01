@@ -14,7 +14,7 @@ export type RekapPendaftaranTimTesisHookRet = {
   table: Table<ApprovalPendaftaranTopik>;
   searchValue: string;
   handleSearchValueChange: (value: string) => void;
-  refreshData?: () => void;
+  refreshData: () => void;
 };
 
 export type RowActionHookRet = {
