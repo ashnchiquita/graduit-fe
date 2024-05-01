@@ -24,8 +24,6 @@ const useRegistrationSidSem = () => {
     dosbing: "",
   };
 
-  // const [idMahasiswa, setIdMahasiswa] = useState<string>("");
-
   const { data = defaultData } = useSWR(`/registration`, async () => {
     let data: Placeholders;
 

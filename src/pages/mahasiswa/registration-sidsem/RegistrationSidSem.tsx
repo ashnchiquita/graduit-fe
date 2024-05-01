@@ -11,9 +11,6 @@ import { useParams } from "react-router-dom";
 import { DataDiriComponent } from "./components/DataDiri";
 import { AddBerkas } from "./components/AddBerkas";
 import { DetailTopikComponent } from "./components/DetailTopik";
-// import { getPlaceholdersS1, getIdMahasiswa } from "./client";
-// import useSWR from "swr";
-// import { Placeholders } from "./types";
 
 export default function RegistrationSidSem() {
   const { data, form, onSubmit } = useRegistrationSidSem();
