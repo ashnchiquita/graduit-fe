@@ -18,6 +18,18 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
+    label: "Laporan Kemajuan",
+    icon: <IoSchoolOutline className="text-slate-700" />,
+    children: [
+      {
+        label: "Rekap Pendaftaran",
+        path: "/rekap-pendaftaran-tim-tesis",
+        roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.S1_TIM_TA],
+      },
+    ],
+    roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.S1_TIM_TA],
+  },
+  {
     label: "Pendaftaran",
     icon: <VscNotebook className="text-slate-700" />,
     children: [
