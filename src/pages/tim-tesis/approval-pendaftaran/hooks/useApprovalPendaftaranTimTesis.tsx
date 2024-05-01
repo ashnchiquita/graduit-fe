@@ -131,7 +131,7 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
         const response = await getRekapPendaftaranTableS1({});
 
         const data = response.data.data.map((item) => ({
-          id: item.id_mahasiswa,
+          id: item.id,
           nim: item.nim,
           nama: item.nama_mahasiswa,
           tipe: item.tipe,
