@@ -36,6 +36,7 @@ import {
   DaftarTugas,
   LogMahasiswa,
 } from "./imports";
+import RegistrationSidSem from "@/pages/mahasiswa/registration-sidsem/RegistrationSidSem";
 
 export const router = createBrowserRouter(
   [
@@ -204,6 +205,10 @@ export const router = createBrowserRouter(
         {
           path: "/tugas/assignment",
           element: <DaftarTugas />,
+        },
+        {
+          path: "/registration/:tipe/:strata",
+          element: <RegistrationSidSem />,
         },
       ],
     },

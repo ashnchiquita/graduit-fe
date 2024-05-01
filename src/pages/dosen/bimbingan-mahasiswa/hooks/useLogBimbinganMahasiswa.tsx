@@ -167,7 +167,6 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
       sorting,
     },
   });
-
   return {
     table,
     mahasiswaData: data.mahasiswa,
