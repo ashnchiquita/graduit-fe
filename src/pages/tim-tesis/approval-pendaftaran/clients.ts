@@ -1,5 +1,9 @@
 import s2Instance from "@/config/s2-axios-config";
-import { GetAprrovalPendaftaranTableRes} from "./types";
+import {
+  GetAprrovalPendaftaranTableRes,
+  GetAprrovalPendaftaranTableResS1,
+} from "./types";
+import s1Instance from "@/config/s1-axios-config";
 
 export async function getRekapPendaftaranTable(params: {
   view: string;
@@ -12,6 +16,19 @@ export async function getRekapPendaftaranTable(params: {
 }) {
   return await s2Instance.get<GetAprrovalPendaftaranTableRes>(
     "/registrasi-tesis",
+    {
+      params,
+      withCredentials: true,
+    },
+  );
+}
+
+export async function getRekapPendaftaranTableS1(params: {
+  limit?: number;
+  search?: string;
+}) {
+  return await s1Instance.get<GetAprrovalPendaftaranTableResS1>(
+    "/TIMTA/pendaftaran-sidsem",
     {
       params,
       withCredentials: true,

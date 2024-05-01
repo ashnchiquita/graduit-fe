@@ -1,6 +1,5 @@
 import clsx from "clsx";
 
-
 export default function JenisSidangBadge({
   jenis,
 }: {
@@ -27,12 +26,7 @@ export default function JenisSidangBadge({
               : "bg-indigo-600",
         )}
       />
-      <p
-        className={clsx(
-          "text-xs font-medium capitalize",
-          "text-white"
-        )}
-      >
+      <p className={clsx("text-xs font-medium capitalize", "text-white")}>
         {jenis.toLowerCase().replace(/^\w/, (c) => c.toUpperCase())}
       </p>
     </div>

@@ -15,12 +15,14 @@ import {
 import useSWR from "swr";
 import {
   getRekapPendaftaranTable,
+  getRekapPendaftaranTableS1,
 } from "../clients";
 import { toast } from "react-toastify";
 import { RoleEnum } from "@/types/session-data";
 import { convertStatus } from "../../helper";
+import useSession from "@/hooks/useSession";
+import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 // import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
-
 
 export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTesisHookRet {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,6 +30,7 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
     searchParams.get("search") ?? "",
   );
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
+  const { data } = useSession();
 
   const handleSearchValueChange = (value: string) => {
     const obj: any = {};
@@ -63,9 +66,7 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
       header: "Jenis Sidang",
       accessorKey: "tipe",
       enableSorting: false,
-      cell: ({ row }) => (
-        <JenisSidangBadge jenis={row.original.tipe} />
-      ),
+      cell: ({ row }) => <JenisSidangBadge jenis={row.original.tipe} />,
     },
     {
       header: "Status Pengajuan",
@@ -85,18 +86,37 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
     },
   ];
 
-  const { data: s2MahasiswaData = [], mutate: mutateTable } = useSWR<
+  const { data: dataTable = [], mutate: mutateTable } = useSWR<
     ApprovalPendaftaranTopik[]
-  >("/registrasi-tesis", async () => {
-    try {
-      const response = await getRekapPendaftaranTable({
+  >("/TIMTA/pendaftaran-sidsem", async () => {
+    if (!data) {
+      return [] as ApprovalPendaftaranTopik[];
+    }
+
+    if (
+      data.roles.includes(RoleEnum.S1_TIM_TA) &&
+      data.roles.includes(RoleEnum.S2_TIM_TESIS)
+    ) {
+      const response1 = await getRekapPendaftaranTableS1({});
+      const data1 = response1.data.data.map((item) => ({
+        id: item.id_mahasiswa,
+        nim: item.nim,
+        nama: item.nama_mahasiswa,
+        tipe: item.tipe,
+        dosenPembimbing: item.nama_dosbing,
+        status: item.status
+          ? StatusPendaftaranEnum.ACCEPTED
+          : StatusPendaftaranEnum.REJECTED,
+      }));
+
+      const response2 = await getRekapPendaftaranTable({
         view: RoleEnum.S2_TIM_TESIS,
         page: page,
         search: searchValue,
       });
 
       // Map GetRekapPendaftaranTableRes to PendaftaranTopik
-      const data = response.data.data.map((item) => ({
+      const data2 = response2.data.data.map((item) => ({
         id: item.mahasiswa_id,
         nim: item.nim,
         nama: item.mahasiswa_nama,
@@ -105,17 +125,153 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
         status: convertStatus(item.status),
       }));
 
-      return data;
-    } catch (error) {
-      toast.error("Gagal memuat data tabel");
-      return [];
+      return [...data1, ...data2];
+    }  else if (data.roles.includes(RoleEnum.S1_TIM_TA)) {
+      try {
+        const response = await getRekapPendaftaranTableS1({});
+
+        const data = response.data.data.map((item) => ({
+          id: item.id_mahasiswa,
+          nim: item.nim,
+          nama: item.nama_mahasiswa,
+          tipe: item.tipe,
+          dosenPembimbing: item.nama_dosbing,
+          status: item.status
+            ? StatusPendaftaranEnum.ACCEPTED
+            : StatusPendaftaranEnum.REJECTED,
+        }));
+
+        return data;
+      } catch (error) {
+        toast.error("Gagal memuat data tabel");
+        return [];
+      }
+    } else if (data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
+      try {
+        const response = await getRekapPendaftaranTable({
+          view: RoleEnum.S2_TIM_TESIS,
+          page: page,
+          search: searchValue,
+        });
+
+        // Map GetRekapPendaftaranTableRes to PendaftaranTopik
+        const data = response.data.data.map((item) => ({
+          id: item.mahasiswa_id,
+          nim: item.nim,
+          nama: item.mahasiswa_nama,
+          tipe: item.tipe,
+          dosenPembimbing: item.pembimbing_nama,
+          status: convertStatus(item.status),
+        }));
+
+        return data;
+      } catch (error) {
+        toast.error("Gagal memuat data tabel");
+        return [];
+      }
+    } else {
+      return [] as ApprovalPendaftaranTopik[];
     }
   });
 
   const refreshData = () => {
     mutateTable();
   };
+  // const getDataS1 = () => {
+  //   const {data: s1MahasiswData = [],mutate: mutateTableS1 } = useSWR<
+  //   ApprovalPendaftaranTopik[]
+  //   >("/TIMTA/pendaftaran-sidsem", async () => {
+  //     try{
+  //       const response = await getRekapPendaftaranTableS1({})
 
+  //       const data = response.data.data.map((item) => ({
+  //         id: item.id_mahasiswa,
+  //         nim: item.nim,
+  //         nama: item.nama_mahasiswa,
+  //         tipe: item.tipe,
+  //         dosenPembimbing: item.nama_dosbing,
+  //         status: item.status ? StatusPendaftaranEnum.ACCEPTED :StatusPendaftaranEnum.REJECTED,
+  //       }));
+
+  //       return data;
+  //     }catch(error){
+  //       toast.error("Gagal memuat data tabel");
+  //       return [];
+  //     }
+  //   })
+  //   return {dataTable:s1MahasiswData,mutateTable:mutateTableS1}
+  // }
+
+  // const getDataS2 = () => {
+  //   const { data: s2MahasiswaData = [], mutate: mutateTable } = useSWR<
+  //     ApprovalPendaftaranTopik[]
+  //   >("/registrasi-tesis", async () => {
+  //     try {
+  //       const response = await getRekapPendaftaranTable({
+  //         view: RoleEnum.S2_TIM_TESIS,
+  //         page: page,
+  //         search: searchValue,
+  //       });
+
+  //       // Map GetRekapPendaftaranTableRes to PendaftaranTopik
+  //       const data = response.data.data.map((item) => ({
+  //         id: item.mahasiswa_id,
+  //         nim: item.nim,
+  //         nama: item.mahasiswa_nama,
+  //         tipe: item.tipe,
+  //         dosenPembimbing: item.pembimbing_nama,
+  //         status: convertStatus(item.status),
+  //       }));
+
+  //       return data;
+  //     } catch (error) {
+  //       toast.error("Gagal memuat data tabel");
+  //       return [];
+  //     }
+  //   });
+  //   return {dataTable:s2MahasiswaData, mutateTable:mutateTable}
+  // }
+
+  // if(data){
+  //   const {dataTable,mutateTable} = data.roles.includes(RoleEnum.S1_TIM_TA) ? getDataS1() : getDataS2()
+  //   const refreshData = () => {
+  //     mutateTable();
+  //   };
+
+  // }
+
+  const table = useReactTable({
+    columns,
+    data: dataTable,
+    state: {
+      columnVisibility: {
+        id: false,
+      },
+    },
+    columnResizeMode: "onChange",
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  // On search change
+  useEffect(() => {
+    const debouncedSearch = setTimeout(() => {
+      mutateTable();
+      setPage(1);
+    }, 500);
+    return () => clearTimeout(debouncedSearch);
+  }, [searchValue, mutateTable]);
+
+  //On data change
+  useEffect(() => {
+    mutateTable();
+  }, [data]);
+
+  return {
+    table,
+    searchValue,
+    handleSearchValueChange,
+    refreshData,
+  };
   // const dummyData: ApprovalPendaftaranTopik[] = [
   //   {
   //     id: "1",
@@ -142,35 +298,4 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
   //     status: StatusPendaftaranEnum.REJECTED,
   //   },
   // ];
-
-  
-
-  const table = useReactTable({
-    columns,
-    data: s2MahasiswaData,
-    state: {
-      columnVisibility: {
-        id: false,
-      },
-    },
-    columnResizeMode: "onChange",
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  // On search change
-  useEffect(() => {
-    const debouncedSearch = setTimeout(() => {
-      mutateTable();
-      setPage(1);
-    }, 500);
-
-    return () => clearTimeout(debouncedSearch);
-  }, [searchValue, mutateTable]);
-
-  return {
-    table,
-    searchValue,
-    handleSearchValueChange,
-    refreshData,
-  };
 }

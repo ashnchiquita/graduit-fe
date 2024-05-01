@@ -14,7 +14,7 @@ export type RekapPendaftaranTimTesisHookRet = {
   table: Table<ApprovalPendaftaranTopik>;
   searchValue: string;
   handleSearchValueChange: (value: string) => void;
-  refreshData: () => void;
+  refreshData?: () => void;
 };
 
 export type RowActionHookRet = {
@@ -63,9 +63,25 @@ export type GetAprrovalPendaftaranTableRes = {
     mahasiswa_nama: string;
     pembimbing_nama: string; // Dosen penerima (only 1)
     status: "NOT_ASSIGNED" | "INTERVIEW" | "APPROVED" | "REJECTED";
-    tipe : "NOT_ASSIGNED" | "Sidang Tesis" | "Seminar Proposal" | "Seminar Tesis"
+    tipe:
+      | "NOT_ASSIGNED"
+      | "Sidang Tesis"
+      | "Seminar Proposal"
+      | "Seminar Tesis";
   }[];
   count: number;
+};
+
+export type GetAprrovalPendaftaranTableResS1 = {
+  data: {
+    id: string;
+    nim: string;
+    id_mahasiswa: string;
+    nama_mahasiswa: string;
+    nama_dosbing: string; // Dosen penerima (only 1)
+    status: boolean;
+    tipe: string;
+  }[];
 };
 
 export type ApproveRejectRes = {

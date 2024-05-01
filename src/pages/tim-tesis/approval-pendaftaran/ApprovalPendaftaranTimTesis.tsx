@@ -14,12 +14,8 @@ import { StatusPendaftaranOptions } from "./constants";
 import DataContext from "../context/DataContext";
 
 export default function RekapPendaftaranTimTesis(): JSX.Element {
-  const {
-    table,
-    searchValue,
-    handleSearchValueChange,
-    refreshData,
-  } = useRekapPendaftaranTimTesis();
+  const { table, searchValue, handleSearchValueChange, refreshData } =
+    useRekapPendaftaranTimTesis();
 
   return (
     <DataContext.Provider value={{ refreshData }}>

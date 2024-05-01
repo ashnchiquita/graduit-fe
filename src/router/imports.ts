@@ -94,7 +94,10 @@ export const RiwayatPendaftaran = lazy(
 );
 
 export const ApprovalPendaftaran = lazy(
-  () => import("../pages/tim-tesis/approval-pendaftaran/ApprovalPendaftaranTimTesis.tsx"),
+  () =>
+    import(
+      "../pages/tim-tesis/approval-pendaftaran/ApprovalPendaftaranTimTesis.tsx"
+    ),
 );
 
 export const KelasDetail = lazy(
