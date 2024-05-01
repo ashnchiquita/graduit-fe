@@ -1,4 +1,5 @@
 export type DetailPengajuanSidang = {
+  id: string;
   nama: string;
   email: string;
   stream: string;
