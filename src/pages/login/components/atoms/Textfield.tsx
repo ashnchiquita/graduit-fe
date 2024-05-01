@@ -1,5 +1,5 @@
 import { Eye, EyeOff } from "lucide-react";
-import "../../styles/Textfield.css";
+import "../../styles/Textfield.css"; // Assuming you have custom styles for Textfield
 import React, { useState } from "react";
 
 interface TextfieldProps {
@@ -23,7 +23,7 @@ const Textfield: React.FC<TextfieldProps> = ({
 
   return (
     <div className="textfield-container">
-      <div className="textfield-input-container">
+      <div className="textfield-input-container relative">
         {isPassword ? (
           <img src="/icon/lock.png" alt="Lock" className="input-icon" />
         ) : (
@@ -31,23 +31,18 @@ const Textfield: React.FC<TextfieldProps> = ({
         )}
         <input
           type={isPassword && !showPassword ? "password" : "text"}
-          className="textfield-input"
+          className="textfield-input pr-12"
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
         />
         {isPassword && (
-          <>
-            {showPassword ? (
-              <button onClick={() => setShowPassword(!showPassword)}>
-                <Eye size={12} />
-              </button>
-            ) : (
-              <button onClick={() => setShowPassword(!showPassword)}>
-                <EyeOff size={12} />
-              </button>
-            )}
-          </>
+          <button
+            className="absolute inset-y-0 right-3.5 flex items-center justify-center"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <Eye size={12} /> : <EyeOff size={12} />}
+          </button>
         )}
       </div>
     </div>
