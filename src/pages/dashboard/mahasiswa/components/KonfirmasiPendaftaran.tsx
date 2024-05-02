@@ -3,7 +3,7 @@ import { CardDescription, CardTitle } from "@/components/Card";
 const KonfirmasiPendaftaranCard = ({ title }: { title: string }) => {
   return (
     <div className="rounded-lg bg-white flex flex-col gap-2 px-4 py-4">
-      <CardTitle>{title}</CardTitle>
+      <CardTitle>Konfirmasi Pendaftaran {title}</CardTitle>
       <CardDescription>
         Anda telah berhasil melakukan registrasi untuk {title.toLowerCase()}.
         Berikut adalah beberapa informasi penting yang perlu Anda perhatikan:
