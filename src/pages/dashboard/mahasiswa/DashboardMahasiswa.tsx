@@ -5,61 +5,31 @@ import StatusMessageWrapper from "./components/StatusMessageWrapper";
 import { formatDate } from "@/lib/dateformat";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDashboardMahasiswa from "./hooks/useDashboardMahasiswa";
+import useSession from "@/hooks/useSession";
+import RegisterSidSemCard from "./components/RegisterSidSemCard";
+import KonfirmasiPendaftaranCard from "./components/KonfirmasiPendaftaran";
 
 export default function DashboardMahasiswa() {
-  // const { id } = useParams();
-
-  // const [data, setData] = useState<StatusMahasiswaResponse | null>();
-  // useEffect(() => {
-  //   s1Instance
-  //     .get("/status-mahasiswa", {
-  //       params: {
-  //         nim: id,
-  //       },
-  //       headers: {
-  //         Authorization:
-  //           // HARDCODED
-  //           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiVElNVEEifQ.X7BOX03ko-mdgBErB9Llku_QZUGEZcWcNM5wDsk0rW0",
-  //       },
-  //     })
-  //     .then((res) => {
-  //       setData(res.data.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log("err", err);
-  //       console.log("id", id);
-  //     });
-  // }, [id]);
-
-  const { data } = useDashboardMahasiswa();
+  const { data, isRegisteredSeminar, isRegisteredSidang } =
+    useDashboardMahasiswa();
+  const dataMahasiswa = useSession().data;
+  console.log(isRegisteredSeminar, isRegisteredSidang);
 
   if (!data) {
     return <Skeleton />;
   }
   return (
     <main className="flex min-h-screen w-full flex-col items-start justify-start p-4 pt-0">
-      {/* <div className="mt-5 flex h-fit min-h-[180px] w-full flex-row overflow-hidden rounded-lg bg-white">
-        <div className="w-[6px] bg-sky-700" />
-        <div className="flex flex-col p-5">
-          <h1 className=" mb-2 text-2xl">{title}</h1>
-          <p>
-            Mahasiswa diberikan kesempatan untuk memilih dosen pembimbing dan
-            topik yang dikehendaki. Harap cek halaman ini berkala untuk
-            mengetahui status pendaftaran.
-          </p>
-        </div>
-      </div> */}
-
       {/* DATA MAHASISWA */}
       <div className="flex w-full flex-col items-center justify-start gap-4">
         <BasicCard title="Data Mahasiswa" childClass="flex flex-row gap-8">
           <div className="mb-2">
             <p className="mb-2 font-bold">Nama</p>
-            <p>{data.nama}</p>
+            <p>{dataMahasiswa?.nama}</p>
           </div>
           <div>
             <p className="mb-2 font-bold">NIM</p>
-            <p>{data.nim}</p>
+            <p>{dataMahasiswa?.nim}</p>
           </div>
         </BasicCard>
 
@@ -256,6 +226,49 @@ export default function DashboardMahasiswa() {
             </BasicCard>
           )}
         </div>
+        {dataMahasiswa?.roles[0] == "S1_MAHASISWA" ? (
+          <div className="flex flex-col w-full gap-4">
+            <RegisterSidSemCard
+              title="Seminar Proposal"
+              path="/registration/seminar/S1"
+              disabled={isRegisteredSeminar}
+            />
+            {isRegisteredSeminar ? (
+              <KonfirmasiPendaftaranCard title="Seminar Proposal"></KonfirmasiPendaftaranCard>
+            ) : (
+              <></>
+            )}
+            <RegisterSidSemCard
+              title="Sidang Tugas Akhir"
+              path="/registration/sidang/S1"
+              disabled={isRegisteredSidang}
+            />
+            {isRegisteredSidang ? (
+              <KonfirmasiPendaftaranCard title="Sidang Tugas Akhir"></KonfirmasiPendaftaranCard>
+            ) : (
+              <></>
+            )}
+          </div>
+        ) : (
+          // change this into isRegistered s2 related
+          <div className="flex flex-col w-full gap-4">
+            <RegisterSidSemCard
+              title="Seminar Tesis"
+              path="/registration/seminar-tesis/S2"
+              disabled={isRegisteredSeminar}
+            />
+            <RegisterSidSemCard
+              title="Sidang Tesis 1"
+              path="/registration/sidang-satu/S2"
+              disabled={isRegisteredSeminar}
+            />
+            <RegisterSidSemCard
+              title="Sidang Tesis 2"
+              path="/registration/sidang-dua/S2"
+              disabled={isRegisteredSeminar}
+            />
+          </div>
+        )}
       </div>
     </main>
   );
