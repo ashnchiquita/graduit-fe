@@ -9,7 +9,8 @@ const KonfirmasiPendaftaranCard = ({ title }: { title: string }) => {
         Berikut adalah beberapa informasi penting yang perlu Anda perhatikan:
         <br />
         <br />
-        1. Silakan periksa kembali data Anda pada{" "}
+        1. Silakan <span className="font-bold">periksa kembali</span> data Anda
+        pada{" "}
         <span className="text-blue-500 underline hover:cursor-pointer hover:text-blue-700">
           link berikut
         </span>
@@ -20,9 +21,6 @@ const KonfirmasiPendaftaranCard = ({ title }: { title: string }) => {
         3. Jika Anda perlu melakukan perubahan jadwal, silahkan hubungi dosen
         pembimbing secepatnya.
         <br />
-        <br />
-        Mohon cek email Anda secara berkala untuk mendapatkan informasi terbaru
-        mengenai sidang. Kami menantikan kehadiran dan presentasi Anda.
       </CardDescription>
     </div>
   );
