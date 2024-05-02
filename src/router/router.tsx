@@ -1,4 +1,5 @@
 import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
+import RegistrationSidSem from "@/pages/mahasiswa/registration-sidsem/RegistrationSidSem";
 import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
@@ -8,15 +9,20 @@ import {
   AkunDetail,
   AssignKelas,
   BatchUbahRole,
+  DaftarKelas,
   DaftarPengajuan,
   DaftarTopikTimTugas,
+  DaftarTugas,
   Dashboard,
+  DashboardRegistrasi,
   DetailRekapPendaftaran,
   DetailSubmissionTugas,
   InputNilai,
+  KelasDetail,
   KelolaAkun,
   KonfigurasiPeriode,
   LogBimbinganMahasiswa,
+  LogMahasiswa,
   LogSistem,
   Login,
   MainLayout,
@@ -26,17 +32,12 @@ import {
   Penjadwalan,
   Registration,
   RekapPendaftaranDosbim,
-  SubmissionTugas,
-  Topik,
-  DaftarKelas,
   RekapPendaftaranTimTesis,
   RiwayatPendaftaran,
-  KelasDetail,
   SubmisiTugas,
-  DaftarTugas,
-  LogMahasiswa,
+  SubmissionTugas,
+  Topik,
 } from "./imports";
-import RegistrationSidSem from "@/pages/mahasiswa/registration-sidsem/RegistrationSidSem";
 
 export const router = createBrowserRouter(
   [
@@ -96,6 +97,10 @@ export const router = createBrowserRouter(
         {
           path: "/registrasi",
           element: <Registration></Registration>,
+        },
+        {
+          path: "/registrasi-new",
+          element: <DashboardRegistrasi></DashboardRegistrasi>,
         },
         {
           path: "/tesis",
