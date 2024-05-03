@@ -45,7 +45,7 @@ export default function RowAction({
       <PopoverContent
         align="start"
         side="left"
-        className="w-[183px] overflow-hidden rounded-md p-0"
+        className="w-[203px] overflow-hidden rounded-md p-0"
       >
         <div className="size-full bg-white">
           <div className="w-full p-3">
