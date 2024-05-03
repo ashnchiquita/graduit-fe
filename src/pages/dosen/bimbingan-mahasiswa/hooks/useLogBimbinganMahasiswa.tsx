@@ -53,7 +53,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
           tanggal: formatDateWithoutClock(new Date(item.date)),
           laporan_kemajuan: item.laporan_kemajuan,
           todo: item.todo,
-          rencana: item.next_bimbingan,
+          rencana: formatDateWithoutClock(new Date(item.next_bimbingan)),
           berkas: item.berkas.map((berkasItem: Berkas) => ({
             nama: berkasItem.nama,
             link: berkasItem.link,
@@ -115,10 +115,15 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
       enableSorting: false,
     },
     {
-      header: "Rencana",
+      header: "Todo",
       accessorKey: "todo",
       minSize: 1000,
       enableSorting: false,
+    },
+    {
+      header: "Rencana",
+      accessorKey: "rencana",
+      minSize: 1000,
     },
     {
       header: "Berkas",
@@ -177,7 +182,6 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
       sorting,
     },
   });
-
   return {
     table,
     mahasiswaData: data.mahasiswa,

@@ -52,6 +52,10 @@ export const AccountTimTesisLayout = lazy(
   () => import("../layouts/AccountTimTesisLayout.tsx"),
 );
 
+export const LogMahasiswa = lazy(
+  () => import("../pages/mahasiswa/log/LogMahasiswa.tsx"),
+);
+
 export const BatchUbahRole = lazy(
   () => import("../pages/admin/batch-ubah-role/BatchUbahRole.tsx"),
 );
@@ -91,6 +95,13 @@ export const RekapPendaftaranTimTesis = lazy(
 );
 export const RiwayatPendaftaran = lazy(
   () => import("../pages/tim-tesis/riwayat-pendaftaran/RiwayatPendaftaran.tsx"),
+);
+
+export const ApprovalPendaftaran = lazy(
+  () =>
+    import(
+      "../pages/tim-tesis/approval-pendaftaran/ApprovalPendaftaranTimTesis.tsx"
+    ),
 );
 
 export const KelasDetail = lazy(

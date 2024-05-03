@@ -16,7 +16,6 @@ import {
   InputNilai,
   KelolaAkun,
   KonfigurasiPeriode,
-  LogBimbingan,
   LogBimbinganMahasiswa,
   LogSistem,
   Login,
@@ -35,7 +34,10 @@ import {
   KelasDetail,
   SubmisiTugas,
   DaftarTugas,
+  LogMahasiswa,
+  ApprovalPendaftaran,
 } from "./imports";
+import RegistrationSidSem from "@/pages/mahasiswa/registration-sidsem/RegistrationSidSem";
 
 export const router = createBrowserRouter(
   [
@@ -75,6 +77,10 @@ export const router = createBrowserRouter(
         {
           path: "/rekap-pendaftaran-tim-tesis/:nim",
           element: <RiwayatPendaftaran />,
+        },
+        {
+          path: "/approval-pendaftaran",
+          element: <ApprovalPendaftaran />,
         },
         {
           path: "/rekap-pendaftaran/:strata/:mahasiswaId",
@@ -147,7 +153,7 @@ export const router = createBrowserRouter(
         },
         {
           path: "/log/bimbingan",
-          element: <LogBimbingan />,
+          element: <LogMahasiswa />,
         },
         {
           path: "/dosen/bimbingan/:strata/:id",
@@ -204,6 +210,10 @@ export const router = createBrowserRouter(
         {
           path: "/tugas/assignment",
           element: <DaftarTugas />,
+        },
+        {
+          path: "/registration/:tipe/:strata",
+          element: <RegistrationSidSem />,
         },
       ],
     },
