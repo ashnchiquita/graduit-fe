@@ -8,10 +8,10 @@ import MsTeamsIcon from "../../../assets/profile-dosbim/ms_teams_icon.svg";
 import GmailIcon from "../../../assets/profile-dosbim/gmail_icon.svg";
 import TelpIcon from "../../../assets/profile-dosbim/telp_icon.svg";
 import useSession from "@/hooks/useSession";
-import { FaRegEdit } from "react-icons/fa";
 import { useState } from "react";
 import useProfileDosbim from "./hooks/useProfileDosbim";
 import { Form } from "@/components/ui/form/form";
+import TambahkanTopikButton from "./components/TambahkanTopikButton";
 
 export default function ProfileDosbim() {
   const { form, onSubmit } = useProfileDosbim();
@@ -54,7 +54,11 @@ export default function ProfileDosbim() {
                   {isNotEditing ? (
                     <button
                       className="rounded-md bg-blue-500 px-[60px] py-1 text-white font-light hover:bg-blue-600 ml-auto"
-                      onClick={() => setIsNotEditing(false)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setIsNotEditing(false);
+                      }}
                     >
                       Ubah
                     </button>
@@ -110,10 +114,7 @@ export default function ProfileDosbim() {
               <div className="flex flex-col gap-5">
                 <div className="flex">
                   <CardTitle className="mb-2">Topik</CardTitle>
-                  <button className="flex gap-2 rounded-md bg-blue-500 px-3 py-1 text-white font-light hover:bg-blue-600 ml-auto">
-                    <FaRegEdit className="mt-1" />
-                    Tambahkan Topik
-                  </button>
+                  <TambahkanTopikButton />
                 </div>
                 <div className="flex flex-col gap-1">
                   <CardDescription className="font-medium">
