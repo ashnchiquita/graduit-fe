@@ -10,12 +10,12 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import useBatchUbahRole from "./hooks/useBatchUbahRole";
-import useRoleDialog from "./hooks/useTambahRoleDialog";
+import useTambahRoleDialog from "./hooks/useTambahRoleDialog";
+import useHapusRoleDialog from "./hooks/useHapusRoleDialog";
 import FilterPopup from "../components/FilterPopup";
 import { VscListFilter } from "react-icons/vsc";
 import TambahRoleDialog from "./components/TambahRoleDialog";
 import HapusRoleDialog from "./components/HapusRoleDialog";
-import useHapusRoleDialog from "./hooks/useHapusRoleDialog";
 import { Search } from "lucide-react";
 
 export default function BatchUbahRole(): JSX.Element {
@@ -38,9 +38,10 @@ export default function BatchUbahRole(): JSX.Element {
     setRoleValue,
     handleRoleValueChange,
     handleAddAccountButton,
+    roleAccess,
   } = useBatchUbahRole();
 
-  const roleDialogHookRet = useRoleDialog({
+  const roleDialogHookRet = useTambahRoleDialog({
     table,
     fetchData,
     setTambahRoleDialogOpen,
@@ -294,6 +295,7 @@ export default function BatchUbahRole(): JSX.Element {
           roleValue,
           setRoleValue,
           handleRoleValueChange,
+          roleAccess,
         }}
       />
     </main>

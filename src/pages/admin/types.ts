@@ -71,3 +71,8 @@ export type RemoveBatchUpdateRole = {
 export type SuccessResponse = {
   message: string;
 };
+
+export type RoleAccess = {
+  id: number;
+  name: string;
+};

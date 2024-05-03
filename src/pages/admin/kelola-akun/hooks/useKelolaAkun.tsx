@@ -31,6 +31,13 @@ export default function useKelolaAkun() {
 
   const [rowCount, setRowCount] = useState(0);
 
+  const roleAccess = Object.keys(RoleEnum)
+    .filter((v) => isNaN(Number(v)))
+    .map((role, idx) => ({
+      id: idx,
+      name: role,
+    }));
+
   const handleSearchValueChange = (value: string) => {
     setSearchParams(
       value
@@ -126,19 +133,18 @@ export default function useKelolaAkun() {
           <div>{row.original.name}</div>
         </div>
       ),
+      minSize: 400,
     },
-
-    // NOTE : how to decide if an account belongs to s1 or s2?, sementara di asumsiin kalo dikasi role itu lgsg ke s1 dan s2
     {
-      header: "Dosen Pembimbing",
-      accessorKey: "access_dosen_pembimbing",
+      header: "Dosen Pembimbing S1",
+      accessorKey: "access_dosen_pembimbing_s1",
       cell: ({ row }) => (
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
-          checked={
-            handleCheckboxRoleAccess(row.original.access, "S1_PEMBIMBING") ||
-            handleCheckboxRoleAccess(row.original.access, "S2_PEMBIMBING")
-          }
+          checked={handleCheckboxRoleAccess(
+            row.original.access,
+            "S1_PEMBIMBING",
+          )}
           onCheckedChange={() => {
             handleCheckboxChecked(row, "S1_PEMBIMBING");
           }}
@@ -147,15 +153,29 @@ export default function useKelolaAkun() {
       enableSorting: false,
     },
     {
-      header: "Dosen Penguji",
-      accessorKey: "access_dosen_penguji",
+      header: "Dosen Pembimbing S2",
+      accessorKey: "access_dosen_pembimbing_s2",
       cell: ({ row }) => (
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
-          checked={
-            handleCheckboxRoleAccess(row.original.access, "S1_PENGUJI") ||
-            handleCheckboxRoleAccess(row.original.access, "S2_PENGUJI")
-          }
+          checked={handleCheckboxRoleAccess(
+            row.original.access,
+            "S2_PEMBIMBING",
+          )}
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S2_PEMBIMBING");
+          }}
+        />
+      ),
+      enableSorting: false,
+    },
+    {
+      header: "Dosen Penguji S1",
+      accessorKey: "access_dosen_penguji_s1",
+      cell: ({ row }) => (
+        <Checkbox
+          className="data-[state=checked]:bg-sky-800"
+          checked={handleCheckboxRoleAccess(row.original.access, "S1_PENGUJI")}
           onCheckedChange={() => {
             handleCheckboxChecked(row, "S1_PENGUJI");
           }}
@@ -164,29 +184,26 @@ export default function useKelolaAkun() {
       enableSorting: false,
     },
     {
-      header: "Dosen Kuliah",
-      accessorKey: "access_dosen_kuliah",
+      header: "Dosen Penguji S2",
+      accessorKey: "access_dosen_penguji_s2",
       cell: ({ row }) => (
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
-          checked={handleCheckboxRoleAccess(row.original.access, "S2_KULIAH")}
+          checked={handleCheckboxRoleAccess(row.original.access, "S2_PENGUJI")}
           onCheckedChange={() => {
-            handleCheckboxChecked(row, "S2_KULIAH");
+            handleCheckboxChecked(row, "S2_PENGUJI");
           }}
         />
       ),
       enableSorting: false,
     },
     {
-      header: "Tim Tugas",
-      accessorKey: "access_tim_tugas",
+      header: "Tim TA",
+      accessorKey: "access_tim_ta",
       cell: ({ row }) => (
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
-          checked={
-            handleCheckboxRoleAccess(row.original.access, "S2_TIM_TESIS") ||
-            handleCheckboxRoleAccess(row.original.access, "S1_TIM_TA")
-          }
+          checked={handleCheckboxRoleAccess(row.original.access, "S1_TIM_TA")}
           onCheckedChange={() => {
             handleCheckboxChecked(row, "S1_TIM_TA");
           }}
@@ -195,15 +212,32 @@ export default function useKelolaAkun() {
       enableSorting: false,
     },
     {
-      header: "Mahasiswa",
-      accessorKey: "access_mahasiswa",
+      header: "Tim Tesis",
+      accessorKey: "access_tim_tesis",
       cell: ({ row }) => (
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
-          checked={
-            handleCheckboxRoleAccess(row.original.access, "S1_MAHASISWA") ||
-            handleCheckboxRoleAccess(row.original.access, "S2_MAHASISWA")
-          }
+          checked={handleCheckboxRoleAccess(
+            row.original.access,
+            "S2_TIM_TESIS",
+          )}
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S2_TIM_TESIS");
+          }}
+        />
+      ),
+      enableSorting: false,
+    },
+    {
+      header: "Mahasiswa S1",
+      accessorKey: "access_mahasiswa_s1",
+      cell: ({ row }) => (
+        <Checkbox
+          className="data-[state=checked]:bg-sky-800"
+          checked={handleCheckboxRoleAccess(
+            row.original.access,
+            "S1_MAHASISWA",
+          )}
           onCheckedChange={() => {
             handleCheckboxChecked(row, "S1_MAHASISWA");
           }}
@@ -212,14 +246,17 @@ export default function useKelolaAkun() {
       enableSorting: false,
     },
     {
-      header: "TU",
-      accessorKey: "access_tu",
+      header: "Mahasiswa S2",
+      accessorKey: "access_mahasiswa_s2",
       cell: ({ row }) => (
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
-          checked={handleCheckboxRoleAccess(row.original.access, "TU")}
+          checked={handleCheckboxRoleAccess(
+            row.original.access,
+            "S2_MAHASISWA",
+          )}
           onCheckedChange={() => {
-            handleCheckboxChecked(row, "TU");
+            handleCheckboxChecked(row, "S2_MAHASISWA");
           }}
         />
       ),
@@ -297,5 +334,6 @@ export default function useKelolaAkun() {
     roleValue,
     setRoleValue,
     handleRoleValueChange,
+    roleAccess,
   };
 }

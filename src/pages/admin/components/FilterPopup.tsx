@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import DropdownRoleFilter from "../kelola-akun/components/DropdownRoleFilter";
 import SelectedRoleFilter from "../kelola-akun/components/SelectedRoleFIlter";
 import { KeyedMutator } from "swr";
-import { Account } from "../types";
+import { Account, RoleAccess } from "../types";
 
 interface ComponentProps {
   openFilterDialog: boolean;
@@ -25,6 +25,7 @@ interface ComponentProps {
   setEmailValue: React.Dispatch<React.SetStateAction<string>>;
   roleValue: RoleEnum[];
   setRoleValue: React.Dispatch<React.SetStateAction<RoleEnum[]>>;
+  roleAccess: RoleAccess[];
   handleRoleValueChange: (val: RoleEnum) => void;
   fetchData: KeyedMutator<Account[]>;
 }
@@ -38,6 +39,7 @@ const FilterPopup = ({
   setEmailValue,
   roleValue,
   setRoleValue,
+  roleAccess,
   handleRoleValueChange,
   fetchData,
 }: ComponentProps) => {
@@ -75,7 +77,10 @@ const FilterPopup = ({
             roleValue={roleValue}
             handleRoleValueChange={handleRoleValueChange}
           />
-          <DropdownRoleFilter handleRoleChange={handleRoleValueChange} />
+          <DropdownRoleFilter
+            roleAccess={roleAccess}
+            handleRoleChange={handleRoleValueChange}
+          />
         </div>
         <DialogFooter className="items-end">
           <Button

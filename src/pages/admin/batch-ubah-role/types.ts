@@ -2,6 +2,7 @@ import { RoleEnum } from "@/types/session-data";
 import { Table } from "@tanstack/react-table";
 import { UseFormReturn } from "react-hook-form";
 import { KeyedMutator } from "swr";
+import { RoleAccess } from "../types";
 
 export type Account = {
   id: string;
@@ -27,6 +28,7 @@ export type BatchUbahRoleHookRet = {
   emailValue: string;
   setEmailValue: React.Dispatch<React.SetStateAction<string>>;
   roleValue: RoleEnum[];
+  roleAccess: RoleAccess[];
   setRoleValue: React.Dispatch<React.SetStateAction<RoleEnum[]>>;
   handleRoleValueChange: (val: RoleEnum) => void;
   handleAddAccountButton: () => void;
@@ -65,10 +67,6 @@ export type RoleDialogHookRet = {
       name: string;
     }[];
   }) => Promise<void>;
-  roleAccess: {
-    id: number;
-    name: string;
-  }[];
 };
 
 export type HapusRoleDialogProps = {

@@ -6,19 +6,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RoleEnum } from "@/types/session-data";
-// import { useState } from "react";
+import { RoleAccess } from "../../types";
 
 interface ComponentProps {
   handleRoleChange: (role: RoleEnum) => void;
+  roleAccess: RoleAccess[];
 }
 
-const DropdownRoleFilter = ({ handleRoleChange }: ComponentProps) => {
-  // const [isOpen, setIsOpen] = useState(false);
-
-  // const handleOpenChange = (open: boolean) => {
-  //   setIsOpen(open);
-  // };
-
+const DropdownRoleFilter = ({
+  handleRoleChange,
+  roleAccess,
+}: ComponentProps) => {
   return (
     <Select
       onValueChange={(val) => {
@@ -29,9 +27,9 @@ const DropdownRoleFilter = ({ handleRoleChange }: ComponentProps) => {
         <SelectValue placeholder="Pilih role disini" />
       </SelectTrigger>
       <SelectContent>
-        {Object.values(RoleEnum).map((role) => (
-          <SelectItem key={role} value={role}>
-            {role}
+        {roleAccess.map((role) => (
+          <SelectItem key={role.id} value={role.name}>
+            {role.name}
           </SelectItem>
         ))}
       </SelectContent>
