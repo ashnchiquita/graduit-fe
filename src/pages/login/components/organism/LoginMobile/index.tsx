@@ -27,46 +27,58 @@ const LoginMobile: React.FC<LoginMobileProps> = ({
     <div className="mobile">
       <div className="mobile-wrapper-dark">
         <div className="mobile-wrapper">
-          <div className="stei">
-            <img src="/image/stei-kiri.png" alt="" width={46} height={46} />
+          <div className="rounded-lg bg-white px-6 py-6 flex flex-col gap-7 h-[90vh]">
+            <div className="stei">
+              <img src="/image/stei-kiri.png" alt="" className="h-[5vh]" />
 
-            <div className="tulisan-stei">
-              <p>Sekolah Teknik Elektro dan Informatika </p>
-              <p>Institut Teknologi Bandung </p>
+              <div className="text-black text-[1.8vh]">
+                <span>Sekolah Teknik Elektro dan Informatika </span>
+                <br />
+                <span className="font-bold">Institut Teknologi Bandung </span>
+              </div>
             </div>
-          </div>
-          <div className="title">
-            <h1>GraduIT</h1>
-            <h2>Thesis & TA Monitoring</h2>
-          </div>
-
-          <div className="bawah">
-            <div className="isian">
-              <Textfield
-                placeholder="alisha@timtesis.itb.ac.id"
-                value={email}
-                onChange={handleEmailChange}
-              />
-              <Textfield
-                placeholder="******"
-                value={password}
-                onChange={handlePasswordChange}
-                isPassword={true}
-              />
+            <div className="text-black">
+              <h1>GraduIT</h1>
+              <span>Thesis & TA Monitoring</span>
             </div>
 
-            <Button text="Sign in" onClick={handleCredentials} />
-            <div className="tulisan-or">
-              <p className="line"></p>
-              <p>or</p>
-              <p className="line"></p>
+            <div className="text-black font-bold mt-4">
+              <span>Sign In</span>
             </div>
-            <div className="sso">
-              <Button2
-                text="Sign in with SSO"
-                onClick={handleMicrosoft}
-                className="red-button"
-              />
+
+            <div className="bawah w-auto">
+              <div className="isian">
+                <Textfield
+                  placeholder="alisha@timtesis.itb.ac.id"
+                  value={email}
+                  onChange={handleEmailChange}
+                />
+                <Textfield
+                  placeholder="******"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  isPassword={true}
+                />
+              </div>
+              <div className="flex flex-col gap-3">
+                <Button
+                  className="mt-6"
+                  text="Sign in"
+                  onClick={handleCredentials}
+                />
+                <div className="tulisan-or">
+                  <p className="line"></p>
+                  <p className="text-black">or</p>
+                  <p className="line"></p>
+                </div>
+                <div className="sso">
+                  <Button2
+                    text="Sign in with SSO"
+                    onClick={handleMicrosoft}
+                    className="red-button"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
