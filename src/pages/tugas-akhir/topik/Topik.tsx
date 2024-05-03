@@ -5,7 +5,7 @@ import useTopik from "./hooks/useTopik";
 import useSession from "@/hooks/useSession";
 import { RoleEnum } from "@/types/session-data";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import UpsertDialog from "@/pages/admin/daftar-topik/components/UpsertDialog";
+import UpsertDialog from "@/pages/daftar-topik/components/UpsertDialog";
 
 export default function TopicAllocation() {
   const {

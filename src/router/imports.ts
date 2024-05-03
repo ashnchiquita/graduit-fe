@@ -66,7 +66,7 @@ export const RekapPendaftaranDosbim = lazy(
 );
 
 export const DaftarTopikTimTugas = lazy(
-  () => import("../pages/admin/daftar-topik/DaftarTopikTimTugas.tsx"),
+  () => import("../pages/daftar-topik/DaftarTopikTimTugas.tsx"),
 );
 export const DetailSubmissionTugas = lazy(
   () =>

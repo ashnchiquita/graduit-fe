@@ -12,8 +12,8 @@ import { PostNewTopicBulkReqData, Topic } from "../types";
 import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
-import { EXCEL_HEADERS } from "@/pages/admin/daftar-topik/constants";
-import { LoadedExcelData } from "@/pages/admin/daftar-topik/types";
+import { EXCEL_HEADERS } from "@/pages/daftar-topik/constants";
+import { LoadedExcelData } from "@/pages/daftar-topik/types";
 import SelectData from "@/types/select-data";
 
 const DUMMY_DATA: Topic[] = [
