@@ -115,3 +115,6 @@ export const SubmisiTugas = lazy(
 export const DaftarTugas = lazy(
   () => import("../pages/mahasiswa/daftar-tugas/DaftarTugas.tsx"),
 );
+export const DetailMahasiswa = lazy(
+  () => import("../pages/admin/detail-mahasiswa/DetailMahasiswa.tsx"),
+);
