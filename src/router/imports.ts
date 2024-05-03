@@ -41,7 +41,7 @@ export const LogSistem = lazy(
 export const DaftarPengajuan = lazy(
   () => import("../pages/mahasiswa/daftar-pengajuan/DaftarPengajuan.tsx"),
 );
-export const Topik = lazy(() => import("../pages/tugas-akhir/topik/Topik.tsx"));
+export const Topik = lazy(() => import("../pages/archive/topik/Topik.tsx"));
 export const Pengumuman = lazy(
   () => import("../pages/archive/pengumuman/Pengumuman.tsx"),
 );

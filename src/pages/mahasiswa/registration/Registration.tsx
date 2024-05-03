@@ -10,25 +10,17 @@ import { LecturerCard } from "./components/LecturerCard/LecturerCard";
 import { StreamCard } from "./components/StreamCard/StreamCard";
 import { TopicCard } from "./components/TopicCard/TopicCard";
 import useRegistrationImpl from "./useRegistrationImpl";
-import { Loader } from "@/components/ui/loader";
+import { cn } from "@/lib/utils";
 
 const Registration = () => {
   const { form, onSubmit, setNewOptionCreated, isRegLoading, strata } =
     useRegistrationImpl();
 
-  if (isRegLoading) {
-    return (
-      <main className="flex h-screen w-full items-center justify-center">
-        <Loader size={64} />
-      </main>
-    );
-  }
-
   return (
     <div className="flex-1">
       <Form {...form}>
         <form
-          className="flex flex-col gap-4 px-4"
+          className={cn("flex flex-col gap-4 px-4", isRegLoading && "hidden")}
           onSubmit={form.handleSubmit(onSubmit)}
           autoComplete="off"
         >
