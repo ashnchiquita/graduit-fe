@@ -74,7 +74,9 @@ const useRegistrationSidSem = () => {
     },
   );
 
-  const onSubmit = async (values: postRegistraionSidSemDataS1) => {
+  const onSubmit = async (
+    values: Omit<postRegistraionSidSemDataS1, "id_mahasiswa">,
+  ) => {
     const response = await getIdMahasiswa();
     const data: postRegistraionSidSemDataS1 = {
       id_mahasiswa: response.data.id,
