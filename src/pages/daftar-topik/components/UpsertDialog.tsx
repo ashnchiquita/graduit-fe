@@ -37,11 +37,8 @@ export default function UpsertDialog({
   closeDialog,
   updateData,
 }: DeleteDialogProps) {
-  const { form, onSubmit, dosenOptions, isDosenListLoading } = useUpsertDialog(
-    closeDialog,
-    updateData,
-    row,
-  );
+  const { form, onSubmit, dosenOptions, isDosenListLoading, showDropdown } =
+    useUpsertDialog(closeDialog, updateData, row);
 
   return (
     <DialogContent className="w-11/12 sm:max-w-md">
@@ -55,34 +52,36 @@ export default function UpsertDialog({
           onSubmit={form.handleSubmit(onSubmit)}
           autoComplete="off"
         >
-          <FormField
-            control={form.control}
-            name="idPengaju"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Dosen Pengaju Topik</FormLabel>
-                <FormControl>
-                  <Select
-                    disabled={isDosenListLoading}
-                    value={field.value}
-                    onValueChange={field.onChange}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih dosen pengaju topik" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {dosenOptions.map(({ value, label }) => (
-                        <SelectItem key={value} value={value}>
-                          {label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {showDropdown && (
+            <FormField
+              control={form.control}
+              name="idPengaju"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Dosen Pengaju Topik</FormLabel>
+                  <FormControl>
+                    <Select
+                      disabled={isDosenListLoading}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih dosen pengaju topik" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {dosenOptions.map(({ value, label }) => (
+                          <SelectItem key={value} value={value}>
+                            {label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
           <FormField
             control={form.control}
             name="judul"

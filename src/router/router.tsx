@@ -9,7 +9,7 @@ import {
   AssignKelas,
   BatchUbahRole,
   DaftarPengajuan,
-  DaftarTopikTimTugas,
+  DaftarTopik,
   Dashboard,
   DetailRekapPendaftaran,
   DetailSubmissionTugas,
@@ -103,8 +103,8 @@ export const router = createBrowserRouter(
           element: <Registration></Registration>,
         },
         {
-          path: "/tesis",
-          element: <Navigate to="/tesis/registrasi" replace />,
+          path: "/daftar-topik",
+          element: <DaftarTopik />,
         },
         {
           path: "/tesis/registrasi",
@@ -134,10 +134,6 @@ export const router = createBrowserRouter(
         {
           path: "/manajemen/role-pengguna",
           element: <BatchUbahRole />,
-        },
-        {
-          path: "/manajemen/daftar-topik",
-          element: <DaftarTopikTimTugas />,
         },
         {
           path: "/manajemen/assign-kelas/mahasiswa",

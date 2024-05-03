@@ -16,12 +16,24 @@ import {
   PostNewTopicReqData,
   PutExistingTopicReqData,
 } from "../types";
+import useSession from "@/hooks/useSession";
+import { RoleEnum, SessionData } from "@/types/session-data";
+import { useEffect } from "react";
+
+function isDosen(sessionData: SessionData | null) {
+  return (
+    sessionData?.roles.includes(RoleEnum.S2_PEMBIMBING) ||
+    sessionData?.roles.includes(RoleEnum.S1_PEMBIMBING)
+  );
+}
 
 export function useUpsertDialog(
   closeDialog: () => void,
   updateData: () => Promise<any>,
   row?: Row<DaftarTopikData>,
 ) {
+  const { data: sessionData } = useSession();
+
   const form = useForm<UpsertTopikFormData>({
     defaultValues: row
       ? {
@@ -32,6 +44,12 @@ export function useUpsertDialog(
       : { deskripsi: "", idPengaju: "", judul: "" },
     resolver: zodResolver(UpsertTopikFormSchema),
   });
+
+  useEffect(() => {
+    if (sessionData && isDosen(sessionData)) {
+      form.setValue("idPengaju", sessionData.id);
+    }
+  }, [sessionData, form]);
 
   const { trigger: triggerPost } = useSWRMutation(
     "/registrasi-topik",
@@ -50,6 +68,8 @@ export function useUpsertDialog(
   const { data: dosenOptions = [], isLoading: isDosenListLoading } = useSWR(
     "/dosen-bimbingan",
     async () => {
+      if (isDosen(sessionData)) return [];
+
       const res = await getAllDosenPembimbing();
 
       const options: SelectData[] = res.data.map(({ id, nama }) => ({
@@ -83,5 +103,11 @@ export function useUpsertDialog(
     }
   };
 
-  return { onSubmit, form, dosenOptions, isDosenListLoading };
+  return {
+    onSubmit,
+    form,
+    dosenOptions,
+    isDosenListLoading,
+    showDropdown: !isDosen(sessionData),
+  };
 }

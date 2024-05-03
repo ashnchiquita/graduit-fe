@@ -24,11 +24,28 @@ import {
   LoadedExcelData,
   PostNewTopicBulkReqData,
 } from "../types";
+import useSession from "@/hooks/useSession";
+import { RoleEnum, SessionData } from "@/types/session-data";
 
 const columHelper = createColumnHelper<DaftarTopikData>();
 
-export default function useDaftarTopikTimTugas() {
-  const [width] = useWindowSize();
+function isAdmin(sessionData: SessionData | null) {
+  return (
+    sessionData?.roles.includes(RoleEnum.S2_TIM_TESIS) ||
+    sessionData?.roles.includes(RoleEnum.S1_TIM_TA) ||
+    sessionData?.roles.includes(RoleEnum.ADMIN)
+  );
+}
+
+function isDosen(sessionData: SessionData | null) {
+  return (
+    sessionData?.roles.includes(RoleEnum.S2_PEMBIMBING) ||
+    sessionData?.roles.includes(RoleEnum.S1_PEMBIMBING)
+  );
+}
+
+export default function useDaftarTopik() {
+  const { data: sessionData } = useSession();
 
   const [isInsertDialogOpen, setIsInsertDialogOpen] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -47,45 +64,97 @@ export default function useDaftarTopikTimTugas() {
   };
 
   const { data = { data: [], maxPage: 1 }, mutate: updateData } = useSWR(
-    ["/alokasi-topik", pagination, searchValue],
+    [
+      `/alokasi-topik/${isDosen(sessionData) ? sessionData?.id : "admin"}`,
+      pagination,
+      searchValue,
+    ],
     async () => {
       const res = await getAllTopics({
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
         search: searchValue === "" ? undefined : searchValue,
+        idPembimbing: isDosen(sessionData) ? sessionData?.id : undefined,
       });
 
       return { data: res.data.data, maxPage: res.data.maxPage };
     },
   );
 
-  const isMobile = width < 768;
+  // const [width] = useWindowSize();
+  // const isMobile = width < 768;
+
+  // const columns = [
+  //   columHelper.accessor("judul", {
+  //     minSize: isMobile ? 50 : 150,
+  //     enableSorting: false,
+  //     header: "Nama Topik",
+  //   }),
+  //   columHelper.accessor("deskripsi", {
+  //     minSize: isMobile ? 100 : 250,
+  //     enableSorting: false,
+  //     header: "Deskripsi",
+  //   }),
+  //   columHelper.accessor("pengaju.nama", {
+  //     minSize: isMobile ? 40 : 170,
+  //     enableSorting: false,
+  //     header: "Dosen Pengaju",
+  //   }),
+  //   columHelper.accessor("id", {
+  //     id: "action",
+  //     minSize: isMobile ? 30 : 50,
+  //     maxSize: 50,
+  //     header: "",
+  //     enableSorting: false,
+  //     enableResizing: false,
+  //     cell: ({ row }) => <RowAction row={row} updateData={updateData} />,
+  //     meta: {
+  //       align: "right",
+  //     },
+  //   }),
+  // ];
+
   const columns = [
     columHelper.accessor("judul", {
-      minSize: isMobile ? 50 : 150,
+      minSize: 150,
       enableSorting: false,
       header: "Nama Topik",
     }),
     columHelper.accessor("deskripsi", {
-      minSize: isMobile ? 100 : 250,
+      minSize: 450,
       enableSorting: false,
       header: "Deskripsi",
     }),
     columHelper.accessor("pengaju.nama", {
-      minSize: isMobile ? 40 : 170,
+      minSize: 150,
+      maxSize: 150,
       enableSorting: false,
       header: "Dosen Pengaju",
     }),
     columHelper.accessor("id", {
       id: "action",
-      minSize: isMobile ? 30 : 50,
-      maxSize: 50,
+      minSize: 10,
+      maxSize: 10,
       header: "",
       enableSorting: false,
       enableResizing: false,
       cell: ({ row }) => <RowAction row={row} updateData={updateData} />,
+      meta: {
+        align: "right",
+      },
     }),
   ];
+
+  if (isAdmin(sessionData)) {
+    columns.splice(0, 0);
+  } else if (isDosen(sessionData)) {
+    columns.splice(2, 1);
+  } else if (
+    sessionData?.roles.includes(RoleEnum.S2_MAHASISWA) ||
+    sessionData?.roles.includes(RoleEnum.S1_MAHASISWA)
+  ) {
+    columns.splice(3, 1);
+  }
 
   const table = useReactTable({
     data: data.data,
@@ -231,5 +300,6 @@ export default function useDaftarTopikTimTugas() {
     updateData,
     handleClickGenerateTemplate,
     handleClickImportFromTemplate,
+    roles: sessionData?.roles,
   };
 }
