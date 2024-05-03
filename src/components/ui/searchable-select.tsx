@@ -21,6 +21,7 @@ interface SearchableSelectProps {
   setEditing?: (editing: boolean) => void;
   placeholder?: string;
   shouldFilter?: boolean;
+  onNewOptionCreated?: (newOptionCreated: boolean) => void;
 }
 
 export function SearchableSelect({
@@ -38,6 +39,7 @@ export function SearchableSelect({
   placeholder = "Select...",
   setEditing = () => {},
   shouldFilter = false,
+  onNewOptionCreated,
 }: SearchableSelectProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
@@ -112,7 +114,7 @@ export function SearchableSelect({
               );
 
               if (suggestAddOption) {
-                setSelected(inputValue);
+                // setSelected(inputValue);
               } else {
                 setInputValue(selectedOption?.label ?? "");
               }
@@ -151,6 +153,9 @@ export function SearchableSelect({
                       setInputValue(inputValue);
                       setEditing(true);
                       setOpen(false);
+                      if (onNewOptionCreated) {
+                        onNewOptionCreated(true);
+                      }
                     }}
                     className={"flex cursor-pointer gap-4 text-base"}
                     value={"added-option"}
@@ -182,6 +187,9 @@ export function SearchableSelect({
                       setInputValue(data.label);
                       setEditing(true);
                       setOpen(false);
+                      if (onNewOptionCreated) {
+                        onNewOptionCreated(false);
+                      }
                     }}
                     className={"cursor-pointer text-base"}
                     value={data.label}

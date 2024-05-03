@@ -30,14 +30,11 @@ export type StatusS2Response = {
   jadwalInterview?: string | null;
   waktuKeputusan?: string | null;
   status: string;
-  topik: {
-    id: string;
-    judul: string;
-    deskripsi: string;
-  };
-  penerima: {
+  judulTopik: string;
+  deskripsiTopik: string;
+  dosenPembimbing: {
     id: string;
     nama: string;
     email: string;
-  };
+  }[];
 }[];

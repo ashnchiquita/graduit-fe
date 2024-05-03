@@ -1,4 +1,3 @@
-import useWindowSize from "@/hooks/useWindowSize";
 import SelectData from "@/types/select-data";
 import {
   PaginationState,
@@ -6,16 +5,16 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import * as XLSX from "xlsx";
 import {
-  getAllDosenPembimbing,
-  getAllTopics,
-  postNewTopicBulk,
+  getAllDosenPembimbingS2,
+  getAllTopicsS2,
+  postNewTopicBulkS2,
 } from "../clients";
 import RowAction from "../components/RowAction";
 import { EXCEL_HEADERS } from "../constants";
@@ -24,11 +23,22 @@ import {
   LoadedExcelData,
   PostNewTopicBulkReqData,
 } from "../types";
+import useSession from "@/hooks/useSession";
+import { RoleEnum } from "@/types/session-data";
+import { isAdmin, isDosen, isMahasiswa } from "@/lib/checkRole";
 
 const columHelper = createColumnHelper<DaftarTopikData>();
 
-export default function useDaftarTopikTimTugas() {
-  const [width] = useWindowSize();
+function withDropdown(roles?: RoleEnum[]) {
+  return (
+    isAdmin(roles) ||
+    (roles?.includes(RoleEnum.S1_PEMBIMBING) &&
+      roles?.includes(RoleEnum.S2_PEMBIMBING))
+  );
+}
+
+export default function useDaftarTopik() {
+  const { data: sessionData } = useSession();
 
   const [isInsertDialogOpen, setIsInsertDialogOpen] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -40,6 +50,7 @@ export default function useDaftarTopikTimTugas() {
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",
   );
+  const [strataFilter, setStrataFilter] = useState<"S1" | "S2">("S1");
 
   const handleChangeSearchValue = (value: string) => {
     setSearchParams(value ? { search: value } : {});
@@ -47,45 +58,99 @@ export default function useDaftarTopikTimTugas() {
   };
 
   const { data = { data: [], maxPage: 1 }, mutate: updateData } = useSWR(
-    ["/alokasi-topik", pagination, searchValue],
+    [
+      `/alokasi-topik/${isDosen(sessionData?.roles) ? sessionData?.id : "admin"}`,
+      pagination,
+      searchValue,
+    ],
     async () => {
-      const res = await getAllTopics({
-        page: pagination.pageIndex + 1,
-        limit: pagination.pageSize,
-        search: searchValue === "" ? undefined : searchValue,
-      });
+      if (!sessionData) return { data: [], maxPage: 1 };
 
-      return { data: res.data.data, maxPage: res.data.maxPage };
+      if (
+        (isAdmin(sessionData.roles) && strataFilter === "S1") ||
+        sessionData.roles.includes(RoleEnum.S1_PEMBIMBING) ||
+        sessionData.roles.includes(RoleEnum.S1_MAHASISWA)
+      ) {
+        // TODO: S1 fetch daftar topik disini
+        const res = await getAllTopicsS2({
+          page: pagination.pageIndex + 1,
+          limit: pagination.pageSize,
+          search: searchValue === "" ? undefined : searchValue,
+          idPembimbing: isDosen(sessionData?.roles)
+            ? sessionData?.id
+            : undefined,
+        });
+
+        return { data: res.data.data, maxPage: res.data.maxPage };
+      } else if (
+        (isAdmin(sessionData.roles) && strataFilter === "S2") ||
+        sessionData.roles.includes(RoleEnum.S2_PEMBIMBING) ||
+        sessionData.roles.includes(RoleEnum.S2_MAHASISWA)
+      ) {
+        const res = await getAllTopicsS2({
+          page: pagination.pageIndex + 1,
+          limit: pagination.pageSize,
+          search: searchValue === "" ? undefined : searchValue,
+          idPembimbing: isDosen(sessionData?.roles)
+            ? sessionData?.id
+            : undefined,
+        });
+
+        return { data: res.data.data, maxPage: res.data.maxPage };
+      } else {
+        return { data: [], maxPage: 1 };
+      }
     },
   );
 
-  const isMobile = width < 768;
+  useEffect(() => {
+    updateData();
+  }, [strataFilter]);
+
   const columns = [
     columHelper.accessor("judul", {
-      minSize: isMobile ? 50 : 150,
+      minSize: 150,
       enableSorting: false,
       header: "Nama Topik",
     }),
     columHelper.accessor("deskripsi", {
-      minSize: isMobile ? 100 : 250,
+      minSize: 450,
       enableSorting: false,
       header: "Deskripsi",
     }),
     columHelper.accessor("pengaju.nama", {
-      minSize: isMobile ? 40 : 170,
+      minSize: 150,
+      maxSize: 150,
       enableSorting: false,
       header: "Dosen Pengaju",
     }),
     columHelper.accessor("id", {
       id: "action",
-      minSize: isMobile ? 30 : 50,
-      maxSize: 50,
+      minSize: 10,
+      maxSize: 10,
       header: "",
       enableSorting: false,
       enableResizing: false,
-      cell: ({ row }) => <RowAction row={row} updateData={updateData} />,
+      cell: ({ row }) => (
+        <RowAction
+          row={row}
+          updateData={updateData}
+          strata={withDropdown(sessionData?.roles) ? strataFilter : undefined}
+        />
+      ),
+      meta: {
+        align: "right",
+      },
     }),
   ];
+
+  if (!isAdmin(sessionData?.roles)) {
+    if (isDosen(sessionData?.roles)) {
+      columns.splice(2, 1);
+    } else if (isMahasiswa(sessionData?.roles)) {
+      columns.splice(3, 1);
+    }
+  }
 
   const table = useReactTable({
     data: data.data,
@@ -101,14 +166,30 @@ export default function useDaftarTopikTimTugas() {
   });
 
   const { data: dosenOptions = [] } = useSWR("/dosen-bimbingan", async () => {
-    const res = await getAllDosenPembimbing();
+    if (!sessionData || !isAdmin(sessionData?.roles)) return [];
 
-    const options: SelectData[] = res.data.map(({ id, nama }) => ({
-      label: nama,
-      value: id,
-    }));
+    if (strataFilter === "S1") {
+      // TODO: S1 fetch list dosen pembimbing disini
+      const res = await getAllDosenPembimbingS2();
 
-    return options;
+      const options: SelectData[] = res.data.map(({ id, nama }) => ({
+        label: nama,
+        value: id,
+      }));
+
+      return options;
+    } else if (strataFilter === "S2") {
+      const res = await getAllDosenPembimbingS2();
+
+      const options: SelectData[] = res.data.map(({ id, nama }) => ({
+        label: nama,
+        value: id,
+      }));
+
+      return options;
+    } else {
+      return [];
+    }
   });
 
   const handleClickGenerateTemplate = () => {
@@ -139,10 +220,18 @@ export default function useDaftarTopikTimTugas() {
     XLSX.writeFile(workbook, "topik_template.xlsx", { compression: true });
   };
 
-  const { trigger: triggerPost } = useSWRMutation(
+  const { trigger: triggerPostS1, error: errorPostS1 } = useSWRMutation(
     "/registrasi-topik/bulk",
     async (_, { arg }: { arg: PostNewTopicBulkReqData }) => {
-      return await postNewTopicBulk(arg);
+      // TODO: S1 post create topic bulk disini
+      return await postNewTopicBulkS2(arg);
+    },
+  );
+
+  const { trigger: triggerPostS2, error: errorPostS2 } = useSWRMutation(
+    "/registrasi-topik/bulk",
+    async (_, { arg }: { arg: PostNewTopicBulkReqData }) => {
+      return await postNewTopicBulkS2(arg);
     },
   );
 
@@ -199,13 +288,30 @@ export default function useDaftarTopikTimTugas() {
       });
     }
 
-    try {
-      await triggerPost(postData);
-      toast.success(`Berhasil menambahkan ${postData.data.length} topik`);
-    } catch (error) {
-      toast.error(`Gagal mengirimkan penambahan topik`);
-      console.error(error);
-    } finally {
+    const toastId = toast.loading(
+      `Menambahkan ${postData.data.length} topik...`,
+    );
+
+    if (strataFilter === "S1") {
+      await triggerPostS1(postData);
+    } else if (strataFilter === "S2") {
+      await triggerPostS2(postData);
+    }
+
+    if (errorPostS1 || errorPostS2) {
+      toast.update(toastId, {
+        render: "Gagal menambahkan topik",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    } else {
+      toast.update(toastId, {
+        render: `Berhasil menambahkan ${postData.data.length} topik...`,
+        type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
       updateData();
     }
   };
@@ -231,5 +337,8 @@ export default function useDaftarTopikTimTugas() {
     updateData,
     handleClickGenerateTemplate,
     handleClickImportFromTemplate,
+    roles: sessionData?.roles,
+    strataFilter,
+    setStrataFilter,
   };
 }

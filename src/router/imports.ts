@@ -41,7 +41,7 @@ export const LogSistem = lazy(
 export const DaftarPengajuan = lazy(
   () => import("../pages/mahasiswa/daftar-pengajuan/DaftarPengajuan.tsx"),
 );
-export const Topik = lazy(() => import("../pages/tugas-akhir/topik/Topik.tsx"));
+export const Topik = lazy(() => import("../pages/archive/topik/Topik.tsx"));
 export const Pengumuman = lazy(
   () => import("../pages/archive/pengumuman/Pengumuman.tsx"),
 );
@@ -69,8 +69,8 @@ export const RekapPendaftaranDosbim = lazy(
   () => import("../pages/dosen/rekap-pendaftaran/RekapPendaftaranDosbim.tsx"),
 );
 
-export const DaftarTopikTimTugas = lazy(
-  () => import("../pages/admin/daftar-topik/DaftarTopikTimTugas.tsx"),
+export const DaftarTopik = lazy(
+  () => import("../pages/daftar-topik/DaftarTopik.tsx"),
 );
 export const DetailSubmissionTugas = lazy(
   () =>

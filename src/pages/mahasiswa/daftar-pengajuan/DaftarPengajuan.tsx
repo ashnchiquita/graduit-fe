@@ -35,15 +35,12 @@ export default function DaftarPengajuan() {
               childClass="flex w-full flex-col gap-4 text-sm text-gray-600 xl:flex-row"
             >
               {/* DATA JUDUL TOPIK */}
-              <div className="flex w-full flex-col gap-4 xl:w-[40%]">
+              <div className="flex w-full flex-col gap-4 xl:w-2/5">
                 <div>
                   <p className="mb-2 font-bold">Topik</p>
                   <p>{d.status_pendaftaran.topik ?? "-"}</p>
                 </div>
-                <div>
-                  <p className="mb-2 font-bold">Judul</p>
-                  <p>{d.status_pendaftaran.judul ?? "-"}</p>
-                </div>
+
                 <div>
                   <p className="mb-2 font-bold">Dosen Pembimbing</p>
                   <p>
@@ -55,11 +52,11 @@ export default function DaftarPengajuan() {
               </div>
 
               {/* DATA PROSES PENDAFTARAN */}
-              <div className="flex w-full flex-col xl:w-[60%]">
+              <div className="flex w-full flex-col xl:w-3/5">
                 <p className="mb-2 font-bold">Status Pendaftaran</p>
 
                 {d.status_pendaftaran.status ? (
-                  <div className="relative overflow-x-auto border-[1px] border-gray-300 bg-slate-50 sm:rounded-lg">
+                  <div className="relative overflow-x-auto border-DEFAULT border-gray-300 bg-slate-50 sm:rounded-lg">
                     <table className="w-full text-left ">
                       <tbody>
                         <tr className="border-b">

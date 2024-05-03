@@ -14,11 +14,13 @@ import UpsertDialog from "./UpsertDialog";
 interface ComponentProps {
   row: Row<DaftarTopikData>;
   updateData: () => Promise<any>;
+  strata?: "S1" | "S2";
 }
 
 export default function RowAction({
   row,
   updateData,
+  strata,
 }: ComponentProps): JSX.Element {
   const {
     deleteDialogOpen,
@@ -53,6 +55,7 @@ export default function RowAction({
               setDeteleDialogOpen(false);
             }}
             updateData={updateData}
+            strata={strata}
           />
         </Dialog>
 
@@ -70,6 +73,7 @@ export default function RowAction({
               setDeteleDialogOpen(false);
             }}
             updateData={updateData}
+            strata={strata}
           />
         </Dialog>
       </PopoverContent>
