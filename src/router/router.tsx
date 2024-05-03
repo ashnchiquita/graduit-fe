@@ -35,6 +35,7 @@ import {
   SubmisiTugas,
   DaftarTugas,
   LogMahasiswa,
+  ApprovalPendaftaran,
 } from "./imports";
 import RegistrationSidSem from "@/pages/mahasiswa/registration-sidsem/RegistrationSidSem";
 
@@ -76,6 +77,10 @@ export const router = createBrowserRouter(
         {
           path: "/rekap-pendaftaran-tim-tesis/:nim",
           element: <RiwayatPendaftaran />,
+        },
+        {
+          path: "/approval-pendaftaran",
+          element: <ApprovalPendaftaran />,
         },
         {
           path: "/rekap-pendaftaran/:strata/:mahasiswaId",
