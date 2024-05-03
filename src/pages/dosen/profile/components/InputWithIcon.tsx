@@ -21,7 +21,7 @@ export default function InputWithIcon({
   src: string;
   title: string;
   readOnly: boolean;
-  value: string | undefined;
+  value?: string | undefined;
   name?: "whatsapp" | "msteams" | "email" | "telp";
   isForm: boolean;
 }) {

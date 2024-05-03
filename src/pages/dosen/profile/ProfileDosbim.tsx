@@ -77,7 +77,6 @@ export default function ProfileDosbim() {
                   title="WhatsApp"
                   src={WhatsAppIcon}
                   readOnly={isNotEditing}
-                  value={dataDosbim?.email || ""}
                   isForm={true}
                   name="whatsapp"
                 />
@@ -86,7 +85,6 @@ export default function ProfileDosbim() {
                   title="Ms Teams"
                   src={MsTeamsIcon}
                   readOnly={isNotEditing}
-                  value={dataDosbim?.email || ""}
                   isForm={true}
                   name="msteams"
                 />
@@ -95,7 +93,6 @@ export default function ProfileDosbim() {
                   title="Email"
                   src={GmailIcon}
                   readOnly={isNotEditing}
-                  value={dataDosbim?.email || ""}
                   isForm={true}
                   name="email"
                 />
@@ -104,7 +101,6 @@ export default function ProfileDosbim() {
                   title="Telp"
                   src={TelpIcon}
                   readOnly={isNotEditing}
-                  value={dataDosbim?.email || ""}
                   isForm={true}
                   name="telp"
                 />
