@@ -22,3 +22,12 @@ export async function getIdMahasiswa() {
     withCredentials: true,
   });
 }
+
+export async function isRegisteredSidSemS1(tipe: string) {
+  return await s1Instance.get<boolean>(
+    `/mahasiswa/is-registered-sidsem?tipe=${tipe}`,
+    {
+      withCredentials: true,
+    },
+  );
+}

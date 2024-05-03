@@ -1,5 +1,7 @@
 export type DashboardMahasiswaHookRet = {
   data: StatusMahasiswaResponse;
+  isRegisteredSeminar: boolean;
+  isRegisteredSidang: boolean;
 };
 
 export type StatusMahasiswaResponse = {
