@@ -30,15 +30,17 @@ type DeleteDialogProps = {
   row?: Row<DaftarTopikData>;
   updateData: () => Promise<any>;
   closeDialog: () => void;
+  strata?: "S1" | "S2";
 };
 
 export default function UpsertDialog({
   row,
   closeDialog,
   updateData,
+  strata,
 }: DeleteDialogProps) {
   const { form, onSubmit, dosenOptions, isDosenListLoading, showDropdown } =
-    useUpsertDialog(closeDialog, updateData, row);
+    useUpsertDialog(closeDialog, updateData, row, strata);
 
   return (
     <DialogContent className="w-11/12 sm:max-w-md">

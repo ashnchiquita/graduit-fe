@@ -14,14 +14,16 @@ type DeleteDialogProps = {
   row: Row<DaftarTopikData>;
   updateData: () => Promise<any>;
   closeDialog: () => void;
+  strata?: "S1" | "S2";
 };
 
 export default function DeleteDialog({
   row,
   updateData,
   closeDialog,
+  strata,
 }: DeleteDialogProps) {
-  const { handleDelete } = useDeleteDialog(updateData, closeDialog);
+  const { handleDelete } = useDeleteDialog(updateData, closeDialog, strata);
 
   return (
     <DialogContent>
