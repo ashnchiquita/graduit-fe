@@ -1,4 +1,6 @@
 import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
+import DetailSidsem from "@/pages/mahasiswa/detail-sidsem/DetailSidsem";
+import RegistrationSidSem from "@/pages/mahasiswa/registration-sidsem/RegistrationSidSem";
 import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
@@ -6,17 +8,24 @@ import {
   AccountTimTesisLayout,
   AkunCreate,
   AkunDetail,
+  ApprovalPendaftaran,
   AssignKelas,
   BatchUbahRole,
+  DaftarKelas,
   DaftarPengajuan,
   DaftarTopik,
+  DaftarTugas,
   Dashboard,
+  DashboardRegistrasi,
+  DetailMahasiswa,
   DetailRekapPendaftaran,
   DetailSubmissionTugas,
   InputNilai,
+  KelasDetail,
   KelolaAkun,
   KonfigurasiPeriode,
   LogBimbinganMahasiswa,
+  LogMahasiswa,
   LogSistem,
   Login,
   MainLayout,
@@ -24,22 +33,15 @@ import {
   NotFound,
   Pengumuman,
   Penjadwalan,
+  ProfileDosbim,
   Registration,
   RekapPendaftaranDosbim,
-  SubmissionTugas,
-  Topik,
-  DaftarKelas,
   RekapPendaftaranTimTesis,
   RiwayatPendaftaran,
-  KelasDetail,
   SubmisiTugas,
-  DaftarTugas,
-  DetailMahasiswa,
-  LogMahasiswa,
-  ApprovalPendaftaran,
+  SubmissionTugas,
+  Topik,
 } from "./imports";
-import RegistrationSidSem from "@/pages/mahasiswa/registration-sidsem/RegistrationSidSem";
-import ProfileDosbim from "@/pages/dosen/profile/ProfileDosbim";
 
 export const router = createBrowserRouter(
   [
@@ -111,6 +113,14 @@ export const router = createBrowserRouter(
         {
           path: "/daftar-topik",
           element: <DaftarTopik />,
+        },
+        {
+          path: "/dashboard-registrasi",
+          element: <DashboardRegistrasi></DashboardRegistrasi>,
+        },
+        {
+          path: "/tesis",
+          element: <Navigate to="/tesis/registrasi" replace />,
         },
         {
           path: "/tesis/registrasi",
@@ -216,6 +226,10 @@ export const router = createBrowserRouter(
         {
           path: "/registration/:tipe/:strata",
           element: <RegistrationSidSem />,
+        },
+        {
+          path: "/detail/:tipe/:strata",
+          element: <DetailSidsem />,
         },
         {
           path: "/profile",

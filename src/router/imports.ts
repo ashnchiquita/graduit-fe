@@ -118,3 +118,10 @@ export const DaftarTugas = lazy(
 export const DetailMahasiswa = lazy(
   () => import("../pages/admin/detail-mahasiswa/DetailMahasiswa.tsx"),
 );
+export const DashboardRegistrasi = lazy(
+  () =>
+    import("../pages/mahasiswa/dashboard-registrasi/DashboardRegistrasi.tsx"),
+);
+export const ProfileDosbim = lazy(
+  () => import("../pages/dosen/profile/ProfileDosbim.tsx"),
+);
