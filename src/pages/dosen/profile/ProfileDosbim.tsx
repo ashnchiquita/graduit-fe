@@ -1,17 +1,16 @@
-import { CardTitle, CardDescription } from "@/components/Card";
-import { MdKeyboardArrowLeft } from "react-icons/md";
-import InputWithIcon from "./components/InputWithIcon";
-import EmailIcon from "../../../assets/profile-dosbim/email_icon.svg";
-import NameIcon from "../../../assets/profile-dosbim/name_icon.svg";
-import WhatsAppIcon from "../../../assets/profile-dosbim/whatsapp_icon.svg";
-import MsTeamsIcon from "../../../assets/profile-dosbim/ms_teams_icon.svg";
-import GmailIcon from "../../../assets/profile-dosbim/gmail_icon.svg";
-import TelpIcon from "../../../assets/profile-dosbim/telp_icon.svg";
+import { CardTitle } from "@/components/Card";
+import { Form } from "@/components/ui/form/form";
 import useSession from "@/hooks/useSession";
 import { useState } from "react";
+import { MdKeyboardArrowLeft } from "react-icons/md";
+import EmailIcon from "../../../assets/profile-dosbim/email_icon.svg";
+import GmailIcon from "../../../assets/profile-dosbim/gmail_icon.svg";
+import MsTeamsIcon from "../../../assets/profile-dosbim/ms_teams_icon.svg";
+import NameIcon from "../../../assets/profile-dosbim/name_icon.svg";
+import TelpIcon from "../../../assets/profile-dosbim/telp_icon.svg";
+import WhatsAppIcon from "../../../assets/profile-dosbim/whatsapp_icon.svg";
+import InputWithIcon from "./components/InputWithIcon";
 import useProfileDosbim from "./hooks/useProfileDosbim";
-import { Form } from "@/components/ui/form/form";
-import TambahkanTopikButton from "./components/TambahkanTopikButton";
 
 export default function ProfileDosbim() {
   const { form, onSubmit } = useProfileDosbim();
@@ -22,7 +21,7 @@ export default function ProfileDosbim() {
     <main className="mx-7">
       <Form {...form}>
         <form onSubmit={form?.handleSubmit(onSubmit)}>
-          <div className="rounded-lg bg-white px-8 py-8 flex flex-col gap-2">
+          <div className="flex flex-col gap-2 rounded-lg bg-white p-8">
             <div className="flex gap-5">
               <MdKeyboardArrowLeft className="text-3xl font-thin" />
               <CardTitle>Detail Akun</CardTitle>
@@ -53,7 +52,7 @@ export default function ProfileDosbim() {
                   <CardTitle className="mb-2">Contact</CardTitle>
                   {isNotEditing ? (
                     <button
-                      className="rounded-md bg-blue-500 px-[60px] py-1 text-white font-light hover:bg-blue-600 ml-auto"
+                      className="ml-auto rounded-md bg-blue-500 px-[60px] py-1 font-light text-white hover:bg-blue-600"
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -64,7 +63,7 @@ export default function ProfileDosbim() {
                     </button>
                   ) : (
                     <button
-                      className="rounded-md bg-blue-500 px-[60px] py-1 text-white font-light hover:bg-blue-600 ml-auto"
+                      className="ml-auto rounded-md bg-blue-500 px-[60px] py-1 font-light text-white hover:bg-blue-600"
                       onClick={() => setIsNotEditing(true)}
                       type="submit"
                     >
@@ -104,22 +103,6 @@ export default function ProfileDosbim() {
                   isForm={true}
                   name="telp"
                 />
-              </div>
-            </div>
-            <div className="px-[50px] py-8">
-              <div className="flex flex-col gap-5">
-                <div className="flex">
-                  <CardTitle className="mb-2">Topik</CardTitle>
-                  <TambahkanTopikButton />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <CardDescription className="font-medium">
-                    dummy title topik
-                  </CardDescription>
-                  <CardDescription className="font-medium">
-                    Deskripsi: <span> dummy title topik </span>
-                  </CardDescription>
-                </div>
               </div>
             </div>
           </div>
