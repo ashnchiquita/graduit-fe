@@ -114,7 +114,7 @@ export const router = createBrowserRouter(
           element: <DaftarTopik />,
         },
         {
-          path: "/registrasi-new",
+          path: "/dashboard-registrasi",
           element: <DashboardRegistrasi></DashboardRegistrasi>,
         },
         {
