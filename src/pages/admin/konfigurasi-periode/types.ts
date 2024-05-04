@@ -16,7 +16,6 @@ type FormData = DateFormData;
 export type KonfigurasiPeriodeHookReturn = {
   form: UseFormReturn<FormData, any, undefined>;
   handleSubmit: (data: FormData) => void;
-  years: string[];
 };
 
 export type RentangMasaProps = {

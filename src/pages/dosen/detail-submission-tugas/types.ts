@@ -82,7 +82,6 @@ export type GetDetailSubmisiRes = {
           kontak: string;
         };
         idPengaju: string;
-        periode: string;
       };
     };
   };

@@ -164,11 +164,5 @@ export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
     }
   };
 
-  const currYear = new Date().getFullYear();
-  const years = Array.from(
-    { length: 6 },
-    (_, i) => `${currYear - 5 + i}/${currYear - 4 + i}`,
-  );
-
-  return { form, handleSubmit, years };
+  return { form, handleSubmit };
 }
