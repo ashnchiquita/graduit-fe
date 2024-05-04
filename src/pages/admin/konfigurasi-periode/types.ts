@@ -11,11 +11,7 @@ type DateFormData = {
   akhirSidang?: Date | undefined;
 };
 
-type FormData = {
-  semester: "GANJIL" | "GENAP";
-  tahun: string;
-  minimalBimbingan: number;
-} & DateFormData;
+type FormData = DateFormData;
 
 export type KonfigurasiPeriodeHookReturn = {
   form: UseFormReturn<FormData, any, undefined>;
