@@ -1,3 +1,4 @@
+import { formatDateWithoutClock } from "@/pages/mahasiswa/add-log-bimbingan/utils";
 import {
   ColumnDef,
   PaginationState,
@@ -10,20 +11,19 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import {
-  getLogBimbinganS2,
   getLogBimbinganS1,
+  getLogBimbinganS2,
   getMahasiswaInfoS1,
 } from "../clients";
 import DownloadBox from "../components/DownloadBox";
 import StatusCircle from "../components/StatusCircle";
 import {
+  Berkas,
   BimbinganData,
   BimbinganLogs,
-  Berkas,
   BimbinganS1Res,
   LogBimbinganMahasiswaHookRet,
 } from "../types";
-import { formatDateWithoutClock } from "@/pages/mahasiswa/add-log-bimbingan/utils";
 
 export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet {
   const [searchValue, setSearchValue] = useState("");
@@ -132,7 +132,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
     {
       header: "Status Bimbingan",
       accessorKey: "status",
-      cell: ({ row }) => <StatusCircle row={row} />,
+      cell: ({ row }) => <StatusCircle strata={strata ?? ""} row={row} />,
       minSize: 1000,
       enableSorting: false,
     },

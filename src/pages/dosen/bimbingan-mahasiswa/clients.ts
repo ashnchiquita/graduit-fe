@@ -1,16 +1,36 @@
-import s2Instance from "@/config/s2-axios-config";
 import s1Instance from "@/config/s1-axios-config";
+import s2Instance from "@/config/s2-axios-config";
 import {
-  GetLogBimbinganS2Res,
   GetLogBimbinganS1Res,
+  GetLogBimbinganS2Res,
   GetMahasiswaInfoS1Res,
   UpdateStatusBimbinganLogRes,
+  UpdateStatusBimbinganLogS2Res,
 } from "./types";
 
 export async function getLogBimbinganS2(id: string) {
-  return await s2Instance.get<GetLogBimbinganS2Res>(`/bimbingan/${id}`, {
-    withCredentials: true,
-  });
+  return await s2Instance.get<GetLogBimbinganS2Res>(
+    `/bimbingan/mahasiswa/${id}`,
+    {
+      withCredentials: true,
+    },
+  );
+}
+
+export async function updateStatusBimbinganLogS2(
+  bimbinganId: string,
+  status: boolean,
+) {
+  return await s2Instance.patch<UpdateStatusBimbinganLogS2Res>(
+    `/bimbingan/pengesahan`,
+    {
+      status,
+      bimbinganId,
+    },
+    {
+      withCredentials: true,
+    },
+  );
 }
 
 export async function getLogBimbinganS1(id: string) {

@@ -1,33 +1,56 @@
-import { Row } from "@tanstack/react-table";
-import { BimbinganLogs } from "../types";
-import { updateStatusBimbinganLog } from "../clients";
-import { useState } from "react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
-  DialogClose,
 } from "@/components/ui/dialog";
+import { Row } from "@tanstack/react-table";
+import { useState } from "react";
 import { toast } from "react-toastify";
+import useSWRMutation from "swr/mutation";
+import {
+  updateStatusBimbinganLog,
+  updateStatusBimbinganLogS2,
+} from "../clients";
+import { BimbinganLogs } from "../types";
 
 export default function StatusCircle({
   row,
+  strata,
 }: {
   row: Row<BimbinganLogs>;
+  strata: string;
 }): JSX.Element {
   const [status, setStatus] = useState(row.original.status);
 
+  const { trigger: triggerS2, error } = useSWRMutation(
+    `/bimbingan/pengesahan`,
+    async (_, { arg }: { arg: boolean }) => {
+      return await updateStatusBimbinganLogS2(row.original.id, arg);
+    },
+  );
+
   const updateBimbinganLogStatus = async (id: string, status: boolean) => {
-    const resUpdate = await updateStatusBimbinganLog(id, status);
-    if ((resUpdate.data as any).success) {
-      toast.success("Bimbingan log status updated successfully.");
-      setStatus(status);
+    if (strata.toLowerCase() === "s1") {
+      const resUpdate = await updateStatusBimbinganLog(id, status);
+      if ((resUpdate.data as any).success) {
+        toast.success("Bimbingan log status updated successfully.");
+        setStatus(status);
+      } else {
+        toast.success("Failed to update bimbingan log status updated.");
+      }
     } else {
-      toast.success("Failed to update bimbingan log status updated.");
+      await triggerS2(status);
+      if (!error) {
+        toast.success("Bimbingan log status updated successfully.");
+        setStatus(status);
+      } else {
+        toast.success("Failed to update bimbingan log status updated.");
+      }
     }
   };
 
@@ -36,7 +59,7 @@ export default function StatusCircle({
       {status ? (
         <Dialog>
           <DialogTrigger asChild>
-            <button className="rounded-md border border-gray-500 px-8 py-2 text-gray-500 hover:bg-red-500 hover:border-red-500 hover:text-white">
+            <button className="rounded-md border border-gray-500 px-8 py-2 text-gray-500 hover:border-red-500 hover:bg-red-500 hover:text-white">
               Batalkan pengesahan
             </button>
           </DialogTrigger>
@@ -57,7 +80,7 @@ export default function StatusCircle({
                 </button>
               </DialogClose>
               <button
-                className="rounded-md border border-red-500 px-8 py-2 bg-red-500 text-white hover:bg-red-700"
+                className="rounded-md border border-red-500 bg-red-500 px-8 py-2 text-white hover:bg-red-700"
                 onClick={() => updateBimbinganLogStatus(row.original.id, false)}
               >
                 Gagalkan
@@ -67,7 +90,7 @@ export default function StatusCircle({
         </Dialog>
       ) : (
         <button
-          className="rounded-md bg-blue-500 px-5 py-2 text-white hover:bg-blue-600 w-[100%]"
+          className="w-[100%] rounded-md bg-blue-500 px-5 py-2 text-white hover:bg-blue-600"
           onClick={() => updateBimbinganLogStatus(row.original.id, true)}
         >
           Sahkan
