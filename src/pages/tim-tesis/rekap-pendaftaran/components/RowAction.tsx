@@ -87,7 +87,7 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
             <div className="w-full p-3">
               <button
                 onClick={() => setAcceptDialogOpen(true)}
-                className="flex w-full items-center gap-3 text-sm font-medium text-blue-500"
+                className="flex w-full items-center gap-1.5 text-sm font-medium text-blue-500"
               >
                 <Check className="mr-1 size-4" />
                 Terima Pengajuan
@@ -103,7 +103,7 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
               <div className="w-full p-3">
                 <button
                   onClick={() => setRejectDialogOpen(true)}
-                  className="flex w-full items-center gap-3 text-sm font-medium text-red-500"
+                  className="flex w-full items-center gap-1.5 text-sm font-medium text-red-500"
                 >
                   <X className="mr-1 size-4" />
                   Tolak Pengajuan

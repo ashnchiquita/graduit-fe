@@ -33,6 +33,7 @@ import {
   NotFound,
   Pengumuman,
   Penjadwalan,
+  ProfileDosbim,
   Registration,
   RekapPendaftaranDosbim,
   RekapPendaftaranTimTesis,
@@ -229,6 +230,10 @@ export const router = createBrowserRouter(
         {
           path: "/detail/:tipe/:strata",
           element: <DetailSidsem />,
+        },
+        {
+          path: "/profile",
+          element: <ProfileDosbim />,
         },
       ],
     },

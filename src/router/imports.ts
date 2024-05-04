@@ -122,3 +122,6 @@ export const DashboardRegistrasi = lazy(
   () =>
     import("../pages/mahasiswa/dashboard-registrasi/DashboardRegistrasi.tsx"),
 );
+export const ProfileDosbim = lazy(
+  () => import("../pages/dosen/profile/ProfileDosbim.tsx"),
+);
