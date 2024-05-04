@@ -234,7 +234,10 @@ export default function DashboardMahasiswa() {
               disabled={isRegisteredSeminar}
             />
             {isRegisteredSeminar ? (
-              <KonfirmasiPendaftaranCard title="Seminar Proposal"></KonfirmasiPendaftaranCard>
+              <KonfirmasiPendaftaranCard
+                title="Seminar Proposal"
+                path="/detail/seminar/S1"
+              ></KonfirmasiPendaftaranCard>
             ) : (
               <></>
             )}
@@ -244,7 +247,10 @@ export default function DashboardMahasiswa() {
               disabled={isRegisteredSidang}
             />
             {isRegisteredSidang ? (
-              <KonfirmasiPendaftaranCard title="Sidang Tugas Akhir"></KonfirmasiPendaftaranCard>
+              <KonfirmasiPendaftaranCard
+                title="Sidang Tugas Akhir"
+                path="/detail/sidang/S1"
+              ></KonfirmasiPendaftaranCard>
             ) : (
               <></>
             )}
@@ -257,16 +263,40 @@ export default function DashboardMahasiswa() {
               path="/registration/seminar-tesis/S2"
               disabled={isRegisteredSeminar}
             />
+            {isRegisteredSidang ? (
+              <KonfirmasiPendaftaranCard
+                title="Seminar Tesis"
+                path="/detail/seminar/S2"
+              ></KonfirmasiPendaftaranCard>
+            ) : (
+              <></>
+            )}
             <RegisterSidSemCard
               title="Sidang Tesis 1"
               path="/registration/sidang-satu/S2"
               disabled={isRegisteredSeminar}
             />
+            {isRegisteredSidang ? (
+              <KonfirmasiPendaftaranCard
+                title="Sidang Tesis 1"
+                path="/detail/sidang-satu/S2"
+              ></KonfirmasiPendaftaranCard>
+            ) : (
+              <></>
+            )}
             <RegisterSidSemCard
               title="Sidang Tesis 2"
               path="/registration/sidang-dua/S2"
               disabled={isRegisteredSeminar}
             />
+            {isRegisteredSidang ? (
+              <KonfirmasiPendaftaranCard
+                title="Sidang Tesis 2"
+                path="/detail/sidang-dua/S2"
+              ></KonfirmasiPendaftaranCard>
+            ) : (
+              <></>
+            )}
           </div>
         )}
       </div>

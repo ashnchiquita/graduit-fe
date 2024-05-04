@@ -39,6 +39,7 @@ import {
   ApprovalPendaftaran,
 } from "./imports";
 import RegistrationSidSem from "@/pages/mahasiswa/registration-sidsem/RegistrationSidSem";
+import DetailSidsem from "@/pages/mahasiswa/detail-sidsem/DetailSidsem";
 
 export const router = createBrowserRouter(
   [
@@ -215,6 +216,10 @@ export const router = createBrowserRouter(
         {
           path: "/registration/:tipe/:strata",
           element: <RegistrationSidSem />,
+        },
+        {
+          path: "/detail/:tipe/:strata",
+          element: <DetailSidsem />,
         },
       ],
     },

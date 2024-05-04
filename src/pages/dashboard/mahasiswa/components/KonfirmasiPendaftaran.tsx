@@ -1,6 +1,14 @@
 import { CardDescription, CardTitle } from "@/components/Card";
+import { useNavigate } from "react-router-dom";
 
-const KonfirmasiPendaftaranCard = ({ title }: { title: string }) => {
+const KonfirmasiPendaftaranCard = ({
+  title,
+  path,
+}: {
+  title: string;
+  path: string;
+}) => {
+  const navigate = useNavigate();
   return (
     <div className="rounded-lg bg-white flex flex-col gap-2 px-4 py-4">
       <CardTitle>Konfirmasi Pendaftaran {title}</CardTitle>
@@ -11,7 +19,10 @@ const KonfirmasiPendaftaranCard = ({ title }: { title: string }) => {
         <br />
         1. Silakan <span className="font-bold">periksa kembali</span> data Anda
         pada{" "}
-        <span className="text-blue-500 underline hover:cursor-pointer hover:text-blue-700">
+        <span
+          className="text-blue-500 underline hover:cursor-pointer hover:text-blue-700"
+          onClick={() => navigate(path)}
+        >
           link berikut
         </span>
         <br />

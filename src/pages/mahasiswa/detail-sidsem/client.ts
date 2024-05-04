@@ -1,18 +1,14 @@
 import s1Instance from "@/config/s1-axios-config";
-import { StatusMahasiswaResponse } from "./types";
-import { IsRegistered } from "@/pages/mahasiswa/detail-sidsem/types";
+import { DetailSidSemResp, IsRegistered } from "./types";
 
-export async function getStatusMahasiswaS1() {
-  return await s1Instance.get<StatusMahasiswaResponse>(
-    "/admin/status-mahasiswa",
+export const getDetailSidSemS1 = (tipe: string) => {
+  return s1Instance.get<DetailSidSemResp>(
+    `/mahasiswa/get-sidsem-detail?tipe=${tipe}`,
     {
       withCredentials: true,
-      params: {
-        nim: 13521086,
-      },
     },
   );
-}
+};
 
 export async function isRegisteredSidSemS1(tipe: string) {
   return await s1Instance.get<IsRegistered>(
