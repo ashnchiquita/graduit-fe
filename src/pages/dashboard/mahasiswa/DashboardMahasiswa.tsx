@@ -7,10 +7,10 @@ import RegisterSidSemCard from "./components/RegisterSidSemCard";
 import useDashboardMahasiswa from "./hooks/useDashboardMahasiswa";
 
 export default function DashboardMahasiswa() {
-  const { data, isRegisteredSeminar, isRegisteredSidang } =
+  const { data, isRegisteredSemPro, isRegisteredSemTes, isRegisteredSidang } =
     useDashboardMahasiswa();
   const dataMahasiswa = useSession().data;
-  console.log(isRegisteredSeminar, isRegisteredSidang);
+  console.log(isRegisteredSemPro, isRegisteredSidang);
 
   if (!data) {
     return <Skeleton />;
@@ -24,9 +24,9 @@ export default function DashboardMahasiswa() {
             <RegisterSidSemCard
               title="Seminar Proposal"
               path="/registration/seminar/S1"
-              disabled={isRegisteredSeminar}
+              disabled={isRegisteredSemPro}
             />
-            {isRegisteredSeminar ? (
+            {isRegisteredSemPro ? (
               <KonfirmasiPendaftaranCard
                 title="Seminar Proposal"
                 path="/detail/seminar/S1"
@@ -53,39 +53,39 @@ export default function DashboardMahasiswa() {
           <div className="flex w-full flex-col gap-4">
             <RegisterSidSemCard
               title="Seminar Tesis"
-              path="/registration/seminar-tesis/S2"
-              disabled={isRegisteredSeminar}
+              path="/registration/seminar-proposal/S2"
+              disabled={isRegisteredSemPro}
             />
-            {isRegisteredSidang ? (
+            {isRegisteredSemPro && (
+              <KonfirmasiPendaftaranCard
+                title="Seminar Proposal"
+                path="/detail/seminar-proposal/S2"
+              ></KonfirmasiPendaftaranCard>
+            )}
+
+            <RegisterSidSemCard
+              title="Seminar Tesis"
+              path="/registration/seminar-tesis/S2"
+              disabled={isRegisteredSemTes}
+            />
+            {isRegisteredSemTes ? (
               <KonfirmasiPendaftaranCard
                 title="Seminar Tesis"
-                path="/detail/seminar/S2"
+                path="/detail/seminar-tesis/S2"
               ></KonfirmasiPendaftaranCard>
             ) : (
               <></>
             )}
+
             <RegisterSidSemCard
-              title="Sidang Tesis 1"
-              path="/registration/sidang-satu/S2"
-              disabled={isRegisteredSeminar}
+              title="Sidang"
+              path="/registration/sidang/S2"
+              disabled={isRegisteredSidang}
             />
             {isRegisteredSidang ? (
               <KonfirmasiPendaftaranCard
-                title="Sidang Tesis 1"
-                path="/detail/sidang-satu/S2"
-              ></KonfirmasiPendaftaranCard>
-            ) : (
-              <></>
-            )}
-            <RegisterSidSemCard
-              title="Sidang Tesis 2"
-              path="/registration/sidang-dua/S2"
-              disabled={isRegisteredSeminar}
-            />
-            {isRegisteredSidang ? (
-              <KonfirmasiPendaftaranCard
-                title="Sidang Tesis 2"
-                path="/detail/sidang-dua/S2"
+                title="Sidang"
+                path="/detail/sidang/S2"
               ></KonfirmasiPendaftaranCard>
             ) : (
               <></>
