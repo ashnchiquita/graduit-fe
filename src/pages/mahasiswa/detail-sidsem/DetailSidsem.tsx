@@ -1,28 +1,20 @@
-import { FaArrowLeft } from "react-icons/fa6";
 import { CardTitle } from "@/components/Card";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Lightbulb, WrapText } from "lucide-react";
-import useDetailSidsem from "./hooks/useDetailSidsem";
+import { FaArrowLeft } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 import DosenPembimbingIcon from "../../../assets/detail-sidsem/dosen-pembimbing-icon.svg";
 import JadwalSidangIcon from "../../../assets/detail-sidsem/jadwal-sidang-icon.svg";
 import JenisSidangIcon from "../../../assets/detail-sidsem/jenis-sidang-icon.svg";
 import RuanganSidangIcon from "../../../assets/detail-sidsem/ruangan-sidang-icon.svg";
 import StatusIcon from "../../../assets/detail-sidsem/status-icon.svg";
+import useDetailSidsem from "./hooks/useDetailSidsem";
 
 const DetailSidsem = () => {
   const navigate = useNavigate();
-  const { data } = useDetailSidsem();
-  const tipePendaftaran =
-    data.data.tipe === "sidang"
-      ? "Sidang Tugas Akhir"
-      : data.data.tipe === "seminar"
-        ? "Seminar Proposal"
-        : "";
-
-  console.log(typeof data.data.waktu_mulai);
+  const { data, tipePendaftaran } = useDetailSidsem();
 
   return (
     <main className="ml-6 mr-3 ">
@@ -156,7 +148,11 @@ const DetailSidsem = () => {
                 </div>
               </div>
               <div className="pl-9 text-sm md:text-base">
-                {data.data.ditolak ? "Diterima" : "Ditolak"}
+                {data.data.ditolak
+                  ? "Diterima"
+                  : data.data.ditolak === null
+                    ? "Belum ditentukan"
+                    : "Ditolak"}
               </div>
             </div>
           </div>

@@ -4,22 +4,26 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Row } from "@tanstack/react-table";
+import { HiOutlineDocument } from "react-icons/hi2";
 import { IoEllipsisVertical } from "react-icons/io5";
+import { PiClockCounterClockwise } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import useRowAction from "../hooks/useRowAction";
-import { PiClockCounterClockwise } from "react-icons/pi";
-import { HiOutlineDocument } from "react-icons/hi2";
 import { DashTableData } from "../types";
 import ArchiveDialog from "./ArchiveDialog";
 
 interface ComponentProps {
   row: Row<DashTableData>;
   searchValue: string;
+  fetchData: () => Promise<any>;
 }
 
-export default function RowAction({ row }: ComponentProps): JSX.Element {
+export default function RowAction({
+  row,
+  fetchData,
+}: ComponentProps): JSX.Element {
   const { archiveDialogOpen, setArchiveDialogOpen, handleArchive } =
-    useRowAction();
+    useRowAction(row.original.id, fetchData);
 
   return (
     <Popover>

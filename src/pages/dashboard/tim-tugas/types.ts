@@ -17,10 +17,35 @@ export type DashboardTimTugasHookRet = {
 };
 
 export type DashTableData = {
+  id: string;
   nim: string;
   nama: string;
   pengajuanTopik: boolean;
   seminarProposal: boolean;
   seminarTesis: boolean;
   sidang: boolean;
+};
+
+export enum GetDashboardTimTesisStatusEnum {
+  PENGAJUAN_TOPIK = "PENGAJUAN_TOPIK",
+  SEMINAR_1 = "SEMINAR_1",
+  SEMINAR_2 = "SEMINAR_2",
+  SIDANG = "SIDANG",
+}
+
+export type GetDashboardTimTesisRespData = {
+  maxPage: 0;
+  data: {
+    id_mahasiswa: string;
+    nim_mahasiswa: string;
+    nama_mahasiswa: string;
+    dosen_pembimbing: string[];
+    status: GetDashboardTimTesisStatusEnum[];
+  }[];
+};
+
+export type GetDashboardTimTesisReqParams = {
+  page: number;
+  limit: number;
+  search?: string;
 };
