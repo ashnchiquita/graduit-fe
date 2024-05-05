@@ -137,6 +137,23 @@ const NAV_ITEMS: NavItem[] = [
       RoleEnum.S1_PENGUJI,
     ],
   },
+  {
+    label: "Sidang dan Seminar S2",
+    icon: <IoSchoolOutline className="text-slate-700" />,
+    children: [
+      {
+        label: "Rekap Pendaftaran",
+        path: "/rekap-pendaftaran-tim-tesis",
+        roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.ADMIN],
+      },
+      {
+        label: "Rekap Pendaftaran",
+        path: "/rekap-pendaftaran",
+        roleAccess: [RoleEnum.S2_PEMBIMBING],
+      },
+    ],
+    roleAccess: [RoleEnum.S2_PEMBIMBING, RoleEnum.S2_TIM_TESIS, RoleEnum.ADMIN],
+  },
   // {
   //   label: "Informasi",
   //   icon: <VscInfo className="text-slate-700" />,

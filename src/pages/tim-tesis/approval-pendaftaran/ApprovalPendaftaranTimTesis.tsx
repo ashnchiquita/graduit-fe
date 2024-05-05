@@ -9,9 +9,9 @@ import {
 } from "@radix-ui/react-icons";
 import { Search } from "lucide-react";
 import { Link } from "react-router-dom";
-import useRekapPendaftaranTimTesis from "./hooks/useApprovalPendaftaranTimTesis";
-import { StatusPendaftaranOptions } from "./constants";
 import DataContext from "../context/DataContext";
+import { StatusPendaftaranOptions } from "./constants";
+import useRekapPendaftaranTimTesis from "./hooks/useApprovalPendaftaranTimTesis";
 
 export default function RekapPendaftaranTimTesis(): JSX.Element {
   const { table, searchValue, handleSearchValueChange, refreshData } =
