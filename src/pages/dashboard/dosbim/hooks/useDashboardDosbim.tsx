@@ -7,26 +7,32 @@ import { useEffect, useState } from "react";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import useSWR from "swr";
-import { getDashboardDosbimS2, getDosbimStatisticsS2 } from "../clients";
+import {
+  getDashboardDosbimS1,
+  getDashboardDosbimS2,
+  getDosbimStatisticsS1,
+  getDosbimStatisticsS2,
+  getDosbimStatusBimbinganS1,
+} from "../clients";
 import StatusCell from "../components/StatusCell";
 import {
+  BarChartDosbing,
   DashboardDosbimHookRet,
   DoughnutChartDosbing,
   MahasiswaBimbingan,
 } from "../types";
 
 export default function useDashboardDosbim(): DashboardDosbimHookRet {
-  // TODO-S1: Update this to fetch from S1 service
   const { data: s1MahasiswaData = [] } = useSWR(
-    "/dashboard/dosbim/s1",
+    "/api/dosbing/dashboard",
     async () => {
-      const res = await getDashboardDosbimS2();
-
-      const data = res.data.map((item) => ({
-        id: item.mahasiswa.id,
-        nim: item.mahasiswa.nim,
-        nama: item.mahasiswa.nama,
-        topik: item.topik.judul,
+      const res = await getDashboardDosbimS1();
+      console.log("res", res);
+      const data = res.data.data.map((item) => ({
+        id: item.id,
+        nim: item.nim,
+        nama: item.nama,
+        topik: item.judul_topik,
         status: item.status,
         strata: "S1" as "S1",
       }));
@@ -69,16 +75,20 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
 
   const [mahasiswaData, setMahasiswaData] = useState<MahasiswaBimbingan[]>([]);
 
-  // TODO: Update this to fetch from S1 service
   const { data: s1StatisticData = [] } = useSWR(
-    "/dashboard/dosbim/statistics",
+    "/api/dosbing/dashboard/statistic",
     async () => {
-      const res = await getDosbimStatisticsS2();
-
-      const data = res.data.map((item) => ({
-        type: item.jalurPilihan,
-        amount: item.count,
-      }));
+      const res = await getDosbimStatisticsS1();
+      const data = [
+        {
+          type: "IF",
+          amount: res.data.data.mahasiswa_if,
+        },
+        {
+          type: "STI",
+          amount: res.data.data.mahasiswa_sti,
+        },
+      ];
 
       return data;
     },
@@ -98,6 +108,21 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
     },
   );
 
+  const { data: s1BimbinganData } = useSWR(
+    "/api/dosbing/dashboard/status-bimbingan",
+    async () => {
+      const res = await getDosbimStatusBimbinganS1();
+
+      const data = {
+        bimbingan: res.data.data.butuh_bimbingan,
+        lancar: res.data.data.lancar,
+        terkendala: res.data.data.terkendala,
+      };
+
+      return data;
+    },
+  );
+
   const doughnutChartData: DoughnutChartDosbing[] = [
     {
       level: "S1",
@@ -107,6 +132,16 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
       level: "S2",
       data: s2StatisticData,
     },
+  ];
+
+  const barChartData: BarChartDosbing[] = [
+    {
+      level: "S1",
+      lancar: s1BimbinganData?.lancar ?? 0,
+      bimbingan: s1BimbinganData?.bimbingan ?? 0,
+      terkendala: s1BimbinganData?.terkendala ?? 0,
+    },
+    { level: "S2", lancar: 8, bimbingan: 2, terkendala: 4 },
   ];
 
   const columns: ColumnDef<MahasiswaBimbingan>[] = [
@@ -162,5 +197,6 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
     table,
     mahasiswaData: s2MahasiswaData,
     doughnutChartData,
+    barChartData,
   };
 }

@@ -30,6 +30,7 @@ export type DashboardDosbimHookRet = {
   table: Table<MahasiswaBimbingan>;
   mahasiswaData: MahasiswaBimbingan[];
   doughnutChartData: DoughnutChartDosbing[];
+  barChartData: BarChartDosbing[];
 };
 
 export type GetDosbimStatisticsRes = {
@@ -52,4 +53,30 @@ export type BarChartDosbing = {
   lancar: number;
   bimbingan: number;
   terkendala: number;
+};
+
+export type GetDashboardDosbimS1Res = {
+  data: {
+    id: string;
+    nama: string;
+    nim: string;
+    status: string;
+    id_topik: string;
+    judul_topik: string;
+  }[];
+};
+
+export type GetDosbimStatisticsS1Res = {
+  data: {
+    mahasiswa_if: number;
+    mahasiswa_sti: number;
+  };
+};
+
+export type GetDosbimStatusBimbinganS1Res = {
+  data: {
+    butuh_bimbingan: number;
+    lancar: number;
+    terkendala: number;
+  };
 };

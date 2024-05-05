@@ -15,12 +15,8 @@ const DashboardDosbim = () => {
   //   // TODO: Refetch data from database
   // };
 
-  const barChartData: BarChartDosbing[] = [
-    { level: "S1", lancar: 10, bimbingan: 5, terkendala: 3 },
-    { level: "S2", lancar: 8, bimbingan: 2, terkendala: 4 },
-  ];
-
-  const { table, mahasiswaData, doughnutChartData } = useDashboardDosbim();
+  const { table, mahasiswaData, doughnutChartData, barChartData } =
+    useDashboardDosbim();
 
   return (
     <div className="flex size-full max-h-screen flex-col gap-2 px-4 pb-4">
