@@ -82,6 +82,7 @@ export default function useDetailSidsem() {
           },
         };
       } else {
+        // TODO has registered guard
         const responseDetail = (await getDetailSidSemS2(sessionData?.id ?? ""))
           .data;
         data = {

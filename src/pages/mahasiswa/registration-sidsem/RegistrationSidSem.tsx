@@ -6,11 +6,11 @@ import {
 } from "@/components/Card";
 
 import { Form } from "@/components/ui/form/form";
-import useRegistrationSidSem from "./hooks/UseRegistrationSidSem";
 import { useNavigate, useParams } from "react-router-dom";
-import { DataDiriComponent } from "./components/DataDiri";
 import { AddBerkas } from "./components/AddBerkas";
+import { DataDiriComponent } from "./components/DataDiri";
 import { DetailTopikComponent } from "./components/DetailTopik";
+import useRegistrationSidSem from "./hooks/UseRegistrationSidSem";
 
 export default function RegistrationSidSem() {
   const { data, form, onSubmit } = useRegistrationSidSem();
@@ -18,19 +18,17 @@ export default function RegistrationSidSem() {
 
   const { tipe, strata } = useParams();
 
-  console.log(strata);
-
   const tipePendaftaran =
     tipe === "sidang"
-      ? "Sidang"
+      ? "sidang"
       : tipe === "seminar"
-        ? "Seminar Proposal"
-        : tipe === "seminar-tesis"
-          ? "Seminar Tesis"
-          : tipe === "sidang-satu"
-            ? "Sidang Satu"
-            : tipe === "sidang-dua"
-              ? "Sidang Dua"
+        ? "seminar"
+        : tipe === "seminar-proposal"
+          ? "seminar-proposal"
+          : tipe === "seminar-tesis"
+            ? "seminar-tesis"
+            : tipe === "sidang"
+              ? "sidang"
               : "";
 
   const tipeStrata =
@@ -48,7 +46,7 @@ export default function RegistrationSidSem() {
     <main>
       <Form {...form}>
         <form
-          className="pl-5 pr-3 flex flex-col gap-6 pb-10"
+          className="flex flex-col gap-6 pb-10 pl-5 pr-3"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <Card
@@ -67,13 +65,13 @@ export default function RegistrationSidSem() {
           <DataDiriComponent data={data} strata={strata || ""} />
           <DetailTopikComponent form={form} />
           <AddBerkas form={form} />
-          <div className="px-4 flex flex-col gap-5">
+          <div className="flex flex-col gap-5 px-4">
             <CardDescription>
               Mohon periksa kembali seluruh bagian sebelum mengirimkan formulir
             </CardDescription>
             <div className="flex gap-2">
               <button
-                className="rounded-md bg-blue-500 px-5 py-2 text-white hover:bg-blue-600 mr-auto"
+                className="mr-auto rounded-md bg-blue-500 px-5 py-2 text-white hover:bg-blue-600"
                 type="submit"
               >
                 Kirim
