@@ -1,13 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { KonfigurasiPeriodeHookReturn, PutKonfigurasiRequest } from "../types";
-import { Semester } from "../constants";
-import useSWR from "swr";
-import { getKonfigurasi, putKonfigurasi } from "../clients";
 import { useEffect } from "react";
-import useSWRMutation from "swr/mutation";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
+import { z } from "zod";
+import { getKonfigurasi, putKonfigurasi } from "../clients";
+import { KonfigurasiPeriodeHookReturn, PutKonfigurasiRequest } from "../types";
 
 export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
   const { data } = useSWR("/konfigurasi", async () => {
@@ -17,9 +16,6 @@ export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
 
   const formSchema = z
     .object({
-      semester: z.enum(Semester),
-      tahun: z.string().min(1),
-      minimalBimbingan: z.coerce.number().min(1),
       awalPendaftaran: z.date().optional(),
       akhirPendaftaran: z.date().optional(),
       awalSempro: z.date().optional(),
@@ -51,9 +47,6 @@ export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      semester: "GANJIL",
-      tahun: "",
-      minimalBimbingan: 0,
       awalPendaftaran: undefined,
       akhirPendaftaran: undefined,
       awalSempro: undefined,
@@ -66,9 +59,6 @@ export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
   });
 
   useEffect(() => {
-    form.setValue("semester", data?.get("PERIODE")?.split("-")[0] as any);
-    form.setValue("tahun", data?.get("PERIODE")?.split("-")[1] as any);
-    form.setValue("minimalBimbingan", +(data?.get("MINIMAL_BIMBINGAN") || 0));
     form.setValue(
       "awalPendaftaran",
       data?.get("AWAL_PENDAFTARAN")
@@ -131,14 +121,6 @@ export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
     const payload: PutKonfigurasiRequest = {
       data: [
         {
-          key: "PERIODE",
-          value: `${data.semester}-${data.tahun}`,
-        },
-        {
-          key: "MINIMAL_BIMBINGAN",
-          value: data.minimalBimbingan.toString(),
-        },
-        {
           key: "AWAL_PENDAFTARAN",
           value: data.awalPendaftaran?.toISOString() || "",
         },
@@ -182,11 +164,5 @@ export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
     }
   };
 
-  const currYear = new Date().getFullYear();
-  const years = Array.from(
-    { length: 6 },
-    (_, i) => `${currYear - 5 + i}/${currYear - 4 + i}`,
-  );
-
-  return { form, handleSubmit, years };
+  return { form, handleSubmit };
 }

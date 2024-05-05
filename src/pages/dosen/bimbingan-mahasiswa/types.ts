@@ -76,6 +76,10 @@ export type UpdateStatusBimbinganLogRes = {
   };
 };
 
+export type UpdateStatusBimbinganLogS2Res = {
+  id: string;
+};
+
 export type GetLogBimbinganS2Res = {
   bimbingan: BimbinganS2Res[];
   mahasiswa: {
@@ -90,7 +94,6 @@ export type GetLogBimbinganS2Res = {
     judul: string;
     deskripsi: string;
     idPengaju: string;
-    periode: string;
   };
 };
 

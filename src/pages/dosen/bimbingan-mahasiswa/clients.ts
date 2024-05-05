@@ -1,8 +1,8 @@
-import s2Instance from "@/config/s2-axios-config";
 import s1Instance from "@/config/s1-axios-config";
+import s2Instance from "@/config/s2-axios-config";
 import {
-  GetLogBimbinganS2Res,
   GetLogBimbinganS1Res,
+  GetLogBimbinganS2Res,
   GetMahasiswaInfoS1Res,
   UpdateStatusBimbinganLogRes,
 } from "./types";

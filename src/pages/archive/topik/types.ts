@@ -55,5 +55,4 @@ export type DaftarTopikData = {
     email: string;
     roles: RoleEnum[];
   };
-  periode: string;
 };
