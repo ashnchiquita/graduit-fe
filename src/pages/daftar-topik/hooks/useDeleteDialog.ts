@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
-import { deleteTopicS2 } from "../clients";
+import { deleteTopicS1, deleteTopicS2 } from "../clients";
 import useSession from "@/hooks/useSession";
 import { isAdmin } from "@/lib/checkRole";
 import { RoleEnum } from "@/types/session-data";
@@ -15,8 +15,7 @@ export default function useDeleteDialog(
   const { trigger: triggerDeleteS1, error: errorDeleteS1 } = useSWRMutation(
     "/alokasi-topik",
     async (_, { arg }: { arg: string }) => {
-      // TODO: S1 delete topic disini
-      return await deleteTopicS2(arg);
+      return await deleteTopicS1(arg);
     },
   );
 
