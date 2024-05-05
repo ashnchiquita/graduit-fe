@@ -1,6 +1,7 @@
 import s1Instance from "@/config/s1-axios-config";
 import loginInstance from "@/config/login-axios-config";
 import { IDMahasiswa } from "./types";
+import { IsRegistered } from "../detail-sidsem/types";
 
 export const postRegistraionSidSemForS1 = (data: any) => {
   return s1Instance.post<any>("/mahasiswa/pendaftaran-sidsem", data, {
@@ -24,7 +25,7 @@ export async function getIdMahasiswa() {
 }
 
 export async function isRegisteredSidSemS1(tipe: string) {
-  return await s1Instance.get<boolean>(
+  return await s1Instance.get<IsRegistered>(
     `/mahasiswa/is-registered-sidsem?tipe=${tipe}`,
     {
       withCredentials: true,

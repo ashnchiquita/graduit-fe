@@ -32,9 +32,8 @@ export default function useDaftarPengajuan(): StatusMahasiswaHookRet {
         const resData = res.data.map((item) => ({
           status_pendaftaran: {
             status: true,
-            topik: item.topik.judul,
-            judul: item.topik.judul,
-            dosen_pembimbing: item.penerima.nama,
+            topik: item.judulTopik,
+            dosen_pembimbing: item.dosenPembimbing[0].nama,
             pengiriman_registrasi: new Date(item.waktuPengiriman),
             persetujuan_dosen_pembimbing: item.waktuKeputusan
               ? new Date(item.waktuKeputusan)
@@ -58,6 +57,7 @@ export default function useDaftarPengajuan(): StatusMahasiswaHookRet {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   return {

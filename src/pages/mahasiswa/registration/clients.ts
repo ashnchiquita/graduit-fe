@@ -5,6 +5,7 @@ import {
   GetAlokasiTopikPerPembimbingRespData,
   PostRegistrasiTesisRequestData,
   PostRegistrasiTesisResponseData,
+  StatusS2Response,
 } from "./types";
 
 export const getAllDosenPembimbing = () => {
@@ -22,10 +23,16 @@ export const getAlokasiTopikPerPembimbing = (
   );
 };
 
-export const postRegistrasiTesis = (data: PostRegistrasiTesisRequestData) => {
+export const postRegistrasiTesisS2 = (data: PostRegistrasiTesisRequestData) => {
   return s2Instance.post<PostRegistrasiTesisResponseData>(
     "/registrasi-tesis",
     data,
     { withCredentials: true },
   );
 };
+
+export async function getRegS2(mhsId: string) {
+  return await s2Instance.get<StatusS2Response>(
+    `/registrasi-tesis/mahasiswa/${mhsId}`,
+  );
+}

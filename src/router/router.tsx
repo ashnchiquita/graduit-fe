@@ -1,4 +1,6 @@
 import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
+import DetailSidsem from "@/pages/mahasiswa/detail-sidsem/DetailSidsem";
+import RegistrationSidSem from "@/pages/mahasiswa/registration-sidsem/RegistrationSidSem";
 import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
@@ -6,17 +8,24 @@ import {
   AccountTimTesisLayout,
   AkunCreate,
   AkunDetail,
+  ApprovalPendaftaran,
   AssignKelas,
   BatchUbahRole,
+  DaftarKelas,
   DaftarPengajuan,
-  DaftarTopikTimTugas,
+  DaftarTopik,
+  DaftarTugas,
   Dashboard,
+  DashboardRegistrasi,
+  DetailMahasiswa,
   DetailRekapPendaftaran,
   DetailSubmissionTugas,
   InputNilai,
+  KelasDetail,
   KelolaAkun,
   KonfigurasiPeriode,
   LogBimbinganMahasiswa,
+  LogMahasiswa,
   LogSistem,
   Login,
   MainLayout,
@@ -24,20 +33,15 @@ import {
   NotFound,
   Pengumuman,
   Penjadwalan,
+  ProfileDosbim,
   Registration,
   RekapPendaftaranDosbim,
-  SubmissionTugas,
-  Topik,
-  DaftarKelas,
   RekapPendaftaranTimTesis,
   RiwayatPendaftaran,
-  KelasDetail,
   SubmisiTugas,
-  DaftarTugas,
-  LogMahasiswa,
-  ApprovalPendaftaran,
+  SubmissionTugas,
+  Topik,
 } from "./imports";
-import RegistrationSidSem from "@/pages/mahasiswa/registration-sidsem/RegistrationSidSem";
 
 export const router = createBrowserRouter(
   [
@@ -65,6 +69,10 @@ export const router = createBrowserRouter(
         {
           path: "/dashboard",
           element: <Dashboard />,
+        },
+        {
+          path: "/detail-mahasiswa/:nim",
+          element: <DetailMahasiswa />,
         },
         {
           path: "/rekap-pendaftaran",
@@ -103,6 +111,14 @@ export const router = createBrowserRouter(
           element: <Registration></Registration>,
         },
         {
+          path: "/daftar-topik",
+          element: <DaftarTopik />,
+        },
+        {
+          path: "/dashboard-registrasi",
+          element: <DashboardRegistrasi></DashboardRegistrasi>,
+        },
+        {
           path: "/tesis",
           element: <Navigate to="/tesis/registrasi" replace />,
         },
@@ -136,10 +152,6 @@ export const router = createBrowserRouter(
           element: <BatchUbahRole />,
         },
         {
-          path: "/manajemen/daftar-topik",
-          element: <DaftarTopikTimTugas />,
-        },
-        {
           path: "/manajemen/assign-kelas/mahasiswa",
           element: <AssignKelas type="MAHASISWA" />,
         },
@@ -168,7 +180,7 @@ export const router = createBrowserRouter(
           element: <Navigate to="/tugas-akhir/topik" replace />,
         },
         {
-          path: "/tugas-akhir/topik",
+          path: "/topik",
           element: <Topik />,
         },
         {
@@ -214,6 +226,14 @@ export const router = createBrowserRouter(
         {
           path: "/registration/:tipe/:strata",
           element: <RegistrationSidSem />,
+        },
+        {
+          path: "/detail/:tipe/:strata",
+          element: <DetailSidsem />,
+        },
+        {
+          path: "/profile",
+          element: <ProfileDosbim />,
         },
       ],
     },
