@@ -1,18 +1,22 @@
+import CheckIcon from "@/assets/dash-tim-tugas/check.svg";
+import {
+  ColumnDef,
+  getCoreRowModel,
+  PaginationState,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import useSWR from "swr";
+import { getDashboardTimTesisData } from "../client";
+import RowAction from "../components/RowAction";
 import {
   DashboardTimTugasHookProps,
   DashboardTimTugasHookRet,
   DashTableData,
+  GetDashboardTimTesisReqParams,
+  GetDashboardTimTesisStatusEnum,
 } from "../types";
-import { useEffect, useState } from "react";
-import {
-  ColumnDef,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import useSWR from "swr";
-import CheckIcon from "@/assets/dash-tim-tugas/check.svg";
-import RowAction from "../components/RowAction";
 
 export default function useDashboardTimTugas({
   strata,
@@ -22,6 +26,10 @@ export default function useDashboardTimTugas({
     searchParams.get("search") ?? "",
   );
   const [strataFilter, setStrataFilter] = useState<"S1" | "S2">("S1");
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   const handleSearchValueChange = (value: string) => {
     const obj: any = {};
@@ -31,58 +39,65 @@ export default function useDashboardTimTugas({
     setSearchValue(value);
   };
 
-  const { data = [], mutate } = useSWR(
-    ["/dashboard-tim-tugas", searchValue],
-    () => {
-      if (strata === "S1" || (strata === "ALL" && strataFilter === "S1")) {
-        return [
-          {
-            nim: "13521149",
-            nama: "John Doe",
-            pengajuanTopik: true,
-            seminarProposal: true,
-            seminarTesis: true,
-            sidang: true,
-          },
-          {
-            nim: "13521941",
-            nama: "Jane Doe",
-            pengajuanTopik: true,
-            seminarProposal: false,
-            seminarTesis: false,
-            sidang: false,
-          },
-        ];
-      } else {
-        return [
-          {
-            nim: "23521149",
-            nama: "John Doe",
-            pengajuanTopik: true,
-            seminarProposal: true,
-            seminarTesis: true,
-            sidang: true,
-          },
-          {
-            nim: "23521941",
-            nama: "Jane Doe",
-            pengajuanTopik: true,
-            seminarProposal: true,
-            seminarTesis: false,
-            sidang: false,
-          },
-          {
-            nim: "23521491",
-            nama: "Kia Mhalifa",
-            pengajuanTopik: true,
-            seminarProposal: true,
-            seminarTesis: true,
-            sidang: false,
-          },
-        ];
-      }
-    },
-  );
+  const { data: { data, pageCount } = { data: [], pageCount: 0 }, mutate } =
+    useSWR(
+      ["/dashboard-tim-tugas", searchValue, pagination, strataFilter],
+      async () => {
+        if (strata === "S1" || (strata === "ALL" && strataFilter === "S1")) {
+          return {
+            data: [
+              {
+                id: "13521149",
+                nim: "13521149",
+                nama: "John Doe",
+                pengajuanTopik: true,
+                seminarProposal: true,
+                seminarTesis: true,
+                sidang: true,
+              },
+              {
+                id: "13521149",
+                nim: "13521941",
+                nama: "Jane Doe",
+                pengajuanTopik: true,
+                seminarProposal: false,
+                seminarTesis: false,
+                sidang: false,
+              },
+            ],
+            pageCount: 1,
+          };
+        } else {
+          const params: GetDashboardTimTesisReqParams = {
+            limit: pagination.pageSize,
+            page: pagination.pageIndex + 1,
+          };
+
+          if (searchValue) params.search = searchValue;
+
+          const resp = (await getDashboardTimTesisData(params)).data;
+
+          const data: DashTableData[] = resp.data.map(
+            ({ nim_mahasiswa, id_mahasiswa, nama_mahasiswa, status }) => ({
+              id: id_mahasiswa,
+              nim: nim_mahasiswa,
+              nama: nama_mahasiswa,
+              pengajuanTopik: status.includes(
+                GetDashboardTimTesisStatusEnum.PENGAJUAN_TOPIK,
+              ),
+              seminarProposal: status.includes(
+                GetDashboardTimTesisStatusEnum.SEMINAR_1,
+              ),
+              seminarTesis: status.includes(
+                GetDashboardTimTesisStatusEnum.SEMINAR_2,
+              ),
+              sidang: status.includes(GetDashboardTimTesisStatusEnum.SIDANG),
+            }),
+          );
+          return { data, pageCount: resp.maxPage };
+        }
+      },
+    );
 
   const allColumns: ColumnDef<DashTableData>[] = [
     {
@@ -155,7 +170,9 @@ export default function useDashboardTimTugas({
     },
     {
       id: "aksi",
-      cell: ({ row }) => <RowAction row={row} searchValue={searchValue} />,
+      cell: ({ row }) => (
+        <RowAction row={row} fetchData={mutate} searchValue={searchValue} />
+      ),
       enableSorting: false,
       minSize: 100,
       meta: {
@@ -167,6 +184,7 @@ export default function useDashboardTimTugas({
 
   useEffect(() => {
     mutate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [strataFilter]);
 
   let columns = allColumns;
@@ -178,6 +196,11 @@ export default function useDashboardTimTugas({
     columns,
     data,
     columnResizeMode: "onChange",
+    onPaginationChange: setPagination,
+    pageCount,
+    state: {
+      pagination,
+    },
     getCoreRowModel: getCoreRowModel(),
   });
 
