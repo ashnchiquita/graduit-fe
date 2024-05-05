@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { DashboardMahasiswaHookRet, StatusMahasiswaResponse } from "../types";
+import { isRegisteredSidSemS1 } from "../client";
+import useSWR from "swr";
+// import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function useDashboardMahasiswa(): DashboardMahasiswaHookRet {
   const [data] = useState<StatusMahasiswaResponse>({
@@ -34,7 +38,27 @@ export default function useDashboardMahasiswa(): DashboardMahasiswaHookRet {
     },
   });
 
+  const { data: isRegisteredSeminarSidang = [] } = useSWR<boolean[]>(
+    "/dashboard",
+    async () => {
+      try {
+        const responseSeminar = await isRegisteredSidSemS1("seminar");
+        const responseSidang = await isRegisteredSidSemS1("sidang");
+        console.log(responseSeminar);
+        console.log(responseSidang);
+        return [responseSeminar.data.data, responseSidang.data.data];
+      } catch (error) {
+        // Handle error and return a default value (true in this case)
+        toast.error("Gagal memuat data mahasiswa");
+        return [true, true];
+      }
+    },
+  );
+
+  // Return the data and isRegistered value
   return {
     data,
+    isRegisteredSeminar: isRegisteredSeminarSidang[0],
+    isRegisteredSidang: isRegisteredSeminarSidang[1], // Provide a default value in case isRegistered is undefined
   };
 }

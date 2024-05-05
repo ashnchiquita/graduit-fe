@@ -36,7 +36,12 @@ export type BimbinganS2Res = {
   laporanKemajuan: string;
   todo: string;
   bimbinganBerikutnya: string;
-  berkas: Berkas[];
+  disahkan: boolean;
+  berkas: {
+    id: string;
+    nama: string;
+    url: string;
+  }[];
 };
 
 export type BimbinganS1Res = {
@@ -99,6 +104,4 @@ export type LogBimbinganMahasiswaHookRet = {
     judul: string;
     deskripsi: string;
   };
-  searchValue: string;
-  handleSearchValueChange: (value: string) => void;
 };

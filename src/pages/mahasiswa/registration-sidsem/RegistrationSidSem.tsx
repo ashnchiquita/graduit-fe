@@ -7,22 +7,42 @@ import {
 
 import { Form } from "@/components/ui/form/form";
 import useRegistrationSidSem from "./hooks/UseRegistrationSidSem";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { DataDiriComponent } from "./components/DataDiri";
 import { AddBerkas } from "./components/AddBerkas";
 import { DetailTopikComponent } from "./components/DetailTopik";
 
 export default function RegistrationSidSem() {
   const { data, form, onSubmit } = useRegistrationSidSem();
+  const navigate = useNavigate();
 
   const { tipe, strata } = useParams();
+
+  console.log(strata);
 
   const tipePendaftaran =
     tipe === "sidang"
       ? "Sidang"
       : tipe === "seminar"
         ? "Seminar Proposal"
-        : "Not found";
+        : tipe === "seminar-tesis"
+          ? "Seminar Tesis"
+          : tipe === "sidang-satu"
+            ? "Sidang Satu"
+            : tipe === "sidang-dua"
+              ? "Sidang Dua"
+              : "";
+
+  const tipeStrata =
+    strata?.toUpperCase() === "S1"
+      ? "S1"
+      : strata?.toUpperCase() === "S2"
+        ? "S2"
+        : "";
+
+  if (!tipePendaftaran || !tipeStrata) {
+    navigate("/not-found");
+  }
 
   return (
     <main>

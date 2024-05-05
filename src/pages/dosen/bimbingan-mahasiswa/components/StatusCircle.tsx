@@ -12,44 +12,63 @@ import { Row } from "@tanstack/react-table";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
-import {
-  updateStatusBimbinganLog,
-  updateStatusBimbinganLogS2,
-} from "../clients";
+import { updatePengesahanS2, updateStatusBimbinganLog } from "../clients";
 import { BimbinganLogs } from "../types";
 
 export default function StatusCircle({
-  row,
   strata,
+  mhsId,
+  row,
 }: {
+  strata: "S1" | "S2";
+  mhsId: string;
   row: Row<BimbinganLogs>;
-  strata: string;
 }): JSX.Element {
   const [status, setStatus] = useState(row.original.status);
 
-  const { trigger: triggerS2, error } = useSWRMutation(
-    `/bimbingan/pengesahan`,
-    async (_, { arg }: { arg: boolean }) => {
-      return await updateStatusBimbinganLogS2(row.original.id, arg);
-    },
+  const { trigger: triggerUpdateS2, error: updateS2Error } = useSWRMutation(
+    `/bimbingan/${mhsId}`,
+    async (_, { arg }: { arg: boolean }) =>
+      await updatePengesahanS2(row.original.id, arg),
   );
 
   const updateBimbinganLogStatus = async (id: string, status: boolean) => {
-    if (strata.toLowerCase() === "s1") {
+    const toastId = toast.loading("Mengubah status pengesahan...");
+    if (strata === "S1") {
       const resUpdate = await updateStatusBimbinganLog(id, status);
       if ((resUpdate.data as any).success) {
-        toast.success("Bimbingan log status updated successfully.");
+        toast.update(toastId, {
+          render: "Berhasil mengubah status pengesahan",
+          type: "success",
+          isLoading: false,
+          autoClose: 1000,
+        });
         setStatus(status);
       } else {
-        toast.success("Failed to update bimbingan log status updated.");
+        toast.update(toastId, {
+          render: "Terjadi kesalahan dalam mengubah status pengesahan",
+          type: "error",
+          isLoading: false,
+          autoClose: 1000,
+        });
       }
     } else {
-      await triggerS2(status);
-      if (!error) {
-        toast.success("Bimbingan log status updated successfully.");
-        setStatus(status);
+      await triggerUpdateS2(status);
+
+      if (updateS2Error) {
+        toast.update(toastId, {
+          render: "Terjadi kesalahan dalam mengubah status pengesahan",
+          type: "error",
+          isLoading: false,
+          autoClose: 1000,
+        });
       } else {
-        toast.success("Failed to update bimbingan log status updated.");
+        toast.update(toastId, {
+          render: "Berhasil mengubah status pengesahan",
+          type: "success",
+          isLoading: false,
+          autoClose: 1000,
+        });
       }
     }
   };
@@ -90,7 +109,7 @@ export default function StatusCircle({
         </Dialog>
       ) : (
         <button
-          className="w-[100%] rounded-md bg-blue-500 px-5 py-2 text-white hover:bg-blue-600"
+          className="w-full rounded-md bg-blue-500 px-5 py-2 text-white hover:bg-blue-600"
           onClick={() => updateBimbinganLogStatus(row.original.id, true)}
         >
           Sahkan

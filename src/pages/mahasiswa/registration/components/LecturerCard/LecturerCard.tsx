@@ -13,7 +13,10 @@ import {
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { LecturerCardProps, useLecturerCardImpl } from "./useLecturerCardImpl";
 
-export const LecturerCard = ({ form }: LecturerCardProps) => {
+export const LecturerCard = ({
+  form,
+  strata,
+}: LecturerCardProps & { strata: string }) => {
   const {
     lecturerOptions,
     isLoading,
@@ -28,7 +31,10 @@ export const LecturerCard = ({ form }: LecturerCardProps) => {
           <CardTitle>
             Calon Pembimbing <span className="text-destructive">*</span>
           </CardTitle>
-          <CardDescription>Pilih satu calon pembimbing tesis.</CardDescription>
+          <CardDescription>
+            Pilih satu calon pembimbing{" "}
+            {strata === "S1" ? "tugas akhir" : "tesis"}.
+          </CardDescription>
         </CardHeader>
       }
       ContentElement={

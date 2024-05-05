@@ -5,32 +5,19 @@ import {
   GetLogBimbinganS2Res,
   GetMahasiswaInfoS1Res,
   UpdateStatusBimbinganLogRes,
-  UpdateStatusBimbinganLogS2Res,
 } from "./types";
 
 export async function getLogBimbinganS2(id: string) {
   return await s2Instance.get<GetLogBimbinganS2Res>(
     `/bimbingan/mahasiswa/${id}`,
-    {
-      withCredentials: true,
-    },
   );
 }
 
-export async function updateStatusBimbinganLogS2(
-  bimbinganId: string,
-  status: boolean,
-) {
-  return await s2Instance.patch<UpdateStatusBimbinganLogS2Res>(
-    `/bimbingan/pengesahan`,
-    {
-      status,
-      bimbinganId,
-    },
-    {
-      withCredentials: true,
-    },
-  );
+export async function updatePengesahanS2(id: string, status: boolean) {
+  return await s2Instance.patch(`/bimbingan/pengesahan`, {
+    bimbinganId: id,
+    status,
+  });
 }
 
 export async function getLogBimbinganS1(id: string) {

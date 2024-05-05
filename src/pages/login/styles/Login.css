@@ -123,7 +123,7 @@
 .mobile .stei {
   display: flex;
   flex-direction: row;
-  grid-gap: 2.5vh;
+  grid-gap: 1.5vh;
 }
 
 .mobile .stei .tulisan-stei {
@@ -154,11 +154,11 @@
   font-weight: lighter;
 }
 .mobile .mobile-wrapper .bawah {
-  margin-top: 10vh;
 }
 
 .mobile .mobile-wrapper .bawah .isian {
   padding-bottom: 3vh;
+  color: black;
 }
 
 .mobile .bawah .tulisan-or {
@@ -173,7 +173,7 @@
 
 .mobile .mobile-wrapper .bawah .tulisan-or p {
   margin: 0 10px;
-  color: white;
+  color: black;
 }
 
 .login-desktop {

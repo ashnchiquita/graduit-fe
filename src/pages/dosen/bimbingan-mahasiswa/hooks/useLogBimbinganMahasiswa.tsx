@@ -1,3 +1,4 @@
+import BerkasBadge from "@/components/BerkasBadge";
 import { formatDateWithoutClock } from "@/pages/mahasiswa/add-log-bimbingan/utils";
 import {
   ColumnDef,
@@ -15,7 +16,6 @@ import {
   getLogBimbinganS2,
   getMahasiswaInfoS1,
 } from "../clients";
-import DownloadBox from "../components/DownloadBox";
 import StatusCircle from "../components/StatusCircle";
 import {
   Berkas,
@@ -26,12 +26,6 @@ import {
 } from "../types";
 
 export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet {
-  const [searchValue, setSearchValue] = useState("");
-
-  const handleSearchValueChange = (value: string) => {
-    setSearchValue(value);
-  };
-
   const { id, strata } = useParams();
 
   const defaultData: BimbinganData = {
@@ -59,7 +53,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
           tanggal: formatDateWithoutClock(new Date(item.date)),
           laporan_kemajuan: item.laporan_kemajuan,
           todo: item.todo,
-          rencana: item.next_bimbingan,
+          rencana: formatDateWithoutClock(new Date(item.next_bimbingan)),
           berkas: item.berkas.map((berkasItem: Berkas) => ({
             nama: berkasItem.nama,
             link: berkasItem.link,
@@ -86,11 +80,11 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
           laporan_kemajuan: item.laporanKemajuan,
           todo: item.todo,
           rencana: item.bimbinganBerikutnya,
-          berkas: item.berkas.map((berkasItem: Berkas) => ({
+          berkas: item.berkas.map((berkasItem) => ({
             nama: berkasItem.nama,
-            link: berkasItem.link,
+            link: berkasItem.url,
           })),
-          status: true,
+          status: item.disahkan,
         })),
         mahasiswa: {
           name: res.data.mahasiswa.nama,
@@ -111,29 +105,50 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
     {
       header: "Tanggal",
       accessorKey: "tanggal",
-      minSize: 1000,
+      minSize: 350,
+      enableSorting: false,
     },
     {
       header: "Laporan Kemajuan",
       accessorKey: "laporan_kemajuan",
       minSize: 1000,
+      enableSorting: false,
+    },
+    {
+      header: "Todo",
+      accessorKey: "todo",
+      minSize: 1000,
+      enableSorting: false,
     },
     {
       header: "Rencana",
-      accessorKey: "todo",
+      accessorKey: "rencana",
       minSize: 1000,
     },
     {
       header: "Berkas",
       accessorKey: "berkas",
-      cell: ({ row }) => <DownloadBox row={row} />,
-      minSize: 1000,
+      cell: ({ row }) => (
+        <ul className="flex flex-col items-start gap-2">
+          {row.original.berkas.map((b, index) => (
+            <BerkasBadge key={index} title={b.nama} link={b.link} />
+          ))}
+        </ul>
+      ),
+      minSize: 500,
+      enableSorting: false,
     },
     {
       header: "Status Bimbingan",
       accessorKey: "status",
-      cell: ({ row }) => <StatusCircle strata={strata ?? ""} row={row} />,
-      minSize: 1000,
+      cell: ({ row }) => (
+        <StatusCircle
+          mhsId={id ?? ""}
+          strata={strata as "S1" | "S2"}
+          row={row}
+        />
+      ),
+      minSize: 700,
       enableSorting: false,
     },
   ];
@@ -171,7 +186,5 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
     table,
     mahasiswaData: data.mahasiswa,
     topik: data.topik,
-    searchValue,
-    handleSearchValueChange,
   };
 }

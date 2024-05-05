@@ -15,6 +15,8 @@ const NAV_ITEMS: NavItem[] = [
       RoleEnum.S2_PEMBIMBING,
       RoleEnum.S1_MAHASISWA,
       RoleEnum.S2_MAHASISWA,
+      RoleEnum.S1_TIM_TA,
+      RoleEnum.S2_TIM_TESIS,
     ],
   },
   {
@@ -26,6 +28,11 @@ const NAV_ITEMS: NavItem[] = [
         path: "/registrasi",
         roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
       },
+      // {
+      //   label: "Registrasi",
+      //   path: "/dashboard-registrasi",
+      //   roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
+      // },
       {
         label: "Daftar Pengajuan",
         path: "/daftar-pengajuan",

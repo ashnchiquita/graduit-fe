@@ -15,7 +15,11 @@ import { SearchableSelect } from "@/components/ui/searchable-select";
 import { Textarea } from "@/components/ui/textarea";
 import { TopicCardProps, useTopicCardImpl } from "./useTopicCardImpl";
 
-export const TopicCard = ({ form, lecturerId }: TopicCardProps) => {
+export const TopicCard = ({
+  form,
+  lecturerId,
+  setNewOptionCreated,
+}: TopicCardProps) => {
   const {
     streamSearchValue,
     setStreamSeachValue,
@@ -60,6 +64,7 @@ export const TopicCard = ({ form, lecturerId }: TopicCardProps) => {
                     placeholder="Pilih judul topik yang Anda ajukan"
                     suggestAddOption={true}
                     suggestAddOptionPrompt="Usulkan"
+                    onNewOptionCreated={setNewOptionCreated}
                   />
                 </FormControl>
                 <FormMessage />

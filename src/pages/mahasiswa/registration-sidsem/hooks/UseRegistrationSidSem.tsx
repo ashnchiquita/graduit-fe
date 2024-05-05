@@ -2,18 +2,36 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useSWR from "swr";
 import {
   RegistrationSidSemFormData,
   RegistrationSidSemFormSchema,
 } from "../constants";
-import { getPlaceholdersS1, postRegistraionSidSemForS1 } from "../client";
+import {
+  getPlaceholdersS1,
+  isRegisteredSidSemS1,
+  postRegistraionSidSemForS1,
+} from "../client";
 import { Placeholders, postRegistraionSidSemDataS1 } from "../types";
 import { getIdMahasiswa } from "../client";
 
 const useRegistrationSidSem = () => {
   const { strata, tipe } = useParams();
+  const navigate = useNavigate();
+
+  const tipePendaftaran =
+    tipe === "sidang"
+      ? "sidang"
+      : tipe === "seminar"
+        ? "seminar"
+        : tipe === "seminar-tesis"
+          ? "seminar-tesis"
+          : tipe === "sidang-satu"
+            ? "sidang-satu"
+            : tipe === "sidang-dua"
+              ? "sidang-dua"
+              : "";
 
   const defaultData: Placeholders = {
     name: "",
@@ -27,6 +45,10 @@ const useRegistrationSidSem = () => {
   const { data = defaultData } = useSWR(`/registration`, async () => {
     let data: Placeholders;
 
+    const resIsRegistered = await isRegisteredSidSemS1(tipePendaftaran);
+    if (resIsRegistered.data.data) {
+      navigate("/not-found");
+    }
     const response = await getIdMahasiswa();
 
     if (strata?.toUpperCase() === "S1") {
@@ -74,7 +96,9 @@ const useRegistrationSidSem = () => {
     },
   );
 
-  const onSubmit = async (values: postRegistraionSidSemDataS1) => {
+  const onSubmit = async (
+    values: Omit<postRegistraionSidSemDataS1, "id_mahasiswa">,
+  ) => {
     const response = await getIdMahasiswa();
     const data: postRegistraionSidSemDataS1 = {
       id_mahasiswa: response.data.id,
