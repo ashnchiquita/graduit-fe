@@ -30,6 +30,8 @@ export type BatchUbahRoleHookRet = {
   roleValue: RoleEnum[];
   roleAccess: RoleAccess[];
   setRoleValue: React.Dispatch<React.SetStateAction<RoleEnum[]>>;
+  viewRole: string;
+  setViewRole: React.Dispatch<React.SetStateAction<string>>;
   handleRoleValueChange: (val: RoleEnum) => void;
   handleAddAccountButton: () => void;
 };
@@ -84,4 +86,9 @@ export type HapusRoleDialogHookProps = {
 export type HapusRoleDialogHookRet = {
   form: UseFormReturn<{}, any, undefined>;
   handleSubmit: () => Promise<void>;
+};
+
+export type ViewSelectProps = {
+  viewRole: string;
+  setViewRole: React.Dispatch<React.SetStateAction<string>>;
 };

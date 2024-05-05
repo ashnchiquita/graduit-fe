@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import DropdownRoleFilter from "../kelola-akun/components/DropdownRoleFilter";
+import DropdownRoleFilter from "./DropdownRoleFilter";
 import SelectedRoleFilter from "../kelola-akun/components/SelectedRoleFIlter";
 import { KeyedMutator } from "swr";
 import { Account, RoleAccess } from "../types";

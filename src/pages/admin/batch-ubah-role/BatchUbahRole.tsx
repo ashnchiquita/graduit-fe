@@ -17,6 +17,7 @@ import { VscListFilter } from "react-icons/vsc";
 import TambahRoleDialog from "./components/TambahRoleDialog";
 import HapusRoleDialog from "./components/HapusRoleDialog";
 import { Search } from "lucide-react";
+import ViewDropdown from "./components/ViewDropdown";
 
 export default function BatchUbahRole(): JSX.Element {
   const {
@@ -39,6 +40,8 @@ export default function BatchUbahRole(): JSX.Element {
     handleRoleValueChange,
     handleAddAccountButton,
     roleAccess,
+    viewRole,
+    setViewRole,
   } = useBatchUbahRole();
 
   const roleDialogHookRet = useTambahRoleDialog({
@@ -62,6 +65,7 @@ export default function BatchUbahRole(): JSX.Element {
           searchValue={searchValue}
           setSearchValue={handleSearchValueChange}
           searchPlaceholder="Cari nama atau email"
+          customElementsLeft={<ViewDropdown {...{ viewRole, setViewRole }} />}
           customElementsRight={
             <>
               <Button

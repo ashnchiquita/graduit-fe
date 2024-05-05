@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RoleEnum } from "@/types/session-data";
-import { RoleAccess } from "../../types";
+import { RoleAccess } from "../types";
 
 interface ComponentProps {
   handleRoleChange: (role: RoleEnum) => void;

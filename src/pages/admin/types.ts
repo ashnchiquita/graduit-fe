@@ -21,6 +21,7 @@ export type GetAllAccountsParams = {
   nama?: string;
   email?: string;
   roles?: RoleEnum[];
+  customFlag?: string;
   page: number;
   limit: number;
 };
