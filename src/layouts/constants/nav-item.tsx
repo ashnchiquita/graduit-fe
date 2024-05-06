@@ -55,6 +55,16 @@ const NAV_ITEMS: NavItem[] = [
         path: "/rekap-pendaftaran",
         roleAccess: [RoleEnum.S1_PEMBIMBING, RoleEnum.S2_PEMBIMBING],
       },
+      {
+        label: "Riwayat Bimbingan",
+        path: "/log/bimbingan",
+        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
+      },
+      {
+        label: "Tambah Bimbingan",
+        path: "/add-log-bimbingan",
+        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
+      },
     ],
     roleAccess: [
       RoleEnum.S1_PEMBIMBING,
@@ -63,45 +73,45 @@ const NAV_ITEMS: NavItem[] = [
       RoleEnum.S2_MAHASISWA,
     ],
   },
-  {
-    label: "Tugas",
-    icon: <VscNotebook className="text-slate-700" />,
-    children: [
-      {
-        label: "Daftar Kelas",
-        path: `/tugas/daftar-kelas?view=${RoleEnum.S2_MAHASISWA}`,
-        roleAccess: [RoleEnum.S2_MAHASISWA],
-      },
-      {
-        label: "Assignment",
-        path: `/tugas/assignment`,
-        roleAccess: [RoleEnum.S2_MAHASISWA],
-      },
-      {
-        label: "Daftar Kelas",
-        path: `/tugas/daftar-kelas?view=${RoleEnum.S2_KULIAH}`,
-        roleAccess: [RoleEnum.S2_KULIAH],
-      },
-    ],
-    roleAccess: [RoleEnum.S2_MAHASISWA, RoleEnum.S2_KULIAH],
-  },
-  {
-    label: "Kelas",
-    icon: <BsBook size={16} className="text-slate-700" />,
-    children: [
-      {
-        label: "Daftar Kelas",
-        path: `/kelas/daftar-kelas?view=${RoleEnum.S2_TIM_TESIS}`,
-        roleAccess: [RoleEnum.S2_TIM_TESIS],
-      },
-      {
-        label: "Nilai Mahasiswa",
-        path: "/kelas/input-nilai",
-        roleAccess: [RoleEnum.S2_TIM_TESIS],
-      },
-    ],
-    roleAccess: [RoleEnum.S2_TIM_TESIS],
-  },
+  // {
+  //   label: "Tugas",
+  //   icon: <VscNotebook className="text-slate-700" />,
+  //   children: [
+  //     {
+  //       label: "Daftar Kelas",
+  //       path: `/tugas/daftar-kelas?view=${RoleEnum.S2_MAHASISWA}`,
+  //       roleAccess: [RoleEnum.S2_MAHASISWA],
+  //     },
+  //     {
+  //       label: "Assignment",
+  //       path: `/tugas/assignment`,
+  //       roleAccess: [RoleEnum.S2_MAHASISWA],
+  //     },
+  //     {
+  //       label: "Daftar Kelas",
+  //       path: `/tugas/daftar-kelas?view=${RoleEnum.S2_KULIAH}`,
+  //       roleAccess: [RoleEnum.S2_KULIAH],
+  //     },
+  //   ],
+  //   roleAccess: [RoleEnum.S2_MAHASISWA, RoleEnum.S2_KULIAH],
+  // },
+  // {
+  //   label: "Kelas",
+  //   icon: <BsBook size={16} className="text-slate-700" />,
+  //   children: [
+  //     {
+  //       label: "Daftar Kelas",
+  //       path: `/kelas/daftar-kelas?view=${RoleEnum.S2_TIM_TESIS}`,
+  //       roleAccess: [RoleEnum.S2_TIM_TESIS],
+  //     },
+  //     {
+  //       label: "Nilai Mahasiswa",
+  //       path: "/kelas/input-nilai",
+  //       roleAccess: [RoleEnum.S2_TIM_TESIS],
+  //     },
+  //   ],
+  //   roleAccess: [RoleEnum.S2_TIM_TESIS],
+  // },
   // {
   //   label: "Tesis",
   //   icon: <IoSchoolOutline className="text-slate-700" />,
