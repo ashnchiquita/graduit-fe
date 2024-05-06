@@ -7,7 +7,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Badge } from "../components/BadgeTable";
-import { ButtonDownload } from "../components/ButtonTable";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DateRange } from "react-day-picker";
