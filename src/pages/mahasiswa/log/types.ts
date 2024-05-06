@@ -24,3 +24,20 @@ export type LogBimbinganData = {
   berkas: Berkas[];
   status: boolean;
 };
+
+type BimbinganLogS2 = {
+  id: string;
+  waktuBimbingan: string;
+  laporanKemajuan: string;
+  todo: string;
+  bimbinganBerikutnya: string | null;
+  disahkan: boolean;
+  berkas: {
+    nama: string;
+    url: string;
+  }[];
+};
+
+export type GetBimbinganS2Res = {
+  bimbingan: BimbinganLogS2[];
+};

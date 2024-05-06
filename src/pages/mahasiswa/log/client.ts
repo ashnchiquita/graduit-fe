@@ -1,7 +1,8 @@
 import s1Instance from "@/config/s1-axios-config";
 import loginInstance from "@/config/login-axios-config";
-import { GetLogBimbinganStatusResData } from "./types";
+import { GetBimbinganS2Res, GetLogBimbinganStatusResData } from "./types";
 import { SessionData } from "@/types/session-data";
+import s2Instance from "@/config/s2-axios-config";
 
 export const getLogBimbinganStatusForS1 = (id: string) => {
   return s1Instance.get<GetLogBimbinganStatusResData>(
@@ -15,3 +16,7 @@ export const getMahasiswaLogin = () => {
     withCredentials: true,
   });
 };
+
+export function getBimbinganS2() {
+  return s2Instance.get<GetBimbinganS2Res>("/bimbingan");
+}
