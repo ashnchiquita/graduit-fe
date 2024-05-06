@@ -1,6 +1,6 @@
 export type DashboardMahasiswaHookRet = {
   notification: GetNotificationRes;
-  isRegisteredSeminar: boolean;
+  isRegisteredSemPro: boolean;
   isRegisteredSidang: boolean;
 };
 
@@ -52,3 +52,27 @@ export type GetNotificationRes = {
   createdAt: string;
   penggunaId: string;
 }[];
+
+export type GetSidsemS2RespData = {
+  idPengajuanSidsem: string;
+  idMahasiswa: string;
+  nimMahasiswa: string;
+  namaMahasiswa: string;
+  jadwalSidang: string | null;
+  jenisSidang: "SEMINAR_1" | "SEMINAR_2" | "SIDANG";
+  ruangan: string | null;
+  status: "NOT_ASSIGNED" | "APPROVED" | "REJECTED";
+  berkasSidsem: {
+    id: string;
+    nama: string;
+    url: string;
+  }[];
+  emailMahasiswa: string;
+  jalurPilihan: string;
+  judulTopik: string;
+  deskripsiTopik: string;
+  dosenPembimbing: string[];
+  dosenPenguji: string[];
+  judulSidsem: string;
+  deskripsiSidsem: string;
+};

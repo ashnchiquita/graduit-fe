@@ -1,30 +1,41 @@
-import { DashboardMahasiswaHookRet } from "../types";
-import { getNotification, isRegisteredSidSemS1 } from "../client";
 import useSWR from "swr";
+import {
+  getNotification,
+  getSidsemMahasiswaS2,
+  isRegisteredSidSemS1,
+} from "../client";
 // import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import useSession from "@/hooks/useSession";
 import { RoleEnum } from "@/types/session-data";
+import { toast } from "react-toastify";
 
-export default function useDashboardMahasiswa(): DashboardMahasiswaHookRet {
+export default function useDashboardMahasiswa() {
   const { data: sessionData } = useSession();
 
-  const { data: isRegisteredSeminarSidang = [] } = useSWR<boolean[]>(
-    "/dashboard",
+  const { data: isRegisteredSeminarSidang = [], error } = useSWR<boolean[]>(
+    "dashboard-mhs",
     async () => {
-      try {
-        if (sessionData?.roles.includes(RoleEnum.S1_MAHASISWA)) {
+      if (!sessionData) return [false, false];
+
+      if (sessionData.roles.includes(RoleEnum.S1_MAHASISWA)) {
+        try {
           const responseSeminar = await isRegisteredSidSemS1("seminar");
           const responseSidang = await isRegisteredSidSemS1("sidang");
-
-          return [responseSeminar.data.data, responseSidang.data.data];
-        } else {
-          return [false, false];
+          console.log(responseSeminar);
+          console.log(responseSidang);
+          return [responseSeminar.data.data, false, responseSidang.data.data];
+        } catch (error) {
+          // Handle error and return a default value (false in this case)
+          toast.error("Gagal memuat data mahasiswa");
+          return [false, false, false];
         }
-      } catch (error) {
-        // Handle error and return a default value (true in this case)
-        toast.error("Gagal memuat data mahasiswa");
-        return [true, true];
+      } else {
+        const resp = (await getSidsemMahasiswaS2(sessionData.id)).data;
+        return [
+          resp.jenisSidang === "SEMINAR_1" && resp.status !== "REJECTED",
+          resp.jenisSidang === "SEMINAR_2" && resp.status !== "REJECTED",
+          resp.jenisSidang === "SIDANG" && resp.status !== "REJECTED",
+        ];
       }
     },
   );
@@ -38,7 +49,8 @@ export default function useDashboardMahasiswa(): DashboardMahasiswaHookRet {
   // Return the data and isRegistered value
   return {
     notification,
-    isRegisteredSeminar: isRegisteredSeminarSidang[0],
-    isRegisteredSidang: isRegisteredSeminarSidang[1], // Provide a default value in case isRegistered is undefined
+    isRegisteredSemPro: error ? false : isRegisteredSeminarSidang[0],
+    isRegisteredSemTes: error ? false : isRegisteredSeminarSidang[1],
+    isRegisteredSidang: error ? false : isRegisteredSeminarSidang[2],
   };
 }

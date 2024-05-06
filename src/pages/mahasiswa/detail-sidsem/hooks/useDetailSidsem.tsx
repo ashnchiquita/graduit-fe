@@ -1,12 +1,17 @@
-import { DetailSidSemHookRet } from "../types";
-import { getDetailSidSemS1, isRegisteredSidSemS1 } from "../client";
-import useSWR from "swr";
-import { DetailSidSemResp } from "../types";
-import { useNavigate, useParams } from "react-router-dom";
+import useSession from "@/hooks/useSession";
 import { formatDate } from "@/lib/dateformat";
+import { useNavigate, useParams } from "react-router-dom";
+import useSWR from "swr";
+import {
+  getDetailSidSemS1,
+  getDetailSidSemS2,
+  isRegisteredSidSemS1,
+} from "../client";
+import { DetailSidSemResp } from "../types";
 
-export default function useDetailSidsem(): DetailSidSemHookRet {
+export default function useDetailSidsem() {
   const { tipe, strata } = useParams();
+  const { data: sessionData } = useSession();
   const naviagate = useNavigate();
 
   const tipePendaftaran =
@@ -14,12 +19,12 @@ export default function useDetailSidsem(): DetailSidSemHookRet {
       ? "sidang"
       : tipe === "seminar"
         ? "seminar"
-        : tipe === "seminar-tesis"
-          ? "seminar-tesis"
-          : tipe === "sidang-satu"
-            ? "sidang-satu"
-            : tipe === "sidang-dua"
-              ? "sidang-dua"
+        : tipe === "seminar-proposal"
+          ? "seminar-proposal"
+          : tipe === "seminar-tesis"
+            ? "seminar-tesis"
+            : tipe === "sidang"
+              ? "sidang"
               : "";
 
   const defaultData: DetailSidSemResp = {
@@ -39,19 +44,21 @@ export default function useDetailSidsem(): DetailSidSemHookRet {
   };
 
   const { data = defaultData } = useSWR<DetailSidSemResp>(
-    "/detail",
+    "detail-sidsem",
     async () => {
       let data: DetailSidSemResp;
-      const isRegistered = await isRegisteredSidSemS1(tipePendaftaran);
-      if (!isRegistered.data.data) {
-        naviagate("/not-found");
-      }
-      if (strata?.toUpperCase() == "S1") {
+
+      if (strata?.toUpperCase() === "S1") {
+        const isRegistered = await isRegisteredSidSemS1(tipePendaftaran);
+        if (!isRegistered.data.data) {
+          naviagate("/not-found");
+        }
+
         let time: string = "";
         const responseDetail = await getDetailSidSemS1(tipePendaftaran);
         console.log(responseDetail.data.data.waktu_mulai);
         if (
-          responseDetail.data.data.waktu_mulai == "0001-01-01T07:07:12+07:07"
+          responseDetail.data.data.waktu_mulai === "0001-01-01T07:07:12+07:07"
         ) {
           time = "Belum Ditetapkan";
         } else {
@@ -75,20 +82,27 @@ export default function useDetailSidsem(): DetailSidSemHookRet {
           },
         };
       } else {
-        const responseDetail = await getDetailSidSemS1(tipePendaftaran);
+        // TODO has registered guard
+        const responseDetail = (await getDetailSidSemS2(sessionData?.id ?? ""))
+          .data;
         data = {
           data: {
-            id_mahasiswa: responseDetail.data.data.id_mahasiswa,
-            nama: responseDetail.data.data.nama,
-            email: responseDetail.data.data.email,
-            jalur_pilihan: responseDetail.data.data.jalur_pilihan,
-            judul: responseDetail.data.data.judul,
-            deskripsi: responseDetail.data.data.deskripsi,
-            dosbing_name: responseDetail.data.data.dosbing_name,
-            tipe: responseDetail.data.data.tipe,
-            waktu_mulai: responseDetail.data.data.waktu_mulai,
-            nama_ruangan: responseDetail.data.data.nama_ruangan,
-            ditolak: responseDetail.data.data.ditolak,
+            id_mahasiswa: responseDetail.idMahasiswa,
+            nama: responseDetail.namaMahasiswa,
+            email: responseDetail.emailMahasiswa,
+            jalur_pilihan: responseDetail.jalurPilihan,
+            judul: responseDetail.judulSidsem,
+            deskripsi: responseDetail.deskripsiSidsem,
+            dosbing_name: responseDetail.dosenPembimbing.join(", "),
+            tipe: responseDetail.jenisSidang,
+            waktu_mulai: responseDetail.jadwalSidang ?? "Belum ditentukan",
+            nama_ruangan: responseDetail.ruangan ?? "Belum ditentukan",
+            ditolak:
+              responseDetail.status === "APPROVED"
+                ? true
+                : responseDetail.status === "REJECTED"
+                  ? false
+                  : null,
           },
         };
       }
@@ -100,5 +114,6 @@ export default function useDetailSidsem(): DetailSidSemHookRet {
   // Return the data and  value
   return {
     data,
+    tipePendaftaran,
   };
 }
