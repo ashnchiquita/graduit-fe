@@ -1,4 +1,4 @@
-import { Berkas } from "../types";
+import { Berkas } from "../../dosen/types";
 
 export type DetailSubmisi = {
   nama: string;

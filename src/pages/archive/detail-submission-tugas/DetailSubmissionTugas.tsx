@@ -1,6 +1,6 @@
 import ExpandableMahasiswaCard from "@/components/ExpandableMahasiswaCard";
 import useDetailSubmissionTugas from "./hooks/useDetailSubmissionTugas";
-import TaskHeader from "../components/TaskHeader";
+import TaskHeader from "../../dosen/components/TaskHeader";
 import BerkasBadge from "@/components/BerkasBadge";
 
 export default function DetailSubmissionTugas(): JSX.Element {
