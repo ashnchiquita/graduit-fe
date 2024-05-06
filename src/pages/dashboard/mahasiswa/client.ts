@@ -1,7 +1,12 @@
 import s1Instance from "@/config/s1-axios-config";
-import s2Instance from "@/config/s2-axios-config";
+import {
+  GetNotificationRes,
+  StatusMahasiswaResponse,
+  GetSidsemS2RespData,
+} from "./types";
 import { IsRegistered } from "@/pages/mahasiswa/detail-sidsem/types";
-import { GetSidsemS2RespData, StatusMahasiswaResponse } from "./types";
+import loginInstance from "@/config/login-axios-config";
+import s2Instance from "@/config/s2-axios-config";
 
 export async function getSidsemMahasiswaS2(idMhs: string) {
   return await s2Instance.get<GetSidsemS2RespData>(
@@ -28,4 +33,8 @@ export async function isRegisteredSidSemS1(tipe: string) {
       withCredentials: true,
     },
   );
+}
+
+export async function getNotification() {
+  return await loginInstance.get<GetNotificationRes>("/notifikasi");
 }

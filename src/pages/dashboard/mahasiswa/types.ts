@@ -1,5 +1,5 @@
 export type DashboardMahasiswaHookRet = {
-  data: StatusMahasiswaResponse;
+  notification: GetNotificationRes;
   isRegisteredSemPro: boolean;
   isRegisteredSidang: boolean;
 };
@@ -44,6 +44,14 @@ type StatusSidangResponse = {
   jadwal_seminar: Date;
   ruangan: string;
 };
+
+export type GetNotificationRes = {
+  id: string;
+  title: string;
+  description: string;
+  createdAt: string;
+  penggunaId: string;
+}[];
 
 export type GetSidsemS2RespData = {
   idPengajuanSidsem: string;
