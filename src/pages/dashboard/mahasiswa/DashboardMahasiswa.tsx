@@ -1,22 +1,17 @@
-"use client";
-
-import { Skeleton } from "@/components/ui/skeleton";
 import useSession from "@/hooks/useSession";
 import KonfirmasiPendaftaranCard from "./components/KonfirmasiPendaftaran";
 import RegisterSidSemCard from "./components/RegisterSidSemCard";
 import useDashboardMahasiswa from "./hooks/useDashboardMahasiswa";
+import { CardDescription, CardTitle } from "@/components/Card";
 
 export default function DashboardMahasiswa() {
-  const { data, isRegisteredSeminar, isRegisteredSidang } =
+  const { isRegisteredSeminar, isRegisteredSidang, notification } =
     useDashboardMahasiswa();
   const dataMahasiswa = useSession().data;
-  console.log(isRegisteredSeminar, isRegisteredSidang);
+  console.log(isRegisteredSeminar, isRegisteredSidang, notification);
 
-  if (!data) {
-    return <Skeleton />;
-  }
   return (
-    <main className="flex min-h-screen w-full flex-col items-start justify-start p-4 pt-0">
+    <main className="flex min-h-screen w-full flex-col items-start justify-start px-4 pb-20 pt-0">
       {/* DATA MAHASISWA */}
       <div className="flex w-full flex-col items-center justify-start gap-4">
         {dataMahasiswa?.roles[0] === "S1_MAHASISWA" ? (
@@ -92,6 +87,15 @@ export default function DashboardMahasiswa() {
             )}
           </div>
         )}
+
+        {notification.map((notif) => (
+          <div className="w-full rounded-lg bg-white">
+            <div className="flex flex-col gap-2 p-6">
+              <CardTitle key={notif.id}>{notif.title}</CardTitle>
+              <CardDescription>{notif.description}</CardDescription>
+            </div>
+          </div>
+        ))}
       </div>
     </main>
   );
