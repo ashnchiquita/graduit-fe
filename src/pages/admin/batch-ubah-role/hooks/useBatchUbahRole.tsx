@@ -10,19 +10,29 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useSWR from "swr";
 import { getAllAccounts, putAccount } from "../../clients";
-import { GetAccountResponseItem, PutAccountRequestData } from "../../types";
+import {
+  GetAccountResponseItem,
+  PutAccountRequestData,
+  RoleAccess,
+} from "../../types";
 import { Account, BatchUbahRoleHookRet } from "../types";
 import { RoleEnum } from "@/types/session-data";
 import useSWRMutation from "swr/mutation";
+import { RoleAccessViewDosen, RoleAccessViewMahasiswa } from "../const";
 
 export default function useBatchUbahRole(): BatchUbahRoleHookRet {
   const [searchParams, setSearchParams] = useSearchParams();
+
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",
   );
+  const [viewRole, setViewRole] = useState("All");
   const [namaValue, setNamaValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [roleValue, setRoleValue] = useState<RoleEnum[]>([]);
+  const [roleAccess, setRoleAccess] = useState<RoleAccess[]>([]);
+  const [columns, setColumns] = useState<ColumnDef<Account>[]>([]);
+
   const [openFilterDialog, setOpenFilterDialog] = useState(false);
   const [tambahRoleDialogOpen, setTambahRoleDialogOpen] = useState(false);
   const [hapusRoleDialogOpen, setHapusRoleDialogOpen] = useState(false);
@@ -86,7 +96,38 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
     },
   );
 
-  const columns: ColumnDef<Account>[] = [
+  useEffect(() => {
+    let tempRoleAccess: RoleAccess[] = [];
+    if (viewRole === "Mahasiswa") {
+      tempRoleAccess = Object.keys(RoleEnum)
+        .filter((v) => isNaN(Number(v)) && RoleAccessViewMahasiswa.includes(v))
+        .map((role, idx) => ({
+          id: idx,
+          name: role,
+        }));
+      setColumns(BaseColumns.concat(MahasiswaViewColumns));
+    } else if (viewRole === "Dosen") {
+      tempRoleAccess = Object.keys(RoleEnum)
+        .filter((v) => isNaN(Number(v)) && RoleAccessViewDosen.includes(v))
+        .map((role, idx) => ({
+          id: idx,
+          name: role,
+        }));
+      setColumns(BaseColumns.concat(DosenViewColumns));
+    } else {
+      tempRoleAccess = Object.keys(RoleEnum)
+        .filter((v) => isNaN(Number(v)))
+        .map((role, idx) => ({
+          id: idx,
+          name: role,
+        }));
+      setColumns(BaseColumns.concat(DosenViewColumns, MahasiswaViewColumns));
+    }
+    setRoleAccess(tempRoleAccess);
+    fetchData();
+  }, [viewRole]);
+
+  const BaseColumns: ColumnDef<Account>[] = [
     {
       id: "select",
       enableSorting: false,
@@ -104,7 +145,7 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value: boolean) => row.toggleSelected(value)}
-          className="data-[state=checked]:bg-sky-800"
+          className="data-[state=checked]:bg-blue-600"
         />
       ),
     },
@@ -119,84 +160,21 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
           <div>{row.original.name}</div>
         </div>
       ),
+      minSize: 400,
     },
+  ];
 
-    // NOTE : how to decide if an account belongs to s1 or s2?, sementara di asumsiin kalo dikasi role itu lgsg ke s1 dan s2
+  const MahasiswaViewColumns: ColumnDef<Account>[] = [
     {
-      header: "Dosen Pembimbing",
-      accessorKey: "access_dosen_pembimbing",
+      header: "Mahasiswa S1",
+      accessorKey: "access_mahasiswa_s1",
       cell: ({ row }) => (
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
-          checked={
-            handleCheckboxRoleAccess(row.original.access, "S1_PEMBIMBING") ||
-            handleCheckboxRoleAccess(row.original.access, "S2_PEMBIMBING")
-          }
-          onCheckedChange={() => {
-            handleCheckboxChecked(row, "S1_PEMBIMBING");
-          }}
-        />
-      ),
-      enableSorting: false,
-    },
-    {
-      header: "Dosen Penguji",
-      accessorKey: "access_dosen_penguji",
-      cell: ({ row }) => (
-        <Checkbox
-          className="data-[state=checked]:bg-sky-800"
-          checked={
-            handleCheckboxRoleAccess(row.original.access, "S1_PENGUJI") ||
-            handleCheckboxRoleAccess(row.original.access, "S2_PENGUJI")
-          }
-          onCheckedChange={() => {
-            handleCheckboxChecked(row, "S1_PENGUJI");
-          }}
-        />
-      ),
-      enableSorting: false,
-    },
-    {
-      header: "Dosen Kuliah",
-      accessorKey: "access_dosen_kuliah",
-      cell: ({ row }) => (
-        <Checkbox
-          className="data-[state=checked]:bg-sky-800"
-          checked={handleCheckboxRoleAccess(row.original.access, "S2_KULIAH")}
-          onCheckedChange={() => {
-            handleCheckboxChecked(row, "S2_KULIAH");
-          }}
-        />
-      ),
-      enableSorting: false,
-    },
-    {
-      header: "Tim Tugas",
-      accessorKey: "access_tim_tugas",
-      cell: ({ row }) => (
-        <Checkbox
-          className="data-[state=checked]:bg-sky-800"
-          checked={
-            handleCheckboxRoleAccess(row.original.access, "S2_TIM_TESIS") ||
-            handleCheckboxRoleAccess(row.original.access, "S1_TIM_TA")
-          }
-          onCheckedChange={() => {
-            handleCheckboxChecked(row, "S1_TIM_TA");
-          }}
-        />
-      ),
-      enableSorting: false,
-    },
-    {
-      header: "Mahasiswa",
-      accessorKey: "access_mahasiswa",
-      cell: ({ row }) => (
-        <Checkbox
-          className="data-[state=checked]:bg-sky-800"
-          checked={
-            handleCheckboxRoleAccess(row.original.access, "S1_MAHASISWA") ||
-            handleCheckboxRoleAccess(row.original.access, "S2_MAHASISWA")
-          }
+          checked={handleCheckboxRoleAccess(
+            row.original.access,
+            "S1_MAHASISWA",
+          )}
           onCheckedChange={() => {
             handleCheckboxChecked(row, "S1_MAHASISWA");
           }}
@@ -205,19 +183,25 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
       enableSorting: false,
     },
     {
-      header: "TU",
-      accessorKey: "access_tu",
+      header: "Mahasiswa S2",
+      accessorKey: "access_mahasiswa_s2",
       cell: ({ row }) => (
         <Checkbox
           className="data-[state=checked]:bg-sky-800"
-          checked={handleCheckboxRoleAccess(row.original.access, "TU")}
+          checked={handleCheckboxRoleAccess(
+            row.original.access,
+            "S2_MAHASISWA",
+          )}
           onCheckedChange={() => {
-            handleCheckboxChecked(row, "TU");
+            handleCheckboxChecked(row, "S2_MAHASISWA");
           }}
         />
       ),
       enableSorting: false,
     },
+  ];
+
+  const DosenViewColumns: ColumnDef<Account>[] = [
     {
       header: "Admin",
       accessorKey: "access_admin",
@@ -231,18 +215,120 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
         />
       ),
       enableSorting: false,
+      size: 0,
+    },
+    {
+      header: "Dosen Pembimbing S1",
+      accessorKey: "access_dosen_pembimbing_s1",
+      cell: ({ row }) => (
+        <Checkbox
+          className="data-[state=checked]:bg-sky-800"
+          checked={handleCheckboxRoleAccess(
+            row.original.access,
+            "S1_PEMBIMBING",
+          )}
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S1_PEMBIMBING");
+          }}
+        />
+      ),
+      enableSorting: false,
+      size: 0,
+    },
+    {
+      header: "Dosen Pembimbing S2",
+      accessorKey: "access_dosen_pembimbing_s2",
+      cell: ({ row }) => (
+        <Checkbox
+          className="data-[state=checked]:bg-sky-800"
+          checked={handleCheckboxRoleAccess(
+            row.original.access,
+            "S2_PEMBIMBING",
+          )}
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S2_PEMBIMBING");
+          }}
+        />
+      ),
+      enableSorting: false,
+    },
+    {
+      header: "Dosen Penguji S1",
+      accessorKey: "access_dosen_penguji_s1",
+      cell: ({ row }) => (
+        <Checkbox
+          className="data-[state=checked]:bg-sky-800"
+          checked={handleCheckboxRoleAccess(row.original.access, "S1_PENGUJI")}
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S1_PENGUJI");
+          }}
+        />
+      ),
+      enableSorting: false,
+    },
+    {
+      header: "Dosen Penguji S2",
+      accessorKey: "access_dosen_penguji_s2",
+      cell: ({ row }) => (
+        <Checkbox
+          className="data-[state=checked]:bg-sky-800"
+          checked={handleCheckboxRoleAccess(row.original.access, "S2_PENGUJI")}
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S2_PENGUJI");
+          }}
+        />
+      ),
+      enableSorting: false,
+    },
+    {
+      header: "Tim TA",
+      accessorKey: "access_tim_ta",
+      cell: ({ row }) => (
+        <Checkbox
+          className="data-[state=checked]:bg-sky-800"
+          checked={handleCheckboxRoleAccess(row.original.access, "S1_TIM_TA")}
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S1_TIM_TA");
+          }}
+        />
+      ),
+      enableSorting: false,
+    },
+    {
+      header: "Tim Tesis",
+      accessorKey: "access_tim_tesis",
+      cell: ({ row }) => (
+        <Checkbox
+          className="data-[state=checked]:bg-sky-800"
+          checked={handleCheckboxRoleAccess(
+            row.original.access,
+            "S2_TIM_TESIS",
+          )}
+          onCheckedChange={() => {
+            handleCheckboxChecked(row, "S2_TIM_TESIS");
+          }}
+        />
+      ),
+      enableSorting: false,
     },
   ];
 
   let table: Table<Account>;
   const [rowCount, setRowCount] = useState(0);
   const { data = [], mutate: fetchData } = useSWR("/akun", async () => {
+    const customFlag =
+      viewRole === "Mahasiswa"
+        ? "mahasiswa"
+        : viewRole === "Dosen"
+          ? "non-mahasiswa"
+          : undefined;
     const res = await getAllAccounts({
       search: searchValue === "" ? undefined : searchValue,
-      page: table.getState().pagination.pageIndex + 1,
       nama: namaValue === "" ? undefined : namaValue,
       email: emailValue === "" ? undefined : emailValue,
       roles: roleValue.length === 0 ? undefined : roleValue,
+      customFlag: customFlag,
+      page: table.getState().pagination.pageIndex + 1,
       limit: table.getState().pagination.pageSize,
     });
 
@@ -321,7 +407,10 @@ export default function useBatchUbahRole(): BatchUbahRoleHookRet {
     emailValue,
     setEmailValue,
     roleValue,
+    roleAccess,
     setRoleValue,
+    viewRole,
+    setViewRole,
     handleRoleValueChange,
     handleAddAccountButton,
   };

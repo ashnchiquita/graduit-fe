@@ -7,7 +7,9 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import {
   getAllDosenPembimbingS2,
+  postNewTopicS1,
   postNewTopicS2,
+  putExistingTopicS1,
   putExistingTopicS2,
 } from "../clients";
 import { UpsertTopikFormData, UpsertTopikFormSchema } from "../constants";
@@ -49,8 +51,7 @@ export function useUpsertDialog(
   const { trigger: triggerPostS1, error: errorPostS1 } = useSWRMutation(
     "/registrasi-topik",
     async (_, { arg }: { arg: PostNewTopicReqData }) => {
-      // TODO: S1 post new topic disini
-      return await postNewTopicS2(arg);
+      return await postNewTopicS1(arg);
     },
   );
 
@@ -64,8 +65,7 @@ export function useUpsertDialog(
   const { trigger: triggerPutS1, error: errorPutS1 } = useSWRMutation(
     "/registrasi-topik",
     async (_, { arg }: { arg: PutExistingTopicReqData }) => {
-      // TODO: S1 update topic disini
-      if (row) return await putExistingTopicS2(row?.original.id, arg);
+      if (row) return await putExistingTopicS1(row?.original.id, arg);
     },
   );
 

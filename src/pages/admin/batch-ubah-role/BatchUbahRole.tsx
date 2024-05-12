@@ -10,13 +10,14 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import useBatchUbahRole from "./hooks/useBatchUbahRole";
-import useRoleDialog from "./hooks/useTambahRoleDialog";
+import useTambahRoleDialog from "./hooks/useTambahRoleDialog";
+import useHapusRoleDialog from "./hooks/useHapusRoleDialog";
 import FilterPopup from "../components/FilterPopup";
 import { VscListFilter } from "react-icons/vsc";
 import TambahRoleDialog from "./components/TambahRoleDialog";
 import HapusRoleDialog from "./components/HapusRoleDialog";
-import useHapusRoleDialog from "./hooks/useHapusRoleDialog";
 import { Search } from "lucide-react";
+import ViewDropdown from "./components/ViewDropdown";
 
 export default function BatchUbahRole(): JSX.Element {
   const {
@@ -38,9 +39,12 @@ export default function BatchUbahRole(): JSX.Element {
     setRoleValue,
     handleRoleValueChange,
     handleAddAccountButton,
+    roleAccess,
+    viewRole,
+    setViewRole,
   } = useBatchUbahRole();
 
-  const roleDialogHookRet = useRoleDialog({
+  const roleDialogHookRet = useTambahRoleDialog({
     table,
     fetchData,
     setTambahRoleDialogOpen,
@@ -61,6 +65,7 @@ export default function BatchUbahRole(): JSX.Element {
           searchValue={searchValue}
           setSearchValue={handleSearchValueChange}
           searchPlaceholder="Cari nama atau email"
+          customElementsLeft={<ViewDropdown {...{ viewRole, setViewRole }} />}
           customElementsRight={
             <>
               <Button
@@ -294,6 +299,7 @@ export default function BatchUbahRole(): JSX.Element {
           roleValue,
           setRoleValue,
           handleRoleValueChange,
+          roleAccess,
         }}
       />
     </main>
