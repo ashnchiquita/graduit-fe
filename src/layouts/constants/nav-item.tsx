@@ -1,5 +1,4 @@
 import { RoleEnum } from "@/types/session-data";
-import { BsBook } from "react-icons/bs";
 import { IoSchoolOutline } from "react-icons/io5";
 import { VscNotebook, VscPieChart } from "react-icons/vsc";
 import { NavItem } from "../types";
