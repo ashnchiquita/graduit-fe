@@ -1,4 +1,3 @@
-import React from "react";
 import { ViewSelectProps } from "../types";
 import {
   DropdownMenu,

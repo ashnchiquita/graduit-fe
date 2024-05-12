@@ -8,6 +8,7 @@ export enum RoleEnum {
   S1_PEMBIMBING = "S1_PEMBIMBING",
   S1_PENGUJI = "S1_PENGUJI",
   S1_TIM_TA = "S1_TIM_TA",
+  TU = "TU",
 }
 
 export type SessionData = {
