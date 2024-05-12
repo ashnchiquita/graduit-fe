@@ -1,6 +1,3 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { Account, RoleAccess } from "../types";
-
 export const RoleAccessViewMahasiswa = ["S1_MAHASISWA", "S2_MAHASISWA"];
 export const RoleAccessViewDosen = [
   "S2_PEMBIMBING",

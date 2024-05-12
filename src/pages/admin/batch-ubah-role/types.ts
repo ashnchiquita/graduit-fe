@@ -69,6 +69,10 @@ export type RoleDialogHookRet = {
       name: string;
     }[];
   }) => Promise<void>;
+  roleAccess: {
+    id: number;
+    name: string;
+  }[];
 };
 
 export type HapusRoleDialogProps = {

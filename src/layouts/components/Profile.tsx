@@ -27,12 +27,10 @@ const roleEnumMapping: Record<RoleEnum, string> = {
   S2_PEMBIMBING: "Dosen Pembimbing S2",
   S2_PENGUJI: "Dosen Penguji S2",
   S2_TIM_TESIS: "Tim Tesis",
-  S2_KULIAH: "Dosen Kuliah S2",
   S1_MAHASISWA: "Mahasiswa S1",
   S1_PEMBIMBING: "Dosen Pembimbing S1",
   S1_PENGUJI: "Dosen Penguji S1",
   S1_TIM_TA: "Tim Tugas Akhir",
-  S1_KULIAH: "Dosen Kuliah S1",
 };
 
 export default function Profile(): JSX.Element {

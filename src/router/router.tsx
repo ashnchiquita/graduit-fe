@@ -21,19 +21,15 @@ import {
   KonfigurasiPeriode,
   LogBimbinganMahasiswa,
   LogMahasiswa,
-  LogSistem,
   Login,
   MainLayout,
   MhsDashboard,
   NotFound,
-  Pengumuman,
-  Penjadwalan,
   ProfileDosbim,
   Registration,
   RekapPendaftaranDosbim,
   RekapPendaftaranTimTesis,
   RiwayatPendaftaran,
-  Topik,
 } from "./imports";
 
 export const router = createBrowserRouter(
