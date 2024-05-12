@@ -12,8 +12,11 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import * as XLSX from "xlsx";
 import {
+  getAllDosenPembimbingS1,
   getAllDosenPembimbingS2,
+  getAllTopicsS1,
   getAllTopicsS2,
+  postNewTopicBulkS1,
   postNewTopicBulkS2,
 } from "../clients";
 import RowAction from "../components/RowAction";
@@ -71,8 +74,7 @@ export default function useDaftarTopik() {
         sessionData.roles.includes(RoleEnum.S1_PEMBIMBING) ||
         sessionData.roles.includes(RoleEnum.S1_MAHASISWA)
       ) {
-        // TODO: S1 fetch daftar topik disini
-        const res = await getAllTopicsS2({
+        const res = await getAllTopicsS1({
           page: pagination.pageIndex + 1,
           limit: pagination.pageSize,
           search: searchValue === "" ? undefined : searchValue,
@@ -169,8 +171,7 @@ export default function useDaftarTopik() {
     if (!sessionData || !isAdmin(sessionData?.roles)) return [];
 
     if (strataFilter === "S1") {
-      // TODO: S1 fetch list dosen pembimbing disini
-      const res = await getAllDosenPembimbingS2();
+      const res = await getAllDosenPembimbingS1();
 
       const options: SelectData[] = res.data.map(({ id, nama }) => ({
         label: nama,
@@ -223,8 +224,7 @@ export default function useDaftarTopik() {
   const { trigger: triggerPostS1, error: errorPostS1 } = useSWRMutation(
     "/registrasi-topik/bulk",
     async (_, { arg }: { arg: PostNewTopicBulkReqData }) => {
-      // TODO: S1 post create topic bulk disini
-      return await postNewTopicBulkS2(arg);
+      return await postNewTopicBulkS1(arg);
     },
   );
 
