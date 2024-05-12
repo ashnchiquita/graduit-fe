@@ -6,7 +6,6 @@ import { RoleDialogHookProps, RoleDialogHookRet } from "../types";
 import useSWRMutation from "swr/mutation";
 import { patchBatchUpdateRole } from "../../clients";
 import { PatchBatchUpdateRole } from "../../types";
-import { RoleEnum } from "@/types/session-data";
 import { toast } from "react-toastify";
 
 export default function useTambahRoleDialog({
@@ -22,13 +21,6 @@ export default function useTambahRoleDialog({
       })
       .array(),
   });
-
-  const roleAccess = Object.keys(RoleEnum)
-    .filter((v) => isNaN(Number(v)))
-    .map((role, idx) => ({
-      id: idx,
-      name: role,
-    }));
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -72,6 +64,5 @@ export default function useTambahRoleDialog({
     handleSubmit,
     isSubmitDisabled,
     setSubmitDisabled,
-    roleAccess,
   };
 }
