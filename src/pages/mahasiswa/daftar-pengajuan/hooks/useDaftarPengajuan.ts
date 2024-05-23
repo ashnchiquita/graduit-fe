@@ -22,10 +22,30 @@ export default function useDaftarPengajuan(): StatusMahasiswaHookRet {
       }
 
       if (session.roles.includes(RoleEnum.S1_MAHASISWA)) {
-        // TODO-S1: Adjust this to not fetch by nim
-        const res = await getStatusS1(id ?? "");
+        const res = await getStatusS1(session.id);
 
-        return [res.data.data.status_pendaftaran];
+        const resData = res.data.map((item) => ({
+          status_pendaftaran: {
+            status: true,
+            topik: item.judul,
+            dosen_pembimbing: item.namaDosen,
+            pengiriman_registrasi: new Date(item.waktuPengiriman),
+            persetujuan_dosen_pembimbing: item.decidedAt
+              ? new Date(item.decidedAt)
+              : null,
+            jadwal_interview: item.interviewAt
+              ? new Date(item.interviewAt)
+              : null,
+            pengesahan_dosen_pembimbing:
+              item.status === "APPROVED"
+                ? true
+                : item.status === "REJECTED"
+                  ? false
+                  : null,
+          },
+        }));
+
+        return resData as StatusMahasiswaResponse[];
       } else {
         const res = await getStatusS2(session.id);
 
@@ -50,7 +70,7 @@ export default function useDaftarPengajuan(): StatusMahasiswaHookRet {
           },
         }));
 
-        return resData;
+        return resData as StatusMahasiswaResponse[];
       }
     },
   );
