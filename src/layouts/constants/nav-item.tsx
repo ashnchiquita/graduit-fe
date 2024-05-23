@@ -138,7 +138,7 @@ const NAV_ITEMS: NavItem[] = [
     children: [
       {
         label: "Topik",
-        path: "/tugas-akhir/topik",
+        path: "/daftar-topik",
         roleAccess: [
           RoleEnum.S1_MAHASISWA,
           RoleEnum.S1_PEMBIMBING,

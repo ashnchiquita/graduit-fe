@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
-import { getRegS2, postRegistrasiTesisS2 } from "./clients";
+import { getRegS2, postRegistrasiTesisS2, postRegistrasiTAS1, getRegS1 } from "./clients";
 import { RegistrationFormData, RegistrationFormSchema } from "./constants";
 import { PostRegistrasiTesisRequestData } from "./types";
 import { useEffect, useState } from "react";
@@ -33,8 +33,7 @@ const useRegistrationImpl = () => {
       if (!sessionData) return;
 
       if (sessionData.roles.includes(RoleEnum.S1_MAHASISWA)) {
-        // TODO: S1 ganti endpoint post di sini
-        return await postRegistrasiTesisS2(arg);
+        return await postRegistrasiTAS1(arg);
       } else if (sessionData.roles.includes(RoleEnum.S2_MAHASISWA)) {
         return await postRegistrasiTesisS2(arg);
       }
@@ -47,21 +46,20 @@ const useRegistrationImpl = () => {
       if (!sessionData?.id) return [];
 
       if (sessionData.roles.includes(RoleEnum.S1_MAHASISWA)) {
-        // TODO: S1 fetch registrasi di sini buat ngecek mhs nya lagi ada regis yg pending ga
-        // TODO: kalo ada, redirect ke daftar pengajuan (ini udah dihandle)
-        const { data } = await getRegS2(sessionData.id);
+
+        const { data } = await getRegS1(sessionData.id);
 
         const resData = data.map((item) => ({
           status_pendaftaran: {
             status: true,
-            topik: item.judulTopik,
-            dosen_pembimbing: item.dosenPembimbing[0].nama,
+            topik: item.judul,
+            dosen_pembimbing: item.namaDosen,
             pengiriman_registrasi: new Date(item.waktuPengiriman),
-            persetujuan_dosen_pembimbing: item.waktuKeputusan
-              ? new Date(item.waktuKeputusan)
+            persetujuan_dosen_pembimbing: item.decidedAt
+              ? new Date(item.decidedAt)
               : null,
-            jadwal_interview: item.jadwalInterview
-              ? new Date(item.jadwalInterview)
+            jadwal_interview: item.interviewAt
+              ? new Date(item.interviewAt)
               : null,
             pengesahan_dosen_pembimbing:
               item.status === "APPROVED"
