@@ -62,5 +62,8 @@ export async function getRegS2(mhsId: string) {
 export async function getRegS1(mhsId: string) {
   return await s1Instance.get<StatusS1Response>(
     `/api/admin/pendaftaran-by-id?id=${mhsId}`,
+    {
+      withCredentials: true,
+    },
   );
 }

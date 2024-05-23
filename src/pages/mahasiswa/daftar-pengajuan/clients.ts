@@ -17,4 +17,5 @@ export async function getStatusS1(mhsId: string) {
     {
       withCredentials: true,
     },
+  )
 }
