@@ -2,12 +2,13 @@ import { RoleEnum } from "@/types/session-data";
 import { IoSchoolOutline } from "react-icons/io5";
 import { VscHome, VscNotebook } from "react-icons/vsc";
 import { NavItem } from "../types";
+import { GoGear } from "react-icons/go";
 
 const NAV_ITEMS: NavItem[] = [
   {
     label: "Home",
-    icon: <VscHome className="text-slate-700" />,
-    iconActive: <VscHome className="text-blue-900" />,
+    icon: <VscHome className="size-4 text-slate-700" />,
+    iconActive: <VscHome className="size-4 text-blue-900" />,
     path: "/dashboard",
     roleAccess: [
       RoleEnum.S1_PEMBIMBING,
@@ -113,7 +114,7 @@ const NAV_ITEMS: NavItem[] = [
   // },
   {
     label: "Manajemen",
-    icon: <IoSchoolOutline className="text-slate-700" />,
+    icon: <GoGear className="text-slate-700" />,
     children: [
       // {
       //   label: "Daftar Topik",
