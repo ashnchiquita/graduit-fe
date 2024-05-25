@@ -2,12 +2,13 @@ import { RoleEnum } from "@/types/session-data";
 import { IoSchoolOutline } from "react-icons/io5";
 import { VscHome, VscNotebook } from "react-icons/vsc";
 import { NavItem } from "../types";
+import { GoGear } from "react-icons/go";
 
 const NAV_ITEMS: NavItem[] = [
   {
     label: "Home",
-    icon: <VscHome className="text-slate-700" />,
-    iconActive: <VscHome className="text-blue-900" />,
+    icon: <VscHome className="size-4 text-slate-700" />,
+    iconActive: <VscHome className="size-4 text-blue-900" />,
     path: "/dashboard",
     roleAccess: [
       RoleEnum.S1_PEMBIMBING,
@@ -16,6 +17,7 @@ const NAV_ITEMS: NavItem[] = [
       RoleEnum.S2_MAHASISWA,
       RoleEnum.S1_TIM_TA,
       RoleEnum.S2_TIM_TESIS,
+      RoleEnum.ADMIN,
     ],
   },
   {
@@ -38,10 +40,10 @@ const NAV_ITEMS: NavItem[] = [
       {
         label: "Rekap Pendaftaran",
         path: "/rekap-pendaftaran-tim-tesis",
-        roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.S1_TIM_TA, RoleEnum.ADMIN],
+        roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.S1_TIM_TA],
       },
     ],
-    roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.S1_TIM_TA, RoleEnum.ADMIN],
+    roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.S1_TIM_TA],
   },
   {
     label: "Bimbingan",
@@ -112,7 +114,7 @@ const NAV_ITEMS: NavItem[] = [
   // },
   {
     label: "Manajemen",
-    icon: <IoSchoolOutline className="text-slate-700" />,
+    icon: <GoGear className="text-slate-700" />,
     children: [
       // {
       //   label: "Daftar Topik",
