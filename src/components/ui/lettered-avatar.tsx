@@ -12,6 +12,9 @@ const LetteredAvatar: React.FC<LetteredAvatarProps> = ({
   size = 8,
 }) => {
   const getInitials = (name: string) => {
+    if (!name) {
+      return "";
+    }
     const parts = name.split(" ");
     let initials = parts[0][0];
     if (parts.length > 1) {
