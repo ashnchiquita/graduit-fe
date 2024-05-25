@@ -100,3 +100,8 @@ export const DashboardRegistrasi = lazy(
 export const ProfileDosbim = lazy(
   () => import("../pages/dosen/profile/ProfileDosbim.tsx"),
 );
+
+export const DetailPengajuan = lazy(
+  () => import("../pages/tim-tesis/detail-pengajuan/DetailPengajuan.tsx"),
+)
+

@@ -15,6 +15,7 @@ import {
   Dashboard,
   DashboardRegistrasi,
   DetailMahasiswa,
+  DetailPengajuan,
   DetailRekapPendaftaran,
   InputNilai,
   KelolaAkun,
@@ -107,6 +108,10 @@ export const router = createBrowserRouter(
         {
           path: "/tesis/status",
           element: <MhsDashboard />,
+        },
+        {
+          path: "/tesis/detail/:id",
+          element: <DetailPengajuan/>
         },
         {
           path: "/manajemen",
