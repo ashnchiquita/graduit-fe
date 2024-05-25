@@ -152,7 +152,7 @@ export default function RiwayatPendaftaran(): JSX.Element {
                           Pengiriman Registrasi
                         </p>
                         <p className={`text-sm font-medium text-slate-600`}>
-                          {formatDate(pengajuan.waktuPengiriman)}
+                          {formatDate(new Date(pengajuan.waktuPengiriman))}
                         </p>
                       </div>
 
@@ -163,7 +163,7 @@ export default function RiwayatPendaftaran(): JSX.Element {
                         <div className="flex items-center gap-3">
                           <p className={`text-sm font-medium text-slate-600 `}>
                             {pengajuan.jadwalInterview
-                              ? formatDate(pengajuan.jadwalInterview)
+                              ? formatDate(new Date(pengajuan.jadwalInterview))
                               : "Belum ditentukan"}
                           </p>
                           {index === 0 &&

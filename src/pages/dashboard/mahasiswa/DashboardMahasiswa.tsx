@@ -12,7 +12,6 @@ export default function DashboardMahasiswa() {
     notification,
   } = useDashboardMahasiswa();
   const dataMahasiswa = useSession().data;
-  console.log(isRegisteredSemPro, isRegisteredSidang);
 
   return (
     <main className="flex min-h-screen w-full flex-col items-start justify-start px-4 pb-20 pt-0">
@@ -51,7 +50,7 @@ export default function DashboardMahasiswa() {
           // change this into isRegistered s2 related
           <div className="flex w-full flex-col gap-4">
             <RegisterSidSemCard
-              title="Seminar Tesis"
+              title="Seminar Proposal"
               path="/registration/seminar-proposal/S2"
               disabled={isRegisteredSemPro}
             />

@@ -25,26 +25,23 @@ export default function EditWawancaraDialog({
   id,
   initialWawancara,
 }: EditWawaWancaraDialogProps): JSX.Element {
-  const [wawancara, setWawancara] = useState<Date>();
+  const [wawancara, setWawancara] = useState<Date | null>(null);
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const { refreshData } = useData();
 
   useEffect(() => {
-    if (wawancara === initialWawancara) {
-      setDisabled(true);
-    }
-  }, [wawancara, initialWawancara]);
-
-  useEffect(() => {
-    if (initialWawancara && !open) {
+    if (initialWawancara) {
       setWawancara(initialWawancara);
     }
-  }, [setWawancara, initialWawancara, open]);
+  }, [initialWawancara, open]);
 
-  // Check if date is minimum 2 days after today
   useEffect(() => {
-    if (wawancara) {
+    if (!wawancara) {
+      return;
+    }
+
+    if (wawancara instanceof Date && !isNaN(wawancara.getTime())) {
       if (
         wawancara.getTime() <
         new Date().getTime() + 2 * 24 * 60 * 60 * 1000
@@ -53,6 +50,8 @@ export default function EditWawancaraDialog({
       } else {
         setDisabled(false);
       }
+    } else {
+      setDisabled(true);
     }
   }, [wawancara]);
 
@@ -61,7 +60,6 @@ export default function EditWawancaraDialog({
     async (_) => {
       try {
         const res = await updateInterviewDate(id, wawancara as Date);
-
         toast.success("Berhasil mengubah jadwal wawancara");
         return res.data;
       } catch (error) {
@@ -73,6 +71,7 @@ export default function EditWawancaraDialog({
   const handleSave = async () => {
     await wawancaraTrigger();
     refreshData();
+    setOpen(false);
   };
 
   return (
@@ -94,10 +93,11 @@ export default function EditWawancaraDialog({
           <input
             type="datetime-local"
             className="rounded-lg border border-gray-300 p-2"
-            value={wawancara?.toISOString().slice(0, 16)}
+            value={
+              wawancara ? new Date(wawancara).toISOString().slice(0, 16) : ""
+            }
             onChange={(e) => setWawancara(new Date(e.target.value))}
           />
-          {/* Check if date is minimum 2 days after today */}
           {wawancara && disabled && (
             <p className="text-sm font-medium text-red-500">
               Jadwal wawancara minimal 2 hari setelah hari ini.
@@ -107,10 +107,7 @@ export default function EditWawancaraDialog({
 
         <div className="flex w-full items-center justify-end">
           <Button
-            onClick={() => {
-              handleSave();
-              setOpen(false);
-            }}
+            onClick={handleSave}
             className="bg-blue-500 text-gray-100 hover:bg-blue-600 disabled:bg-slate-200 disabled:text-primary-foreground"
             disabled={disabled}
           >

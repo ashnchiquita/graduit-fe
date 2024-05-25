@@ -29,13 +29,21 @@ export default function SidebarContent(): JSX.Element {
     <>
       {!loading ? (
         <div className="z-[99] flex size-full max-h-[72vh] flex-col gap-4 overflow-auto pr-1">
-          {uniqueRoles.map((role) => (
-            <div key={role}>
-              <div className="mb-2 text-sm font-bold text-slate-700">
-                {roleHeaders[role]}
-              </div>
-              {NAV_ITEMS.filter((group) => group.roleAccess.includes(role)).map(
-                (group) => {
+          {uniqueRoles.map((role) => {
+            const roleNavItems = NAV_ITEMS.filter((group) =>
+              group.roleAccess.includes(role),
+            ).filter((group) => !renderedItems.has(group.label));
+
+            if (roleNavItems.length === 0) {
+              return null;
+            }
+
+            return (
+              <div key={role}>
+                <div className="mb-2 text-sm font-bold text-slate-700">
+                  {roleHeaders[role]}
+                </div>
+                {roleNavItems.map((group) => {
                   if (renderedItems.has(group.label)) {
                     return null;
                   }
@@ -46,7 +54,6 @@ export default function SidebarContent(): JSX.Element {
                       key={group.label}
                       className="flex w-full flex-col gap-1"
                     >
-                      {/* Check if group has children to decide rendering logic */}
                       {group.children ? (
                         <>
                           <div
@@ -110,7 +117,6 @@ export default function SidebarContent(): JSX.Element {
                             })}
                         </>
                       ) : (
-                        // Render standalone menu items (without children)
                         <NavLink
                           to={group.path || "#"}
                           children={({ isActive }) => (
@@ -141,10 +147,10 @@ export default function SidebarContent(): JSX.Element {
                       )}
                     </div>
                   );
-                },
-              )}
-            </div>
-          ))}
+                })}
+              </div>
+            );
+          })}
         </div>
       ) : (
         <div className="flex w-full flex-col gap-3">

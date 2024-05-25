@@ -1,6 +1,6 @@
 import { RoleEnum } from "@/types/session-data";
 import { IoSchoolOutline } from "react-icons/io5";
-import { VscHome } from "react-icons/vsc";
+import { VscHome, VscNotebook } from "react-icons/vsc";
 import { NavItem } from "../types";
 
 const NAV_ITEMS: NavItem[] = [
@@ -18,6 +18,19 @@ const NAV_ITEMS: NavItem[] = [
       RoleEnum.S2_TIM_TESIS,
     ],
   },
+  {
+    label: "Pendaftaran",
+    icon: <VscNotebook className="text-slate-700" />,
+    children: [
+      {
+        label: "Daftar Pengajuan",
+        path: "/daftar-pengajuan",
+        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
+      },
+    ],
+    roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
+  },
+
   {
     label: "Laporan Kemajuan",
     icon: <IoSchoolOutline className="text-slate-700" />,

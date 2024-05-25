@@ -67,7 +67,7 @@ export default function BatchUbahRole(): JSX.Element {
           searchPlaceholder="Cari nama atau email"
           customElementsLeft={<ViewDropdown {...{ viewRole, setViewRole }} />}
           customElementsRight={
-            <>
+            <div className="flex items-center gap-2">
               <Button
                 onClick={() => setOpenFilterDialog(true)}
                 variant={"ghost"}
@@ -76,27 +76,29 @@ export default function BatchUbahRole(): JSX.Element {
                 <VscListFilter size={14} />
                 Filter
               </Button>
-              <Button
-                disabled={table.getSelectedRowModel().flatRows.length === 0}
-                onClick={() => setTambahRoleDialogOpen(true)}
-                className="h-fit bg-blue-600 px-3 py-1 text-white transition-all"
-              >
-                Ubah Role
-              </Button>
-              <Button
-                disabled={table.getSelectedRowModel().flatRows.length === 0}
-                onClick={() => setHapusRoleDialogOpen(true)}
-                className="h-fit bg-red-500 px-3 py-1 text-white transition-all"
-              >
-                Hapus Role
-              </Button>
-              <Button
-                onClick={() => handleAddAccountButton()}
-                className="h-fit bg-teal-600 px-3 py-1 text-white"
-              >
-                Tambah Akun
-              </Button>
-            </>
+              <div className=" flex items-center gap-2">
+                <Button
+                  disabled={table.getSelectedRowModel().flatRows.length === 0}
+                  onClick={() => setTambahRoleDialogOpen(true)}
+                  className="h-fit border border-slate-500 bg-white px-3 py-1 text-black transition-all hover:bg-slate-500 hover:text-white"
+                >
+                  Ubah Role
+                </Button>
+                <Button
+                  disabled={table.getSelectedRowModel().flatRows.length === 0}
+                  onClick={() => setHapusRoleDialogOpen(true)}
+                  className="h-fit border border-slate-500 bg-white px-3 py-1 text-black transition-all hover:bg-slate-500 hover:text-white"
+                >
+                  Hapus Role
+                </Button>
+                <Button
+                  onClick={() => handleAddAccountButton()}
+                  className="h-fit border border-slate-500 bg-white px-3 py-1 text-black transition-all hover:bg-slate-500 hover:text-white"
+                >
+                  Tambah Akun
+                </Button>
+              </div>
+            </div>
           }
         />
       </section>
