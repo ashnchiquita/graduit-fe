@@ -1,13 +1,13 @@
 import { RoleEnum } from "@/types/session-data";
 import { IoSchoolOutline } from "react-icons/io5";
-import { VscNotebook, VscPieChart } from "react-icons/vsc";
+import { VscHome, VscNotebook } from "react-icons/vsc";
 import { NavItem } from "../types";
 
 const NAV_ITEMS: NavItem[] = [
   {
-    label: "Dashboard",
-    icon: <VscPieChart className="text-slate-700" />,
-    iconActive: <VscPieChart className="text-blue-900" />,
+    label: "Home",
+    icon: <VscHome className="text-slate-700" />,
+    iconActive: <VscHome className="text-blue-900" />,
     path: "/dashboard",
     roleAccess: [
       RoleEnum.S1_PEMBIMBING,
@@ -34,11 +34,6 @@ const NAV_ITEMS: NavItem[] = [
     label: "Pendaftaran",
     icon: <VscNotebook className="text-slate-700" />,
     children: [
-      {
-        label: "Registrasi",
-        path: "/registrasi",
-        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
-      },
       // {
       //   label: "Registrasi",
       //   path: "/dashboard-registrasi",
@@ -72,7 +67,7 @@ const NAV_ITEMS: NavItem[] = [
         roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
       },
       {
-        label: "Tambah Bimbingan",
+        label: "Log Bimbingan",
         path: "/add-log-bimbingan",
         roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
       },

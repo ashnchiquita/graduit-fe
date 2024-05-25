@@ -27,13 +27,12 @@ export const getAlokasiTopikPerPembimbing = (
 };
 
 export const postRegistrasiTAS1 = (data: PostRegistrasiTesisRequestData) => {
-
   function convertToPostRegistrasiTARequestData(
-    data: PostRegistrasiTesisRequestData
+    data: PostRegistrasiTesisRequestData,
   ): PostRegistrasiTARequestData {
     return {
       idMahasiswa: data.idMahasiswa,
-      idTopik: data.idTopik ?? '',
+      idTopik: data.idTopik ?? "",
       idPenerima: data.idPenerima,
     };
   }
