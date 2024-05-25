@@ -16,6 +16,7 @@ const NAV_ITEMS: NavItem[] = [
       RoleEnum.S2_MAHASISWA,
       RoleEnum.S1_TIM_TA,
       RoleEnum.S2_TIM_TESIS,
+      RoleEnum.ADMIN,
     ],
   },
   {
@@ -38,10 +39,10 @@ const NAV_ITEMS: NavItem[] = [
       {
         label: "Rekap Pendaftaran",
         path: "/rekap-pendaftaran-tim-tesis",
-        roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.S1_TIM_TA, RoleEnum.ADMIN],
+        roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.S1_TIM_TA],
       },
     ],
-    roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.S1_TIM_TA, RoleEnum.ADMIN],
+    roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.S1_TIM_TA],
   },
   {
     label: "Bimbingan",
