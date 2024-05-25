@@ -10,24 +10,27 @@ export function DataDiriComponent({
   strata: string;
 }) {
   return (
-    <div className="rounded-lg bg-white px-4 py-3 flex flex-col gap-2">
+    <div className="flex flex-col gap-2 rounded-lg bg-white px-4 py-3">
       <CardTitle> Data Diri </CardTitle>
-      <CardDescription> Silahkan cek kembali data diri anda! </CardDescription>
+      <CardDescription className="mb-2">
+        {" "}
+        Silahkan cek kembali data diri anda!{" "}
+      </CardDescription>
       <div>
-        <CardDescription> Nama </CardDescription>
+        <CardDescription className="mb-1.5"> Nama </CardDescription>
         <Input placeholder={data.name} disabled />
       </div>
       <div>
-        <CardDescription> NIM </CardDescription>
+        <CardDescription className="mb-1.5"> NIM </CardDescription>
         <Input placeholder={data.nim} disabled />
       </div>
       <div>
-        <CardDescription> Program Studi </CardDescription>
+        <CardDescription className="mb-1.5"> Program Studi </CardDescription>
         <Input placeholder={data.program_studi} disabled />
       </div>
       {strata === "S2" && (
         <div>
-          <CardDescription> Jalur Pilihan </CardDescription>
+          <CardDescription className="mb-1.5"> Jalur Pilihan </CardDescription>
           <Input
             placeholder="Jalur pilihan anda (jika mahasiswa S1 isi dengan program studi)"
             disabled
@@ -35,11 +38,11 @@ export function DataDiriComponent({
         </div>
       )}
       <div>
-        <CardDescription> Topik </CardDescription>
+        <CardDescription className="mb-1.5"> Topik </CardDescription>
         <Input placeholder={data.topik} disabled />
       </div>
       <div>
-        <CardDescription> Dosen Pembimbing </CardDescription>
+        <CardDescription className="mb-1.5"> Dosen Pembimbing </CardDescription>
         <Input placeholder={data.dosbing} disabled />
       </div>
     </div>
