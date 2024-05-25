@@ -13,7 +13,7 @@ const LetteredAvatar: React.FC<LetteredAvatarProps> = ({
 }) => {
   const getInitials = (name: string) => {
     if (!name) {
-      return "";
+      return "A";
     }
     const parts = name.split(" ");
     let initials = parts[0][0];
@@ -29,8 +29,8 @@ const LetteredAvatar: React.FC<LetteredAvatarProps> = ({
 
   // Apply dynamic styles for maintaining the circle shape and adjusting font size
   const avatarStyle = {
-    width: sizeInRem,
-    height: sizeInRem,
+    // width: sizeInRem,
+    // height: sizeInRem,
     lineHeight: sizeInRem,
     display: "flex",
     alignItems: "center",
@@ -41,7 +41,7 @@ const LetteredAvatar: React.FC<LetteredAvatarProps> = ({
 
   return (
     <div
-      className={`flex aspect-square items-center justify-center bg-blue-800 text-white ${className}`}
+      className={`flex aspect-square w-10 items-center justify-center bg-blue-800 text-white ${className}`}
       style={avatarStyle}
     >
       {getInitials(name)}
