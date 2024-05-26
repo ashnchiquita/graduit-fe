@@ -32,6 +32,9 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const { data } = useSession();
 
+  const [status, setStatus] = useState("All");
+  const [jenis, setJenis] = useState("All");
+
   const handleSearchValueChange = (value: string) => {
     const obj: any = {};
     value && (obj.search = value);
@@ -271,6 +274,10 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
     searchValue,
     handleSearchValueChange,
     refreshData,
+    status,
+    setStatus,
+    jenis,
+    setJenis,
   };
   // const dummyData: ApprovalPendaftaranTopik[] = [
   //   {

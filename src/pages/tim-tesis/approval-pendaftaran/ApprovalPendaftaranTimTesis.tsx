@@ -12,9 +12,11 @@ import { Link } from "react-router-dom";
 import DataContext from "../context/DataContext";
 import { StatusPendaftaranOptions } from "./constants";
 import useRekapPendaftaranTimTesis from "./hooks/useApprovalPendaftaranTimTesis";
+import StatusDropdown from "./components/StatusDropdown";
+import JenisDropdown from "./components/JenisDropdown";
 
 export default function RekapPendaftaranTimTesis(): JSX.Element {
-  const { table, searchValue, handleSearchValueChange, refreshData } =
+  const { table, searchValue, handleSearchValueChange, refreshData, status, setStatus, jenis, setJenis } =
     useRekapPendaftaranTimTesis();
 
   return (
@@ -29,6 +31,7 @@ export default function RekapPendaftaranTimTesis(): JSX.Element {
             searchPlaceholder="Cari nama atau NIM mahasiswa"
             selectFilterPlaceholder="Semua Bimbingan"
             selectFilterOptions={StatusPendaftaranOptions}
+            customElementsRight={<div className="flex flex-row gap-x-4"><StatusDropdown {...{ status, setStatus }} /> <JenisDropdown {...{jenis, setJenis}}/></div>}
           />
         </section>
 

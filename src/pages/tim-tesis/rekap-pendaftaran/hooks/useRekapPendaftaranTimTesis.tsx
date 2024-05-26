@@ -42,6 +42,8 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     searchParams.get("search") ?? "",
   );
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
+  const [status, setStatus] = useState("All");
+  const [jenis, setJenis] = useState("All");
 
   const handleSearchValueChange = (value: string) => {
     const obj: any = {};
@@ -169,5 +171,9 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     handleSearchValueChange,
     statisticsData: statisticsData ?? defaultStatistics,
     refreshData,
+    status,
+    setStatus,
+    jenis,
+    setJenis,
   };
 }

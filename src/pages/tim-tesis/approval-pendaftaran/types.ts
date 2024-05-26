@@ -15,6 +15,10 @@ export type RekapPendaftaranTimTesisHookRet = {
   searchValue: string;
   handleSearchValueChange: (value: string) => void;
   refreshData: () => void;
+  status: string;
+  setStatus:React.Dispatch<React.SetStateAction<string>>;
+  jenis: string;
+  setJenis: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export type RowActionHookRet = {
@@ -94,4 +98,14 @@ export type ApproveRejectRes = {
   jadwalInterview: Date;
   waktuKeputusan: Date;
   status: "NOT_ASSIGNED" | "INTERVIEW" | "APPROVED" | "REJECTED";
+};
+
+export type StatusSelectProps = {
+  status: string;
+  setStatus: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export type JenisSelectProps = {
+  jenis: string;
+  setJenis: React.Dispatch<React.SetStateAction<string>>;
 };
