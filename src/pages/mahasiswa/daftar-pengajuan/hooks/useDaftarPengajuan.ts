@@ -8,10 +8,10 @@ import useSession from "@/hooks/useSession";
 import { RoleEnum } from "@/types/session-data";
 import useSWR from "swr";
 import { getStatusS1, getStatusS2 } from "../clients";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 export default function useDaftarPengajuan(): StatusMahasiswaHookRet {
-  const { id } = useParams();
+  // const { id } = useParams();
   const { data: session } = useSession();
 
   const { data = [], mutate: fetchData } = useSWR(

@@ -25,6 +25,16 @@ const NAV_ITEMS: NavItem[] = [
     icon: <VscNotebook className="text-slate-700" />,
     children: [
       {
+        label: "Registrasi Tugas Akhir",
+        path: "/registrasi",
+        roleAccess: [RoleEnum.S1_MAHASISWA],
+      },
+      {
+        label: "Registrasi Tesis",
+        path: "/registrasi",
+        roleAccess: [RoleEnum.S2_MAHASISWA],
+      },
+      {
         label: "Daftar Pengajuan",
         path: "/daftar-pengajuan",
         roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
