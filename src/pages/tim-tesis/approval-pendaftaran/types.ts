@@ -57,19 +57,22 @@ export type GetRekapPendaftaranTableRes = {
 
 export type GetAprrovalPendaftaranTableRes = {
   data: {
-    pendaftaran_id: string;
-    nim: string;
-    mahasiswa_id: string;
-    mahasiswa_nama: string;
-    pembimbing_nama: string; // Dosen penerima (only 1)
-    status: "NOT_ASSIGNED" | "INTERVIEW" | "APPROVED" | "REJECTED";
-    tipe:
-      | "NOT_ASSIGNED"
-      | "Sidang Tesis"
-      | "Seminar Proposal"
-      | "Seminar Tesis";
+    idPengajuanSidsem: string;
+    idMahasiswa: string;
+    nimMahasiswa: string;
+    namaMahasiswa: string;
+    jadwalSidang: string;
+    jenisSidang: string;
+    ruangan: string;
+    status: string;
+    dosenPembimbing: string[];
+    berkasSidsem: {
+      id: string;
+      nama: string;
+      url: string;
+    }[];
   }[];
-  count: number;
+  total: number;
 };
 
 export type GetAprrovalPendaftaranTableResS1 = {
