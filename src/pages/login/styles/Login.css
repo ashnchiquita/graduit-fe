@@ -4,8 +4,6 @@
 }
 
 .login .login-wrapper {
-  display: flex;
-  flex-direction: row;
   height: -webkit-fill-available;
 }
 
@@ -93,4 +91,108 @@
 .kanan .bawah .tulisan-or .tulisan-or p {
   margin: 0 10px;
   color: #000;
+}
+
+.mobile {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-image: url(/image/login-itb.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #ffffff;
+}
+
+.mobile .mobile-wrapper-dark {
+  background-color: rgba(0, 0, 0, 0.8);
+  height: -webkit-fill-available;
+}
+
+.mobile .mobile-wrapper-dark .mobile-wrapper {
+  padding-top: 5vh;
+  padding-left: 5vh;
+  padding-right: 5vh;
+}
+
+.mobile .kiri-wrapper-dark .kiri-wrapper {
+  padding-top: 30vh;
+  padding-left: 10vh;
+}
+
+.mobile .stei {
+  display: flex;
+  flex-direction: row;
+  grid-gap: 1.5vh;
+}
+
+.mobile .stei .tulisan-stei {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile .stei .tulisan-stei p {
+  font-weight: bold;
+}
+
+.mobile .stei .tulisan-stei p:first-child {
+  font-weight: lighter;
+}
+
+.mobile .stei .tulisan-stei p {
+  font-weight: bold;
+}
+
+.mobile .title {
+  margin-top: 4vh;
+}
+
+.mobile .title h1 {
+  font-size: 80px;
+}
+.mobile .title h2 {
+  font-weight: lighter;
+}
+.mobile .mobile-wrapper .bawah {
+}
+
+.mobile .mobile-wrapper .bawah .isian {
+  padding-bottom: 3vh;
+  color: black;
+}
+
+.mobile .bawah .tulisan-or {
+  display: flex;
+  align-items: center;
+}
+
+.mobile .mobile-wrapper .bawah .tulisan-or .line {
+  flex-grow: 1;
+  border-top: 1px solid #9ca3af;
+}
+
+.mobile .mobile-wrapper .bawah .tulisan-or p {
+  margin: 0 10px;
+  color: black;
+}
+
+.login-desktop {
+  display: none;
+}
+
+.login-mobile {
+  display: flex;
+  height: -webkit-fill-available;
+}
+
+@media screen and (min-width: 768px) {
+  .login-desktop {
+    display: flex;
+    flex-direction: row;
+    height: -webkit-fill-available;
+  }
+
+  .login-mobile {
+    display: none;
+  }
 }

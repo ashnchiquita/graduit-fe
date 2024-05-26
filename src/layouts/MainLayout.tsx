@@ -1,14 +1,14 @@
 // Library imports
-import { Outlet } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 
 // Local imports
 // import axios from "@/config/axios-config";
 
 // Component imports
-import Sidebar from "@/layouts/components/Sidebar";
-import Breadcrumb from "@/layouts/components/Breadcrumb";
 import { Loader } from "@/components/ui/loader";
+import Breadcrumb from "@/layouts/components/Breadcrumb";
+import Sidebar from "@/layouts/components/Sidebar";
 import TopNav from "@/layouts/components/TopNav";
 
 const MainLayoutLoader = () => {
@@ -22,7 +22,7 @@ const MainLayoutLoader = () => {
 export default function MainLayout(): JSX.Element {
   // Component states
   const [loading, setLoading] = useState<boolean>(true);
-  const [sidebarClosed, setSidebarClosed] = useState<boolean>(true);
+  const [sidebarClosed, setSidebarClosed] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
@@ -36,16 +36,18 @@ export default function MainLayout(): JSX.Element {
       {!loading ? (
         <div className="flex h-screen w-full overflow-hidden bg-slate-100">
           <Sidebar closed={sidebarClosed} />
-          <div className="flex h-screen w-full flex-col overflow-y-scroll">
+          <div className="flex w-full flex-col overflow-y-scroll">
             <TopNav closed={sidebarClosed} setClosed={setSidebarClosed} />
             <Breadcrumb closed={sidebarClosed} setClosed={setSidebarClosed} />
             <Suspense fallback={<MainLayoutLoader />}>
-              <Outlet />
+              <div className="flex-1">
+                <Outlet />
+              </div>
             </Suspense>
           </div>
         </div>
       ) : (
-        <div></div>
+        <></>
       )}
     </>
   );

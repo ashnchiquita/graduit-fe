@@ -1,78 +1,112 @@
+import AddLogBimbingan from "@/pages/mahasiswa/add-log-bimbingan/AddLogBimbingan";
+import DetailSidsem from "@/pages/mahasiswa/detail-sidsem/DetailSidsem";
+import RegistrationSidSem from "@/pages/mahasiswa/registration-sidsem/RegistrationSidSem";
 import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import {
+  AccountTimTesisLayout,
   AkunCreate,
   AkunDetail,
+  ApprovalPendaftaran,
+  BatchUbahRole,
+  DaftarPengajuan,
+  DaftarTopik,
+  Dashboard,
+  DashboardRegistrasi,
+  DetailMahasiswa,
+  DetailRekapPendaftaran,
+  InputNilai,
   KelolaAkun,
-  LogBimbingan,
+  KonfigurasiPeriode,
   LogBimbinganMahasiswa,
-  LogSistem,
+  LogMahasiswa,
   Login,
   MainLayout,
   MhsDashboard,
   NotFound,
-  Pengumuman,
-  Penjadwalan,
-  RegistrationRecap,
-  StatusMahasiswa,
-  ThesisRegistration,
-  Topik,
+  ProfileDosbim,
+  Registration,
+  RekapPendaftaranDosbim,
+  RekapPendaftaranTimTesis,
+  RiwayatPendaftaran,
 } from "./imports";
 
 export const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: <Navigate to="/tesis/registrasi" replace />,
+      element: <Navigate to="/dashboard" replace />,
     },
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <Suspense fallback={<LoaderIcon />}>
+          <Login />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/timtesis",
+      element: <AccountTimTesisLayout />,
+      children: [],
     },
     {
       path: "/",
       element: <MainLayout />,
       children: [
         {
-          path: "/tesis",
-          element: <Navigate to="/tesis/registrasi" replace />,
+          path: "/dashboard",
+          element: <Dashboard />,
+        },
+        {
+          path: "/detail-mahasiswa/:nim",
+          element: <DetailMahasiswa />,
+        },
+        {
+          path: "/rekap-pendaftaran",
+          element: <RekapPendaftaranDosbim />,
+        },
+        {
+          path: "/rekap-pendaftaran-tim-tesis",
+          element: <RekapPendaftaranTimTesis />,
+        },
+        {
+          path: "/rekap-pendaftaran-tim-tesis/:nim",
+          element: <RiwayatPendaftaran />,
+        },
+        {
+          path: "/approval-pendaftaran",
+          element: <ApprovalPendaftaran />,
+        },
+        {
+          path: "/rekap-pendaftaran/:strata/:mahasiswaId",
+          element: <DetailRekapPendaftaran />,
+        },
+        {
+          path: "/daftar-pengajuan",
+          element: <DaftarPengajuan></DaftarPengajuan>,
+        },
+        {
+          path: "/registrasi",
+          element: <Registration></Registration>,
+        },
+        {
+          path: "/daftar-topik",
+          element: <DaftarTopik />,
+        },
+        {
+          path: "/dashboard-registrasi",
+          element: <DashboardRegistrasi></DashboardRegistrasi>,
         },
         {
           path: "/tesis/registrasi",
-          element: <ThesisRegistration></ThesisRegistration>,
+          element: <Registration></Registration>,
         },
-        {
-          path: "/tesis/rekap",
-          element: <RegistrationRecap></RegistrationRecap>,
-        },
+
         {
           path: "/tesis/status",
           element: <MhsDashboard />,
-        },
-        {
-          path: "/tugas",
-          element: <Navigate to="/tugas/kelas" replace />,
-        },
-        {
-          path: "/tugas/kelas",
-          element: <></>,
-        },
-        {
-          path: "/tugas/logbook",
-          element: <></>,
-        },
-        {
-          path: "/informasi",
-          element: <Navigate to="/informasi/seminar" replace />,
-        },
-        {
-          path: "/informasi/seminar",
-          element: <></>,
-        },
-        {
-          path: "/informasi/pengujian",
-          element: <></>,
         },
         {
           path: "/manajemen",
@@ -91,40 +125,40 @@ export const router = createBrowserRouter(
           element: <AkunCreate />,
         },
         {
-          path: "/log",
-          element: <Navigate to="/log/bimbingan" replace />,
+          path: "/manajemen/role-pengguna",
+          element: <BatchUbahRole />,
         },
         {
           path: "/log/bimbingan",
-          element: <LogBimbingan />,
+          element: <LogMahasiswa />,
         },
         {
-          path: "/log/bimbingan/:id",
+          path: "/add-log-bimbingan",
+          element: <AddLogBimbingan />,
+        },
+        {
+          path: "/dosen/bimbingan/:strata/:id",
           element: <LogBimbinganMahasiswa />,
         },
         {
-          path: "/log/sistem",
-          element: <LogSistem></LogSistem>,
+          path: "/manajemen/periode-pendidikan",
+          element: <KonfigurasiPeriode />,
         },
         {
-          path: "/tugas-akhir",
-          element: <Navigate to="/tugas-akhir/topik/2" replace />,
+          path: "/kelas/input-nilai",
+          element: <InputNilai />,
         },
         {
-          path: "/tugas-akhir/status/:id",
-          element: <StatusMahasiswa />,
+          path: "/registration/:tipe/:strata",
+          element: <RegistrationSidSem />,
         },
         {
-          path: "/tugas-akhir/topik/:role",
-          element: <Topik />,
+          path: "/detail/:tipe/:strata",
+          element: <DetailSidsem />,
         },
         {
-          path: "/tugas-akhir/pengumuman",
-          element: <Pengumuman />,
-        },
-        {
-          path: "/tugas-akhir/penjadwalan",
-          element: <Penjadwalan />,
+          path: "/profile",
+          element: <ProfileDosbim />,
         },
       ],
     },

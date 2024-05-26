@@ -1,137 +1,156 @@
-import { useEffect, useState } from "react";
-import { IoClipboardOutline, IoSchoolOutline } from "react-icons/io5";
-import { VscChevronRight, VscInfo, VscNotebook } from "react-icons/vsc";
+import { VscChevronRight } from "react-icons/vsc";
 import { NavLink } from "react-router-dom";
 import { Skeleton } from "../../components/ui/skeleton";
+import { NAV_ITEMS } from "../constants/nav-item";
+import useSidebarContent from "../hooks/useSidebarContent";
+import { RoleEnum } from "@/types/session-data";
 
-// Define a type for navigation items
-interface NavItem {
-  label: string;
-  icon?: JSX.Element;
-  path?: string;
-  children?: NavItem[];
-}
-
-// Sample navigation data
-const navItems: NavItem[] = [
-  {
-    label: "Tesis",
-    icon: <IoSchoolOutline className="text-slate-700" />,
-    children: [
-      { label: "Registrasi", path: "/tesis/registrasi" },
-      { label: "Status", path: "/tesis/status" },
-      { label: "Rekap", path: "/tesis/rekap" },
-    ],
-  },
-  {
-    label: "Tugas Akhir",
-    icon: <IoSchoolOutline className="text-slate-700" />,
-    children: [
-      { label: "Topik", path: "/tugas-akhir/topik/2" },
-      { label: "Status", path: "/tugas-akhir/status/1" },
-      { label: "Pengumuman", path: "/tugas-akhir/pengumuman" },
-      { label: "Penjadwalan", path: "/tugas-akhir/penjadwalan" },
-    ],
-  },
-  {
-    label: "Tugas",
-    icon: <VscNotebook className="text-slate-700" />,
-    children: [
-      { label: "Kelas", path: "/tugas/kelas" },
-      { label: "Logbook", path: "/tugas/logbook" },
-    ],
-  },
-  {
-    label: "Informasi",
-    icon: <VscInfo className="text-slate-700" />,
-    children: [
-      { label: "Seminar", path: "/informasi/seminar" },
-      { label: "Pengujian", path: "/informasi/pengujian" },
-    ],
-  },
-  {
-    label: "Log",
-    icon: <IoClipboardOutline className="text-slate-700" />,
-    children: [
-      { label: "Bimbingan", path: "/log/bimbingan" },
-      { label: "Sistem", path: "/log/sistem" },
-    ],
-  },
-  {
-    label: "Manajemen",
-    icon: <IoSchoolOutline className="text-slate-700" />,
-    children: [{ label: "Kelola Akun", path: "/manajemen/kelola-akun" }],
-  },
-];
+const roleHeaders = {
+  [RoleEnum.S2_TIM_TESIS]: "Tim Tesis S2",
+  [RoleEnum.S1_TIM_TA]: "Tim TA S1",
+  [RoleEnum.S1_PEMBIMBING]: "Pembimbing S1",
+  [RoleEnum.S2_PEMBIMBING]: "Pembimbing S2",
+  [RoleEnum.S1_MAHASISWA]: "Mahasiswa S1",
+  [RoleEnum.S2_MAHASISWA]: "Mahasiswa S2",
+  [RoleEnum.ADMIN]: "Administrator",
+  [RoleEnum.TU]: "Tata Usaha",
+  [RoleEnum.S1_PENGUJI]: "Penguji S1",
+  [RoleEnum.S2_PENGUJI]: "Penguji S2",
+  // Add other role headers as needed
+};
 
 export default function SidebarContent(): JSX.Element {
-  const [loading, setLoading] = useState<boolean>(true);
+  const { toggleGroup, openGroups, loading, session } = useSidebarContent();
 
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-  });
-
-  const [openGroups, setOpenGroups] = useState<string[]>([]);
-
-  const toggleGroup = (label: string) => {
-    setOpenGroups((current) =>
-      current.includes(label)
-        ? current.filter((item) => item !== label)
-        : [...current, label],
-    );
-  };
-
-  // Set all groups to be open by default
-  useEffect(() => {
-    setOpenGroups(navItems.map((group) => group.label));
-  }, []);
+  const uniqueRoles = Array.from(new Set(session?.roles || []));
+  const renderedItems = new Set();
 
   return (
     <>
       {!loading ? (
-        <div className="flex size-full max-h-[72vh] flex-col gap-4 overflow-auto">
-          {navItems.map((group) => (
-            <div key={group.label} className="flex w-full flex-col gap-1">
-              <div
-                className="flex w-full cursor-pointer items-center justify-between rounded px-1 py-1.5"
-                onClick={() => toggleGroup(group.label)}
-              >
-                <div className="flex size-full items-center gap-4">
-                  <div className="flex h-full items-center gap-2">
-                    <div className="h-full w-[2px] rounded" />
-                    {group.icon}
-                  </div>
-                  <p className="text-slate-700">{group.label}</p>
+        <div className="z-[99] flex size-full max-h-[72vh] flex-col gap-4 overflow-auto pr-1">
+          {uniqueRoles.map((role) => {
+            const roleNavItems = NAV_ITEMS.filter((group) =>
+              group.roleAccess.includes(role),
+            ).filter((group) => !renderedItems.has(group.label));
+
+            if (roleNavItems.length === 0) {
+              return null;
+            }
+
+            return (
+              <div key={role}>
+                <div className="mb-2 text-sm font-bold text-slate-700">
+                  {roleHeaders[role]}
                 </div>
-                <VscChevronRight
-                  className={`text-slate-700 transition-all duration-150 ${openGroups.includes(group.label) ? "rotate-90" : ""}`}
-                />
-              </div>
-              {openGroups.includes(group.label) &&
-                group.children?.map((item) => (
-                  <NavLink
-                    key={item.label}
-                    to={item.path || "#"}
-                    children={({ isActive }) => (
-                      <div
-                        className={`flex size-full items-center justify-between rounded px-1 py-1.5 ${isActive ? "bg-slate-100 text-blue-900" : ""}`}
-                      >
-                        <div className="flex size-full items-center gap-10">
-                          <div className="flex h-full items-center gap-2">
-                            {isActive ? (
-                              <div className="h-full w-[2px] rounded bg-blue-900" />
-                            ) : (
-                              <div className="h-full w-[2px] rounded" />
-                            )}
+                {roleNavItems.map((group) => {
+                  if (renderedItems.has(group.label)) {
+                    return null;
+                  }
+                  renderedItems.add(group.label);
+
+                  return (
+                    <div
+                      key={group.label}
+                      className="flex w-full flex-col gap-1"
+                    >
+                      {group.children ? (
+                        <>
+                          <div
+                            className="flex w-full cursor-pointer items-center justify-between rounded px-1 py-1.5"
+                            onClick={() => toggleGroup(group.label)}
+                          >
+                            <div className="flex size-full items-center gap-4">
+                              <div className="flex h-full items-center gap-2">
+                                <div className="h-full w-[2px] rounded" />
+                                {group.icon}
+                              </div>
+                              <p className="text-base text-slate-700">
+                                {group.label}
+                              </p>
+                            </div>
+                            <VscChevronRight
+                              className={`text-base text-slate-700 transition-all duration-150 ${
+                                openGroups.includes(group.label)
+                                  ? "rotate-90"
+                                  : ""
+                              }`}
+                            />
                           </div>
-                          <p>{item.label}</p>
-                        </div>
-                      </div>
-                    )}
-                  />
-                ))}
-            </div>
-          ))}
+                          {openGroups.includes(group.label) &&
+                            group.children.map((item) => {
+                              if (renderedItems.has(item.label)) {
+                                return null;
+                              }
+                              renderedItems.add(item.label);
+
+                              return (
+                                item.roleAccess.includes(role) && (
+                                  <NavLink
+                                    key={item.label}
+                                    to={item.path || "#"}
+                                    children={({ isActive }) => (
+                                      <div
+                                        className={`flex size-full items-center justify-between rounded px-1 py-1.5 ${
+                                          isActive
+                                            ? "bg-slate-100 text-blue-900"
+                                            : ""
+                                        }`}
+                                      >
+                                        <div className="flex size-full items-center gap-10">
+                                          <div className="flex h-full items-center gap-2">
+                                            {isActive ? (
+                                              <div className="h-full w-[2px] rounded bg-blue-900" />
+                                            ) : (
+                                              <div className="h-full w-[2px] rounded" />
+                                            )}
+                                          </div>
+                                          <p className="text-base">
+                                            {item.label}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    )}
+                                  />
+                                )
+                              );
+                            })}
+                        </>
+                      ) : (
+                        <NavLink
+                          to={group.path || "#"}
+                          children={({ isActive }) => (
+                            <div
+                              className={`flex size-full items-center justify-between rounded px-1 py-1.5 ${
+                                isActive ? "bg-slate-100 text-blue-900" : ""
+                              }`}
+                            >
+                              <div className="flex size-full items-center gap-4">
+                                <div className="flex h-full items-center gap-2">
+                                  {isActive ? (
+                                    <>
+                                      <div className="h-full w-[2px] rounded bg-blue-900" />
+                                      {group.iconActive}
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div className="h-full w-[2px] rounded" />
+                                      {group.icon}
+                                    </>
+                                  )}
+                                </div>
+                                <p className="text-base">{group.label}</p>
+                              </div>
+                            </div>
+                          )}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
       ) : (
         <div className="flex w-full flex-col gap-3">

@@ -2,12 +2,14 @@ import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import SelectData from "@/types/select-data";
 import { Command as CommandPrimitive } from "cmdk";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import * as React from "react";
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 
 interface SearchableSelectProps {
   dataOptions: SelectData[];
+  suggestAddOption?: boolean;
+  suggestAddOptionPrompt?: string;
   selected: string | null;
   setSelected: (selected: string) => void;
   inputValue: string;
@@ -19,10 +21,13 @@ interface SearchableSelectProps {
   setEditing?: (editing: boolean) => void;
   placeholder?: string;
   shouldFilter?: boolean;
+  onNewOptionCreated?: (newOptionCreated: boolean) => void;
 }
 
 export function SearchableSelect({
   dataOptions,
+  suggestAddOption,
+  suggestAddOptionPrompt,
   selected,
   setSelected,
   inputValue,
@@ -34,6 +39,7 @@ export function SearchableSelect({
   placeholder = "Select...",
   setEditing = () => {},
   shouldFilter = false,
+  onNewOptionCreated,
 }: SearchableSelectProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
@@ -67,14 +73,18 @@ export function SearchableSelect({
   }, []);
 
   React.useEffect(() => {
+    // close when selected changes
     setOpen(false);
-    setInputValue(selected ?? "");
+    if (!suggestAddOption || selected === "")
+      setInputValue(
+        dataOptions.find(({ value }) => value === selected)?.label ?? "",
+      );
     inputRef.current?.blur();
-  }, [selected, setInputValue]);
+  }, [selected, setInputValue, dataOptions, suggestAddOption]);
 
   return (
     <Command
-      className="overflow-visible bg-transparent"
+      className="relative overflow-visible bg-transparent"
       shouldFilter={shouldFilter}
     >
       <div
@@ -99,7 +109,15 @@ export function SearchableSelect({
             }}
             onBlur={() => {
               setOpen(false);
-              setInputValue(selected ?? "");
+              const selectedOption = dataOptions.find(
+                ({ value }) => value === selected,
+              );
+
+              if (suggestAddOption) {
+                // setSelected(inputValue);
+              } else {
+                setInputValue(selectedOption?.label ?? "");
+              }
             }}
             onFocus={() => setOpen(true)}
             placeholder={placeholder}
@@ -110,18 +128,53 @@ export function SearchableSelect({
         </div>
       </div>
       <div className="relative mt-2">
-        {open && dataOptions.length > 0 && !disabled ? (
+        {open &&
+        (dataOptions.length > 0 || (suggestAddOption && inputValue)) &&
+        !disabled ? (
           <div
             className={`absolute ${selectablePosition} z-10 w-full rounded-md border border-gray-100 bg-[#FFFFFF] text-popover-foreground shadow-md outline-none animate-in ${optionClassName}`}
           >
             <CommandGroup className="h-full overflow-auto">
+              {suggestAddOption &&
+                inputValue &&
+                !dataOptions.find(({ label }) => label === inputValue) && (
+                  <CommandItem
+                    ref={dataOptions.length === 0 ? lastItemRef : undefined}
+                    key={"added-option"}
+                    onMouseDown={(e: {
+                      preventDefault: () => void;
+                      stopPropagation: () => void;
+                    }) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                    onSelect={() => {
+                      setSelected(inputValue);
+                      setInputValue(inputValue);
+                      setEditing(true);
+                      setOpen(false);
+                      if (onNewOptionCreated) {
+                        onNewOptionCreated(true);
+                      }
+                    }}
+                    className={"flex cursor-pointer gap-4 text-base"}
+                    value={"added-option"}
+                  >
+                    <Plus size={10} className="text-blue-500" />
+                    <div>
+                      {suggestAddOptionPrompt
+                        ? `${suggestAddOptionPrompt} '${inputValue}'`
+                        : inputValue}
+                    </div>
+                  </CommandItem>
+                )}
               {dataOptions.map((data, idx) => {
                 return (
                   <CommandItem
                     ref={
                       idx === dataOptions.length - 1 ? lastItemRef : undefined
                     }
-                    key={data.value}
+                    key={data.label}
                     onMouseDown={(e: {
                       preventDefault: () => void;
                       stopPropagation: () => void;
@@ -134,9 +187,12 @@ export function SearchableSelect({
                       setInputValue(data.label);
                       setEditing(true);
                       setOpen(false);
+                      if (onNewOptionCreated) {
+                        onNewOptionCreated(false);
+                      }
                     }}
                     className={"cursor-pointer text-base"}
-                    disabled={disabled}
+                    value={data.label}
                   >
                     {data.label}
                   </CommandItem>

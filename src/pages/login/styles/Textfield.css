@@ -19,8 +19,9 @@
   border: none;
   border-bottom: 1px solid black;
   outline: none;
-  padding-left: 5vh;
+  padding-left: 3.5vh;
   width: 95%;
+  background-color: transparent;
 }
 
 .textfield-input:focus {

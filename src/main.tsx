@@ -1,6 +1,7 @@
 // Library imports
 import ReactDOM from "react-dom/client";
 import "react-toastify/dist/ReactToastify.css";
+import "./toast.css";
 import { RouterProvider } from "react-router-dom";
 import React from "react";
 import { ToastContainer } from "react-toastify";

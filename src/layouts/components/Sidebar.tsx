@@ -1,29 +1,21 @@
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import Logo from "@/assets/logo.svg";
-import SidebarContent from "./SidebarContent";
+import { cn } from "@/lib/utils";
 import Profile from "./Profile";
-import Combobox from "@/components/ui/combobox";
+import SidebarContent from "./SidebarContent";
 
 interface SidebarProps {
   closed: boolean;
 }
 
 export default function Sidebar({ closed }: SidebarProps): JSX.Element {
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    Cookies.remove("token");
-    navigate("/");
-  };
-
-  const sidebarClasses = closed
-    ? "fixed left-[-100%] md:relative md:w-0"
-    : "fixed left-0 z-40 md:relative";
-
   return (
     <aside
-      className={`${sidebarClasses} mt-[45px] size-full h-[calc(100vh-45px)] transition-all duration-500 ease-in-out md:mt-0 md:h-full md:w-[348px] md:py-1 md:pl-1`}
+      className={cn(
+        closed
+          ? "fixed left-[-100%] md:relative md:w-[0px]"
+          : "fixed left-0 md:relative md:w-[348px]",
+        "mt-[45px] size-full h-[calc(100vh-45px)] transition-all duration-500 ease-in-out md:mt-0 md:h-full md:py-1 md:pl-1 z-10",
+      )}
     >
       <nav className="relative flex h-full flex-col items-center justify-between bg-white px-4 py-5 md:h-full md:rounded-lg">
         <div className="flex size-full flex-col justify-between">
@@ -40,25 +32,12 @@ export default function Sidebar({ closed }: SidebarProps): JSX.Element {
                   GraduIT
                 </h1>
               </div>
-              <Combobox
-                placeholder="Tingkat"
-                options={[
-                  { value: "sarjana", label: "Sarjana" },
-                  { value: "magister", label: "Magister" },
-                ]}
-                value="magister"
-                onChange={(newValue) => console.log(newValue)}
-                containerClassName="text-xs mt-0.5 px-2 h-7 rounded-lg bg-slate-100 font-medium text-blue-900 border-none"
-                contentClassName="w-24"
-                optionClassName="text-xs"
-                searchBar={false}
-              />
             </div>
             {/* Sidebar Content */}
             <SidebarContent />
           </div>
           {/* Profile */}
-          <Profile handleLogout={handleLogout} />
+          <Profile />
         </div>
       </nav>
     </aside>
