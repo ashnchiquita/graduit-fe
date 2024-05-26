@@ -1,8 +1,7 @@
 import { HTMLAttributes, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 import { AiOutlineCopy, AiOutlineCloudDownload } from "react-icons/ai";
-import { Row } from "@tanstack/react-table";
-import { LogBimbinganData, Berkas } from "../type";
+import { Berkas } from "../type";
 interface ButtonDownloadProps extends HTMLAttributes<HTMLDivElement> {
   data: Berkas[];
 }

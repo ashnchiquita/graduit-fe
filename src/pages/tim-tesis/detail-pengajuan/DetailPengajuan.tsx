@@ -131,26 +131,28 @@ export default function DetailPengajuan() {
                   Dosen Penguji
                 </div>
               </div>
-              <DospengModal 
-              dosenPenguji={[]} 
-              listDosenPenguji={[{
-                id:1,
-                nama:'Fajar',
-              },
-              {
-                id:2,
-                nama:'Rava',
-              },
-              {
-                id:3,
-                nama:'Rava',
-              },
-            ]} 
-              modalTrigger={
+              <DospengModal
+                dosenPenguji={[]}
+                listDosenPenguji={[
+                  {
+                    id: 1,
+                    nama: "Fajar",
+                  },
+                  {
+                    id: 2,
+                    nama: "Rava",
+                  },
+                  {
+                    id: 3,
+                    nama: "Rava",
+                  },
+                ]}
+                modalTrigger={
                   <div className="pl-9 text-sm md:text-base">
-                  {"data.data.dosbing_name"}
-                </div>
-              }/>
+                    {"data.data.dosbing_name"}
+                  </div>
+                }
+              />
             </div>
           </div>
         </div>

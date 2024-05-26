@@ -5,17 +5,16 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Dospeng, DospengModalHookRet, FormSchemaDospeng } from "../type";
 
-export default function useDosbingModal(
+export default function useDospengModal(
   dosbing: Dospeng[] | null,
 ): DospengModalHookRet {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [width] = useWindowSize();
 
-
   const form = useForm<z.infer<typeof FormSchemaDospeng>>({
     resolver: zodResolver(FormSchemaDospeng),
     defaultValues: {
-        dosbings : dosbing?.map(d => ({ id: d.id, nama: d.nama }))
+      dosbings: dosbing?.map((d) => ({ id: d.id, nama: d.nama })),
     },
   });
 

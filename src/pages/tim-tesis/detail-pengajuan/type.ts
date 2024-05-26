@@ -7,9 +7,9 @@ export type Berkas = {
 };
 
 export type Dospeng = {
-     id: number;
-     nama: string;
-}
+  id: number;
+  nama: string;
+};
 
 export type LogBimbinganStatusData = {
   status: boolean;
@@ -58,18 +58,17 @@ export type TempatModalProps = {
 };
 
 export type DosbingModalProps = {
-    dosenPenguji: Dospeng[] | null;
-    modalTrigger: JSX.Element;
-    listDosenPenguji: Dospeng[] | null;
-}
-
+  dosenPenguji: Dospeng[] | null;
+  modalTrigger: JSX.Element;
+  listDosenPenguji: Dospeng[] | null;
+};
 
 export type DospengModalHookRet = {
-    dialogOpen: boolean;
-    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    form: UseFormReturn<z.infer<typeof FormSchemaDospeng>>;
-    isMobile: boolean;
-}
+  dialogOpen: boolean;
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  form: UseFormReturn<z.infer<typeof FormSchemaDospeng>>;
+  isMobile: boolean;
+};
 
 export type SidangModalHookRet = {
   dialogOpen: boolean;
@@ -110,12 +109,11 @@ export const FormSchemaTempat = z.object({
   }),
 });
 
-
-export const FormSchemaDospeng =z.object({
+export const FormSchemaDospeng = z.object({
   dosbings: z.array(
     z.object({
-        id: z.number(),
-        nama: z.string()
-    })
-) 
+      id: z.number(),
+      nama: z.string(),
+    }),
+  ),
 });
