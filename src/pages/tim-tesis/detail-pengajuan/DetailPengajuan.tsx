@@ -132,9 +132,11 @@ export default function DetailPengajuan() {
                 </div>
               </div>
               <div className="flex items-center gap-5 pl-9 text-sm md:text-base">
-                {<div className="flex items-center gap-5 text-sm md:text-base">
-                      {"data.data.dosbing_name"}
-                </div>}
+                {
+                  <div className="flex items-center gap-5 text-sm md:text-base">
+                    {"data.data.dosbing_name"}
+                  </div>
+                }
                 <DospengModal
                   dosenPenguji={[]}
                   listDosenPenguji={[
@@ -153,12 +155,12 @@ export default function DetailPengajuan() {
                   ]}
                   modalTrigger={
                     <Button
-                          variant="outline"
-                          className="flex h-7 gap-2 px-3 py-2 text-sm"
-                        >
-                          <Pencil size={12} />
-                          {"Ubah"}
-                        </Button>
+                      variant="outline"
+                      className="flex h-7 gap-2 px-3 py-2 text-sm"
+                    >
+                      <Pencil size={12} />
+                      {"Ubah"}
+                    </Button>
                   }
                 />
               </div>
