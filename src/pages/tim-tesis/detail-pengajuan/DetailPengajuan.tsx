@@ -138,7 +138,12 @@ export default function DetailPengajuan() {
                   </div>
                 }
                 <DospengModal
-                  dosenPenguji={[]}
+                  dosenPenguji={[
+                    {
+                      id: 1,
+                      nama: "Fajar",
+                    },
+                  ]}
                   listDosenPenguji={[
                     {
                       id: 1,
@@ -291,7 +296,7 @@ export default function DetailPengajuan() {
                   </AvatarFallback>
                 </Avatar>
                 <ScrollArea className="text-muted-foreground">
-                  Status
+                  Tempat
                 </ScrollArea>
               </div>
               <div className="pl-9 text-sm md:text-base">

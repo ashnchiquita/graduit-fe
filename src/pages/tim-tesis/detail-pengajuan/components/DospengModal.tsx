@@ -47,7 +47,7 @@ export default function DospengModal({
             <FormField
               control={form.control}
               name="dosbings"
-              render={() => (
+              render={(field) => (
                 <FormItem>
                   {form.getValues().dosbings.length > 0 ? (
                     <ul className="flex flex-wrap gap-2 ">

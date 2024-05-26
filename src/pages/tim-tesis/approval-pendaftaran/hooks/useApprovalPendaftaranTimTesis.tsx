@@ -20,7 +20,9 @@ import JenisSidangBadge from "../components/JenisSidangBadge";
 import RowAction from "../components/RowAction";
 import {
   ApprovalPendaftaranTopik,
+  Jenis,
   RekapPendaftaranTimTesisHookRet,
+  Status,
 } from "../types";
 // import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 
@@ -29,6 +31,9 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",
   );
+
+  const [status, setStatus] = useState<Status>(Status.Semua);
+  const [jenis, setJenis] = useState<Jenis>(Jenis.Semua)
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const { data } = useSession();
 
@@ -271,6 +276,10 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
     searchValue,
     handleSearchValueChange,
     refreshData,
+    jenis,
+    setJenis,
+    status,
+    setStatus
   };
   // const dummyData: ApprovalPendaftaranTopik[] = [
   //   {
