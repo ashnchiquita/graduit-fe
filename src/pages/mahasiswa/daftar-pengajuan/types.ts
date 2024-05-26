@@ -19,8 +19,8 @@ export type StatusMahasiswaHookRet = {
 };
 
 export enum PageTitle {
-  STATUS_TUGAS_AKHIR = "Registrasi Tugas Akhir",
-  STATUS_TESIS = "Registrasi Tesis",
+  STATUS_TUGAS_AKHIR = "Daftar Pengajuan Tugas Akhir",
+  STATUS_TESIS = "Daftar Pengajuan Tesis",
 }
 
 export type StatusS2Response = {
