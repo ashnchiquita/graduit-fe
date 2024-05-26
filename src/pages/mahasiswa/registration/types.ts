@@ -67,5 +67,4 @@ export type StatusS1Response = {
   idDosen: string;
   namaDosen: string;
   emailDosen: string;
-
 }[];

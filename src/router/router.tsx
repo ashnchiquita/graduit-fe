@@ -111,7 +111,7 @@ export const router = createBrowserRouter(
         },
         {
           path: "/tesis/detail/:id",
-          element: <DetailPengajuan/>
+          element: <DetailPengajuan />,
         },
         {
           path: "/manajemen",

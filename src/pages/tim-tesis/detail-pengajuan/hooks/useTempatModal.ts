@@ -6,7 +6,7 @@ import { z } from "zod";
 import { FormSchemaTempat, TempatModalHookRet } from "../type";
 
 export default function useTempatModal(
-  tempat : string | null,  
+  tempat: string | null,
   onChange: (date: Date) => void,
 ): TempatModalHookRet {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -14,7 +14,6 @@ export default function useTempatModal(
 
   const handleChange = (data: z.infer<typeof FormSchemaTempat>) => {
     onChange(data.jadwalWawan);
-
     setDialogOpen(false);
   };
 

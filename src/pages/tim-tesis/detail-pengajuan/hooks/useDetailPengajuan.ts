@@ -39,7 +39,7 @@ const useDetailRekapPendaftaran = () => {
       };
     },
   );
-  
+
   const { data: regData = defaultRegData } = useSWR(
     `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
     async () => {

@@ -4,7 +4,12 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
-import { getRegS2, postRegistrasiTesisS2, postRegistrasiTAS1, getRegS1 } from "./clients";
+import {
+  getRegS2,
+  postRegistrasiTesisS2,
+  postRegistrasiTAS1,
+  getRegS1,
+} from "./clients";
 import { RegistrationFormData, RegistrationFormSchema } from "./constants";
 import { PostRegistrasiTesisRequestData } from "./types";
 import { useEffect, useState } from "react";
@@ -46,7 +51,6 @@ const useRegistrationImpl = () => {
       if (!sessionData?.id) return [];
 
       if (sessionData.roles.includes(RoleEnum.S1_MAHASISWA)) {
-
         const { data } = await getRegS1(sessionData.id);
 
         const resData = data.map((item) => ({

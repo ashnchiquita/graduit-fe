@@ -103,5 +103,4 @@ export const ProfileDosbim = lazy(
 
 export const DetailPengajuan = lazy(
   () => import("../pages/tim-tesis/detail-pengajuan/DetailPengajuan.tsx"),
-)
-
+);
