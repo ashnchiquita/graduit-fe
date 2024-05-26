@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,11 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { TempatModalProps } from "../type";
-import {
-  FormField,
-  FormItem,
-  Form,
-} from "@/components/ui/form/form";
+import { FormField, FormItem, Form } from "@/components/ui/form/form";
 import { Input } from "@/components/ui/input";
 import useTempatModal from "../hooks/useTempatModal";
 
@@ -22,7 +17,7 @@ export default function TempatModal({
   onChange,
   modalTrigger,
 }: TempatModalProps): JSX.Element {
-  const { dialogOpen, setDialogOpen, handleChange, form, isMobile } =
+  const { dialogOpen, setDialogOpen, handleChange, form, } =
     useTempatModal(tempat, onChange);
 
   return (

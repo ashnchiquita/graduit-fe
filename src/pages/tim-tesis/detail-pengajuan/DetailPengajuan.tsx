@@ -131,28 +131,37 @@ export default function DetailPengajuan() {
                   Dosen Penguji
                 </div>
               </div>
-              <DospengModal
-                dosenPenguji={[]}
-                listDosenPenguji={[
-                  {
-                    id: 1,
-                    nama: "Fajar",
-                  },
-                  {
-                    id: 2,
-                    nama: "Rava",
-                  },
-                  {
-                    id: 3,
-                    nama: "Rava",
-                  },
-                ]}
-                modalTrigger={
-                  <div className="pl-9 text-sm md:text-base">
-                    {"data.data.dosbing_name"}
-                  </div>
-                }
-              />
+              <div className="flex items-center gap-5 pl-9 text-sm md:text-base">
+                {<div className="flex items-center gap-5 text-sm md:text-base">
+                      {"data.data.dosbing_name"}
+                </div>}
+                <DospengModal
+                  dosenPenguji={[]}
+                  listDosenPenguji={[
+                    {
+                      id: 1,
+                      nama: "Fajar",
+                    },
+                    {
+                      id: 2,
+                      nama: "Rava",
+                    },
+                    {
+                      id: 3,
+                      nama: "Rava",
+                    },
+                  ]}
+                  modalTrigger={
+                    <Button
+                          variant="outline"
+                          className="flex h-7 gap-2 px-3 py-2 text-sm"
+                        >
+                          <Pencil size={12} />
+                          {"Ubah"}
+                        </Button>
+                  }
+                />
+              </div>
             </div>
           </div>
         </div>
