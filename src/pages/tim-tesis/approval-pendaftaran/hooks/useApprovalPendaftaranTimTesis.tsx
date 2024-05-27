@@ -33,7 +33,7 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
   );
 
   const [status, setStatus] = useState<Status>(Status.Semua);
-  const [jenis, setJenis] = useState<Jenis>(Jenis.Semua)
+  const [jenis, setJenis] = useState<Jenis>(Jenis.Semua);
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const { data } = useSession();
 
@@ -104,7 +104,8 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
     ) {
       const response1 = await getRekapPendaftaranTableS1({});
       const data1 = response1.data.data.map((item) => ({
-        id: item.id_mahasiswa,
+        id: item.id,
+        id_mahasiswa: item.id_mahasiswa,
         nim: item.nim,
         nama: item.nama_mahasiswa,
         tipe: item.tipe,
@@ -122,7 +123,8 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
 
       // Map GetRekapPendaftaranTableRes to PendaftaranTopik
       const data2 = response2.data.data.map((item) => ({
-        id: item.mahasiswa_id,
+        id: item.pendaftaran_id,
+        id_mahasiswa: item.mahasiswa_id,
         nim: item.nim,
         nama: item.mahasiswa_nama,
         tipe: item.tipe,
@@ -137,6 +139,7 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
 
         const data = response.data.data.map((item) => ({
           id: item.id,
+          id_mahasiswa: item.id_mahasiswa,
           nim: item.nim,
           nama: item.nama_mahasiswa,
           tipe: item.tipe,
@@ -161,7 +164,8 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
 
         // Map GetRekapPendaftaranTableRes to PendaftaranTopik
         const data = response.data.data.map((item) => ({
-          id: item.mahasiswa_id,
+          id: item.pendaftaran_id,
+          id_mahasiswa: item.mahasiswa_id,
           nim: item.nim,
           nama: item.mahasiswa_nama,
           tipe: item.tipe,
@@ -279,7 +283,7 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
     jenis,
     setJenis,
     status,
-    setStatus
+    setStatus,
   };
   // const dummyData: ApprovalPendaftaranTopik[] = [
   //   {

@@ -13,7 +13,8 @@ export default function useSidangModal(
   const [width] = useWindowSize();
 
   const handleChange = (data: z.infer<typeof FormSchemaDate>) => {
-    onChange(data.jadwalWawan);
+    console.log(data.jadwalSidang.getTime);
+    onChange(data.jadwalSidang);
 
     setDialogOpen(false);
   };
@@ -21,7 +22,7 @@ export default function useSidangModal(
   const form = useForm<z.infer<typeof FormSchemaDate>>({
     resolver: zodResolver(FormSchemaDate),
     defaultValues: {
-      jadwalWawan: dateInit ?? undefined,
+      jadwalSidang: dateInit ?? new Date(),
     },
   });
 

@@ -9,8 +9,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { FiEye } from "react-icons/fi";
 
-const ViewDropdownStatus = ({ viewStatus, setViewStatus }: ViewSelectStatusProps) => {
-
+const ViewDropdownStatus = ({
+  viewStatus,
+  setViewStatus,
+}: ViewSelectStatusProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,7 +25,12 @@ const ViewDropdownStatus = ({ viewStatus, setViewStatus }: ViewSelectStatusProps
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuRadioGroup value={viewStatus} onValueChange={(e)=>{setViewStatus(e as Status)}}>
+        <DropdownMenuRadioGroup
+          value={viewStatus}
+          onValueChange={(e) => {
+            setViewStatus(e as Status);
+          }}
+        >
           <DropdownMenuRadioItem value="Semua">Semua</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="Diterima">
             Diterima

@@ -21,7 +21,6 @@ export default function TempatModal({
     tempat,
     onChange,
   );
-
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>{modalTrigger}</DialogTrigger>

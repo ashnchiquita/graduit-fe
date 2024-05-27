@@ -5,39 +5,33 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Lightbulb, WrapText, Pencil, Calendar } from "lucide-react";
 import { FaArrowLeft } from "react-icons/fa6";
 import { RiFilePaper2Line } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
 import DosenPembimbingIcon from "../../../assets/detail-sidsem/dosen-pembimbing-icon.svg";
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import { ButtonDownload } from "./components/ButtonDownload";
 import RegAcceptDialog from "./components/RegAcceptDialog";
 import RegRejectDialog from "./components/RegRejectDialog";
-import { useState } from "react";
 
 import { IoCheckmark } from "react-icons/io5";
 import SidangModal from "./components/SidangModal";
 import TempatModal from "./components/TempatModal";
 import DospengModal from "./components/DospengModal";
-
-const data = [
-  {
-    nama: "Log 1",
-    link: "https://www.google.com",
-  },
-  {
-    nama: "Log 2",
-    link: "https://www.google.com",
-  },
-  {
-    nama: "Log 3",
-    link: "https://www.google.com",
-  },
-];
+import useDetailPengajuan from "./hooks/useDetailPengajuan";
+import { formatDate } from "@/lib/dateformat";
 
 export default function DetailPengajuan() {
-  const navigate = useNavigate();
-  const [accept, setAccept] = useState<boolean>(false);
+  const {
+    data,
+    navigate,
+    acceptDialogOpen,
+    setAcceptDialogOpen,
+    rejectDialogOpen,
+    setRejectDialogOpen,
+    handleTempatUpdate,
+    handleJadwalUpdate,
+    handleApprove,
+    handleReject,
+  } = useDetailPengajuan();
 
-  const [reject, setReject] = useState<boolean>(false);
   return (
     <main className="ml-6 mr-3 ">
       <div className="w-full rounded-2xl bg-white p-6 text-base md:px-10 md:py-8">
@@ -55,23 +49,23 @@ export default function DetailPengajuan() {
           </Button>
           <Avatar className="size-12">
             <AvatarFallback className="bg-violet-500 text-xl text-white">
-              {"R"}
+              {data.nama[0]}
             </AvatarFallback>
           </Avatar>
           <div className="space-y-1 md:space-y-2">
-            <CardTitle>{"Rava"}</CardTitle>
+            <CardTitle>{data.nama}</CardTitle>
 
             {/* Desktop */}
             <div className="hidden gap-2 text-xs font-normal text-muted-foreground md:flex">
-              <div>{"data.data.email"}</div>
+              <div>{data.email}</div>
               <div>•</div>
-              <div>{"data.data.jalur_pilihan"}</div>
+              <div>{data.jalur_pilihan}</div>
             </div>
 
             {/* Mobile */}
             <div className="flex flex-col gap-1 text-xs text-muted-foreground md:hidden">
-              <div className="font-medium">{"data.data.jalur_pilihan"}</div>
-              <div>{"data.data.email"}</div>
+              <div className="font-medium">{data.jalur_pilihan}</div>
+              <div>{data.email}</div>
             </div>
           </div>
         </div>
@@ -88,7 +82,7 @@ export default function DetailPengajuan() {
                 <div className="text-base text-muted-foreground">Topik</div>
               </div>
               <div className="pl-9 text-sm md:text-base">
-                {"data.data.judul"}
+                {data.judul_proposal}
               </div>
             </div>
 
@@ -103,7 +97,7 @@ export default function DetailPengajuan() {
               </div>
               <ScrollArea className="flex-1">
                 <div className="pl-9 text-sm md:text-base">
-                  {"data.data.deskripsi"}
+                  {data.deskripsi}
                 </div>
               </ScrollArea>
             </div>
@@ -118,7 +112,7 @@ export default function DetailPengajuan() {
                 </div>
               </div>
               <div className="pl-9 text-sm md:text-base">
-                {"data.data.dosbing_name"}
+                {data.dosbing_name}
               </div>
             </div>
 
@@ -134,7 +128,7 @@ export default function DetailPengajuan() {
               <div className="flex items-center gap-5 pl-9 text-sm md:text-base">
                 {
                   <div className="flex items-center gap-5 text-sm md:text-base">
-                    {"data.data.dosbing_name"}
+                    {data.dosuji_name == "" ? "Belum Ada" : data.dosuji_name}
                   </div>
                 }
                 <DospengModal
@@ -190,9 +184,7 @@ export default function DetailPengajuan() {
                 </div>
               </div>
               <ScrollArea className="flex-1">
-                <div className="pl-9 text-sm md:text-base">
-                  {"data.data.deskripsi"}
-                </div>
+                <div className="pl-9 text-sm md:text-base">{data.tipe}</div>
               </ScrollArea>
             </div>
 
@@ -209,7 +201,7 @@ export default function DetailPengajuan() {
               </div>
               <ScrollArea className="flex-1">
                 <div className="pl-9 text-sm md:text-base">
-                  {"data.data.deskripsi"}
+                  {data.judul_proposal}
                 </div>
               </ScrollArea>
             </div>
@@ -225,7 +217,7 @@ export default function DetailPengajuan() {
               </div>
               <ScrollArea className="flex-1">
                 <div className="pl-9 text-sm md:text-base">
-                  {"data.data.deskripsi"}
+                  {data.deskripsi}
                 </div>
               </ScrollArea>
             </div>
@@ -243,7 +235,11 @@ export default function DetailPengajuan() {
               </div>
               <ScrollArea className="flex-1">
                 <div className="pl-9 text-sm md:text-base flex span-1 gap-2">
-                  <ButtonDownload data={data} />
+                  {data.berkas_sidsem.length > 0 ? (
+                    <ButtonDownload data={data.berkas_sidsem} />
+                  ) : (
+                    "Belum Ada"
+                  )}
                 </div>
               </ScrollArea>
             </div>
@@ -267,13 +263,17 @@ export default function DetailPengajuan() {
               <div className="flex items-center gap-5 pl-9 text-sm md:text-base">
                 {
                   <div className="flex items-center gap-5 text-sm md:text-base">
-                    Belum ada
+                    {data.jadwal_sidang == ""
+                      ? "Belum Ada"
+                      : formatDate(new Date(data.jadwal_sidang))}
                   </div>
                 }
                 {
                   <SidangModal
                     dateInit={null}
-                    onChange={(date: Date) => {}}
+                    onChange={(date) => {
+                      handleJadwalUpdate(date);
+                    }}
                     modalTrigger={
                       <Button
                         variant="outline"
@@ -301,9 +301,11 @@ export default function DetailPengajuan() {
               </div>
               <div className="pl-9 text-sm md:text-base">
                 <TempatModal
-                  tempat={"7609"}
-                  onChange={(date: Date) => {}}
-                  modalTrigger={<p>Belum Ada</p>}
+                  tempat={data.tempat}
+                  onChange={handleTempatUpdate}
+                  modalTrigger={
+                    <p>{data.tempat == "" ? "Belum Ada" : data.tempat}</p>
+                  }
                 />
               </div>
             </div>
@@ -320,16 +322,16 @@ export default function DetailPengajuan() {
                 </ScrollArea>
               </div>
               <div className="pl-9 text-sm md:text-base">
-                {"Belum Ditetapkan"}
+                {data.status ? "Diterima" : "Ditolak"}
               </div>
             </div>
           </div>
           <div className="flex items-center justify-center gap-5 justify-self-end pl-9 mt-4">
             <RegAcceptDialog
-              acceptDialogOpen={accept}
-              setAcceptDialogOpen={setAccept}
+              acceptDialogOpen={acceptDialogOpen}
+              setAcceptDialogOpen={setAcceptDialogOpen}
               name={"fajar"}
-              onAccept={() => {}}
+              onAccept={handleApprove}
               dialogTrigger={
                 <Button
                   size="sm"
@@ -341,10 +343,10 @@ export default function DetailPengajuan() {
             />
 
             <RegRejectDialog
-              rejectDialogOpen={reject}
-              setRejectDialogOpen={setReject}
+              rejectDialogOpen={rejectDialogOpen}
+              setRejectDialogOpen={setRejectDialogOpen}
               name={"fajar"}
-              onReject={() => {}}
+              onReject={handleReject}
               dialogTrigger={
                 <Button size="sm" className="flex-1" variant="outline">
                   Tolak

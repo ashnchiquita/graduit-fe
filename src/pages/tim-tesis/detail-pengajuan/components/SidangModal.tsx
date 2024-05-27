@@ -50,7 +50,7 @@ export default function SidangModal({
           <form onSubmit={form.handleSubmit(handleChange)}>
             <FormField
               control={form.control}
-              name="jadwalWawan"
+              name="jadwalSidang"
               render={({ field }) => (
                 <FormItem>
                   <Popover>
@@ -80,7 +80,9 @@ export default function SidangModal({
                         <>
                           <Calendar
                             mode="single"
-                            selected={field.value}
+                            selected={
+                              field.value ? new Date(field.value) : new Date()
+                            }
                             defaultMonth={field.value}
                             onSelect={field.onChange}
                             initialFocus
@@ -88,7 +90,7 @@ export default function SidangModal({
                           <div className="border-t border-border p-3">
                             <TimePicker
                               setDate={field.onChange}
-                              date={field.value}
+                              date={new Date(field.value)}
                             />
                           </div>
                         </>

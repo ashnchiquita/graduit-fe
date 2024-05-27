@@ -6,43 +6,43 @@ export type Berkas = {
   link: string;
 };
 
-export type Dospeng = {
-  id: number;
-  nama: string;
-};
-
-export type LogBimbinganStatusData = {
-  status: boolean;
-  bimbingan_logs: LogBimbinganData[];
-};
-
-export type GetLogBimbinganStatusResData = {
+export type GetDetailRes = {
   data: {
+    id_mahasiswa: string;
+    nama: string;
+    email: string;
+    jalur_pilihan: string;
+    dosbing_name: string;
+    dosuji_name: string;
+    tipe: string;
+    judul_proposal: string;
+    deskripsi: string;
+    berkas_sidsem: Berkas[];
+    jadwal_sidang: string;
+    tempat: string;
     status: boolean;
-    bimbingan_logs: LogBimbinganData[];
   };
 };
 
-export type LogBimbinganData = {
-  berkas: Berkas[];
+export type Detail = {
+  id_mahasiswa: string;
+  nama: string;
+  email: string;
+  jalur_pilihan: string;
+  dosbing_name: string;
+  dosuji_name: string;
+  tipe: string;
+  judul_proposal: string;
+  deskripsi: string;
+  berkas_sidsem: Berkas[];
+  jadwal_sidang: string;
+  tempat: string;
   status: boolean;
 };
 
-type BimbinganLogS2 = {
-  id: string;
-  waktuBimbingan: string;
-  laporanKemajuan: string;
-  todo: string;
-  bimbinganBerikutnya: string | null;
-  disahkan: boolean;
-  berkas: {
-    nama: string;
-    url: string;
-  }[];
-};
-
-export type GetBimbinganS2Res = {
-  bimbingan: BimbinganLogS2[];
+export type Dospeng = {
+  id: number;
+  nama: string;
 };
 
 export type SidangModalProps = {
@@ -53,7 +53,7 @@ export type SidangModalProps = {
 
 export type TempatModalProps = {
   tempat: string | null;
-  onChange: (date: Date) => void;
+  onChange: (tempat: string) => void;
   modalTrigger: JSX.Element;
 };
 
@@ -86,24 +86,13 @@ export type TempatModalHookRet = {
   isMobile: boolean;
 };
 
-export type FormSchemaTempat = {
-  dialogOpen: boolean;
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleChange: (data: z.infer<typeof FormSchemaTempat>) => void;
-  form: UseFormReturn<z.infer<typeof FormSchemaTempat>>;
-  isMobile: boolean;
-};
-
 export const FormSchemaDate = z.object({
-  jadwalWawan: z.date({
-    required_error: "Jadwal Sidang/Seminar harus diisi",
+  jadwalSidang: z.date().refine((date) => date !== undefined, {
+    message: "Tanggal sidang tidak boleh kosong",
   }),
 });
 
 export const FormSchemaTempat = z.object({
-  jadwalWawan: z.date({
-    required_error: "Jadwal Sidang/Seminar harus diisi",
-  }),
   tempat: z.string({
     required_error: "Tempat Sidang/Seminar harus diisi",
   }),

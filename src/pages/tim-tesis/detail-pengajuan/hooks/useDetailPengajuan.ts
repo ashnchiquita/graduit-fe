@@ -3,105 +3,133 @@ import { useNavigate, useParams } from "react-router-dom";
 import useSWR from "swr";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
+import {
+  approvePendaftaran,
+  getDetailPengajuan,
+  rejectPendaftaran,
+  updateJadwalSidang,
+  updateTempatSidang,
+} from "../client";
+import { Detail } from "../type";
+import { convertToDate } from "../utils";
 
-const useDetailRekapPendaftaran = () => {
+const useDetailPengajuan = () => {
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
 
   const navigate = useNavigate();
-  const { strata, mahasiswaId } = useParams();
+  const { id } = useParams();
 
-  const defaultMhsData = {
-    id: "",
-    name: "",
+  const defaultDetailData = {
+    id_mahasiswa: "",
+    nama: "",
     email: "",
-  };
-  const defaultRegData = {
-    apply_date: new Date(),
-    interview_date: null,
-    status: "",
-    stream: "",
-    topic: "",
-    description: "",
+    jalur_pilihan: "",
+    dosbing_name: "",
+    dosuji_name: "",
+    tipe: "",
+    judul_proposal: "",
+    deskripsi: "",
+    berkas_sidsem: [],
+    jadwal_sidang: "",
+    tempat: "",
+    status: false,
   };
 
-  const { data: mhsData = defaultMhsData } = useSWR(
-    `/mahasiswa/${mahasiswaId}`,
+  const { data: detailData = defaultDetailData } = useSWR(
+    `TIMTA/detail-sidsem?id=${id}`,
     async () => {
-      if (!mahasiswaId) return;
+      if (!id) return;
 
-      const { data } = await getMhsData(mahasiswaId);
+      const { data } = await getDetailPengajuan(id);
 
       return {
-        id: data.nim,
-        name: data.nama,
-        email: data.email,
+        id_mahasiswa: data.data.id_mahasiswa,
+        nama: data.data.nama,
+        email: data.data.email,
+        jalur_pilihan: data.data.jalur_pilihan,
+        dosbing_name: data.data.dosbing_name,
+        dosuji_name: data.data.dosuji_name,
+        tipe: data.data.tipe,
+        judul_proposal: data.data.judul_proposal,
+        deskripsi: data.data.deskripsi,
+        berkas_sidsem: data.data.berkas_sidsem,
+        jadwal_sidang: data.data.jadwal_sidang,
+        tempat: data.data.tempat,
+        status: data.data.status,
       };
     },
   );
 
-  const { data: regData = defaultRegData } = useSWR(
-    `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
-    async () => {
-      if (!strata || !mahasiswaId) return;
-
-      // if (strata?.toLowerCase() === "s2") {
-      const { data } = await getRegS2(mahasiswaId);
-
-      return {
-        apply_date: new Date(data.waktuPengiriman),
-        interview_date: data.jadwalInterview
-          ? new Date(data.jadwalInterview)
-          : null,
-        status: data.status,
-        stream: data.jalurPilihan,
-        topic: data.judulTopik,
-        description: data.deskripsiTopik,
-      };
-      // } else {
-
-      // }
-    },
-  );
-
-  const data = useMemo<RegistrationRecapData>(
+  const data = useMemo<Detail>(
     () => ({
-      ...mhsData,
-      ...regData,
+      ...detailData,
     }),
-    [mhsData, regData],
+    [detailData],
   );
 
-  const { trigger: triggerInterview, error: interviewError } = useSWRMutation(
-    `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
-    async (_: string, { arg }: { arg: Date }) => {
-      if (!mahasiswaId) return;
+  const { trigger: triggerTempat, error: tempatError } = useSWRMutation(
+    `TIMTA/detail-sidsem?id=${id}`,
+    async (_: string, { arg }: { arg: string }) => {
+      if (!id) return;
 
-      await updateInterviewS2(mahasiswaId, arg);
+      await updateTempatSidang({ nama_ruangan: arg, id_sidsem: id });
     },
   );
-  const { trigger: triggerApprove, error: approveError } = useSWRMutation(
-    `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
-    async () => {
-      if (!mahasiswaId) return;
 
-      await updateStatusS2(mahasiswaId, "APPROVED");
+  const { trigger: triggerJadwal, error: jadwalError } = useSWRMutation(
+    `TIMTA/detail-sidsem?id=${id}`,
+    async (_: string, { arg }: { arg: Date }) => {
+      if (!id) return;
+      await updateJadwalSidang({
+        waktu_mulai: convertToDate(arg.toISOString()),
+        id_sidsem: id,
+      });
+    },
+  );
+
+  const { trigger: triggerApprove, error: approveError } = useSWRMutation(
+    `TIMTA/detail-sidsem?id=${id}`,
+    async () => {
+      if (!id) return;
+
+      await approvePendaftaran(id);
     },
   );
   const { trigger: triggerReject, error: rejectError } = useSWRMutation(
-    `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
+    `TIMTA/detail-sidsem?id=${id}`,
     async () => {
-      if (!mahasiswaId) return;
+      if (!id) return;
 
-      await updateStatusS2(mahasiswaId, "REJECTED");
+      await rejectPendaftaran(id);
     },
   );
 
-  const handleInterviewUpdate = async (date: Date) => {
+  const handleTempatUpdate = async (tempat: string) => {
     const toastId = toast.loading("Menetapkan jadwal interview...");
-    await triggerInterview(date);
+    await triggerTempat(tempat);
+    if (tempatError) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menetapkan jadwal interview",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    } else {
+      toast.update(toastId, {
+        render: "Berhasil menetapkan jadwal interview",
+        type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    }
+  };
 
-    if (interviewError) {
+  const handleJadwalUpdate = async (date: Date) => {
+    const toastId = toast.loading("Menetapkan jadwal interview...");
+    await triggerJadwal(date);
+
+    if (jadwalError) {
       toast.update(toastId, {
         render: "Terjadi kesalahan dalam menetapkan jadwal interview",
         type: "error",
@@ -136,6 +164,7 @@ const useDetailRekapPendaftaran = () => {
         isLoading: false,
         autoClose: 1000,
       });
+      setAcceptDialogOpen(!acceptDialogOpen);
     }
   };
 
@@ -145,7 +174,7 @@ const useDetailRekapPendaftaran = () => {
 
     if (rejectError) {
       toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menolak pendaftaran",
+        render: "Terjadi kesalahan dalam menolak sidang",
         type: "error",
         isLoading: false,
         autoClose: 1000,
@@ -157,20 +186,22 @@ const useDetailRekapPendaftaran = () => {
         isLoading: false,
         autoClose: 1000,
       });
+      setRejectDialogOpen(!rejectDialogOpen);
     }
   };
 
   return {
     data,
+    navigate,
     acceptDialogOpen,
     setAcceptDialogOpen,
     rejectDialogOpen,
     setRejectDialogOpen,
-    navigate,
-    handleInterviewUpdate,
+    handleTempatUpdate,
+    handleJadwalUpdate,
     handleApprove,
     handleReject,
   };
 };
 
-export default useDetailRekapPendaftaran;
+export default useDetailPengajuan;

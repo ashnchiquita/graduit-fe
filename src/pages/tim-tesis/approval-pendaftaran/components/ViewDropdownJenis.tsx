@@ -9,8 +9,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { FiEye } from "react-icons/fi";
 
-const ViewDropdownJenis = ({ viewJenis, setViewJenis }: ViewSelectJenisProps) => {
-
+const ViewDropdownJenis = ({
+  viewJenis,
+  setViewJenis,
+}: ViewSelectJenisProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,13 +25,22 @@ const ViewDropdownJenis = ({ viewJenis, setViewJenis }: ViewSelectJenisProps) =>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuRadioGroup value={viewJenis} onValueChange={(e)=>{setViewJenis(e as Jenis)}}>
+        <DropdownMenuRadioGroup
+          value={viewJenis}
+          onValueChange={(e) => {
+            setViewJenis(e as Jenis);
+          }}
+        >
           <DropdownMenuRadioItem value="Semua">Semua</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="Seminar Proposal">
             Seminar Proposal
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="Seminar Tesis">Seminar Tesis</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="Sidang Tesis">Sidang Tesis</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="Seminar Tesis">
+            Seminar Tesis
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="Sidang Tesis">
+            Sidang Tesis
+          </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
