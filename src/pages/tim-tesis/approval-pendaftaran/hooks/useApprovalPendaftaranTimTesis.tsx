@@ -32,8 +32,8 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
     searchParams.get("search") ?? "",
   );
 
-  const [status, setStatus] = useState<Status>(Status.Semua);
-  const [jenis, setJenis] = useState<Jenis>(Jenis.Semua);
+  const [status, setStatus] = useState<Status|undefined>();
+  const [jenis, setJenis] = useState<Jenis|undefined>();
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const { data } = useSession();
 

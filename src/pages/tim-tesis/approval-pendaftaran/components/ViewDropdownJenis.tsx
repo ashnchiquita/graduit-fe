@@ -21,7 +21,7 @@ const ViewDropdownJenis = ({
           className="flex h-fit flex-row items-center gap-2 rounded-md border border-gray-300 px-3 py-1 text-gray-600 hover:bg-gray-200"
         >
           <FiEye />
-          {viewJenis}
+          {viewJenis ?? "Jenis Sidang"}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

@@ -31,7 +31,7 @@ export default function DetailPengajuan() {
     handleApprove,
     handleReject,
     dospengData,
-    handleDospengUpdate
+    handleDospengUpdate,
   } = useDetailPengajuan();
   return (
     <main className="ml-6 mr-3 ">
@@ -130,16 +130,11 @@ export default function DetailPengajuan() {
                 {
                   <div className="flex items-center gap-5 text-sm md:text-base">
                     <ul>
-                      {
-                        data.dosuji_name ?
-                          data.dosuji_name.map((val)=>{
-                            return <li>
-                               {val.nama}
-                            </li>
+                      {data.dosuji_name
+                        ? data.dosuji_name.map((val) => {
+                            return <li>{val.nama}</li>;
                           })
-                         :
-                         "Belum ada"
-                      }
+                        : "Belum ada"}
                     </ul>
                   </div>
                 }
@@ -280,22 +275,20 @@ export default function DetailPengajuan() {
                     }
                   />
                 }
-                </div>
               </div>
             </div>
+          </div>
 
-            <div className="space-y-1">
-              <div className="flex w-full items-center gap-3">
-                <Avatar className="size-6">
-                  <AvatarFallback className="bg-orange-200">
-                    <Calendar className="size-4 text-orange-400" />
-                  </AvatarFallback>
-                </Avatar>
-                <ScrollArea className="text-muted-foreground">
-                  Tempat
-                </ScrollArea>
-              </div>
-              <div className="pl-9 text-sm md:text-base">
+          <div className="space-y-1">
+            <div className="flex w-full items-center gap-3">
+              <Avatar className="size-6">
+                <AvatarFallback className="bg-orange-200">
+                  <Calendar className="size-4 text-orange-400" />
+                </AvatarFallback>
+              </Avatar>
+              <ScrollArea className="text-muted-foreground">Tempat</ScrollArea>
+            </div>
+            <div className="pl-9 text-sm md:text-base">
               <div className="flex items-center gap-5 text-sm md:text-base">
                 {
                   <div className="flex items-center gap-5 text-sm md:text-base">
@@ -307,12 +300,12 @@ export default function DetailPengajuan() {
                   onChange={handleTempatUpdate}
                   modalTrigger={
                     <Button
-                        variant="outline"
-                        className="flex h-7 gap-2 px-3 py-2 text-sm"
-                      >
-                        <Pencil size={12} />
-                        {"Ubah"}
-                      </Button>
+                      variant="outline"
+                      className="flex h-7 gap-2 px-3 py-2 text-sm"
+                    >
+                      <Pencil size={12} />
+                      {"Ubah"}
+                    </Button>
                   }
                 />
               </div>

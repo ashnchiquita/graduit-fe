@@ -29,10 +29,10 @@ export type RekapPendaftaranTimTesisHookRet = {
   searchValue: string;
   handleSearchValueChange: (value: string) => void;
   refreshData: () => void;
-  status: Status;
-  setStatus: React.Dispatch<React.SetStateAction<Status>>;
-  jenis: Jenis;
-  setJenis: React.Dispatch<React.SetStateAction<Jenis>>;
+  status: Status|undefined;
+  setStatus: React.Dispatch<React.SetStateAction<Status|undefined>>;
+  jenis: Jenis|undefined;
+  setJenis: React.Dispatch<React.SetStateAction<Jenis|undefined>>;
 };
 
 export type RowActionHookRet = {
@@ -47,13 +47,13 @@ export type RowActionHookRet = {
 };
 
 export type ViewSelectStatusProps = {
-  viewStatus: Status;
-  setViewStatus: React.Dispatch<React.SetStateAction<Status>>;
+  viewStatus: Status|undefined;
+  setViewStatus: React.Dispatch<React.SetStateAction<Status|undefined>>;
 };
 
 export type ViewSelectJenisProps = {
-  viewJenis: Jenis;
-  setViewJenis: React.Dispatch<React.SetStateAction<Jenis>>;
+  viewJenis: Jenis|undefined;
+  setViewJenis: React.Dispatch<React.SetStateAction<Jenis|undefined>>;
 };
 
 export type GetStatisticsRes = {

@@ -28,10 +28,13 @@ export default function DospengModal({
   dosenPenguji,
   modalTrigger,
   listDosenPenguji,
-  onChange
+  onChange,
 }: DospengModalProps): JSX.Element {
-  dosenPenguji = dosenPenguji ?? []
-  const { dialogOpen, setDialogOpen, form,handleChange } = useDospengModal(dosenPenguji,onChange);
+  dosenPenguji = dosenPenguji ?? [];
+  const { dialogOpen, setDialogOpen, form, handleChange } = useDospengModal(
+    dosenPenguji,
+    onChange,
+  );
   const [submit, setSubmit] = useState<boolean>(true);
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -77,8 +80,7 @@ export default function DospengModal({
                             <VscChromeClose />
                           </button>
                         </Badge>
-                      ))
-                      }
+                      ))}
                     </ul>
                   ) : (
                     ""
@@ -92,17 +94,16 @@ export default function DospengModal({
                           .dospeng.map((v) => v.id)
                           .includes(val)
                       ) {
-                        listDosenPenguji ? 
-                        form.setValue("dospeng", [
-                          ...form.getValues().dospeng,
-                          listDosenPenguji.find(
-                            (v) => v.id == val,
-                          ) as Dospeng,
-                        ])
-                        :
-                        form.setValue("dospeng", [
-                          ...form.getValues().dospeng
-                        ])
+                        listDosenPenguji
+                          ? form.setValue("dospeng", [
+                              ...form.getValues().dospeng,
+                              listDosenPenguji.find(
+                                (v) => v.id == val,
+                              ) as Dospeng,
+                            ])
+                          : form.setValue("dospeng", [
+                              ...form.getValues().dospeng,
+                            ]);
                       }
                     }}
                   >

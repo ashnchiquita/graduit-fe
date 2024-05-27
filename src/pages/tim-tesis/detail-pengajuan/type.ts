@@ -40,13 +40,12 @@ export type Detail = {
   status: boolean;
 };
 
-
 export type GetDospengRes = {
-  data : {
+  data: {
     id: string;
     nama: string;
-  }[]
-}
+  }[];
+};
 
 export type Dospeng = {
   id: string;
@@ -70,7 +69,6 @@ export type DospengModalProps = {
   modalTrigger: JSX.Element;
   onChange: (data: Dospeng[]) => void;
   listDosenPenguji: Dospeng[] | null;
-
 };
 
 export type DospengModalHookRet = {

@@ -28,6 +28,6 @@ export default function useDospengModal(
     setDialogOpen,
     form,
     isMobile: width < 1024,
-    handleChange
+    handleChange,
   };
 }

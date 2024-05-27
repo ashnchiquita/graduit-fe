@@ -65,22 +65,17 @@ export async function rejectPendaftaran(id: string) {
   );
 }
 
-
 export async function getDospeng(id: string) {
-    return await s1Instance.get<GetDospengRes>(`/TIMTA/get-dosuji?id=${id}`, {
-      withCredentials: true,
-    });
-  }
+  return await s1Instance.get<GetDospengRes>(`/TIMTA/get-dosuji?id=${id}`, {
+    withCredentials: true,
+  });
+}
 
-export async function updateDospeng(params:{
-    dosen_uji : Dospeng[],
-    id_sidsem : string
+export async function updateDospeng(params: {
+  dosen_uji: Dospeng[];
+  id_sidsem: string;
 }) {
-    return await s1Instance.patch(
-        `/TIMTA/update-dosuji-sidsem`,
-        params,
-        {
-          withCredentials: true,
-        },
-      );
+  return await s1Instance.patch(`/TIMTA/update-dosuji-sidsem`, params, {
+    withCredentials: true,
+  });
 }

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useNavigate,useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useSWR from "swr";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
@@ -21,7 +21,7 @@ const useDetailPengajuan = () => {
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const id = searchParams.get('id');
+  const id = searchParams.get("id");
 
   const defaultDetailData = {
     id_mahasiswa: "",
@@ -39,24 +39,24 @@ const useDetailPengajuan = () => {
     status: false,
   };
 
-  const defaultDospengData : Dospeng[] = []
+  const defaultDospengData: Dospeng[] = [];
 
-  const { data: dospengData = defaultDospengData, mutate} = useSWR(
+  const { data: dospengData = defaultDospengData, mutate } = useSWR(
     `/TIMTA/get-dosuji?id=${id}`,
     async () => {
       if (!id) return;
 
       const { data } = await getDospeng(id);
-      if(data.data.length > 0){
+      if (data.data.length > 0) {
         return data.data.map((item: Dospeng) => ({
           id: item.id,
           nama: item.nama,
         }));
-      }else{
+      } else {
         return [];
       }
     },
-  );  
+  );
 
   const { data: detailData = defaultDetailData } = useSWR(
     `/TIMTA/detail-sidsem?id=${id}`,
@@ -95,10 +95,9 @@ const useDetailPengajuan = () => {
     async (_: string, { arg }: { arg: Dospeng[] }) => {
       if (!id) return;
 
-      await updateDospeng({ dosen_uji:arg, id_sidsem: id });
+      await updateDospeng({ dosen_uji: arg, id_sidsem: id });
     },
   );
-
 
   const { trigger: triggerTempat, error: tempatError } = useSWRMutation(
     `/TIMTA/detail-sidsem?id=${id}`,
@@ -154,7 +153,7 @@ const useDetailPengajuan = () => {
         isLoading: false,
         autoClose: 1000,
       });
-      mutate(dospengData)
+      mutate(dospengData);
     }
   };
 
@@ -255,7 +254,7 @@ const useDetailPengajuan = () => {
     handleApprove,
     handleReject,
     dospengData,
-    handleDospengUpdate
+    handleDospengUpdate,
   };
 };
 
