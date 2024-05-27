@@ -77,7 +77,7 @@ export const router = createBrowserRouter(
           element: <RiwayatPendaftaran />,
         },
         {
-          path: "/approval-pendaftaran",
+          path: "/pengajuan-sidsem",
           element: <ApprovalPendaftaran />,
         },
         {
@@ -110,7 +110,7 @@ export const router = createBrowserRouter(
           element: <MhsDashboard />,
         },
         {
-          path: "/tesis/detail/:id",
+          path: "/pengajuan-sidsem/detail",
           element: <DetailPengajuan />,
         },
         {

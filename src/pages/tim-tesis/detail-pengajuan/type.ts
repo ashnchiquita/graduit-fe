@@ -13,7 +13,7 @@ export type GetDetailRes = {
     email: string;
     jalur_pilihan: string;
     dosbing_name: string;
-    dosuji_name: string;
+    dosuji_name: Dospeng[];
     tipe: string;
     judul_proposal: string;
     deskripsi: string;
@@ -30,7 +30,7 @@ export type Detail = {
   email: string;
   jalur_pilihan: string;
   dosbing_name: string;
-  dosuji_name: string;
+  dosuji_name: Dospeng[];
   tipe: string;
   judul_proposal: string;
   deskripsi: string;
@@ -40,8 +40,16 @@ export type Detail = {
   status: boolean;
 };
 
+
+export type GetDospengRes = {
+  data : {
+    id: string;
+    nama: string;
+  }[]
+}
+
 export type Dospeng = {
-  id: number;
+  id: string;
   nama: string;
 };
 
@@ -57,15 +65,18 @@ export type TempatModalProps = {
   modalTrigger: JSX.Element;
 };
 
-export type DosbingModalProps = {
+export type DospengModalProps = {
   dosenPenguji: Dospeng[] | null;
   modalTrigger: JSX.Element;
+  onChange: (data: Dospeng[]) => void;
   listDosenPenguji: Dospeng[] | null;
+
 };
 
 export type DospengModalHookRet = {
   dialogOpen: boolean;
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleChange: (data: z.infer<typeof FormSchemaDospeng>) => void;
   form: UseFormReturn<z.infer<typeof FormSchemaDospeng>>;
   isMobile: boolean;
 };
@@ -99,9 +110,9 @@ export const FormSchemaTempat = z.object({
 });
 
 export const FormSchemaDospeng = z.object({
-  dosbings: z.array(
+  dospeng: z.array(
     z.object({
-      id: z.number(),
+      id: z.string(),
       nama: z.string(),
     }),
   ),

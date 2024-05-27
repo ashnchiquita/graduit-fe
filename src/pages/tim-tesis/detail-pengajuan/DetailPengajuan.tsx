@@ -30,8 +30,9 @@ export default function DetailPengajuan() {
     handleJadwalUpdate,
     handleApprove,
     handleReject,
+    dospengData,
+    handleDospengUpdate
   } = useDetailPengajuan();
-
   return (
     <main className="ml-6 mr-3 ">
       <div className="w-full rounded-2xl bg-white p-6 text-base md:px-10 md:py-8">
@@ -128,30 +129,24 @@ export default function DetailPengajuan() {
               <div className="flex items-center gap-5 pl-9 text-sm md:text-base">
                 {
                   <div className="flex items-center gap-5 text-sm md:text-base">
-                    {data.dosuji_name == "" ? "Belum Ada" : data.dosuji_name}
+                    <ul>
+                      {
+                        data.dosuji_name ?
+                          data.dosuji_name.map((val)=>{
+                            return <li>
+                               {val.nama}
+                            </li>
+                          })
+                         :
+                         "Belum ada"
+                      }
+                    </ul>
                   </div>
                 }
                 <DospengModal
-                  dosenPenguji={[
-                    {
-                      id: 1,
-                      nama: "Fajar",
-                    },
-                  ]}
-                  listDosenPenguji={[
-                    {
-                      id: 1,
-                      nama: "Fajar",
-                    },
-                    {
-                      id: 2,
-                      nama: "Rava",
-                    },
-                    {
-                      id: 3,
-                      nama: "Rava",
-                    },
-                  ]}
+                  dosenPenguji={data.dosuji_name}
+                  listDosenPenguji={dospengData}
+                  onChange={handleDospengUpdate}
                   modalTrigger={
                     <Button
                       variant="outline"
@@ -285,6 +280,7 @@ export default function DetailPengajuan() {
                     }
                   />
                 }
+                </div>
               </div>
             </div>
 
@@ -300,11 +296,23 @@ export default function DetailPengajuan() {
                 </ScrollArea>
               </div>
               <div className="pl-9 text-sm md:text-base">
+              <div className="flex items-center gap-5 text-sm md:text-base">
+                {
+                  <div className="flex items-center gap-5 text-sm md:text-base">
+                    {data.tempat == "" ? "Belum Ada" : data.tempat}
+                  </div>
+                }
                 <TempatModal
                   tempat={data.tempat}
                   onChange={handleTempatUpdate}
                   modalTrigger={
-                    <p>{data.tempat == "" ? "Belum Ada" : data.tempat}</p>
+                    <Button
+                        variant="outline"
+                        className="flex h-7 gap-2 px-3 py-2 text-sm"
+                      >
+                        <Pencil size={12} />
+                        {"Ubah"}
+                      </Button>
                   }
                 />
               </div>

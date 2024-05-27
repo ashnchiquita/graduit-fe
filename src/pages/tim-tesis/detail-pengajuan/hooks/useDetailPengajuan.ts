@@ -1,16 +1,18 @@
 import { useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate,useSearchParams } from "react-router-dom";
 import useSWR from "swr";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
 import {
   approvePendaftaran,
   getDetailPengajuan,
+  getDospeng,
   rejectPendaftaran,
+  updateDospeng,
   updateJadwalSidang,
   updateTempatSidang,
 } from "../client";
-import { Detail } from "../type";
+import { Detail, Dospeng } from "../type";
 import { convertToDate } from "../utils";
 
 const useDetailPengajuan = () => {
@@ -18,7 +20,8 @@ const useDetailPengajuan = () => {
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
 
   const navigate = useNavigate();
-  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get('id');
 
   const defaultDetailData = {
     id_mahasiswa: "",
@@ -26,7 +29,7 @@ const useDetailPengajuan = () => {
     email: "",
     jalur_pilihan: "",
     dosbing_name: "",
-    dosuji_name: "",
+    dosuji_name: [],
     tipe: "",
     judul_proposal: "",
     deskripsi: "",
@@ -36,8 +39,27 @@ const useDetailPengajuan = () => {
     status: false,
   };
 
+  const defaultDospengData : Dospeng[] = []
+
+  const { data: dospengData = defaultDospengData, mutate} = useSWR(
+    `/TIMTA/get-dosuji?id=${id}`,
+    async () => {
+      if (!id) return;
+
+      const { data } = await getDospeng(id);
+      if(data.data.length > 0){
+        return data.data.map((item: Dospeng) => ({
+          id: item.id,
+          nama: item.nama,
+        }));
+      }else{
+        return [];
+      }
+    },
+  );  
+
   const { data: detailData = defaultDetailData } = useSWR(
-    `TIMTA/detail-sidsem?id=${id}`,
+    `/TIMTA/detail-sidsem?id=${id}`,
     async () => {
       if (!id) return;
 
@@ -68,8 +90,18 @@ const useDetailPengajuan = () => {
     [detailData],
   );
 
+  const { trigger: triggerDospeng, error: dospengError } = useSWRMutation(
+    `/TIMTA/detail-sidsem?id=${id}`,
+    async (_: string, { arg }: { arg: Dospeng[] }) => {
+      if (!id) return;
+
+      await updateDospeng({ dosen_uji:arg, id_sidsem: id });
+    },
+  );
+
+
   const { trigger: triggerTempat, error: tempatError } = useSWRMutation(
-    `TIMTA/detail-sidsem?id=${id}`,
+    `/TIMTA/detail-sidsem?id=${id}`,
     async (_: string, { arg }: { arg: string }) => {
       if (!id) return;
 
@@ -78,7 +110,7 @@ const useDetailPengajuan = () => {
   );
 
   const { trigger: triggerJadwal, error: jadwalError } = useSWRMutation(
-    `TIMTA/detail-sidsem?id=${id}`,
+    `/TIMTA/detail-sidsem?id=${id}`,
     async (_: string, { arg }: { arg: Date }) => {
       if (!id) return;
       await updateJadwalSidang({
@@ -89,7 +121,7 @@ const useDetailPengajuan = () => {
   );
 
   const { trigger: triggerApprove, error: approveError } = useSWRMutation(
-    `TIMTA/detail-sidsem?id=${id}`,
+    `/TIMTA/detail-sidsem?id=${id}`,
     async () => {
       if (!id) return;
 
@@ -97,7 +129,7 @@ const useDetailPengajuan = () => {
     },
   );
   const { trigger: triggerReject, error: rejectError } = useSWRMutation(
-    `TIMTA/detail-sidsem?id=${id}`,
+    `/TIMTA/detail-sidsem?id=${id}`,
     async () => {
       if (!id) return;
 
@@ -105,19 +137,40 @@ const useDetailPengajuan = () => {
     },
   );
 
-  const handleTempatUpdate = async (tempat: string) => {
-    const toastId = toast.loading("Menetapkan jadwal interview...");
-    await triggerTempat(tempat);
-    if (tempatError) {
+  const handleDospengUpdate = async (dospeng: Dospeng[]) => {
+    const toastId = toast.loading("Menetapkan tempat sidang...");
+    await triggerDospeng(dospeng);
+    if (dospengError) {
       toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menetapkan jadwal interview",
+        render: "Terjadi kesalahan dalam menetapkan dosen penguji",
         type: "error",
         isLoading: false,
         autoClose: 1000,
       });
     } else {
       toast.update(toastId, {
-        render: "Berhasil menetapkan jadwal interview",
+        render: "Berhasil menetapkan dosen penguji",
+        type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      mutate(dospengData)
+    }
+  };
+
+  const handleTempatUpdate = async (tempat: string) => {
+    const toastId = toast.loading("Menetapkan tempat sidang...");
+    await triggerTempat(tempat);
+    if (tempatError) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menetapkan tempat sidang",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    } else {
+      toast.update(toastId, {
+        render: "Berhasil menetapkan tempat sidang",
         type: "success",
         isLoading: false,
         autoClose: 1000,
@@ -147,19 +200,19 @@ const useDetailPengajuan = () => {
   };
 
   const handleApprove = async () => {
-    const toastId = toast.loading("Menerima pendaftaran...");
+    const toastId = toast.loading("Menerima sidang/seminar...");
     await triggerApprove();
 
     if (approveError) {
       toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menerima pendaftaran",
+        render: "Terjadi kesalahan dalam menerima sidang/seminar",
         type: "error",
         isLoading: false,
         autoClose: 1000,
       });
     } else {
       toast.update(toastId, {
-        render: "Berhasil menerima pendaftaran",
+        render: "Berhasil menerima sidang/seminar",
         type: "success",
         isLoading: false,
         autoClose: 1000,
@@ -169,12 +222,12 @@ const useDetailPengajuan = () => {
   };
 
   const handleReject = async () => {
-    const toastId = toast.loading("Menolak pendaftaran...");
+    const toastId = toast.loading("Menolak sidang/seminar...");
     await triggerReject();
 
     if (rejectError) {
       toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menolak sidang",
+        render: "Terjadi kesalahan dalam menolak sidang/seminar",
         type: "error",
         isLoading: false,
         autoClose: 1000,
@@ -201,6 +254,8 @@ const useDetailPengajuan = () => {
     handleJadwalUpdate,
     handleApprove,
     handleReject,
+    dospengData,
+    handleDospengUpdate
   };
 };
 

@@ -15,19 +15,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { DosbingModalProps } from "../type";
+import { DospengModalProps, Dospeng } from "../type";
 import { FormField, FormItem, Form } from "@/components/ui/form/form";
 import { Badge } from "@/components/ui/badge";
 import { VscChromeClose } from "react-icons/vsc";
 import useDospengModal from "../hooks/useDospengModal";
+import { useSubmit } from "react-router-dom";
+import { boolean } from "zod";
+import { useState } from "react";
 
 export default function DospengModal({
   dosenPenguji,
   modalTrigger,
   listDosenPenguji,
-}: DosbingModalProps): JSX.Element {
-  const { dialogOpen, setDialogOpen, form } = useDospengModal(dosenPenguji);
-
+  onChange
+}: DospengModalProps): JSX.Element {
+  dosenPenguji = dosenPenguji ?? []
+  const { dialogOpen, setDialogOpen, form,handleChange } = useDospengModal(dosenPenguji,onChange);
+  const [submit, setSubmit] = useState<boolean>(true);
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>{modalTrigger}</DialogTrigger>
@@ -43,15 +48,15 @@ export default function DospengModal({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(() => {})}>
+          <form onSubmit={form.handleSubmit(handleChange)}>
             <FormField
               control={form.control}
-              name="dosbings"
-              render={(field) => (
+              name="dospeng"
+              render={() => (
                 <FormItem>
-                  {form.getValues().dosbings.length > 0 ? (
+                  {form.getValues().dospeng.length > 0 ? (
                     <ul className="flex flex-wrap gap-2 ">
-                      {form.getValues().dosbings.map((val, index) => (
+                      {form.getValues().dospeng.map((val, index) => (
                         <Badge
                           key={index}
                           variant="secondary"
@@ -59,19 +64,21 @@ export default function DospengModal({
                         >
                           {val.nama}
                           <button
+                            type="button"
                             onClick={() => {
                               form.setValue(
-                                "dosbings",
+                                "dospeng",
                                 form
                                   .getValues()
-                                  .dosbings.filter((v) => v.id !== val.id),
+                                  .dospeng.filter((v) => v.id !== val.id),
                               );
                             }}
                           >
                             <VscChromeClose />
                           </button>
                         </Badge>
-                      ))}
+                      ))
+                      }
                     </ul>
                   ) : (
                     ""
@@ -82,20 +89,25 @@ export default function DospengModal({
                       if (
                         !form
                           .getValues()
-                          .dosbings.map((v) => v.id.toString())
+                          .dospeng.map((v) => v.id)
                           .includes(val)
                       ) {
-                        form.setValue("dosbings", [
-                          ...form.getValues().dosbings,
-                          listDosenPenguji!.find(
-                            (v) => v.id.toString() === val,
-                          ) as any,
-                        ]);
+                        listDosenPenguji ? 
+                        form.setValue("dospeng", [
+                          ...form.getValues().dospeng,
+                          listDosenPenguji.find(
+                            (v) => v.id == val,
+                          ) as Dospeng,
+                        ])
+                        :
+                        form.setValue("dospeng", [
+                          ...form.getValues().dospeng
+                        ])
                       }
                     }}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih Role" />
+                      <SelectValue placeholder="Pilih Dosen" />
                     </SelectTrigger>
                     <SelectContent>
                       {listDosenPenguji!.map((val, index) => (
