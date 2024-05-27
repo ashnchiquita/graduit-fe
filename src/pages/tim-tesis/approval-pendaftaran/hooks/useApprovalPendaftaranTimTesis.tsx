@@ -20,7 +20,9 @@ import JenisSidangBadge from "../components/JenisSidangBadge";
 import RowAction from "../components/RowAction";
 import {
   ApprovalPendaftaranTopik,
+  Jenis,
   RekapPendaftaranTimTesisHookRet,
+  Status,
 } from "../types";
 // import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 
@@ -29,6 +31,9 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",
   );
+
+  const [status, setStatus] = useState<Status | undefined>();
+  const [jenis, setJenis] = useState<Jenis | undefined>();
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const { data } = useSession();
 
@@ -87,7 +92,7 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
   ];
 
   const { data: dataTable = [], mutate: mutateTable } = useSWR<
-    ApprovalPendaftaranTopik[]
+    ApprovalPendaftaranTopik[]|any
   >("/TIMTA/pendaftaran-sidsem", async () => {
     if (!data) {
       return [] as ApprovalPendaftaranTopik[];
@@ -99,7 +104,8 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
     ) {
       const response1 = await getRekapPendaftaranTableS1({});
       const data1 = response1.data.data.map((item) => ({
-        id: item.id_mahasiswa,
+        id: item.id,
+        id_mahasiswa: item.id_mahasiswa,
         nim: item.nim,
         nama: item.nama_mahasiswa,
         tipe: item.tipe,
@@ -132,6 +138,7 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
 
         const data = response.data.data.map((item) => ({
           id: item.id,
+          id_mahasiswa: item.id_mahasiswa,
           nim: item.nim,
           nama: item.nama_mahasiswa,
           tipe: item.tipe,
@@ -271,6 +278,10 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
     searchValue,
     handleSearchValueChange,
     refreshData,
+    jenis,
+    setJenis,
+    status,
+    setStatus,
   };
   // const dummyData: ApprovalPendaftaranTopik[] = [
   //   {

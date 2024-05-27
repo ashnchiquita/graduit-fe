@@ -1,8 +1,22 @@
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import { Table } from "@tanstack/react-table";
 
+export enum Status {
+  Semua = "Semua",
+  Diterima = "Diterima",
+  Ditolak = "Ditolak",
+}
+
+export enum Jenis {
+  Semua = "Semua",
+  SeminarProposal = "Seminar Proposal",
+  SeminarTesis = "Seminar Tesis",
+  SidangTesis = "Sidang Tesis",
+}
+
 export type ApprovalPendaftaranTopik = {
-  id: string; // This is the pendaftaran_id
+  id: string;
+  id_mahasiswa: string;
   nim: string;
   nama: string;
   tipe: string;
@@ -15,6 +29,10 @@ export type RekapPendaftaranTimTesisHookRet = {
   searchValue: string;
   handleSearchValueChange: (value: string) => void;
   refreshData: () => void;
+  status: Status | undefined;
+  setStatus: React.Dispatch<React.SetStateAction<Status | undefined>>;
+  jenis: Jenis | undefined;
+  setJenis: React.Dispatch<React.SetStateAction<Jenis | undefined>>;
 };
 
 export type RowActionHookRet = {
@@ -26,6 +44,16 @@ export type RowActionHookRet = {
   setRejectDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleAccept: (id: string) => void;
   handleReject: (id: string) => void;
+};
+
+export type ViewSelectStatusProps = {
+  viewStatus: Status | undefined;
+  setViewStatus: React.Dispatch<React.SetStateAction<Status | undefined>>;
+};
+
+export type ViewSelectJenisProps = {
+  viewJenis: Jenis | undefined;
+  setViewJenis: React.Dispatch<React.SetStateAction<Jenis | undefined>>;
 };
 
 export type GetStatisticsRes = {

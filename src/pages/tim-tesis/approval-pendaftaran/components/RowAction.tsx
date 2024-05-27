@@ -69,11 +69,11 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
 
           <div className="w-full p-3">
             <Link
-              to={`/rekap-pendaftaran-tim-tesis/${row.original.id}`}
+              to={`/pengajuan-sidsem/detail?id=${row.original.id}`}
               className="flex w-full items-center gap-3 text-sm font-medium text-slate-700"
             >
               <PiClockCounterClockwise className="size-4" />
-              Lihat Riwayat Pengajuan
+              Lihat Detail Pengajuan
             </Link>
           </div>
 

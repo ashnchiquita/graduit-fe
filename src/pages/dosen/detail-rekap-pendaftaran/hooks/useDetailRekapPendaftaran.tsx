@@ -83,7 +83,7 @@ const useDetailRekapPendaftaran = () => {
     async (_: string, { arg }: { arg: Date }) => {
       if (!mahasiswaId) return;
 
-      await updateInterviewS2(mahasiswaId, arg);
+      const { data } = await updateInterviewS2(mahasiswaId, arg);
     },
   );
   const { trigger: triggerApprove, error: approveError } = useSWRMutation(
