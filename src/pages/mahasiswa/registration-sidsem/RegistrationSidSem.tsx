@@ -20,15 +20,15 @@ export default function RegistrationSidSem() {
 
   const tipePendaftaran =
     tipe === "sidang"
-      ? "sidang"
+      ? "Sidang"
       : tipe === "seminar"
-        ? "seminar"
+        ? "Seminar"
         : tipe === "seminar-proposal"
-          ? "seminar-proposal"
+          ? "Seminar-Proposal"
           : tipe === "seminar-tesis"
             ? "seminar-tesis"
             : tipe === "sidang"
-              ? "sidang"
+              ? "Sidang"
               : "";
 
   const tipeStrata =

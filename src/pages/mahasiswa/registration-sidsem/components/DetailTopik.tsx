@@ -17,14 +17,14 @@ export function DetailTopikComponent({
   form: UseFormReturn<RegistrationSidSemFormData>;
 }) {
   return (
-    <div className="rounded-lg bg-white px-4 py-3 flex flex-col gap-2">
+    <div className="flex flex-col gap-2 rounded-lg bg-white px-4 py-3">
       <CardTitle> Detail Proposal </CardTitle>
-      <CardDescription>
+      <CardDescription className="mb-2">
         {" "}
         Silahkan isi terkait detail proposal Anda.{" "}
       </CardDescription>
       <div>
-        <CardDescription> Judul Proposal </CardDescription>
+        <CardDescription className="mb-1.5"> Judul Proposal </CardDescription>
         <FormField
           control={form.control}
           name="judul_proposal"
@@ -39,7 +39,7 @@ export function DetailTopikComponent({
         />
       </div>
       <div>
-        <CardDescription> Deskripsi </CardDescription>
+        <CardDescription className="mb-1.5"> Deskripsi </CardDescription>
         <FormField
           control={form.control}
           name="deskripsi"

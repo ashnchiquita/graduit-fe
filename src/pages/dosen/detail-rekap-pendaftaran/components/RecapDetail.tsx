@@ -32,11 +32,11 @@ const RecapDetail = () => {
           onClick={() => navigate(-1)}
           className="w-fit"
         >
-          <FaArrowLeft className="size-4 text-gray-500 md:size-6" />
+          <FaArrowLeft className="size-4 text-gray-500 md:size-4" />
         </Button>
         <Avatar className="size-12">
           <AvatarFallback className="bg-violet-500 text-xl text-white">
-            {data && data.name.length > 0 && data?.name[0]}
+            {data && data.name ? data.name[0] : "A"}
           </AvatarFallback>
         </Avatar>
         <div className="space-y-1 md:space-y-2">
