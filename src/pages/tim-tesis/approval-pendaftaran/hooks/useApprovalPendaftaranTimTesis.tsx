@@ -92,7 +92,7 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
   ];
 
   const { data: dataTable = [], mutate: mutateTable } = useSWR<
-    ApprovalPendaftaranTopik[]
+    ApprovalPendaftaranTopik[]|any
   >("/TIMTA/pendaftaran-sidsem", async () => {
     if (!data) {
       return [] as ApprovalPendaftaranTopik[];
@@ -123,12 +123,11 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
 
       // Map GetRekapPendaftaranTableRes to PendaftaranTopik
       const data2 = response2.data.data.map((item) => ({
-        id: item.pendaftaran_id,
-        id_mahasiswa: item.mahasiswa_id,
-        nim: item.nim,
-        nama: item.mahasiswa_nama,
-        tipe: item.tipe,
-        dosenPembimbing: item.pembimbing_nama,
+        id: item.idMahasiswa,
+        nim: item.nimMahasiswa,
+        nama: item.namaMahasiswa,
+        tipe: item.jenisSidang,
+        dosenPembimbing: item.dosenPembimbing.join(", "),
         status: convertStatus(item.status),
       }));
 
@@ -164,12 +163,11 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
 
         // Map GetRekapPendaftaranTableRes to PendaftaranTopik
         const data = response.data.data.map((item) => ({
-          id: item.pendaftaran_id,
-          id_mahasiswa: item.mahasiswa_id,
-          nim: item.nim,
-          nama: item.mahasiswa_nama,
-          tipe: item.tipe,
-          dosenPembimbing: item.pembimbing_nama,
+          id: item.idMahasiswa,
+          nim: item.nimMahasiswa,
+          nama: item.namaMahasiswa,
+          tipe: item.jenisSidang,
+          dosenPembimbing: item.dosenPembimbing.join(", "),
           status: convertStatus(item.status),
         }));
 

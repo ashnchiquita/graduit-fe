@@ -115,8 +115,9 @@ export default function DashboardRegistrasi() {
                       <td className="px-4 py-2">
                         {data.status_pendaftaran.persetujuan_dosen_pembimbing
                           ? formatDate(
-                              data.status_pendaftaran
-                                .persetujuan_dosen_pembimbing,
+                              new Date(
+                                data.status_pendaftaran.persetujuan_dosen_pembimbing,
+                              ),
                             )
                           : "-"}
                       </td>
