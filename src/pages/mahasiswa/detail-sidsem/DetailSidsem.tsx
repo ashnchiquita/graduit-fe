@@ -26,7 +26,7 @@ const DetailSidsem = () => {
             className="w-fit"
             onClick={(e) => {
               e.stopPropagation();
-              navigate(-1);
+              navigate("/dashboard");
             }}
           >
             <FaArrowLeft className="size-4 text-gray-500 md:size-6" />

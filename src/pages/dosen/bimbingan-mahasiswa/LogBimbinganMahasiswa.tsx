@@ -4,7 +4,7 @@ import ExpandableMahasiswaCard from "@/components/ExpandableMahasiswaCard";
 
 export default function LogBimbinganMahasiswa() {
   const { table, mahasiswaData, topik } = useLogBimbinganMahasiswa();
-
+  console.log(mahasiswaData);
   return (
     //TODO mobile screen
     <main className="flex min-h-screen flex-col gap-4 p-5">
@@ -14,7 +14,7 @@ export default function LogBimbinganMahasiswa() {
           name: mahasiswaData.name,
           email: mahasiswaData.email,
           major: mahasiswaData.major,
-          submissionTime: new Date(),
+          submissionTime: new Date(mahasiswaData.submissionTime),
         }}
         backArrow
         topik={topik.judul}
