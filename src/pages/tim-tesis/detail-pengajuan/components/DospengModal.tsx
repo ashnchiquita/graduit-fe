@@ -17,7 +17,6 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Form, FormField, FormItem } from "@/components/ui/form/form";
-import { useState } from "react";
 import { VscChromeClose } from "react-icons/vsc";
 import useDospengModal from "../hooks/useDospengModal";
 import { Dospeng, DospengModalProps } from "../type";
@@ -33,7 +32,6 @@ export default function DospengModal({
     dosenPenguji,
     onChange,
   );
-  const [submit, setSubmit] = useState<boolean>(true);
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>{modalTrigger}</DialogTrigger>
