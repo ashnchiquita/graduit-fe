@@ -1,6 +1,6 @@
 import useWindowSize from "@/hooks/useWindowSize";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FormSchemaDate, SidangModalHookRet } from "../type";
@@ -25,6 +25,10 @@ export default function useSidangModal(
       jadwalSidang: dateInit ?? new Date(),
     },
   });
+  useEffect(() => {
+    form.setValue("jadwalSidang", dateInit ?? new Date());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dateInit]);
 
   return {
     dialogOpen,

@@ -2,21 +2,21 @@ import { CardTitle } from "@/components/Card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Lightbulb, WrapText, Pencil, Calendar } from "lucide-react";
+import { Calendar, Lightbulb, Pencil, WrapText } from "lucide-react";
 import { FaArrowLeft } from "react-icons/fa6";
+import { IoDocumentAttachOutline } from "react-icons/io5";
 import { RiFilePaper2Line } from "react-icons/ri";
 import DosenPembimbingIcon from "../../../assets/detail-sidsem/dosen-pembimbing-icon.svg";
-import { IoDocumentAttachOutline } from "react-icons/io5";
 import { ButtonDownload } from "./components/ButtonDownload";
 import RegAcceptDialog from "./components/RegAcceptDialog";
 import RegRejectDialog from "./components/RegRejectDialog";
 
+import { formatDate } from "@/lib/dateformat";
 import { IoCheckmark } from "react-icons/io5";
+import DospengModal from "./components/DospengModal";
 import SidangModal from "./components/SidangModal";
 import TempatModal from "./components/TempatModal";
-import DospengModal from "./components/DospengModal";
 import useDetailPengajuan from "./hooks/useDetailPengajuan";
-import { formatDate } from "@/lib/dateformat";
 
 export default function DetailPengajuan() {
   const {
@@ -32,6 +32,7 @@ export default function DetailPengajuan() {
     handleReject,
     dospengData,
     handleDospengUpdate,
+    strata,
   } = useDetailPengajuan();
   return (
     <main className="ml-6 mr-3 ">
@@ -83,7 +84,7 @@ export default function DetailPengajuan() {
                 <div className="text-base text-muted-foreground">Topik</div>
               </div>
               <div className="pl-9 text-sm md:text-base">
-                {data.judul_proposal}
+                {data.judul_topik}
               </div>
             </div>
 
@@ -98,7 +99,7 @@ export default function DetailPengajuan() {
               </div>
               <ScrollArea className="flex-1">
                 <div className="pl-9 text-sm md:text-base">
-                  {data.deskripsi}
+                  {data.deskripsi_topik}
                 </div>
               </ScrollArea>
             </div>
@@ -130,7 +131,7 @@ export default function DetailPengajuan() {
                 {
                   <div className="flex items-center gap-5 text-sm md:text-base">
                     <ul>
-                      {data.dosuji_name
+                      {data.dosuji_name.length > 0
                         ? data.dosuji_name.map((val) => {
                             return <li>{val.nama}</li>;
                           })
@@ -143,13 +144,17 @@ export default function DetailPengajuan() {
                   listDosenPenguji={dospengData}
                   onChange={handleDospengUpdate}
                   modalTrigger={
-                    <Button
-                      variant="outline"
-                      className="flex h-7 gap-2 px-3 py-2 text-sm"
-                    >
-                      <Pencil size={12} />
-                      {"Ubah"}
-                    </Button>
+                    <>
+                      {data.status && (
+                        <Button
+                          variant="outline"
+                          className="flex h-7 gap-2 px-3 py-2 text-sm"
+                        >
+                          <Pencil size={12} />
+                          {"Ubah"}
+                        </Button>
+                      )}
+                    </>
                   }
                 />
               </div>
@@ -158,7 +163,7 @@ export default function DetailPengajuan() {
         </div>
       </div>
 
-      <div className="w-full rounded-2xl bg-white p-6 text-base md:px-10 md:py-8 my-4">
+      <div className="my-4 w-full rounded-2xl bg-white p-6 text-base md:px-10 md:py-8">
         <CardTitle>Detail Pengajuan</CardTitle>
         <div className="mt-8 flex flex-1 flex-col justify-between overflow-hidden">
           <div className="flex flex-1 flex-col space-y-5 overflow-hidden">
@@ -207,7 +212,7 @@ export default function DetailPengajuan() {
               </div>
               <ScrollArea className="flex-1">
                 <div className="pl-9 text-sm md:text-base">
-                  {data.deskripsi}
+                  {data.deskripsi_proposal}
                 </div>
               </ScrollArea>
             </div>
@@ -224,7 +229,7 @@ export default function DetailPengajuan() {
                 </div>
               </div>
               <ScrollArea className="flex-1">
-                <div className="pl-9 text-sm md:text-base flex span-1 gap-2">
+                <div className="span-1 flex gap-2 pl-9 text-sm md:text-base">
                   {data.berkas_sidsem.length > 0 ? (
                     <ButtonDownload data={data.berkas_sidsem} />
                   ) : (
@@ -237,7 +242,7 @@ export default function DetailPengajuan() {
         </div>
       </div>
 
-      <div className="w-full rounded-2xl bg-white p-6 text-base md:px-10 md:py-8 my-4">
+      <div className="my-4 w-full rounded-2xl bg-white p-6 text-base md:px-10 md:py-8">
         <CardTitle>Pengaturan Sidang / Seminar </CardTitle>
         <div className="mt-8 flex flex-1 flex-col justify-between overflow-hidden">
           <div className="flex flex-1 flex-col space-y-5 overflow-hidden">
@@ -260,18 +265,22 @@ export default function DetailPengajuan() {
                 }
                 {
                   <SidangModal
-                    dateInit={null}
+                    dateInit={new Date(data.jadwal_sidang)}
                     onChange={(date) => {
                       handleJadwalUpdate(date);
                     }}
                     modalTrigger={
-                      <Button
-                        variant="outline"
-                        className="flex h-7 gap-2 px-3 py-2 text-sm"
-                      >
-                        <Pencil size={12} />
-                        {"Jadwalkan"}
-                      </Button>
+                      <>
+                        {data.status && (
+                          <Button
+                            variant="outline"
+                            className="flex h-7 gap-2 px-3 py-2 text-sm"
+                          >
+                            <Pencil size={12} />
+                            {"Jadwalkan"}
+                          </Button>
+                        )}
+                      </>
                     }
                   />
                 }
@@ -299,13 +308,17 @@ export default function DetailPengajuan() {
                   tempat={data.tempat}
                   onChange={handleTempatUpdate}
                   modalTrigger={
-                    <Button
-                      variant="outline"
-                      className="flex h-7 gap-2 px-3 py-2 text-sm"
-                    >
-                      <Pencil size={12} />
-                      {"Ubah"}
-                    </Button>
+                    <>
+                      {data.status && (
+                        <Button
+                          variant="outline"
+                          className="flex h-7 gap-2 px-3 py-2 text-sm"
+                        >
+                          <Pencil size={12} />
+                          {"Ubah"}
+                        </Button>
+                      )}
+                    </>
                   }
                 />
               </div>
@@ -323,38 +336,44 @@ export default function DetailPengajuan() {
                 </ScrollArea>
               </div>
               <div className="pl-9 text-sm md:text-base">
-                {data.status ? "Diterima" : "Ditolak"}
+                {data.status === null
+                  ? "Belum Ditentukan"
+                  : data.status
+                    ? "Diterima"
+                    : "Ditolak"}
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-center gap-5 justify-self-end pl-9 mt-4">
-            <RegAcceptDialog
-              acceptDialogOpen={acceptDialogOpen}
-              setAcceptDialogOpen={setAcceptDialogOpen}
-              name={"fajar"}
-              onAccept={handleApprove}
-              dialogTrigger={
-                <Button
-                  size="sm"
-                  className="flex-1 bg-blue-500 hover:bg-blue-600"
-                >
-                  Setujui
-                </Button>
-              }
-            />
+          {(data.status === null || strata === "S1") && (
+            <div className="mt-4 flex items-center justify-center gap-5 justify-self-end pl-9">
+              <RegAcceptDialog
+                acceptDialogOpen={acceptDialogOpen}
+                setAcceptDialogOpen={setAcceptDialogOpen}
+                name={data.nama}
+                onAccept={handleApprove}
+                dialogTrigger={
+                  <Button
+                    size="sm"
+                    className="flex-1 bg-blue-500 hover:bg-blue-600"
+                  >
+                    Setujui
+                  </Button>
+                }
+              />
 
-            <RegRejectDialog
-              rejectDialogOpen={rejectDialogOpen}
-              setRejectDialogOpen={setRejectDialogOpen}
-              name={"fajar"}
-              onReject={handleReject}
-              dialogTrigger={
-                <Button size="sm" className="flex-1" variant="outline">
-                  Tolak
-                </Button>
-              }
-            />
-          </div>
+              <RegRejectDialog
+                rejectDialogOpen={rejectDialogOpen}
+                setRejectDialogOpen={setRejectDialogOpen}
+                name={data.nama}
+                onReject={handleReject}
+                dialogTrigger={
+                  <Button size="sm" className="flex-1" variant="outline">
+                    Tolak
+                  </Button>
+                }
+              />
+            </div>
+          )}
         </div>
       </div>
     </main>

@@ -1,6 +1,6 @@
 import useWindowSize from "@/hooks/useWindowSize";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Dospeng, DospengModalHookRet, FormSchemaDospeng } from "../type";
@@ -22,6 +22,14 @@ export default function useDospengModal(
       dospeng: dospeng!.map((d) => ({ id: d.id, nama: d.nama })),
     },
   });
+
+  useEffect(() => {
+    form.setValue(
+      "dospeng",
+      dospeng!.map((d) => ({ id: d.id, nama: d.nama })),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dospeng]);
 
   return {
     dialogOpen,

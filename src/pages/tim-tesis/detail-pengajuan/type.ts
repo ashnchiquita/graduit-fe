@@ -24,6 +24,30 @@ export type GetDetailRes = {
   };
 };
 
+export type GetDetailResS2 = {
+  idPengajuanSidsem: string;
+  idMahasiswa: string;
+  nimMahasiswa: string;
+  namaMahasiswa: string;
+  emailMahasiswa: string;
+  jadwalSidang: string | null;
+  jenisSidang: string;
+  ruangan: string | null;
+  jalurPilihan: string;
+  judulTopik: string;
+  deskripsiTopik: string;
+  status: string;
+  berkasSidsem: {
+    id: string;
+    nama: string;
+    url: string;
+  }[];
+  judulSidsem: string;
+  deskripsiSidsem: string;
+  dosenPembimbing: { nama: string; id: string }[];
+  dosenPenguji: { nama: string; id: string }[];
+};
+
 export type Detail = {
   id_mahasiswa: string;
   nama: string;
@@ -32,12 +56,14 @@ export type Detail = {
   dosbing_name: string;
   dosuji_name: Dospeng[];
   tipe: string;
+  judul_topik: string;
+  deskripsi_topik: string;
   judul_proposal: string;
-  deskripsi: string;
+  deskripsi_proposal: string;
   berkas_sidsem: Berkas[];
   jadwal_sidang: string;
   tempat: string;
-  status: boolean;
+  status: boolean | null;
 };
 
 export type GetDospengRes = {
@@ -46,6 +72,13 @@ export type GetDospengRes = {
     nama: string;
   }[];
 };
+
+export type GetDospengResS2 = {
+  id: string;
+  nama: string;
+  email: string;
+  keahlian: string;
+}[];
 
 export type Dospeng = {
   id: string;
