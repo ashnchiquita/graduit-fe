@@ -47,11 +47,13 @@ const useLogBimbingan = () => {
     "/admin/bimbingan-logs-status",
     async () => {
       let data: LogBimbinganStatusData;
-
+      console.log("masuk");
       if (sessionData?.roles.includes(RoleEnum.S1_MAHASISWA)) {
         const resMahasiswa = await getSession();
         const resLog = await getLogBimbinganStatusForS1(
           resMahasiswa.data.id ?? "",
+          pagination.pageSize,
+          pagination.pageIndex,
         );
         data = {
           status: resLog.data.data.status,

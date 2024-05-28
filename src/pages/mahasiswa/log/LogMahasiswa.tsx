@@ -42,7 +42,10 @@ export default function LogMahasiswa(): JSX.Element {
                 min={3}
                 max={6}
                 selected={range}
-                onSelect={setRange}
+                onSelect={(e) => {
+                  setRange(e);
+                  console.log(e);
+                }}
               />
             </PopoverContent>
           </Popover>
