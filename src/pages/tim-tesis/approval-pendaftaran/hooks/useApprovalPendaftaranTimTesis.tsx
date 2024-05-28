@@ -4,6 +4,7 @@ import { RoleEnum } from "@/types/session-data";
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import {
   ColumnDef,
+  PaginationState,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -18,15 +19,10 @@ import {
 } from "../clients";
 import JenisSidangBadge from "../components/JenisSidangBadge";
 import RowAction from "../components/RowAction";
-import {
-  ApprovalPendaftaranTopik,
-  Jenis,
-  RekapPendaftaranTimTesisHookRet,
-  Status,
-} from "../types";
+import { ApprovalPendaftaranTopik, Jenis, Status } from "../types";
 // import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 
-export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTesisHookRet {
+export default function useApprivalPendaftaranTimTesis() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",
@@ -34,8 +30,28 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
 
   const [status, setStatus] = useState<Status | undefined>();
   const [jenis, setJenis] = useState<Jenis | undefined>();
-  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: parseInt(searchParams.get("page") ?? "1"),
+    pageSize: parseInt(searchParams.get("pageSize") ?? "10"),
+  });
   const { data } = useSession();
+  const [strata, setStrata] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    setStrata(
+      data
+        ? data.roles.includes(
+            RoleEnum.S2_TIM_TESIS ||
+              RoleEnum.S2_PEMBIMBING ||
+              RoleEnum.S2_PENGUJI,
+          )
+          ? "S2"
+          : data.roles.includes(RoleEnum.S1_TIM_TA)
+            ? "S1"
+            : undefined
+        : undefined,
+    );
+  }, [data]);
 
   const handleSearchValueChange = (value: string) => {
     const obj: any = {};
@@ -83,7 +99,9 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
     },
     {
       id: "aksi",
-      cell: ({ row }) => <RowAction row={row} />,
+      cell: ({ row }) => {
+        return strata && <RowAction strata={strata} row={row} />;
+      },
       enableSorting: false,
       meta: {
         align: "right",
@@ -92,94 +110,87 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
   ];
 
   const { data: dataTable = [], mutate: mutateTable } = useSWR<
-    ApprovalPendaftaranTopik[]|any
-  >("/TIMTA/pendaftaran-sidsem", async () => {
-    if (!data) {
-      return [] as ApprovalPendaftaranTopik[];
-    }
-
-    if (
-      data.roles.includes(RoleEnum.S1_TIM_TA) &&
-      data.roles.includes(RoleEnum.S2_TIM_TESIS)
-    ) {
-      const response1 = await getRekapPendaftaranTableS1({});
-      const data1 = response1.data.data.map((item) => ({
-        id: item.id,
-        id_mahasiswa: item.id_mahasiswa,
-        nim: item.nim,
-        nama: item.nama_mahasiswa,
-        tipe: item.tipe,
-        dosenPembimbing: item.nama_dosbing,
-        status: item.status
-          ? StatusPendaftaranEnum.ACCEPTED
-          : StatusPendaftaranEnum.REJECTED,
-      }));
-
-      const response2 = await getRekapPendaftaranTable({
-        view: RoleEnum.S2_TIM_TESIS,
-        page: page,
-        search: searchValue,
-      });
-
-      // Map GetRekapPendaftaranTableRes to PendaftaranTopik
-      const data2 = response2.data.data.map((item) => ({
-        id: item.idMahasiswa,
-        nim: item.nimMahasiswa,
-        nama: item.namaMahasiswa,
-        tipe: item.jenisSidang,
-        dosenPembimbing: item.dosenPembimbing.join(", "),
-        status: convertStatus(item.status),
-      }));
-
-      return [...data1, ...data2];
-    } else if (data.roles.includes(RoleEnum.S1_TIM_TA)) {
-      try {
-        const response = await getRekapPendaftaranTableS1({});
-
-        const data = response.data.data.map((item) => ({
-          id: item.id,
-          id_mahasiswa: item.id_mahasiswa,
-          nim: item.nim,
-          nama: item.nama_mahasiswa,
-          tipe: item.tipe,
-          dosenPembimbing: item.nama_dosbing,
-          status: item.status
-            ? StatusPendaftaranEnum.ACCEPTED
-            : StatusPendaftaranEnum.REJECTED,
-        }));
-
-        return data;
-      } catch (error) {
-        toast.error("Gagal memuat data tabel");
-        return [];
+    ApprovalPendaftaranTopik[] | any
+  >(
+    ["/TIMTA/pendaftaran-sidsem", status, searchValue, jenis, strata],
+    async () => {
+      if (!data) {
+        return [] as ApprovalPendaftaranTopik[];
       }
-    } else if (data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
-      try {
-        const response = await getRekapPendaftaranTable({
-          view: RoleEnum.S2_TIM_TESIS,
-          page: page,
-          search: searchValue,
-        });
 
-        // Map GetRekapPendaftaranTableRes to PendaftaranTopik
-        const data = response.data.data.map((item) => ({
-          id: item.idMahasiswa,
-          nim: item.nimMahasiswa,
-          nama: item.namaMahasiswa,
-          tipe: item.jenisSidang,
-          dosenPembimbing: item.dosenPembimbing.join(", "),
-          status: convertStatus(item.status),
-        }));
+      if (strata === "S1") {
+        try {
+          const response = await getRekapPendaftaranTableS1({});
 
-        return data;
-      } catch (error) {
-        toast.error("Gagal memuat data tabel");
-        return [];
+          const data = response.data.data.map((item) => ({
+            id: item.id,
+            id_mahasiswa: item.id_mahasiswa,
+            nim: item.nim,
+            nama: item.nama_mahasiswa,
+            tipe: item.tipe,
+            dosenPembimbing: item.nama_dosbing,
+            status: item.status
+              ? StatusPendaftaranEnum.ACCEPTED
+              : StatusPendaftaranEnum.REJECTED,
+          }));
+
+          return data;
+        } catch (error) {
+          toast.error("Gagal memuat data tabel");
+          return [];
+        }
+      } else if (strata === "S2") {
+        try {
+          const response = await getRekapPendaftaranTable({
+            view: data.roles.includes(RoleEnum.S2_TIM_TESIS)
+              ? RoleEnum.S2_TIM_TESIS
+              : data.roles.includes(RoleEnum.S2_PEMBIMBING)
+                ? RoleEnum.S2_PEMBIMBING
+                : RoleEnum.S2_PENGUJI,
+            page: pagination.pageIndex,
+            limit: pagination.pageSize,
+            search: searchValue,
+            jenisSidang:
+              jenis === Jenis.SeminarProposal
+                ? "SEMINAR_1"
+                : jenis === Jenis.SeminarTesis
+                  ? "SEMINAR_2"
+                  : jenis === Jenis.SidangTesis
+                    ? "SIDANG"
+                    : undefined,
+            status:
+              status && status === Status.Diterima
+                ? "APPROVED"
+                : status === Status.Ditolak
+                  ? "REJECTED"
+                  : undefined,
+          });
+
+          // Map GetRekapPendaftaranTableRes to PendaftaranTopik
+          const resData: ApprovalPendaftaranTopik[] = response.data.data.map(
+            (item) => ({
+              id: item.idPengajuanSidsem,
+              id_mahasiswa: item.idMahasiswa,
+              nim: item.nimMahasiswa,
+              nama: item.namaMahasiswa,
+              tipe: item.jenisSidang,
+              dosenPembimbing: item.dosenPembimbing
+                .map(({ nama }) => nama)
+                .join(", "),
+              status: convertStatus(item.status),
+            }),
+          );
+
+          return resData;
+        } catch (error) {
+          toast.error("Gagal memuat data tabel");
+          return [];
+        }
+      } else {
+        return [] as ApprovalPendaftaranTopik[];
       }
-    } else {
-      return [] as ApprovalPendaftaranTopik[];
-    }
-  });
+    },
+  );
 
   const refreshData = () => {
     mutateTable();
@@ -254,7 +265,10 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
       columnVisibility: {
         id: false,
       },
+      pagination,
     },
+    onPaginationChange: setPagination,
+    manualPagination: true,
     columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
   });
@@ -263,14 +277,16 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
   useEffect(() => {
     const debouncedSearch = setTimeout(() => {
       mutateTable();
-      setPage(1);
+      setPagination({ pageIndex: 1, pageSize: pagination.pageSize });
     }, 500);
     return () => clearTimeout(debouncedSearch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue, mutateTable]);
 
   //On data change
   useEffect(() => {
     mutateTable();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return {
@@ -282,6 +298,15 @@ export default function useApprivalPendaftaranTimTesis(): RekapPendaftaranTimTes
     setJenis,
     status,
     setStatus,
+    strata,
+    setStrata,
+    hasBothRoles: data
+      ? data.roles.includes(
+          RoleEnum.S2_TIM_TESIS ||
+            RoleEnum.S2_PEMBIMBING ||
+            RoleEnum.S2_PENGUJI,
+        ) && data.roles.includes(RoleEnum.S1_TIM_TA)
+      : false,
   };
   // const dummyData: ApprovalPendaftaranTopik[] = [
   //   {

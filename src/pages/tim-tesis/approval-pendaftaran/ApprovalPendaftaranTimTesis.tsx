@@ -10,10 +10,10 @@ import {
 import { Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import DataContext from "../context/DataContext";
+import ViewDropdownJenis from "./components/ViewDropdownJenis";
+import ViewDropdownStatus from "./components/ViewDropdownStatus";
 import { StatusPendaftaranOptions } from "./constants";
 import useRekapPendaftaranTimTesis from "./hooks/useApprovalPendaftaranTimTesis";
-import ViewDropdownStatus from "./components/ViewDropdownStatus";
-import ViewDropdownJenis from "./components/ViewDropdownJenis";
 
 export default function RekapPendaftaranTimTesis(): JSX.Element {
   const {
@@ -25,6 +25,9 @@ export default function RekapPendaftaranTimTesis(): JSX.Element {
     setJenis,
     status,
     setStatus,
+    setStrata,
+    strata,
+    hasBothRoles,
   } = useRekapPendaftaranTimTesis();
 
   return (
@@ -38,6 +41,8 @@ export default function RekapPendaftaranTimTesis(): JSX.Element {
             setSearchValue={handleSearchValueChange}
             searchPlaceholder="Cari nama atau NIM mahasiswa"
             selectFilterPlaceholder="Semua Bimbingan"
+            strataFilterValue={hasBothRoles ? strata : undefined}
+            setStrataFilterValue={setStrata}
             selectFilterOptions={StatusPendaftaranOptions}
             customElementsRight={
               <>

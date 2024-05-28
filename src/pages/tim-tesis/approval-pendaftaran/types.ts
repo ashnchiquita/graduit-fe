@@ -93,7 +93,7 @@ export type GetAprrovalPendaftaranTableRes = {
     jenisSidang: string;
     ruangan: string;
     status: string;
-    dosenPembimbing: string[];
+    dosenPembimbing: { nama: string; id: string }[];
     berkasSidsem: {
       id: string;
       nama: string;

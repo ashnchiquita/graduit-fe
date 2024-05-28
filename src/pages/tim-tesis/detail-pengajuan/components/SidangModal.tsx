@@ -1,11 +1,5 @@
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { TimePicker } from "@/components/ui/time-picker/time-picker";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -14,17 +8,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import useSidangModal from "../hooks/useSidangModal";
-import { SidangModalProps } from "../type";
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
-  Form,
 } from "@/components/ui/form/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { TimePicker } from "@/components/ui/time-picker/time-picker";
+import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
+import { CalendarIcon } from "lucide-react";
+import useSidangModal from "../hooks/useSidangModal";
+import { SidangModalProps } from "../type";
 
 export default function SidangModal({
   dateInit,

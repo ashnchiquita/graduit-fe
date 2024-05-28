@@ -1,6 +1,6 @@
 import useWindowSize from "@/hooks/useWindowSize";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FormSchemaTempat, TempatModalHookRet } from "../type";
@@ -22,6 +22,10 @@ export default function useTempatModal(
       tempat: tempat ?? undefined,
     },
   });
+  useEffect(() => {
+    form.setValue("tempat", tempat ?? "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tempat]);
 
   return {
     dialogOpen,
