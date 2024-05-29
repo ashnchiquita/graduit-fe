@@ -6,23 +6,23 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Badge } from "../components/BadgeTable";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { DateRange } from "react-day-picker";
+import { useNavigate } from "react-router-dom";
 import useSWR from "swr";
 import { getBimbinganS2, getLogBimbinganStatusForS1 } from "../client";
+import { Badge } from "../components/BadgeTable";
 import type {
   Berkas,
   LogBimbinganData,
   LogBimbinganStatusData,
 } from "../types";
 
-import { getSession } from "@/layouts/clients";
-import { formatDateNotHour } from "../utils";
-import useSession from "@/hooks/useSession";
-import { RoleEnum } from "@/types/session-data";
 import BerkasBadge from "@/components/BerkasBadge";
+import useSession from "@/hooks/useSession";
+import { getSession } from "@/layouts/clients";
+import { RoleEnum } from "@/types/session-data";
+import { formatDateNotHour } from "../utils";
 
 const useLogBimbingan = () => {
   const { data: sessionData } = useSession();
@@ -47,7 +47,7 @@ const useLogBimbingan = () => {
     "/admin/bimbingan-logs-status",
     async () => {
       let data: LogBimbinganStatusData;
-
+      console.log("masuk");
       if (sessionData?.roles.includes(RoleEnum.S1_MAHASISWA)) {
         const resMahasiswa = await getSession();
         const resLog = await getLogBimbinganStatusForS1(

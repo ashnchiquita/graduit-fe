@@ -15,6 +15,7 @@ import {
   Dashboard,
   DashboardRegistrasi,
   DetailMahasiswa,
+  DetailPengajuan,
   DetailRekapPendaftaran,
   InputNilai,
   KelolaAkun,
@@ -76,7 +77,7 @@ export const router = createBrowserRouter(
           element: <RiwayatPendaftaran />,
         },
         {
-          path: "/approval-pendaftaran",
+          path: "/pengajuan-sidsem",
           element: <ApprovalPendaftaran />,
         },
         {
@@ -107,6 +108,10 @@ export const router = createBrowserRouter(
         {
           path: "/tesis/status",
           element: <MhsDashboard />,
+        },
+        {
+          path: "/pengajuan-sidsem/detail",
+          element: <DetailPengajuan />,
         },
         {
           path: "/manajemen",

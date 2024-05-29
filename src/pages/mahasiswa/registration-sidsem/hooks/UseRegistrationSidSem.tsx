@@ -127,6 +127,7 @@ const useRegistrationSidSem = () => {
       try {
         await triggerS1(data);
         toast.success("Registration submitted successfully.");
+        navigate(`/detail/${tipe}/${strata?.toUpperCase()}`);
       } catch (error) {
         toast.error("Failed to submit Registration");
       }

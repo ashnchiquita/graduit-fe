@@ -18,7 +18,7 @@ export default function useDetailSidsem() {
     tipe === "sidang"
       ? "Sidang"
       : tipe === "seminar"
-        ? "Seminar"
+        ? "Seminar Proposal"
         : tipe === "seminar-proposal"
           ? "Seminar-Proposal"
           : tipe === "seminar-tesis"
@@ -60,15 +60,12 @@ export default function useDetailSidsem() {
         const responseDetail = await getDetailSidSemS1(
           tipePendaftaran.toLowerCase(),
         );
-        console.log(responseDetail.data.data.waktu_mulai);
         if (
           responseDetail.data.data.waktu_mulai === "0001-01-01T07:07:12+07:07"
         ) {
           time = "Belum Ditetapkan";
         } else {
-          console.log("masuk");
           time = formatDate(new Date(responseDetail.data.data.waktu_mulai));
-          console.log(time);
         }
         data = {
           data: {

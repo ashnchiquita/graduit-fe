@@ -3,22 +3,26 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Row } from "@tanstack/react-table";
-import { IoEllipsisVertical } from "react-icons/io5";
-import { Link } from "react-router-dom";
-import { ApprovalPendaftaranTopik } from "../types";
-import useRowAction from "../hooks/useRowAction";
-import { PiClockCounterClockwise } from "react-icons/pi";
 import RegAcceptDialog from "@/pages/dosen/components/RegAcceptDialog";
 import RegRejectDialog from "@/pages/dosen/components/RegRejectDialog";
-import { Check, X } from "lucide-react";
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
+import { Row } from "@tanstack/react-table";
+import { Check, X } from "lucide-react";
+import { IoEllipsisVertical } from "react-icons/io5";
+import { PiClockCounterClockwise } from "react-icons/pi";
+import { Link } from "react-router-dom";
+import useRowAction from "../hooks/useRowAction";
+import { ApprovalPendaftaranTopik } from "../types";
 
 interface ComponentProps {
   row: Row<ApprovalPendaftaranTopik>;
+  strata: string;
 }
 
-export default function RowAction({ row }: ComponentProps): JSX.Element {
+export default function RowAction({
+  row,
+  strata,
+}: ComponentProps): JSX.Element {
   const {
     isPopoverOpen,
     setIsPopoverOpen,
@@ -69,11 +73,11 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
 
           <div className="w-full p-3">
             <Link
-              to={`/rekap-pendaftaran-tim-tesis/${row.original.id}`}
+              to={`/pengajuan-sidsem/detail?id=${strata === "S1" ? row.original.id : row.original.id_mahasiswa}&strata=${strata}`}
               className="flex w-full items-center gap-3 text-sm font-medium text-slate-700"
             >
               <PiClockCounterClockwise className="size-4" />
-              Lihat Riwayat Pengajuan
+              Lihat Detail Pengajuan
             </Link>
           </div>
 

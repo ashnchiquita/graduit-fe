@@ -27,6 +27,10 @@ import {
 
 export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet {
   const { id, strata } = useParams();
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   const defaultData: BimbinganData = {
     bimbingan: [],
@@ -34,6 +38,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
       name: "",
       email: "",
       major: "",
+      submissionTime: "",
     },
     topik: {
       judul: "",
@@ -44,9 +49,14 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
     let data: BimbinganData;
 
     if (strata?.toUpperCase() === "S1") {
-      const resBimbingan = await getLogBimbinganS1(id ?? "");
+      const resBimbingan = await getLogBimbinganS1(
+        id ?? "",
+        pagination.pageSize,
+        pagination.pageSize,
+      );
       const resMahasiswa = await getMahasiswaInfoS1(id ?? "");
-
+      console.log(resBimbingan);
+      console.log(resMahasiswa.data.data.submission_time);
       data = {
         bimbingan: resBimbingan.data.data.map((item: BimbinganS1Res) => ({
           id: item.id,
@@ -64,6 +74,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
           name: resMahasiswa.data.data.nama,
           email: resMahasiswa.data.data.email,
           major: resMahasiswa.data.data.jalur_pilihan,
+          submissionTime: resMahasiswa.data.data.submission_time,
         },
         topik: {
           judul: resMahasiswa.data.data.judul,
@@ -90,6 +101,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
           name: res.data.mahasiswa.nama,
           email: res.data.mahasiswa.email,
           major: res.data.mahasiswa.jalurPilihan,
+          submissionTime: "",
         },
         topik: {
           judul: res.data.topik.judul,
@@ -152,11 +164,6 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
       enableSorting: false,
     },
   ];
-
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
 
   const [sorting, setSorting] = useState<SortingState>([
     {

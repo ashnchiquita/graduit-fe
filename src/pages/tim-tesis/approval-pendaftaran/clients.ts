@@ -11,6 +11,7 @@ export async function getRekapPendaftaranTable(params: {
   limit?: number;
   search?: string;
   status?: "NOT_ASSIGNED" | "INTERVIEW" | "APPROVED" | "REJECTED";
+  jenisSidang?: "SEMINAR_1" | "SEMINAR_2" | "SIDANG";
   order_by?: "nim";
   sort?: "ASC" | "DESC";
 }) {

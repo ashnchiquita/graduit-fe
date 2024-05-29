@@ -28,6 +28,7 @@ export type MahasiswaData = {
   name: string;
   email: string;
   major: string;
+  submissionTime: string;
 };
 
 export type BimbinganS2Res = {
@@ -67,6 +68,7 @@ export type GetMahasiswaInfoS1Res = {
     jalur_pilihan: string;
     judul: string;
     deskripsi: string;
+    submission_time: string;
   };
 };
 

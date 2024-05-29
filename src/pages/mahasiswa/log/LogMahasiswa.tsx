@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 
 export default function LogMahasiswa(): JSX.Element {
   const { table, onClickCreate, range, setRange, data } = useLogBimbingan();
-
   return (
     <div className="flex flex-col gap-4 px-4 pb-20">
       <TagStatus status={data.status ? "SAH" : "TIDAKSAH"} />
@@ -42,7 +41,10 @@ export default function LogMahasiswa(): JSX.Element {
                 min={3}
                 max={6}
                 selected={range}
-                onSelect={setRange}
+                onSelect={(e) => {
+                  setRange(e);
+                  console.log(e);
+                }}
               />
             </PopoverContent>
           </Popover>

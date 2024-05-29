@@ -1,8 +1,8 @@
 import { RoleEnum } from "@/types/session-data";
+import { GoGear } from "react-icons/go";
 import { IoSchoolOutline } from "react-icons/io5";
 import { VscHome, VscNotebook } from "react-icons/vsc";
 import { NavItem } from "../types";
-import { GoGear } from "react-icons/go";
 
 const NAV_ITEMS: NavItem[] = [
   {
@@ -92,6 +92,18 @@ const NAV_ITEMS: NavItem[] = [
         roleAccess: [
           RoleEnum.S1_MAHASISWA,
           RoleEnum.S1_PEMBIMBING,
+          RoleEnum.S1_TIM_TA,
+          RoleEnum.S2_TIM_TESIS,
+          RoleEnum.ADMIN,
+        ],
+      },
+      {
+        label: "Pengajuan Sidang & Seminar",
+        path: "/pengajuan-sidsem",
+        roleAccess: [
+          RoleEnum.S1_PEMBIMBING,
+          RoleEnum.S2_PEMBIMBING,
+          RoleEnum.S2_PENGUJI,
           RoleEnum.S1_TIM_TA,
           RoleEnum.S2_TIM_TESIS,
           RoleEnum.ADMIN,

@@ -27,7 +27,13 @@ export default function JenisSidangBadge({
         )}
       />
       <p className={clsx("text-xs font-medium capitalize", "text-white")}>
-        {jenis.toLowerCase().replace(/^\w/, (c) => c.toUpperCase())}
+        {jenis === "SIDANG"
+          ? "Sidang"
+          : jenis === "SEMINAR_1"
+            ? "Seminar Proposal"
+            : jenis === "SEMINAR_2"
+              ? "Seminar Tesis"
+              : jenis.toLowerCase().replace(/^\w/, (c) => c.toUpperCase())}
       </p>
     </div>
   );

@@ -14,7 +14,7 @@ loginInstance.interceptors.response.use(
         window.location.pathname !== "/login") ||
       error.response.status === 403
     ) {
-      window.location.href = `${import.meta.env.VITE_BASE_URL}/login`;
+      window.location.href = `/login`;
     }
 
     return Promise.reject(error);
