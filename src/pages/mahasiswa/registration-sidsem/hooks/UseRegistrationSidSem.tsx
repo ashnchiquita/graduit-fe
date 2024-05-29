@@ -31,15 +31,15 @@ const useRegistrationSidSem = () => {
   // TODO dont' check type like this
   const tipePendaftaran =
     tipe === "sidang"
-      ? "sidang"
+      ? "Sidang"
       : tipe === "seminar"
-        ? "seminar"
+        ? "Seminar"
         : tipe === "seminar-proposal"
-          ? "seminar-proposal"
+          ? "Seminar-Proposal"
           : tipe === "seminar-tesis"
             ? "seminar-tesis"
             : tipe === "sidang"
-              ? "sidang"
+              ? "Sidang"
               : "";
 
   const defaultData: Placeholders = {
@@ -55,7 +55,9 @@ const useRegistrationSidSem = () => {
     let data: Placeholders;
 
     if (strata?.toUpperCase() === "S1") {
-      const resIsRegistered = await isRegisteredSidSemS1(tipePendaftaran);
+      const resIsRegistered = await isRegisteredSidSemS1(
+        tipePendaftaran.toLowerCase(),
+      );
       if (resIsRegistered.data.data) {
         navigate("/not-found");
       }
@@ -131,9 +133,9 @@ const useRegistrationSidSem = () => {
     } else {
       const data: PostRegistraionSidSemReqDataS2 = {
         tipe:
-          tipePendaftaran === "seminar-proposal"
+          tipePendaftaran.toLowerCase() === "seminar-proposal"
             ? "SEMINAR_1"
-            : tipePendaftaran === "seminar-tesis"
+            : tipePendaftaran.toLowerCase() === "seminar-tesis"
               ? "SEMINAR_2"
               : "SIDANG",
         judulSidsem: values.judul_proposal,

@@ -49,3 +49,22 @@ export type StatusS2Response = {
     email: string;
   }[];
 }[];
+
+export type PostRegistrasiTARequestData = {
+  idMahasiswa: string;
+  idTopik: string;
+  idPenerima: string;
+};
+
+export type StatusS1Response = {
+  id: string;
+  status: string;
+  interviewAt: string;
+  decidedAt: string;
+  waktuPengiriman: string;
+  judul: string;
+  deskripsi: string;
+  idDosen: string;
+  namaDosen: string;
+  emailDosen: string;
+}[];

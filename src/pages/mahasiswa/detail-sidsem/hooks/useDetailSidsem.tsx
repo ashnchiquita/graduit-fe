@@ -16,15 +16,15 @@ export default function useDetailSidsem() {
 
   const tipePendaftaran =
     tipe === "sidang"
-      ? "sidang"
+      ? "Sidang"
       : tipe === "seminar"
-        ? "seminar"
+        ? "Seminar"
         : tipe === "seminar-proposal"
-          ? "seminar-proposal"
+          ? "Seminar-Proposal"
           : tipe === "seminar-tesis"
             ? "seminar-tesis"
             : tipe === "sidang"
-              ? "sidang"
+              ? "Sidang"
               : "";
 
   const defaultData: DetailSidSemResp = {
@@ -49,13 +49,17 @@ export default function useDetailSidsem() {
       let data: DetailSidSemResp;
 
       if (strata?.toUpperCase() === "S1") {
-        const isRegistered = await isRegisteredSidSemS1(tipePendaftaran);
+        const isRegistered = await isRegisteredSidSemS1(
+          tipePendaftaran.toLowerCase(),
+        );
         if (!isRegistered.data.data) {
           naviagate("/not-found");
         }
 
         let time: string = "";
-        const responseDetail = await getDetailSidSemS1(tipePendaftaran);
+        const responseDetail = await getDetailSidSemS1(
+          tipePendaftaran.toLowerCase(),
+        );
         console.log(responseDetail.data.data.waktu_mulai);
         if (
           responseDetail.data.data.waktu_mulai === "0001-01-01T07:07:12+07:07"
