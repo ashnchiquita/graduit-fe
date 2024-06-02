@@ -50,57 +50,61 @@ const useRegistrationImpl = () => {
     async () => {
       if (!sessionData?.id) return [];
 
-      if (sessionData.roles.includes(RoleEnum.S1_MAHASISWA)) {
-        const { data } = await getRegS1(sessionData.id);
+      try {
+        if (sessionData.roles.includes(RoleEnum.S1_MAHASISWA)) {
+          const { data } = await getRegS1(sessionData.id);
 
-        const resData = data.map((item) => ({
-          status_pendaftaran: {
-            status: true,
-            topik: item.judul,
-            dosen_pembimbing: item.namaDosen,
-            pengiriman_registrasi: new Date(item.waktuPengiriman),
-            persetujuan_dosen_pembimbing: item.decidedAt
-              ? new Date(item.decidedAt)
-              : null,
-            jadwal_interview: item.interviewAt
-              ? new Date(item.interviewAt)
-              : null,
-            pengesahan_dosen_pembimbing:
-              item.status === "APPROVED"
-                ? true
-                : item.status === "REJECTED"
-                  ? false
-                  : null,
-          },
-        }));
+          const resData = data.map((item) => ({
+            status_pendaftaran: {
+              status: true,
+              topik: item.judul,
+              dosen_pembimbing: item.namaDosen,
+              pengiriman_registrasi: new Date(item.waktuPengiriman),
+              persetujuan_dosen_pembimbing: item.decidedAt
+                ? new Date(item.decidedAt)
+                : null,
+              jadwal_interview: item.interviewAt
+                ? new Date(item.interviewAt)
+                : null,
+              pengesahan_dosen_pembimbing:
+                item.status === "APPROVED"
+                  ? true
+                  : item.status === "REJECTED"
+                    ? false
+                    : null,
+            },
+          }));
 
-        return resData;
-      } else if (sessionData.roles.includes(RoleEnum.S2_MAHASISWA)) {
-        const { data } = await getRegS2(sessionData.id);
+          return resData;
+        } else if (sessionData.roles.includes(RoleEnum.S2_MAHASISWA)) {
+          const { data } = await getRegS2(sessionData.id);
 
-        const resData = data.map((item) => ({
-          status_pendaftaran: {
-            status: true,
-            topik: item.judulTopik,
-            dosen_pembimbing: item.dosenPembimbing[0].nama,
-            pengiriman_registrasi: new Date(item.waktuPengiriman),
-            persetujuan_dosen_pembimbing: item.waktuKeputusan
-              ? new Date(item.waktuKeputusan)
-              : null,
-            jadwal_interview: item.jadwalInterview
-              ? new Date(item.jadwalInterview)
-              : null,
-            pengesahan_dosen_pembimbing:
-              item.status === "APPROVED"
-                ? true
-                : item.status === "REJECTED"
-                  ? false
-                  : null,
-          },
-        }));
+          const resData = data.map((item) => ({
+            status_pendaftaran: {
+              status: true,
+              topik: item.judulTopik,
+              dosen_pembimbing: item.dosenPembimbing[0].nama,
+              pengiriman_registrasi: new Date(item.waktuPengiriman),
+              persetujuan_dosen_pembimbing: item.waktuKeputusan
+                ? new Date(item.waktuKeputusan)
+                : null,
+              jadwal_interview: item.jadwalInterview
+                ? new Date(item.jadwalInterview)
+                : null,
+              pengesahan_dosen_pembimbing:
+                item.status === "APPROVED"
+                  ? true
+                  : item.status === "REJECTED"
+                    ? false
+                    : null,
+            },
+          }));
 
-        return resData;
-      } else {
+          return resData;
+        } else {
+          return [];
+        }
+      } catch (err) {
         return [];
       }
     },
