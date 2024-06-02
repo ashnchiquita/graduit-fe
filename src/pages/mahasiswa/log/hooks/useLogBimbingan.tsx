@@ -141,14 +141,15 @@ const useLogBimbingan = () => {
     {
       header: "Status",
       accessorKey: "status",
-      minSize: 50,
-      maxSize: 50,
+      minSize: 120,
+      maxSize: 120,
       cell: ({ row }) => (
         <Badge row={row} variant={row.original.status ? "default" : "danger"} />
       ),
       enableSorting: false,
       meta: {
         alignHeader: "center",
+        align: "center",
       },
     },
     {
@@ -164,6 +165,7 @@ const useLogBimbingan = () => {
     data: data.bimbingan_logs,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    columnResizeMode: "onChange",
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
     onSortingChange: setSorting,

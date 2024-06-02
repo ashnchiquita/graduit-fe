@@ -19,14 +19,11 @@ import {
   RekapPendaftaranDosbimHookRet,
 } from "../types";
 import useSWR from "swr";
-import {
-  getRegMhsS2,
-  getSelfData,
-  getStatisticS2,
-  updateInterviewS2,
-} from "../clients";
+import { getRegMhsS2, getStatisticS2, updateInterviewS2 } from "../clients";
 import useSWRMutation from "swr/mutation";
 import { toast } from "react-toastify";
+import useSession from "@/hooks/useSession";
+import { RoleEnum } from "@/types/session-data";
 
 const STATUS_MAP_S2 = new Map<string, StatusPendaftaranEnum>([
   ["NOT_ASSIGNED", StatusPendaftaranEnum.PROCESS],
@@ -44,6 +41,8 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
     searchParams.get("filter") ?? "",
   );
 
+  const { data: sessionData } = useSession();
+
   const handleSearchValueChange = (value: string) => {
     const obj: any = {};
     value && (obj.search = value);
@@ -52,14 +51,6 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
     setSearchParams(obj);
     setSearchValue(value);
   };
-
-  const { data: infoKontak = null, isLoading } = useSWR(
-    `/self/kontak`,
-    async () => {
-      const { data } = await getSelfData();
-      return data.kontak;
-    },
-  );
 
   const { data: s2MhsData = [] } = useSWR(
     ["/rekap-pendaftaran/dosbim/s2", searchValue],
@@ -132,18 +123,22 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
   );
 
   useEffect(() => {
-    setRegData((prev) => {
-      const prevData = prev.filter((mahasiswa) => mahasiswa.strata === "S2");
-      return [...prevData, ...s1MhsData];
-    });
-  }, [s1MhsData]);
+    if (sessionData && sessionData.roles.includes(RoleEnum.S1_PEMBIMBING)) {
+      setRegData((prev) => {
+        const prevData = prev.filter((mahasiswa) => mahasiswa.strata === "S2");
+        return [...prevData, ...s1MhsData];
+      });
+    }
+  }, [s1MhsData, sessionData]);
 
   useEffect(() => {
-    setRegData((prev) => {
-      const prevData = prev.filter((mahasiswa) => mahasiswa.strata === "S1");
-      return [...prevData, ...s2MhsData];
-    });
-  }, [s2MhsData]);
+    if (sessionData && sessionData.roles.includes(RoleEnum.S2_PEMBIMBING)) {
+      setRegData((prev) => {
+        const prevData = prev.filter((mahasiswa) => mahasiswa.strata === "S1");
+        return [...prevData, ...s2MhsData];
+      });
+    }
+  }, [s2MhsData, sessionData]);
 
   const [regData, setRegData] = useState<Mahasiswa[]>([]);
   const statData = useMemo<RegStatistic>(
@@ -290,7 +285,5 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
     statusFilter,
     handleStatusFilterChange,
     statistic: statData,
-    infoKontak,
-    isLoading,
   };
 }
