@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import {
   getNotification,
+  getPeriodeRegistrasiS2,
   getSidsemMahasiswaS2,
   isRegisteredSidSemS1,
 } from "../client";
@@ -12,10 +13,9 @@ import { toast } from "react-toastify";
 export default function useDashboardMahasiswa() {
   const { data: sessionData } = useSession();
 
-  const { data: isRegisteredSeminarSidang = [], error } = useSWR<boolean[]>(
-    "dashboard-mhs",
-    async () => {
-      if (!sessionData) return [false, false];
+  const { data: isRegisteredSeminarSidang = [], error: registeredSidsemError } =
+    useSWR<boolean[]>("dashboard-mhs", async () => {
+      if (!sessionData) return [false, false, false];
 
       if (sessionData.roles.includes(RoleEnum.S1_MAHASISWA)) {
         try {
@@ -37,8 +37,21 @@ export default function useDashboardMahasiswa() {
           resp.jenisSidang === "SIDANG" && resp.status !== "REJECTED",
         ];
       }
-    },
-  );
+    });
+
+  const { data: isRegistrationPeriod = [], error: registrationPeriodError } =
+    useSWR<boolean[]>("dashboard-mhs-periode", async () => {
+      if (!sessionData) return [false, false, false];
+
+      if (sessionData.roles.includes(RoleEnum.S1_MAHASISWA)) {
+        return [true, true, true];
+      } else {
+        const resp = (await getPeriodeRegistrasiS2()).data;
+        console.log(resp);
+
+        return [resp.isSemproPeriod, resp.isSemtesPeriod, resp.isSidangPeriod];
+      }
+    });
 
   const { data: notification = [] } = useSWR("/notification", async () => {
     const { data } = await getNotification();
@@ -49,8 +62,17 @@ export default function useDashboardMahasiswa() {
   // Return the data and isRegistered value
   return {
     notification,
-    isRegisteredSemPro: error ? false : isRegisteredSeminarSidang[0],
-    isRegisteredSemTes: error ? false : isRegisteredSeminarSidang[1],
-    isRegisteredSidang: error ? false : isRegisteredSeminarSidang[2],
+    isRegisteredSemPro: registeredSidsemError
+      ? false
+      : isRegisteredSeminarSidang[0],
+    isRegisteredSemTes: registeredSidsemError
+      ? false
+      : isRegisteredSeminarSidang[1],
+    isRegisteredSidang: registeredSidsemError
+      ? false
+      : isRegisteredSeminarSidang[2],
+    isSemproPeriod: registrationPeriodError ? false : isRegistrationPeriod[0],
+    isSemtesPeriod: registrationPeriodError ? false : isRegistrationPeriod[1],
+    isSidangPeriod: registrationPeriodError ? false : isRegistrationPeriod[2],
   };
 }

@@ -76,3 +76,9 @@ export type GetSidsemS2RespData = {
   judulSidsem: string;
   deskripsiSidsem: string;
 };
+
+export type GetPeriodeRegistrasiS2RespData = {
+  isSemproPeriod: boolean;
+  isSemtesPeriod: boolean;
+  isSidangPeriod: boolean;
+};
