@@ -14,7 +14,10 @@ export default function LogBimbinganMahasiswa() {
           name: mahasiswaData.name,
           email: mahasiswaData.email,
           major: mahasiswaData.major,
-          submissionTime: new Date(mahasiswaData.submissionTime),
+          submissionTime:
+            mahasiswaData.submissionTime !== ""
+              ? new Date(mahasiswaData.submissionTime)
+              : undefined,
         }}
         backArrow
         topik={topik.judul}

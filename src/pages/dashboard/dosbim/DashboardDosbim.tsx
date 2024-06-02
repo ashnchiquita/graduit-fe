@@ -9,12 +9,6 @@ import { BarChartDosbing } from "./types";
 const DashboardDosbim = () => {
   const [searchValue, setSearchValue] = useState("");
 
-  // const handleSearchValueChange = (value: string) => {
-  //   setSearchValue(value);
-
-  //   // TODO: Refetch data from database
-  // };
-
   const barChartData: BarChartDosbing[] = [
     { level: "S1", lancar: 10, bimbingan: 5, terkendala: 3 },
     { level: "S2", lancar: 8, bimbingan: 2, terkendala: 4 },

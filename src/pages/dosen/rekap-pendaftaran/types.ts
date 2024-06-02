@@ -28,8 +28,6 @@ export type RekapPendaftaranDosbimHookRet = {
   statusFilter: string;
   handleStatusFilterChange: (value: string) => void;
   statistic: RegStatistic;
-  infoKontak: string | null;
-  isLoading: boolean;
 };
 
 export type RowActionHookRet = {
