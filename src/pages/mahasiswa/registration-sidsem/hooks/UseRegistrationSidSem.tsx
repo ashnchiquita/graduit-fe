@@ -45,48 +45,59 @@ const useRegistrationSidSem = () => {
   const defaultData: Placeholders = {
     name: "",
     nim: "",
-    program_studi: "",
     jalur_pilihan: "",
     topik: "",
     dosbing: "",
   };
 
-  const { data = defaultData } = useSWR(`registration-sidsem`, async () => {
-    let data: Placeholders;
+  const { data = defaultData } = useSWR(
+    [`registration-sidsem`, sessionData],
+    async () => {
+      let data: Placeholders;
 
-    if (strata?.toUpperCase() === "S1") {
-      const resIsRegistered = await isRegisteredSidSemS1(
-        tipePendaftaran.toLowerCase(),
-      );
-      if (resIsRegistered.data.data) {
-        navigate("/not-found");
+      if (strata?.toUpperCase() === "S1") {
+        const resIsRegistered = await isRegisteredSidSemS1(
+          tipePendaftaran.toLowerCase(),
+        );
+        if (resIsRegistered.data.data) {
+          navigate("/not-found");
+        }
+        const response = await getIdMahasiswa();
+
+        const resPlaceholders = await getPlaceholdersS1(response.data.id ?? "");
+        data = {
+          name: resPlaceholders.data.data.nama,
+          nim: resPlaceholders.data.data.nim,
+          jalur_pilihan: resPlaceholders.data.data.jalur_pilihan,
+          topik: resPlaceholders.data.data.judul,
+          dosbing: resPlaceholders.data.data.dosbing,
+        };
+      } else {
+        // TODO has registered guard
+        const responseDetail = (await getDetailSidSemS2(sessionData?.id ?? ""))
+          .data;
+        if (responseDetail.length === 0)
+          data = {
+            name: "",
+            nim: "",
+            jalur_pilihan: "",
+            topik: "",
+            dosbing: "",
+          };
+        else
+          data = {
+            name: sessionData?.nama ?? "",
+            nim: sessionData?.nim ?? "",
+            jalur_pilihan: responseDetail[0].jalurPilihan,
+            topik: responseDetail[0].judulTopik,
+            dosbing: responseDetail[0].dosenPembimbing
+              .map(({ nama }) => nama)
+              .join(", "),
+          };
       }
-      const response = await getIdMahasiswa();
-
-      const resPlaceholders = await getPlaceholdersS1(response.data.id ?? "");
-      data = {
-        name: resPlaceholders.data.data.nama,
-        nim: resPlaceholders.data.data.nim,
-        program_studi: resPlaceholders.data.data.jalur_pilihan,
-        jalur_pilihan: "",
-        topik: resPlaceholders.data.data.judul,
-        dosbing: resPlaceholders.data.data.dosbing,
-      };
-    } else {
-      // TODO has registered guard
-      const responseDetail = (await getDetailSidSemS2(sessionData?.id ?? ""))
-        .data;
-      data = {
-        name: responseDetail.namaMahasiswa,
-        nim: responseDetail.nimMahasiswa,
-        program_studi: "", // TODO program studi
-        jalur_pilihan: responseDetail.jalurPilihan,
-        topik: responseDetail.judulTopik,
-        dosbing: responseDetail.dosenPembimbing.join(", "),
-      };
-    }
-    return data;
-  });
+      return data;
+    },
+  );
 
   const form = useForm<RegistrationSidSemFormData>({
     defaultValues: {

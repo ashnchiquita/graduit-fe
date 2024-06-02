@@ -1,7 +1,6 @@
 export type Placeholders = {
   name: string;
   nim: string;
-  program_studi: string;
   jalur_pilihan: string;
   topik: string;
   dosbing: string;
@@ -25,28 +24,25 @@ export type postRegistraionSidSemDataS1 = {
 };
 
 export type GetDetailSidsemS2RespData = {
-  idPengajuanSidsem: string;
-  idMahasiswa: string;
-  nimMahasiswa: string;
-  namaMahasiswa: string;
-  jadwalSidang: string | null;
-  jenisSidang: "SEMINAR_1" | "SEMINAR_2" | "SIDANG";
-  ruangan: string | null;
-  status: "NOT_ASSIGNED" | "APPROVED" | "REJECTED";
-  berkasSidsem: {
-    id: string;
-    nama: string;
-    url: string;
-  }[];
-  emailMahasiswa: string;
+  id: string;
+  jadwalInterview: string;
   jalurPilihan: string;
+  status: string;
+  waktuPengiriman: string;
   judulTopik: string;
   deskripsiTopik: string;
-  dosenPembimbing: string[];
-  dosenPenguji: string[];
-  judulSidsem: string;
-  deskripsiSidsem: string;
-};
+  dosenPembimbing: [
+    {
+      id: string;
+      nama: string;
+      kontakWhatsApp: string;
+      kontakMsTeams: string;
+      kontakEmail: string;
+      kontakTelp: string;
+      kontakLainnya: string;
+    },
+  ];
+}[];
 
 export type PostRegistraionSidSemReqDataS2 = {
   tipe: string;

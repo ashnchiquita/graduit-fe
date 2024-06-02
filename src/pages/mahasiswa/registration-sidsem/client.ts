@@ -40,7 +40,7 @@ export async function isRegisteredSidSemS1(tipe: string) {
 
 export const getDetailSidSemS2 = async (idMhs: string) => {
   return await s2Instance.get<GetDetailSidsemS2RespData>(
-    `/registrasi-sidsem/mahasiswa/${idMhs}`,
+    `/registrasi-tesis/mahasiswa/${idMhs}`,
   );
 };
 

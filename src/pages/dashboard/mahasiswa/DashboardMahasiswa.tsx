@@ -1,8 +1,9 @@
+import { CardDescription, CardTitle } from "@/components/Card";
 import useSession from "@/hooks/useSession";
+import { RoleEnum } from "@/types/session-data";
 import KonfirmasiPendaftaranCard from "./components/KonfirmasiPendaftaran";
 import RegisterSidSemCard from "./components/RegisterSidSemCard";
 import useDashboardMahasiswa from "./hooks/useDashboardMahasiswa";
-import { CardDescription, CardTitle } from "@/components/Card";
 
 export default function DashboardMahasiswa() {
   const {
@@ -10,6 +11,9 @@ export default function DashboardMahasiswa() {
     isRegisteredSemTes,
     isRegisteredSidang,
     notification,
+    isSemproPeriod,
+    isSemtesPeriod,
+    isSidangPeriod,
   } = useDashboardMahasiswa();
   const dataMahasiswa = useSession().data;
 
@@ -17,7 +21,18 @@ export default function DashboardMahasiswa() {
     <main className="flex min-h-screen w-full flex-col items-start justify-start px-4 pb-20 pt-0">
       {/* DATA MAHASISWA */}
       <div className="flex w-full flex-col items-center justify-start gap-4">
-        {dataMahasiswa?.roles[0] === "S1_MAHASISWA" ? (
+        {notification.length === 0 &&
+          !isSemproPeriod &&
+          !isSemtesPeriod &&
+          !isSidangPeriod && (
+            <div>
+              Notifikasi Anda kosong dan tidak ada registrasi seminar/sidang
+              yang sedang terbuka
+            </div>
+          )}
+        {!dataMahasiswa ? (
+          <></>
+        ) : dataMahasiswa.roles.includes(RoleEnum.S1_MAHASISWA) ? (
           <div className="flex w-full flex-col gap-4">
             <RegisterSidSemCard
               title="Seminar Proposal"
@@ -47,13 +62,14 @@ export default function DashboardMahasiswa() {
             )}
           </div>
         ) : (
-          // change this into isRegistered s2 related
           <div className="flex w-full flex-col gap-4">
-            <RegisterSidSemCard
-              title="Seminar Proposal"
-              path="/registration/seminar-proposal/S2"
-              disabled={isRegisteredSemPro}
-            />
+            {isSemproPeriod && (
+              <RegisterSidSemCard
+                title="Seminar Proposal"
+                path="/registration/seminar-proposal/S2"
+                disabled={isRegisteredSemPro}
+              />
+            )}
             {isRegisteredSemPro && (
               <KonfirmasiPendaftaranCard
                 title="Seminar Proposal"
@@ -61,11 +77,13 @@ export default function DashboardMahasiswa() {
               ></KonfirmasiPendaftaranCard>
             )}
 
-            <RegisterSidSemCard
-              title="Seminar Tesis"
-              path="/registration/seminar-tesis/S2"
-              disabled={isRegisteredSemTes}
-            />
+            {isSemtesPeriod && (
+              <RegisterSidSemCard
+                title="Seminar Tesis"
+                path="/registration/seminar-tesis/S2"
+                disabled={isRegisteredSemTes}
+              />
+            )}
             {isRegisteredSemTes ? (
               <KonfirmasiPendaftaranCard
                 title="Seminar Tesis"
@@ -75,11 +93,13 @@ export default function DashboardMahasiswa() {
               <></>
             )}
 
-            <RegisterSidSemCard
-              title="Sidang"
-              path="/registration/sidang/S2"
-              disabled={isRegisteredSidang}
-            />
+            {isSidangPeriod && (
+              <RegisterSidSemCard
+                title="Sidang"
+                path="/registration/sidang/S2"
+                disabled={isRegisteredSidang}
+              />
+            )}
             {isRegisteredSidang ? (
               <KonfirmasiPendaftaranCard
                 title="Sidang"

@@ -55,9 +55,8 @@ export default function RegistrationSidSem() {
               <CardHeader>
                 <CardTitle>Registrasi {tipePendaftaran}</CardTitle>
                 <CardDescription>
-                  Registrasi {tipePendaftaran} dibuka dari tanggal 21 April 2024
-                  - 29 April 2024. Untuk mendaftar, pastikan Anda telah
-                  berkonsultasi dengan dosen pembimbing.
+                  Untuk mendaftar, pastikan Anda telah berkonsultasi dengan
+                  dosen pembimbing.
                 </CardDescription>
               </CardHeader>
             }

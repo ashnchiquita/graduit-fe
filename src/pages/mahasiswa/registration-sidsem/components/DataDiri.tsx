@@ -1,4 +1,4 @@
-import { CardTitle, CardDescription } from "@/components/Card";
+import { CardDescription, CardTitle } from "@/components/Card";
 import { Input } from "@/components/ui/input";
 import { Placeholders } from "../types";
 
@@ -24,17 +24,10 @@ export function DataDiriComponent({
         <CardDescription className="mb-1.5"> NIM </CardDescription>
         <Input placeholder={data.nim} disabled />
       </div>
-      <div>
-        <CardDescription className="mb-1.5"> Program Studi </CardDescription>
-        <Input placeholder={data.program_studi} disabled />
-      </div>
       {strata === "S2" && (
         <div>
           <CardDescription className="mb-1.5"> Jalur Pilihan </CardDescription>
-          <Input
-            placeholder="Jalur pilihan anda (jika mahasiswa S1 isi dengan program studi)"
-            disabled
-          />
+          <Input value={data.jalur_pilihan} disabled />
         </div>
       )}
       <div>
