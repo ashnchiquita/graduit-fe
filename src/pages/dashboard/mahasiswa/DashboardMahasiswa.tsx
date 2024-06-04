@@ -1,32 +1,45 @@
-"use client";
-
-import { Skeleton } from "@/components/ui/skeleton";
+import { CardDescription, CardTitle } from "@/components/Card";
 import useSession from "@/hooks/useSession";
+import { RoleEnum } from "@/types/session-data";
 import KonfirmasiPendaftaranCard from "./components/KonfirmasiPendaftaran";
 import RegisterSidSemCard from "./components/RegisterSidSemCard";
 import useDashboardMahasiswa from "./hooks/useDashboardMahasiswa";
 
 export default function DashboardMahasiswa() {
-  const { data, isRegisteredSeminar, isRegisteredSidang } =
-    useDashboardMahasiswa();
+  const {
+    isRegisteredSemPro,
+    isRegisteredSemTes,
+    isRegisteredSidang,
+    notification,
+    isSemproPeriod,
+    isSemtesPeriod,
+    isSidangPeriod,
+  } = useDashboardMahasiswa();
   const dataMahasiswa = useSession().data;
-  console.log(isRegisteredSeminar, isRegisteredSidang);
 
-  if (!data) {
-    return <Skeleton />;
-  }
   return (
-    <main className="flex min-h-screen w-full flex-col items-start justify-start p-4 pt-0">
+    <main className="flex min-h-screen w-full flex-col items-start justify-start px-4 pb-20 pt-0">
       {/* DATA MAHASISWA */}
       <div className="flex w-full flex-col items-center justify-start gap-4">
-        {dataMahasiswa?.roles[0] === "S1_MAHASISWA" ? (
+        {notification.length === 0 &&
+          !isSemproPeriod &&
+          !isSemtesPeriod &&
+          !isSidangPeriod && (
+            <div>
+              Notifikasi Anda kosong dan tidak ada registrasi seminar/sidang
+              yang sedang terbuka
+            </div>
+          )}
+        {!dataMahasiswa ? (
+          <></>
+        ) : dataMahasiswa.roles.includes(RoleEnum.S1_MAHASISWA) ? (
           <div className="flex w-full flex-col gap-4">
             <RegisterSidSemCard
               title="Seminar Proposal"
               path="/registration/seminar/S1"
-              disabled={isRegisteredSeminar}
+              disabled={isRegisteredSemPro}
             />
-            {isRegisteredSeminar ? (
+            {isRegisteredSemPro ? (
               <KonfirmasiPendaftaranCard
                 title="Seminar Proposal"
                 path="/detail/seminar/S1"
@@ -49,49 +62,63 @@ export default function DashboardMahasiswa() {
             )}
           </div>
         ) : (
-          // change this into isRegistered s2 related
           <div className="flex w-full flex-col gap-4">
-            <RegisterSidSemCard
-              title="Seminar Tesis"
-              path="/registration/seminar-tesis/S2"
-              disabled={isRegisteredSeminar}
-            />
-            {isRegisteredSidang ? (
+            {isSemproPeriod && (
+              <RegisterSidSemCard
+                title="Seminar Proposal"
+                path="/registration/seminar-proposal/S2"
+                disabled={isRegisteredSemPro}
+              />
+            )}
+            {isRegisteredSemPro && (
+              <KonfirmasiPendaftaranCard
+                title="Seminar Proposal"
+                path="/detail/seminar-proposal/S2"
+              ></KonfirmasiPendaftaranCard>
+            )}
+
+            {isSemtesPeriod && (
+              <RegisterSidSemCard
+                title="Seminar Tesis"
+                path="/registration/seminar-tesis/S2"
+                disabled={isRegisteredSemTes}
+              />
+            )}
+            {isRegisteredSemTes ? (
               <KonfirmasiPendaftaranCard
                 title="Seminar Tesis"
-                path="/detail/seminar/S2"
+                path="/detail/seminar-tesis/S2"
               ></KonfirmasiPendaftaranCard>
             ) : (
               <></>
             )}
-            <RegisterSidSemCard
-              title="Sidang Tesis 1"
-              path="/registration/sidang-satu/S2"
-              disabled={isRegisteredSeminar}
-            />
-            {isRegisteredSidang ? (
-              <KonfirmasiPendaftaranCard
-                title="Sidang Tesis 1"
-                path="/detail/sidang-satu/S2"
-              ></KonfirmasiPendaftaranCard>
-            ) : (
-              <></>
+
+            {isSidangPeriod && (
+              <RegisterSidSemCard
+                title="Sidang"
+                path="/registration/sidang/S2"
+                disabled={isRegisteredSidang}
+              />
             )}
-            <RegisterSidSemCard
-              title="Sidang Tesis 2"
-              path="/registration/sidang-dua/S2"
-              disabled={isRegisteredSeminar}
-            />
             {isRegisteredSidang ? (
               <KonfirmasiPendaftaranCard
-                title="Sidang Tesis 2"
-                path="/detail/sidang-dua/S2"
+                title="Sidang"
+                path="/detail/sidang/S2"
               ></KonfirmasiPendaftaranCard>
             ) : (
               <></>
             )}
           </div>
         )}
+
+        {notification.map((notif) => (
+          <div className="w-full rounded-lg bg-white">
+            <div className="flex flex-col gap-2 p-6">
+              <CardTitle key={notif.id}>{notif.title}</CardTitle>
+              <CardDescription>{notif.description}</CardDescription>
+            </div>
+          </div>
+        ))}
       </div>
     </main>
   );

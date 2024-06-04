@@ -1,8 +1,8 @@
-import s2Instance from "@/config/s2-axios-config";
 import s1Instance from "@/config/s1-axios-config";
+import s2Instance from "@/config/s2-axios-config";
 import {
-  GetLogBimbinganS2Res,
   GetLogBimbinganS1Res,
+  GetLogBimbinganS2Res,
   GetMahasiswaInfoS1Res,
   UpdateStatusBimbinganLogRes,
 } from "./types";
@@ -20,9 +20,13 @@ export async function updatePengesahanS2(id: string, status: boolean) {
   });
 }
 
-export async function getLogBimbinganS1(id: string) {
+export async function getLogBimbinganS1(
+  id: string,
+  limit: number,
+  offset: number,
+) {
   return await s1Instance.get<GetLogBimbinganS1Res>(
-    `/admin/bimbingan-logs?id_mahasiswa=${id}&limit=5&offset=0`,
+    `/admin/bimbingan-logs?id_mahasiswa=${id}&limit=${limit}&offset=${offset}`,
     {
       withCredentials: true,
     },

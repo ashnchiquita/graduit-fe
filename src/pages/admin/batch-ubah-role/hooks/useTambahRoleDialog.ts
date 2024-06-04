@@ -6,8 +6,8 @@ import { RoleDialogHookProps, RoleDialogHookRet } from "../types";
 import useSWRMutation from "swr/mutation";
 import { patchBatchUpdateRole } from "../../clients";
 import { PatchBatchUpdateRole } from "../../types";
-import { RoleEnum } from "@/types/session-data";
 import { toast } from "react-toastify";
+import { RoleEnum } from "@/types/session-data";
 
 export default function useTambahRoleDialog({
   table,

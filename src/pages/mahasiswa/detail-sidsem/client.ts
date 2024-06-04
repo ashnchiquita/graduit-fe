@@ -1,5 +1,10 @@
 import s1Instance from "@/config/s1-axios-config";
-import { DetailSidSemResp, IsRegistered } from "./types";
+import s2Instance from "@/config/s2-axios-config";
+import {
+  DetailSidSemResp,
+  GetDetailSidsemS2RespData,
+  IsRegistered,
+} from "./types";
 
 export const getDetailSidSemS1 = (tipe: string) => {
   return s1Instance.get<DetailSidSemResp>(
@@ -18,3 +23,9 @@ export async function isRegisteredSidSemS1(tipe: string) {
     },
   );
 }
+
+export const getDetailSidSemS2 = async (idMhs: string) => {
+  return await s2Instance.get<GetDetailSidsemS2RespData>(
+    `/registrasi-sidsem/mahasiswa/${idMhs}`,
+  );
+};

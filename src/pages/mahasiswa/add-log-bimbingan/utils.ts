@@ -22,6 +22,8 @@ export function formatDateWithoutClock(date: Date): string {
 
   // Format the date string
   const formattedDate: string = `${day} ${months[monthIndex]} ${year}`;
-
+  if (formattedDate === "NaN undefined NaN") {
+    return "-";
+  }
   return formattedDate;
 }

@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { Plus, X } from "lucide-react";
+import { CardDescription, CardTitle } from "@/components/Card";
+import { FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Plus, X } from "lucide-react";
+import { useState } from "react";
 import { UseFormReturn, useFieldArray } from "react-hook-form";
 import { RegistrationSidSemFormData } from "../constants";
-import { FormField } from "@/components/ui/form";
-import { CardTitle, CardDescription } from "@/components/Card";
 
 export function AddBerkas({
   form,
@@ -32,7 +32,7 @@ export function AddBerkas({
   };
 
   return (
-    <div className="rounded-lg bg-white px-4 py-3 flex flex-col gap-2">
+    <div className="flex flex-col gap-2 rounded-lg bg-white px-4 py-3">
       <CardTitle> Berkas Proposal </CardTitle>
       <CardDescription>
         {" "}
@@ -43,18 +43,18 @@ export function AddBerkas({
         control={form.control}
         name="berkas"
         render={() => (
-          <div className="flex flex-col gap-3 mt-3">
+          <div className="mt-3 flex flex-col gap-3">
             <div className="flex flex-wrap gap-3">
               {fields.map((item, index) => (
                 <div
                   key={item.id}
-                  className="rounded-lg w-auto font-normal flex text-muted-foreground bg-slate-200 px-2 py-1 content-center gap-2"
+                  className="flex w-auto content-center gap-2 rounded-lg bg-slate-200 px-2 py-1 font-normal text-muted-foreground"
                 >
                   <a href={item.link} className="text-gray-600 hover:underline">
                     {item.nama}
                   </a>
                   <X
-                    className="size-4 mt-[5.5px] hover:cursor-pointer"
+                    className="mt-[5.5px] size-4 hover:cursor-pointer"
                     onClick={() => remove(index)}
                   />
                 </div>
@@ -62,14 +62,14 @@ export function AddBerkas({
             </div>
             {!isTambah ? (
               <button
-                className="rounded-lg w-[160px] font-normal flex text-muted-foreground gap-3 border border-[#EAECF0] p-2 hover:bg-gray-100"
+                className="flex w-[160px] gap-3 rounded-lg border border-[#EAECF0] p-2 font-normal text-muted-foreground hover:bg-gray-100"
                 onClick={() => changeIsTambah()}
               >
                 <Plus className="size-5 opacity-50" />
-                <span className="capitalize text-sm">Tambah Berkas</span>
+                <span className="text-sm capitalize">Tambah Berkas</span>
               </button>
             ) : (
-              <div className="flex flex-col md:flex-row gap-2">
+              <div className="flex flex-col gap-2 md:flex-row">
                 <Input
                   placeholder="Nama Berkas"
                   value={namaBerkas}

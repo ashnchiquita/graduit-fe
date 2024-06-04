@@ -21,6 +21,7 @@ export type GetAllAccountsParams = {
   nama?: string;
   email?: string;
   roles?: RoleEnum[];
+  customFlag?: string;
   page: number;
   limit: number;
 };
@@ -70,4 +71,9 @@ export type RemoveBatchUpdateRole = {
 
 export type SuccessResponse = {
   message: string;
+};
+
+export type RoleAccess = {
+  id: number;
+  name: string;
 };

@@ -1,4 +1,4 @@
-import { Berkas } from "../types";
+import { Berkas } from "../../dosen/types";
 
 export type DetailSubmisi = {
   nama: string;
@@ -82,7 +82,6 @@ export type GetDetailSubmisiRes = {
           kontak: string;
         };
         idPengaju: string;
-        periode: string;
       };
     };
   };

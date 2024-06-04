@@ -72,20 +72,7 @@ export const RekapPendaftaranDosbim = lazy(
 export const DaftarTopik = lazy(
   () => import("../pages/daftar-topik/DaftarTopik.tsx"),
 );
-export const DetailSubmissionTugas = lazy(
-  () =>
-    import("../pages/dosen/detail-submission-tugas/DetailSubmissionTugas.tsx"),
-);
-export const SubmissionTugas = lazy(
-  () => import("../pages/dosen/submission-tugas/SubmissionTugas.tsx"),
-);
 
-export const AssignKelas = lazy(
-  () => import("../pages/admin/assign-kelas/AssignKelas.tsx"),
-);
-export const DaftarKelas = lazy(
-  () => import("../pages/kelas/daftar-kelas/DaftarKelas.tsx"),
-);
 export const InputNilai = lazy(
   () => import("../pages/admin/input-nilai/InputNilai.tsx"),
 );
@@ -103,18 +90,6 @@ export const ApprovalPendaftaran = lazy(
       "../pages/tim-tesis/approval-pendaftaran/ApprovalPendaftaranTimTesis.tsx"
     ),
 );
-
-export const KelasDetail = lazy(
-  () => import("../pages/mahasiswa/kelas-detail/KelasDetail.tsx"),
-);
-
-export const SubmisiTugas = lazy(
-  () => import("../pages/mahasiswa/submisi-tugas/SubmisiTugas.tsx"),
-);
-
-export const DaftarTugas = lazy(
-  () => import("../pages/mahasiswa/daftar-tugas/DaftarTugas.tsx"),
-);
 export const DetailMahasiswa = lazy(
   () => import("../pages/admin/detail-mahasiswa/DetailMahasiswa.tsx"),
 );
@@ -124,4 +99,8 @@ export const DashboardRegistrasi = lazy(
 );
 export const ProfileDosbim = lazy(
   () => import("../pages/dosen/profile/ProfileDosbim.tsx"),
+);
+
+export const DetailPengajuan = lazy(
+  () => import("../pages/tim-tesis/detail-pengajuan/DetailPengajuan.tsx"),
 );

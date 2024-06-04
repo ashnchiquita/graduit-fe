@@ -9,13 +9,26 @@ import {
 } from "@radix-ui/react-icons";
 import { Search } from "lucide-react";
 import { Link } from "react-router-dom";
-import useRekapPendaftaranTimTesis from "./hooks/useApprovalPendaftaranTimTesis";
-import { StatusPendaftaranOptions } from "./constants";
 import DataContext from "../context/DataContext";
+import ViewDropdownJenis from "./components/ViewDropdownJenis";
+import ViewDropdownStatus from "./components/ViewDropdownStatus";
+import { StatusPendaftaranOptions } from "./constants";
+import useRekapPendaftaranTimTesis from "./hooks/useApprovalPendaftaranTimTesis";
 
 export default function RekapPendaftaranTimTesis(): JSX.Element {
-  const { table, searchValue, handleSearchValueChange, refreshData } =
-    useRekapPendaftaranTimTesis();
+  const {
+    table,
+    searchValue,
+    handleSearchValueChange,
+    refreshData,
+    jenis,
+    setJenis,
+    status,
+    setStatus,
+    setStrata,
+    strata,
+    hasBothRoles,
+  } = useRekapPendaftaranTimTesis();
 
   return (
     <DataContext.Provider value={{ refreshData }}>
@@ -28,7 +41,18 @@ export default function RekapPendaftaranTimTesis(): JSX.Element {
             setSearchValue={handleSearchValueChange}
             searchPlaceholder="Cari nama atau NIM mahasiswa"
             selectFilterPlaceholder="Semua Bimbingan"
+            strataFilterValue={hasBothRoles ? strata : undefined}
+            setStrataFilterValue={setStrata}
             selectFilterOptions={StatusPendaftaranOptions}
+            customElementsRight={
+              <>
+                <ViewDropdownStatus
+                  viewStatus={status}
+                  setViewStatus={setStatus}
+                />
+                <ViewDropdownJenis viewJenis={jenis} setViewJenis={setJenis} />
+              </>
+            }
           />
         </section>
 

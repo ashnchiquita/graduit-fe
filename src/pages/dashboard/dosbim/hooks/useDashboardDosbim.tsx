@@ -21,8 +21,12 @@ import {
   DoughnutChartDosbing,
   MahasiswaBimbingan,
 } from "../types";
+import useSession from "@/hooks/useSession";
+import { RoleEnum } from "@/types/session-data";
 
 export default function useDashboardDosbim(): DashboardDosbimHookRet {
+  const { data: sessionData } = useSession();
+
   const { data: s1MahasiswaData = [] } = useSWR(
     "/api/dosbing/dashboard",
     async () => {
@@ -60,18 +64,22 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
   );
 
   useEffect(() => {
-    setMahasiswaData((prev) => {
-      const prevData = prev.filter((mahasiswa) => mahasiswa.strata === "S2");
-      return [...prevData, ...s1MahasiswaData];
-    });
-  }, [s1MahasiswaData]);
+    if (sessionData && sessionData.roles.includes(RoleEnum.S1_PEMBIMBING)) {
+      setMahasiswaData((prev) => {
+        const prevData = prev.filter((mahasiswa) => mahasiswa.strata === "S2");
+        return [...prevData, ...s1MahasiswaData];
+      });
+    }
+  }, [s1MahasiswaData, sessionData]);
 
   useEffect(() => {
-    setMahasiswaData((prev) => {
-      const prevData = prev.filter((mahasiswa) => mahasiswa.strata === "S1");
-      return [...prevData, ...s2MahasiswaData];
-    });
-  }, [s2MahasiswaData]);
+    if (sessionData && sessionData.roles.includes(RoleEnum.S2_PEMBIMBING)) {
+      setMahasiswaData((prev) => {
+        const prevData = prev.filter((mahasiswa) => mahasiswa.strata === "S1");
+        return [...prevData, ...s2MahasiswaData];
+      });
+    }
+  }, [s2MahasiswaData, sessionData]);
 
   const [mahasiswaData, setMahasiswaData] = useState<MahasiswaBimbingan[]>([]);
 

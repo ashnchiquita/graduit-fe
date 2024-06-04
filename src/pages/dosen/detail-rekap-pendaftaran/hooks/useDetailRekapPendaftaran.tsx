@@ -1,15 +1,15 @@
 import { useMemo, useState } from "react";
-import { RegistrationRecapData } from "../types";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 import {
   getMhsData,
   getRegS2,
   updateInterviewS2,
   updateStatusS2,
 } from "../clients";
-import { toast } from "react-toastify";
-import useSWRMutation from "swr/mutation";
+import { RegistrationRecapData } from "../types";
 
 const useDetailRekapPendaftaran = () => {
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);

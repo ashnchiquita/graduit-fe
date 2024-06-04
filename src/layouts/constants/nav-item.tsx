@@ -1,14 +1,14 @@
 import { RoleEnum } from "@/types/session-data";
-import { BsBook } from "react-icons/bs";
+import { GoGear } from "react-icons/go";
 import { IoSchoolOutline } from "react-icons/io5";
-import { VscNotebook, VscPieChart } from "react-icons/vsc";
+import { VscHome, VscNotebook } from "react-icons/vsc";
 import { NavItem } from "../types";
 
 const NAV_ITEMS: NavItem[] = [
   {
-    label: "Dashboard",
-    icon: <VscPieChart className="text-slate-700" />,
-    iconActive: <VscPieChart className="text-blue-900" />,
+    label: "Home",
+    icon: <VscHome className="size-4 text-slate-700" />,
+    iconActive: <VscHome className="size-4 text-blue-900" />,
     path: "/dashboard",
     roleAccess: [
       RoleEnum.S1_PEMBIMBING,
@@ -17,6 +17,7 @@ const NAV_ITEMS: NavItem[] = [
       RoleEnum.S2_MAHASISWA,
       RoleEnum.S1_TIM_TA,
       RoleEnum.S2_TIM_TESIS,
+      RoleEnum.ADMIN,
     ],
   },
   {
@@ -24,36 +25,54 @@ const NAV_ITEMS: NavItem[] = [
     icon: <VscNotebook className="text-slate-700" />,
     children: [
       {
-        label: "Registrasi",
+        label: "Registrasi Tugas Akhir",
         path: "/registrasi",
-        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
+        roleAccess: [RoleEnum.S1_MAHASISWA],
       },
-      // {
-      //   label: "Registrasi",
-      //   path: "/dashboard-registrasi",
-      //   roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
-      // },
+      {
+        label: "Registrasi Tesis",
+        path: "/registrasi",
+        roleAccess: [RoleEnum.S2_MAHASISWA],
+      },
       {
         label: "Daftar Pengajuan",
         path: "/daftar-pengajuan",
         roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
       },
     ],
-    roleAccess: [
-      RoleEnum.S1_PEMBIMBING,
-      RoleEnum.S2_PEMBIMBING,
-      RoleEnum.S1_MAHASISWA,
-      RoleEnum.S2_MAHASISWA,
+    roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
+  },
+
+  {
+    label: "Laporan Kemajuan",
+    icon: <IoSchoolOutline className="text-slate-700" />,
+    children: [
+      {
+        label: "Rekap Pendaftaran",
+        path: "/rekap-pendaftaran-tim-tesis",
+        roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.S1_TIM_TA],
+      },
     ],
+    roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.S1_TIM_TA],
   },
   {
     label: "Bimbingan",
     icon: <IoSchoolOutline className="text-slate-700" />,
     children: [
       {
-        label: "Rekap Pendaftaran",
+        label: "Rekap Pendaftaran Bimbingan",
         path: "/rekap-pendaftaran",
         roleAccess: [RoleEnum.S1_PEMBIMBING, RoleEnum.S2_PEMBIMBING],
+      },
+      {
+        label: "Riwayat Bimbingan",
+        path: "/log/bimbingan",
+        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
+      },
+      {
+        label: "Log Bimbingan",
+        path: "/add-log-bimbingan",
+        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
       },
     ],
     roleAccess: [
@@ -64,109 +83,72 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    label: "Tugas",
-    icon: <VscNotebook className="text-slate-700" />,
-    children: [
-      {
-        label: "Daftar Kelas",
-        path: `/tugas/daftar-kelas?view=${RoleEnum.S2_MAHASISWA}`,
-        roleAccess: [RoleEnum.S2_MAHASISWA],
-      },
-      {
-        label: "Assignment",
-        path: `/tugas/assignment`,
-        roleAccess: [RoleEnum.S2_MAHASISWA],
-      },
-      {
-        label: "Daftar Kelas",
-        path: `/tugas/daftar-kelas?view=${RoleEnum.S2_KULIAH}`,
-        roleAccess: [RoleEnum.S2_KULIAH],
-      },
-    ],
-    roleAccess: [RoleEnum.S2_MAHASISWA, RoleEnum.S2_KULIAH],
-  },
-  {
-    label: "Kelas",
-    icon: <BsBook size={16} className="text-slate-700" />,
-    children: [
-      {
-        label: "Daftar Kelas",
-        path: `/kelas/daftar-kelas?view=${RoleEnum.S2_TIM_TESIS}`,
-        roleAccess: [RoleEnum.S2_TIM_TESIS],
-      },
-      {
-        label: "Nilai Mahasiswa",
-        path: "/kelas/input-nilai",
-        roleAccess: [RoleEnum.S2_TIM_TESIS],
-      },
-    ],
-    roleAccess: [RoleEnum.S2_TIM_TESIS],
-  },
-  // {
-  //   label: "Tesis",
-  //   icon: <IoSchoolOutline className="text-slate-700" />,
-  //   children: [
-  //     { label: "Registrasi", path: "/tesis/registrasi" },
-  //     { label: "Status", path: "/tesis/status" },
-  //     { label: "Rekap", path: "/tesis/rekap" },
-  //   ],
-  // },
-  {
-    label: "Tugas Akhir",
-    icon: <IoSchoolOutline className="text-slate-700" />,
-    children: [
-      {
-        label: "Topik",
-        path: "/tugas-akhir/topik",
-        roleAccess: [
-          RoleEnum.S1_MAHASISWA,
-          RoleEnum.S1_PEMBIMBING,
-          RoleEnum.S1_TIM_TA,
-          RoleEnum.ADMIN,
-        ],
-      },
-      // { label: "Status", path: "/tugas-akhir/status/1" },
-      // { label: "Pengumuman", path: "/tugas-akhir/pengumuman" },
-      // { label: "Penjadwalan", path: "/tugas-akhir/penjadwalan" },
-    ],
-    roleAccess: [
-      RoleEnum.S1_MAHASISWA,
-      RoleEnum.S1_TIM_TA,
-      RoleEnum.ADMIN,
-      RoleEnum.TU,
-      RoleEnum.S1_PENGUJI,
-    ],
-  },
-  // {
-  //   label: "Informasi",
-  //   icon: <VscInfo className="text-slate-700" />,
-  //   children: [
-  //     { label: "Seminar", path: "/informasi/seminar" },
-  //     { label: "Pengujian", path: "/informasi/pengujian" },
-  //   ],
-  // },
-  // {
-  //   label: "Log",
-  //   icon: <IoClipboardOutline className="text-slate-700" />,
-  //   children: [
-  //     { label: "Bimbingan", path: "/log/bimbingan" },
-  //     { label: "Sistem", path: "/log/sistem" },
-  //   ],
-  // },
-  {
-    label: "Manajemen",
+    label: "TA & Tesis",
     icon: <IoSchoolOutline className="text-slate-700" />,
     children: [
       {
         label: "Daftar Topik",
-        path: "/manajemen/daftar-topik",
+        path: "/daftar-topik",
         roleAccess: [
-          RoleEnum.ADMIN,
-          RoleEnum.TU,
-          RoleEnum.S2_TIM_TESIS,
+          RoleEnum.S1_MAHASISWA,
+          RoleEnum.S1_PEMBIMBING,
           RoleEnum.S1_TIM_TA,
+          RoleEnum.S2_TIM_TESIS,
+          RoleEnum.ADMIN,
         ],
       },
+      {
+        label: "Pengajuan Sidang & Seminar",
+        path: "/pengajuan-sidsem",
+        roleAccess: [
+          RoleEnum.S1_PEMBIMBING,
+          RoleEnum.S2_PEMBIMBING,
+          RoleEnum.S2_PENGUJI,
+          RoleEnum.S1_TIM_TA,
+          RoleEnum.S2_TIM_TESIS,
+          RoleEnum.ADMIN,
+        ],
+      },
+    ],
+    roleAccess: [
+      RoleEnum.S1_MAHASISWA,
+      RoleEnum.S1_PEMBIMBING,
+      RoleEnum.S1_TIM_TA,
+      RoleEnum.S2_TIM_TESIS,
+      RoleEnum.ADMIN,
+    ],
+  },
+  // {
+  //   label: "Sidang dan Seminar",
+  //   icon: <IoSchoolOutline className="text-slate-700" />,
+  //   children: [
+  //     {
+  //       label: "Rekap Pendaftaran Tim Tesis",
+  //       path: "/rekap-pendaftaran-tim-tesis",
+  //       roleAccess: [RoleEnum.S2_TIM_TESIS, RoleEnum.ADMIN],
+  //     },
+  //     {
+  //       label: "Rekap Pendaftaran Pembimbing",
+  //       path: "/rekap-pendaftaran",
+  //       roleAccess: [RoleEnum.S2_PEMBIMBING],
+  //     },
+  //   ],
+  //   roleAccess: [RoleEnum.S2_PEMBIMBING, RoleEnum.S2_TIM_TESIS, RoleEnum.ADMIN],
+  // },
+  {
+    label: "Manajemen",
+    icon: <GoGear className="text-slate-700" />,
+    children: [
+      // {
+      //   label: "Daftar Topik",
+      //   path: "/manajemen/daftar-topik",
+      //   roleAccess: [
+      //     RoleEnum.ADMIN,
+      //     RoleEnum.TU,
+      //     RoleEnum.S2_TIM_TESIS,
+      //     RoleEnum.S1_TIM_TA,
+      //   ],
+      // },
       {
         label: "Kelola Akun",
         path: "/manajemen/kelola-akun",
@@ -196,16 +178,6 @@ const NAV_ITEMS: NavItem[] = [
           RoleEnum.S2_TIM_TESIS,
           RoleEnum.S1_TIM_TA,
         ],
-      },
-      {
-        label: "Assign Kelas Mahasiswa",
-        path: "/manajemen/assign-kelas/mahasiswa",
-        roleAccess: [RoleEnum.ADMIN, RoleEnum.TU, RoleEnum.S2_TIM_TESIS],
-      },
-      {
-        label: "Assign Kelas Dosen",
-        path: "/manajemen/assign-kelas/dosen",
-        roleAccess: [RoleEnum.ADMIN, RoleEnum.TU, RoleEnum.S2_TIM_TESIS],
       },
     ],
     roleAccess: [

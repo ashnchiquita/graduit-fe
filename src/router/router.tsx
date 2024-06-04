@@ -9,38 +9,28 @@ import {
   AkunCreate,
   AkunDetail,
   ApprovalPendaftaran,
-  AssignKelas,
   BatchUbahRole,
-  DaftarKelas,
   DaftarPengajuan,
   DaftarTopik,
-  DaftarTugas,
   Dashboard,
   DashboardRegistrasi,
   DetailMahasiswa,
+  DetailPengajuan,
   DetailRekapPendaftaran,
-  DetailSubmissionTugas,
   InputNilai,
-  KelasDetail,
   KelolaAkun,
   KonfigurasiPeriode,
   LogBimbinganMahasiswa,
   LogMahasiswa,
-  LogSistem,
   Login,
   MainLayout,
   MhsDashboard,
   NotFound,
-  Pengumuman,
-  Penjadwalan,
   ProfileDosbim,
   Registration,
   RekapPendaftaranDosbim,
   RekapPendaftaranTimTesis,
   RiwayatPendaftaran,
-  SubmisiTugas,
-  SubmissionTugas,
-  Topik,
 } from "./imports";
 
 export const router = createBrowserRouter(
@@ -87,7 +77,7 @@ export const router = createBrowserRouter(
           element: <RiwayatPendaftaran />,
         },
         {
-          path: "/approval-pendaftaran",
+          path: "/pengajuan-sidsem",
           element: <ApprovalPendaftaran />,
         },
         {
@@ -97,14 +87,6 @@ export const router = createBrowserRouter(
         {
           path: "/daftar-pengajuan",
           element: <DaftarPengajuan></DaftarPengajuan>,
-        },
-        {
-          path: "/tugas/:idTugas",
-          element: <SubmissionTugas />,
-        },
-        {
-          path: "/tugas/:idTugas/submisi/:idSubmisi",
-          element: <DetailSubmissionTugas />,
         },
         {
           path: "/registrasi",
@@ -119,10 +101,6 @@ export const router = createBrowserRouter(
           element: <DashboardRegistrasi></DashboardRegistrasi>,
         },
         {
-          path: "/tesis",
-          element: <Navigate to="/tesis/registrasi" replace />,
-        },
-        {
           path: "/tesis/registrasi",
           element: <Registration></Registration>,
         },
@@ -130,6 +108,10 @@ export const router = createBrowserRouter(
         {
           path: "/tesis/status",
           element: <MhsDashboard />,
+        },
+        {
+          path: "/pengajuan-sidsem/detail",
+          element: <DetailPengajuan />,
         },
         {
           path: "/manajemen",
@@ -152,76 +134,24 @@ export const router = createBrowserRouter(
           element: <BatchUbahRole />,
         },
         {
-          path: "/manajemen/assign-kelas/mahasiswa",
-          element: <AssignKelas type="MAHASISWA" />,
-        },
-        {
-          path: "/manajemen/assign-kelas/dosen",
-          element: <AssignKelas type="DOSEN" />,
-        },
-        {
-          path: "/log",
-          element: <Navigate to="/log/bimbingan" replace />,
-        },
-        {
           path: "/log/bimbingan",
           element: <LogMahasiswa />,
+        },
+        {
+          path: "/add-log-bimbingan",
+          element: <AddLogBimbingan />,
         },
         {
           path: "/dosen/bimbingan/:strata/:id",
           element: <LogBimbinganMahasiswa />,
         },
         {
-          path: "/log/sistem",
-          element: <LogSistem></LogSistem>,
-        },
-        {
-          path: "/tugas-akhir",
-          element: <Navigate to="/tugas-akhir/topik" replace />,
-        },
-        {
-          path: "/topik",
-          element: <Topik />,
-        },
-        {
-          path: "/tugas-akhir/pengumuman",
-          element: <Pengumuman />,
-        },
-        {
-          path: "/tugas-akhir/penjadwalan",
-          element: <Penjadwalan />,
-        },
-        {
           path: "/manajemen/periode-pendidikan",
           element: <KonfigurasiPeriode />,
         },
         {
-          path: "/tugas/daftar-kelas",
-          element: <DaftarKelas />,
-        },
-        {
-          path: "/kelas/daftar-kelas",
-          element: <DaftarKelas />,
-        },
-        {
           path: "/kelas/input-nilai",
           element: <InputNilai />,
-        },
-        {
-          path: "/add-log-bimbingan/:strata",
-          element: <AddLogBimbingan />,
-        },
-        {
-          path: "/tugas/kelas/:idKelas",
-          element: <KelasDetail />,
-        },
-        {
-          path: "/tugas/assignment/:idTugas",
-          element: <SubmisiTugas />,
-        },
-        {
-          path: "/tugas/assignment",
-          element: <DaftarTugas />,
         },
         {
           path: "/registration/:tipe/:strata",

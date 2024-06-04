@@ -1,7 +1,6 @@
 export type Placeholders = {
   name: string;
   nim: string;
-  program_studi: string;
   jalur_pilihan: string;
   topik: string;
   dosbing: string;
@@ -22,4 +21,35 @@ export type postRegistraionSidSemDataS1 = {
   judul_proposal: string;
   deskripsi: string;
   berkas: BerkasSidSem[];
+};
+
+export type GetDetailSidsemS2RespData = {
+  id: string;
+  jadwalInterview: string;
+  jalurPilihan: string;
+  status: string;
+  waktuPengiriman: string;
+  judulTopik: string;
+  deskripsiTopik: string;
+  dosenPembimbing: [
+    {
+      id: string;
+      nama: string;
+      kontakWhatsApp: string;
+      kontakMsTeams: string;
+      kontakEmail: string;
+      kontakTelp: string;
+      kontakLainnya: string;
+    },
+  ];
+}[];
+
+export type PostRegistraionSidSemReqDataS2 = {
+  tipe: string;
+  judulSidsem: string;
+  deskripsiSidsem: string;
+  berkasSidsem: {
+    nama: string;
+    url: string;
+  }[];
 };

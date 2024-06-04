@@ -14,7 +14,7 @@ import { ScrollArea } from "./ui/scroll-area";
 import { Lightbulb, WrapText } from "lucide-react";
 
 type ExpandableMahasiswaCardProps = {
-  user: User & { submissionTime: Date };
+  user: User & { submissionTime?: Date };
   backArrow: boolean;
   topik: string;
   deskripsi: string;
@@ -61,7 +61,8 @@ const ExpandableMahasiswaCard = ({
               <div className="flex items-center gap-3">
                 <div className="font-medium">{user.name}</div>
                 <div className="hidden text-xs text-muted-foreground md:block">
-                  {dayjs(user.submissionTime).format(DATETIME_FORMAT)}
+                  {user.submissionTime &&
+                    dayjs(user.submissionTime).format(DATETIME_FORMAT)}
                 </div>
               </div>
 

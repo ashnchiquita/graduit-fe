@@ -20,6 +20,7 @@ export default function KelolaAkun(): JSX.Element {
     roleValue,
     setRoleValue,
     handleRoleValueChange,
+    roleAccess,
   } = useKelolaAkun();
 
   return (
@@ -53,6 +54,7 @@ export default function KelolaAkun(): JSX.Element {
           roleValue,
           setRoleValue,
           handleRoleValueChange,
+          roleAccess,
         }}
       />
     </main>

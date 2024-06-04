@@ -10,13 +10,14 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import useBatchUbahRole from "./hooks/useBatchUbahRole";
-import useRoleDialog from "./hooks/useTambahRoleDialog";
+import useTambahRoleDialog from "./hooks/useTambahRoleDialog";
+import useHapusRoleDialog from "./hooks/useHapusRoleDialog";
 import FilterPopup from "../components/FilterPopup";
 import { VscListFilter } from "react-icons/vsc";
 import TambahRoleDialog from "./components/TambahRoleDialog";
 import HapusRoleDialog from "./components/HapusRoleDialog";
-import useHapusRoleDialog from "./hooks/useHapusRoleDialog";
 import { Search } from "lucide-react";
+import ViewDropdown from "./components/ViewDropdown";
 
 export default function BatchUbahRole(): JSX.Element {
   const {
@@ -38,9 +39,12 @@ export default function BatchUbahRole(): JSX.Element {
     setRoleValue,
     handleRoleValueChange,
     handleAddAccountButton,
+    roleAccess,
+    viewRole,
+    setViewRole,
   } = useBatchUbahRole();
 
-  const roleDialogHookRet = useRoleDialog({
+  const roleDialogHookRet = useTambahRoleDialog({
     table,
     fetchData,
     setTambahRoleDialogOpen,
@@ -61,8 +65,9 @@ export default function BatchUbahRole(): JSX.Element {
           searchValue={searchValue}
           setSearchValue={handleSearchValueChange}
           searchPlaceholder="Cari nama atau email"
+          customElementsLeft={<ViewDropdown {...{ viewRole, setViewRole }} />}
           customElementsRight={
-            <>
+            <div className="flex items-center gap-2">
               <Button
                 onClick={() => setOpenFilterDialog(true)}
                 variant={"ghost"}
@@ -71,27 +76,29 @@ export default function BatchUbahRole(): JSX.Element {
                 <VscListFilter size={14} />
                 Filter
               </Button>
-              <Button
-                disabled={table.getSelectedRowModel().flatRows.length === 0}
-                onClick={() => setTambahRoleDialogOpen(true)}
-                className="h-fit bg-blue-600 px-3 py-1 text-white transition-all"
-              >
-                Ubah Role
-              </Button>
-              <Button
-                disabled={table.getSelectedRowModel().flatRows.length === 0}
-                onClick={() => setHapusRoleDialogOpen(true)}
-                className="h-fit bg-red-500 px-3 py-1 text-white transition-all"
-              >
-                Hapus Role
-              </Button>
-              <Button
-                onClick={() => handleAddAccountButton()}
-                className="h-fit bg-teal-600 px-3 py-1 text-white"
-              >
-                Tambah Akun
-              </Button>
-            </>
+              <div className=" flex items-center gap-2">
+                <Button
+                  disabled={table.getSelectedRowModel().flatRows.length === 0}
+                  onClick={() => setTambahRoleDialogOpen(true)}
+                  className="h-fit border border-slate-500 bg-white px-3 py-1 text-black transition-all hover:bg-slate-500 hover:text-white"
+                >
+                  Ubah Role
+                </Button>
+                <Button
+                  disabled={table.getSelectedRowModel().flatRows.length === 0}
+                  onClick={() => setHapusRoleDialogOpen(true)}
+                  className="h-fit border border-slate-500 bg-white px-3 py-1 text-black transition-all hover:bg-slate-500 hover:text-white"
+                >
+                  Hapus Role
+                </Button>
+                <Button
+                  onClick={() => handleAddAccountButton()}
+                  className="h-fit border border-slate-500 bg-white px-3 py-1 text-black transition-all hover:bg-slate-500 hover:text-white"
+                >
+                  Tambah Akun
+                </Button>
+              </div>
+            </div>
           }
         />
       </section>
@@ -294,6 +301,7 @@ export default function BatchUbahRole(): JSX.Element {
           roleValue,
           setRoleValue,
           handleRoleValueChange,
+          roleAccess,
         }}
       />
     </main>
