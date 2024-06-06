@@ -4,16 +4,9 @@ import { DataTable } from "@/components/DataTable";
 import MobileBimbinganList from "./components/MobileBimbinganList";
 import useDashboardDosbim from "./hooks/useDashboardDosbim";
 import { useState } from "react";
-import { BarChartDosbing } from "./types";
 
 const DashboardDosbim = () => {
   const [searchValue, setSearchValue] = useState("");
-
-  // const handleSearchValueChange = (value: string) => {
-  //   setSearchValue(value);
-
-  //   // TODO: Refetch data from database
-  // };
 
   const { table, mahasiswaData, doughnutChartData, barChartData } =
     useDashboardDosbim();

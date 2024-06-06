@@ -24,17 +24,14 @@ export async function getDosbimStatisticsS2() {
 }
 
 export async function getDashboardDosbimS1() {
-  return await s1Instance.get<GetDashboardDosbimS1Res>(
-    "/api/dosbing/dashboard",
-    {
-      withCredentials: true,
-    },
-  );
+  return await s1Instance.get<GetDashboardDosbimS1Res>("/dosbing/dashboard", {
+    withCredentials: true,
+  });
 }
 
 export async function getDosbimStatisticsS1() {
   return await s1Instance.get<GetDosbimStatisticsS1Res>(
-    "/api/dosbing/dashboard/statistic",
+    "/dosbing/dashboard/statistic",
     {
       withCredentials: true,
     },
@@ -43,7 +40,7 @@ export async function getDosbimStatisticsS1() {
 
 export async function getDosbimStatusBimbinganS1() {
   return await s1Instance.get<GetDosbimStatusBimbinganS1Res>(
-    "/api/dosbing/dashboard/status-bimbingan",
+    "/dosbing/dashboard/status-bimbingan",
     {
       withCredentials: true,
     },
