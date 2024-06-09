@@ -66,10 +66,29 @@ export default function EditDosenPembimbingDialog({
     async () => {
       const res = await getAllDosenPembimbing();
 
-      const options: SelectData[] = res.data.map(({ id, nama }) => ({
-        label: nama,
-        value: id,
-      }));
+      if (!res.data || res.data.length === 0) {
+        return [] as SelectData[];
+      }
+
+      const options: SelectData[] = res.data
+        .filter(({ nama, email }) => nama !== null || email !== null)
+        .map(({ id, nama, email }) => {
+          let label = nama?.trim() || "";
+          if (!label && email) {
+            const emailPrefix = email.split("@")[0];
+            if (emailPrefix.trim()) {
+              label = emailPrefix;
+            }
+          }
+          if (label) {
+            return {
+              label: label,
+              value: id,
+            } as SelectData;
+          }
+          return null;
+        })
+        .filter((item): item is SelectData => item !== null); // Type guard to filter out nulls
 
       return options;
     },

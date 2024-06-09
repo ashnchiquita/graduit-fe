@@ -17,6 +17,10 @@ export const useLecturerCardImpl = () => {
     async () => {
       const res = await getAllDosenPembimbing();
 
+      if (!res.data || res.data.length === 0) {
+        return [] as SelectData[];
+      }
+
       const options: SelectData[] = res.data
         .filter(({ nama, email }) => {
           if (nama !== null) return true;

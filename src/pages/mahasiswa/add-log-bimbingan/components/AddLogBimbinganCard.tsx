@@ -27,9 +27,17 @@ export default function AddLogBimbinganCard({
       case "next_bimbingan_date":
         return <NextBimbinganDateButton form={form} />;
       case "laporan_kemajuan":
-        return <LaporanKemajuanComponent form={form} />;
+        return (
+          <div className="mt-6">
+            <LaporanKemajuanComponent form={form} />
+          </div>
+        );
       case "todo":
-        return <TodoComponent form={form} />;
+        return (
+          <div className="mt-6">
+            <TodoComponent form={form} />
+          </div>
+        );
       case "berkas":
         return <AddBerkas form={form} />;
       default:
@@ -38,7 +46,7 @@ export default function AddLogBimbinganCard({
   };
 
   return (
-    <div className="rounded-lg bg-white px-4 py-3 flex flex-col gap-2">
+    <div className="flex flex-col gap-1 rounded-lg bg-white px-4 py-3">
       {optional ? (
         <CardTitle> {title} </CardTitle>
       ) : (
@@ -56,7 +64,7 @@ export default function AddLogBimbinganCard({
       ) : (
         <CardDescription> {description} </CardDescription>
       )}
-      <div>{renderComponent()}</div>
+      <div className="mt-[-12px]">{renderComponent()}</div>
     </div>
   );
 }

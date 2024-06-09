@@ -27,7 +27,7 @@ export default function AddLogBimbingan() {
     <main>
       <Form {...form}>
         <form
-          className="pl-5 pr-3 flex flex-col gap-6 pb-10"
+          className="flex flex-col gap-6 pb-10 pl-5 pr-3"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <Card
@@ -78,13 +78,13 @@ export default function AddLogBimbingan() {
             type="next_bimbingan_date"
             form={form}
           />
-          <div className="px-4 flex flex-col gap-5">
+          <div className="flex flex-col gap-5 px-4">
             <CardDescription>
               Mohon periksa kembali seluruh bagian sebelum mengirimkan formulir
             </CardDescription>
             <div className="flex gap-2">
               <button
-                className="rounded-md bg-blue-500 px-5 py-2 text-white hover:bg-blue-600 mr-auto"
+                className="mr-auto rounded-md bg-blue-500 px-5 py-2 text-white hover:bg-blue-600"
                 type="submit"
               >
                 Kirim
