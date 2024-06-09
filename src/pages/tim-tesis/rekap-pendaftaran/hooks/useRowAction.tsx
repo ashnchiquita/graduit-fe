@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { RowActionHookRet } from "../types";
-import { approvePendaftaran, rejectPendaftaran } from "../clients";
+import {
+  approvePendaftaran,
+  getSelfData,
+  rejectPendaftaran,
+  updateStatusS1,
+} from "../clients";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
 import { useData } from "../../context/DataContext";
+import { RoleEnum } from "@/types/session-data";
 
 type RowActionHookParams = {
   idMahasiswa: string;
@@ -20,10 +26,16 @@ export default function useRowAction({
 
   const { trigger: acceptTrigger, error: acceptError } = useSWRMutation(
     `/registrasi-tesis/${idMahasiswa}/status`,
-    async (_, { arg }: { arg: { id: string } }) => {
+    async (_, { arg }: { arg: { id: string; pendaftaranId: string } }) => {
       try {
-        const res = await approvePendaftaran(arg.id);
-        return res.data;
+        const self = await getSelfData();
+        if (self.data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
+          const res = await approvePendaftaran(arg.id);
+          return res.data;
+        } else {
+          const res = await updateStatusS1(arg.pendaftaranId, "APPROVED");
+          return res.data;
+        }
       } catch (error) {
         toast.error("Gagal menerima pendaftaran");
       }
@@ -32,19 +44,26 @@ export default function useRowAction({
 
   const { trigger: rejectTrigger, error: rejectError } = useSWRMutation(
     `/registrasi-tesis/${idMahasiswa}/status`,
-    async (_, { arg }: { arg: { id: string } }) => {
+    async (_, { arg }: { arg: { id: string; pendaftaranId: string } }) => {
       try {
-        const res = await rejectPendaftaran(arg.id);
-        return res.data;
+        const self = await getSelfData();
+        if (self.data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
+          const res = await rejectPendaftaran(arg.id);
+          return res.data;
+        } else {
+          const res = await updateStatusS1(arg.pendaftaranId, "REJECTED");
+          return res.data;
+        }
       } catch (error) {
         toast.error("Gagal menolak pendaftaran");
       }
     },
   );
 
-  const handleAccept = async (id: string) => {
+  const handleAccept = async (id: string, pendaftaranId: string) => {
     await acceptTrigger({
       id: id,
+      pendaftaranId: pendaftaranId,
     });
 
     if (acceptError) {
@@ -55,9 +74,10 @@ export default function useRowAction({
     }
   };
 
-  const handleReject = async (id: string) => {
+  const handleReject = async (id: string, pendaftaranId: string) => {
     await rejectTrigger({
       id: id,
+      pendaftaranId: pendaftaranId,
     });
 
     if (rejectError) {
