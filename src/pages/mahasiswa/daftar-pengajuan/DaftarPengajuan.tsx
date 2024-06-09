@@ -5,9 +5,16 @@ import StatusMessageWrapper from "./components/StatusMessageWrapper";
 import { formatDate } from "@/lib/dateformat";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDaftarPengajuan from "./hooks/useDaftarPengajuan";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export default function DaftarPengajuan() {
   const { data, title } = useDaftarPengajuan();
+  const navigate = useNavigate();
+
+  const showCreateButton =
+    data.length <= 0 ||
+    data[0].status_pendaftaran.pengesahan_dosen_pembimbing === false;
 
   if (!data) {
     return <Skeleton />;
@@ -23,10 +30,20 @@ export default function DaftarPengajuan() {
             topik yang dikehendaki. Harap cek halaman ini berkala untuk
             mengetahui status pendaftaran.
           </p>
+          {showCreateButton && (
+            <Button
+              onClick={() => {
+                navigate("/registrasi");
+              }}
+              className="mt-1 h-fit self-end bg-blue-500 px-4 py-2 text-sm hover:bg-blue-600"
+            >
+              Buat Pendaftaran Baru
+            </Button>
+          )}
         </div>
       </div>
 
-      {/* DATA TUGAS AKHIR */}
+      {/* DATA TESIS / TUGAS AKHIR */}
       <div className="mt-3 flex w-full flex-col gap-3">
         {data &&
           data.map((d, index) => (

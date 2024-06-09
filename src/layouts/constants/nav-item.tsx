@@ -24,16 +24,16 @@ const NAV_ITEMS: NavItem[] = [
     label: "Pendaftaran",
     icon: <VscNotebook className="text-slate-700" />,
     children: [
-      {
-        label: "Registrasi Tugas Akhir",
-        path: "/registrasi",
-        roleAccess: [RoleEnum.S1_MAHASISWA],
-      },
-      {
-        label: "Registrasi Tesis",
-        path: "/registrasi",
-        roleAccess: [RoleEnum.S2_MAHASISWA],
-      },
+      // {
+      //   label: "Registrasi Tugas Akhir",
+      //   path: "/registrasi",
+      //   roleAccess: [RoleEnum.S1_MAHASISWA],
+      // },
+      // {
+      //   label: "Registrasi Tesis",
+      //   path: "/registrasi",
+      //   roleAccess: [RoleEnum.S2_MAHASISWA],
+      // },
       {
         label: "Daftar Pengajuan",
         path: "/daftar-pengajuan",
@@ -92,6 +92,7 @@ const NAV_ITEMS: NavItem[] = [
         roleAccess: [
           RoleEnum.S1_MAHASISWA,
           RoleEnum.S1_PEMBIMBING,
+          RoleEnum.S2_PEMBIMBING,
           RoleEnum.S1_TIM_TA,
           RoleEnum.S2_TIM_TESIS,
           RoleEnum.ADMIN,
@@ -111,6 +112,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
     roleAccess: [
       RoleEnum.S1_PEMBIMBING,
+      RoleEnum.S2_PEMBIMBING,
       RoleEnum.S1_TIM_TA,
       RoleEnum.S2_TIM_TESIS,
       RoleEnum.ADMIN,
