@@ -6,7 +6,6 @@ export default function LogBimbinganMahasiswa() {
   const { table, mahasiswaData, topik } = useLogBimbinganMahasiswa();
   console.log(mahasiswaData);
   return (
-    //TODO mobile screen
     <main className="flex min-h-screen flex-col gap-4 p-5">
       <ExpandableMahasiswaCard
         user={{
