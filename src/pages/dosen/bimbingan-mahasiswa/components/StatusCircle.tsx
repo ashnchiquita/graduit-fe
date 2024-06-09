@@ -78,7 +78,7 @@ export default function StatusCircle({
       {status ? (
         <Dialog>
           <DialogTrigger asChild>
-            <button className="rounded-md border border-gray-500 px-8 py-2 text-gray-500 hover:border-red-500 hover:bg-red-500 hover:text-white">
+            <button className="truncate rounded-md border border-gray-500 px-3 py-2 text-gray-500 transition-all duration-200 hover:border-red-500 hover:bg-red-500 hover:text-white">
               Batalkan pengesahan
             </button>
           </DialogTrigger>
@@ -86,20 +86,21 @@ export default function StatusCircle({
             <DialogHeader>
               <DialogTitle>
                 Yakin untuk membatalkan kesahan status bimbingan tanggal{" "}
-                {row.original.tanggal}.
+                {row.original.tanggal}?
               </DialogTitle>
               <DialogDescription>
-                Aksi ini tidak bisa dibatalkan.
+                Aksi ini tidak dapat dibatalkan.
               </DialogDescription>
             </DialogHeader>
+            <br />
             <DialogFooter>
               <DialogClose>
-                <button className="rounded-md border border-gray-500 px-8 py-2 text-black hover:bg-gray-100">
+                <button className="rounded-md border border-gray-500 px-3 py-2 text-sm text-black hover:bg-gray-100">
                   Kembali
                 </button>
               </DialogClose>
               <button
-                className="rounded-md border border-red-500 bg-red-500 px-8 py-2 text-white hover:bg-red-700"
+                className="rounded-md border border-red-500 bg-red-500 px-3 py-2 text-sm text-white hover:bg-red-700"
                 onClick={() => updateBimbinganLogStatus(row.original.id, false)}
               >
                 Gagalkan
