@@ -172,10 +172,11 @@ export default function DetailPengajuan() {
               </div>
               <ScrollArea className="flex-1">
                 <div className="pl-9 text-sm md:text-base">
-                  {data.tipe
-                    .replace("_", " ")
-                    .toLowerCase()
-                    .replace(/\b\w/g, (l) => l.toUpperCase())}
+                  {data.tipe === "SEMINAR_1"
+                    ? "Seminar Proposal"
+                    : data.tipe === "SEMINAR_2"
+                      ? "Seminar Tesis"
+                      : "Sidang"}
                 </div>
               </ScrollArea>
             </div>
