@@ -49,6 +49,13 @@ export type GetAccountMahasiswaRes = {
   nim: string;
 };
 
+export type AllDosbingResp = {
+  success: boolean;
+  code: number;
+  message: string;
+  data: GetAllDosenPembimbingRespData;
+};
+
 export type GetAllDosenPembimbingRespData = {
   id: string;
   nama: string;

@@ -1,5 +1,10 @@
 import s2Instance from "@/config/s2-axios-config";
-import { Pengajuan, PengajuanS1Response, SelfDataRes } from "./types";
+import {
+  AllDosbingResp,
+  Pengajuan,
+  PengajuanS1Response,
+  SelfDataRes,
+} from "./types";
 import loginInstance from "@/config/login-axios-config";
 import { GetAccountMahasiswaRes } from "./types";
 import { GetAllDosenPembimbingRespData } from "./types";
@@ -35,6 +40,12 @@ export const getAllDosenPembimbing = () => {
   });
 };
 
+export const getAllDosenPembimbingS1 = () => {
+  return s1Instance.get<AllDosbingResp>("/admin/all-dosbing", {
+    withCredentials: true,
+  });
+};
+
 export const updateDosenPembimbing = (
   id: string,
   dosenPembimbingIds: string[],
@@ -42,6 +53,22 @@ export const updateDosenPembimbing = (
   return s2Instance.patch(`/registrasi-tesis/${id}/pembimbing`, {
     pembimbing_ids: dosenPembimbingIds,
   });
+};
+
+export const updateDosenPembimbingS1 = (
+  idPendaftaran: string,
+  dosenPembimbingIds: string[],
+) => {
+  return s1Instance.put(
+    `/admin/update-dosbing`,
+    {
+      id_pendaftaran: idPendaftaran,
+      pembimbing_ids: dosenPembimbingIds,
+    },
+    {
+      withCredentials: true,
+    },
+  );
 };
 
 export const updateInterviewDate = (id: string, date: Date) => {
