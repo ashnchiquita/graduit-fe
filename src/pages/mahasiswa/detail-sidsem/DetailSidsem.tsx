@@ -1,9 +1,6 @@
-import { CardTitle } from "@/components/Card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowLeft, Lightbulb, WrapText } from "lucide-react";
-import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import DosenPembimbingIcon from "../../../assets/detail-sidsem/dosen-pembimbing-icon.svg";
 import JadwalSidangIcon from "../../../assets/detail-sidsem/jadwal-sidang-icon.svg";
