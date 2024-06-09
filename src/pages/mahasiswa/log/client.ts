@@ -6,7 +6,7 @@ import s2Instance from "@/config/s2-axios-config";
 
 export const getLogBimbinganStatusForS1 = (id: string) => {
   return s1Instance.get<GetLogBimbinganStatusResData>(
-    `/admin/bimbingan-logs-status?id_mahasiswa=${id}&limit=5&offset=0`,
+    `/admin/bimbingan-logs-status?id_mahasiswa=${id}`,
     { withCredentials: true },
   );
 };

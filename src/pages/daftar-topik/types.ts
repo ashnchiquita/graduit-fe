@@ -24,6 +24,13 @@ export type GetAllTopicRespData = {
   maxPage: number;
 };
 
+export type GetAllTopicRespDataS1 = {
+  data: {
+    data: DaftarTopikData[];
+    maxPage: number;
+  };
+};
+
 export type PostNewTopicReqData = {
   judul: string;
   deskripsi: string;

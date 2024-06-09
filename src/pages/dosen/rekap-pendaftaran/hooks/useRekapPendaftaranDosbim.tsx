@@ -19,7 +19,14 @@ import {
   RekapPendaftaranDosbimHookRet,
 } from "../types";
 import useSWR from "swr";
-import { getRegMhsS2, getStatisticS2, updateInterviewS2 } from "../clients";
+import {
+  getRegMhsS1,
+  getRegMhsS2,
+  getStatisticS1,
+  getStatisticS2,
+  updateInterviewS1,
+  updateInterviewS2,
+} from "../clients";
 import useSWRMutation from "swr/mutation";
 import { toast } from "react-toastify";
 import useSession from "@/hooks/useSession";
@@ -73,12 +80,12 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
   const { data: s1MhsData = [] } = useSWR(
     "/rekap-pendaftaran/dosbim/s1",
     async () => {
-      const { data } = await getRegMhsS2();
-
+      const { data } = await getRegMhsS1();
+      console.log(data);
       return data.data.map((d) => ({
         id: d.mahasiswa_id,
         nim: d.nim,
-        nama: d.mahasiswa_nama + "(s1)",
+        nama: d.mahasiswa_nama + " (s1)",
         jadwalWawancara: d.jadwal_interview
           ? new Date(d.jadwal_interview)
           : null,
@@ -109,14 +116,13 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
   );
 
   const { data: s1Statistic = defaultStatistic } = useSWR(
-    "/rekap-pendaftaran/dosbim/s2/statistic",
+    "/rekap-pendaftaran/dosbim/s1/statistic",
     async () => {
-      const { data } = await getStatisticS2();
-
+      const { data } = await getStatisticS1();
       return {
-        diterima: data.diterima,
-        sedang_proses: data.sedang_proses,
-        ditolak: data.ditolak,
+        diterima: data.data.diterima,
+        sedang_proses: data.data.sedang_proses,
+        ditolak: data.data.ditolak,
         strata: "S1" as "S1",
       };
     },
@@ -182,6 +188,13 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
       mhsId: string;
     };
   };
+
+  type TriggerInterviewS1Arg = {
+    arg: {
+      date: Date;
+      mhsId: string;
+    };
+  };
   const { trigger: triggerInterviewS2, error: interviewS2Error } =
     useSWRMutation(
       ["/rekap-pendaftaran/dosbim/s2", searchValue],
@@ -189,14 +202,30 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
         await updateInterviewS2(arg.mhsId, arg.date);
       },
     );
+
+  const { trigger: triggerInterviewS1, error: interviewS1Error } =
+    useSWRMutation(
+      ["/rekap-pendaftaran/dosbim/s2", searchValue],
+      async (_, { arg }: TriggerInterviewS1Arg) => {
+        await updateInterviewS1(arg.mhsId, arg.date);
+      },
+    );
   const handleInterviewUpdate = async (row: Row<Mahasiswa>, date: Date) => {
     const toastId = toast.loading("Menetapkan jadwal interview...");
-    await triggerInterviewS2({
-      date,
-      mhsId: row.original.id,
-    });
+    console.log(row.original);
+    if (row.original.strata === "S2") {
+      await triggerInterviewS2({
+        date,
+        mhsId: row.original.id,
+      });
+    } else {
+      await triggerInterviewS1({
+        date,
+        mhsId: row.original.id,
+      });
+    }
 
-    if (interviewS2Error) {
+    if (interviewS2Error || interviewS1Error) {
       toast.update(toastId, {
         render: "Terjadi kesalahan dalam menetapkan jadwal interview",
         type: "error",

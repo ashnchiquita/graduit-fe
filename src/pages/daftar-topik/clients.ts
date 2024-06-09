@@ -4,6 +4,7 @@ import {
   GetAllDosenPembimbingRespData,
   GetAllTopicParams,
   GetAllTopicRespData,
+  GetAllTopicRespDataS1,
   PostNewTopicBulkReqData,
   PostNewTopicReqData,
   PutExistingTopicReqData,
@@ -16,8 +17,9 @@ export async function getAllTopicsS2(params: GetAllTopicParams) {
 }
 
 export async function getAllTopicsS1(params: GetAllTopicParams) {
-  return await s1Instance.get<GetAllTopicRespData>("/api/admin/alokasi-topik", {
+  return await s1Instance.get<GetAllTopicRespDataS1>("/admin/alokasi-topik", {
     params,
+    withCredentials: true,
   });
 }
 
@@ -26,7 +28,9 @@ export async function postNewTopicS2(data: PostNewTopicReqData) {
 }
 
 export async function postNewTopicS1(data: PostNewTopicReqData) {
-  return await s1Instance.post("/api/admin/alokas-topik", [data]);
+  return await s1Instance.post("/admin/alokasi-topik", [data], {
+    withCredentials: true,
+  });
 }
 
 export async function postNewTopicBulkS2(data: PostNewTopicBulkReqData) {
@@ -34,7 +38,9 @@ export async function postNewTopicBulkS2(data: PostNewTopicBulkReqData) {
 }
 
 export async function postNewTopicBulkS1(data: PostNewTopicBulkReqData) {
-  return await s1Instance.post("/api/admin/alokas-topik", data);
+  return await s1Instance.post("/admin/alokasi-topik", data, {
+    withCredentials: true,
+  });
 }
 
 export async function putExistingTopicS2(
@@ -48,7 +54,9 @@ export async function putExistingTopicS1(
   id: string,
   data: PutExistingTopicReqData,
 ) {
-  return await s1Instance.put("/api/admin/alokasi-topik" + id, data);
+  return await s1Instance.put("/admin/alokasi-topik/" + id, data, {
+    withCredentials: true,
+  });
 }
 
 export async function deleteTopicS2(id: string) {
@@ -56,7 +64,9 @@ export async function deleteTopicS2(id: string) {
 }
 
 export async function deleteTopicS1(id: string) {
-  return await s1Instance.delete("/api/admin/alokasi-topik" + id);
+  return await s1Instance.delete("/admin/alokasi-topik/" + id, {
+    withCredentials: true,
+  });
 }
 
 export const getAllDosenPembimbingS2 = () => {
@@ -65,6 +75,6 @@ export const getAllDosenPembimbingS2 = () => {
 
 export const getAllDosenPembimbingS1 = () => {
   return s1Instance.get<GetAllDosenPembimbingRespData>(
-    "/api/admin/dosen-bimbingan",
+    "/admin/dosen-bimbingan",
   );
 };

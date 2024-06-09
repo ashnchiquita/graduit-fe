@@ -68,7 +68,6 @@ export default function useDaftarTopik() {
     ],
     async () => {
       if (!sessionData) return { data: [], maxPage: 1 };
-
       if (
         (isAdmin(sessionData.roles) && strataFilter === "S1") ||
         sessionData.roles.includes(RoleEnum.S1_PEMBIMBING) ||
@@ -82,8 +81,8 @@ export default function useDaftarTopik() {
             ? sessionData?.id
             : undefined,
         });
-
-        return { data: res.data.data, maxPage: res.data.maxPage };
+        console.log(res.data.data.data);
+        return { data: res.data.data.data, maxPage: res.data.data.maxPage };
       } else if (
         (isAdmin(sessionData.roles) && strataFilter === "S2") ||
         sessionData.roles.includes(RoleEnum.S2_PEMBIMBING) ||
