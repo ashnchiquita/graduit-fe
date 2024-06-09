@@ -41,8 +41,6 @@ export default function EditStatusPengajuanDialog({
   const [status, setStatus] = useState<StatusPendaftaranEnum>();
   const [isChanged, setIsChanged] = useState(false);
 
-  console.log(initialStatus);
-
   const { refreshData } = useData();
 
   useEffect(() => {

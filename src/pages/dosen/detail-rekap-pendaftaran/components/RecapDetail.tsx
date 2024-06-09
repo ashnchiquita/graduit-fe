@@ -2,12 +2,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import dayjs from "dayjs";
-import { Lightbulb, Pencil, WrapText } from "lucide-react";
+import { ArrowLeft, Lightbulb, Pencil, WrapText } from "lucide-react";
 import { DATETIME_FORMAT, RECAP_FILTER_STATUS_OPTIONS } from "../constants";
 import WawancaraModal from "@/pages/dosen/components/WawancaraModal";
 import RegAcceptDialog from "../../components/RegAcceptDialog";
 import useDetailRekapPendaftaran from "../hooks/useDetailRekapPendaftaran";
-import { FaArrowLeft } from "react-icons/fa6";
 import RegRejectDialog from "../../components/RegRejectDialog";
 
 const RecapDetail = () => {
@@ -24,45 +23,40 @@ const RecapDetail = () => {
   } = useDetailRekapPendaftaran();
 
   return (
-    <div className="flex h-full flex-1 flex-col gap-8 overflow-hidden rounded-2xl bg-white p-6 md:px-10 md:py-8">
-      <div className="flex items-center gap-4 md:gap-6">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => navigate(-1)}
-          className="w-fit"
-        >
-          <FaArrowLeft className="size-4 text-gray-500 md:size-4" />
-        </Button>
-        <Avatar className="size-12">
-          <AvatarFallback className="bg-violet-500 text-xl text-white">
-            {data && data.name ? data.name[0] : "A"}
+    <div className="flex h-full flex-1 flex-col gap-6 overflow-hidden rounded-lg bg-white p-4">
+      <div className="flex items-center gap-3 md:gap-3.5">
+        <button onClick={() => navigate(-1)}>
+          <ArrowLeft size={20} className="text-gray-500" />
+        </button>
+        <Avatar className="z-0 size-10">
+          <AvatarFallback className="z-0 bg-violet-500 text-lg text-white">
+            {data && data.name ? data.name[0].toUpperCase() : "A"}
           </AvatarFallback>
         </Avatar>
-        <div className="space-y-1 md:space-y-2">
+        <div>
           <div className="flex items-center gap-3">
             <div className="font-medium">{data?.name}</div>
-            <div className="hidden text-xs text-muted-foreground md:block">
+            <div className="mt-0.5 hidden text-xs text-muted-foreground md:block">
               {dayjs(data?.apply_date).format(DATETIME_FORMAT)}
             </div>
           </div>
 
           {/* Desktop */}
-          <div className="hidden gap-2 text-xs text-muted-foreground md:flex">
+          <div className="hidden gap-2 text-sm text-muted-foreground md:flex">
             <div>{data?.email}</div>
             <div>•</div>
             <div>{data?.stream}</div>
           </div>
 
           {/* Mobile */}
-          <div className="flex flex-col gap-1 text-xs text-muted-foreground md:hidden">
+          <div className="flex flex-col gap-1 text-sm text-muted-foreground md:hidden">
             <div className="font-medium">{data?.stream}</div>
             <div>{data?.email}</div>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col justify-between overflow-hidden">
+      <div className="flex flex-1 flex-col justify-between overflow-hidden px-4">
         <div className="flex flex-1 flex-col space-y-5 overflow-hidden pb-7">
           <div className="space-y-1">
             <div className="flex w-full items-center gap-3">
