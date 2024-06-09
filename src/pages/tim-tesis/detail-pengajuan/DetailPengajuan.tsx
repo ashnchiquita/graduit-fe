@@ -229,7 +229,7 @@ export default function DetailPengajuan() {
                 </div>
               </div>
               <ScrollArea className="flex-1">
-                <div className="span-1 flex gap-2 pl-9 text-sm md:text-base">
+                <div className="flex gap-2 pl-9 text-sm md:text-base">
                   {data.berkas_sidsem.length > 0 ? (
                     <ButtonDownload data={data.berkas_sidsem} />
                   ) : (
