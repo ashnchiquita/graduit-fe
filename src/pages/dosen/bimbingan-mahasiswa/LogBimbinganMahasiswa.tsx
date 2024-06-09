@@ -4,9 +4,8 @@ import ExpandableMahasiswaCard from "@/components/ExpandableMahasiswaCard";
 
 export default function LogBimbinganMahasiswa() {
   const { table, mahasiswaData, topik } = useLogBimbinganMahasiswa();
-  console.log(mahasiswaData);
   return (
-    <main className="flex min-h-screen flex-col gap-4 p-5">
+    <main className="flex min-h-screen flex-col gap-4 px-4 pb-4">
       <ExpandableMahasiswaCard
         user={{
           id: "",

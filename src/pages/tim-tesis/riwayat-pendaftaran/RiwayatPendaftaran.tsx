@@ -46,7 +46,7 @@ export default function RiwayatPendaftaran(): JSX.Element {
             <AvatarFallback className="z-0 bg-violet-500 text-lg text-white">
               {dataMahasiswa.nama &&
                 dataMahasiswa.nama.length > 0 &&
-                dataMahasiswa.nama[0]}
+                dataMahasiswa.nama[0].toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
@@ -78,15 +78,13 @@ export default function RiwayatPendaftaran(): JSX.Element {
                     open={ubahDosenPembimbingDialogOpen}
                     setOpen={setUbahDosenPembimbingDialogOpen}
                     id={dataMahasiswa.id}
-                    initialDosenPembimbing={pengajuan.dosenPembimbing
-                      .filter((dosen) => dosen.nama && dosen.nama.trim() !== "")
-                      .map(
-                        (dosen) =>
-                          ({
-                            value: dosen.id,
-                            label: dosen.nama,
-                          }) as SelectData,
-                      )}
+                    initialDosenPembimbing={pengajuan.dosenPembimbing.map(
+                      (dosen) =>
+                        ({
+                          value: dosen.id,
+                          label: dosen.nama,
+                        }) as SelectData,
+                    )}
                   />
                 )}
                 {index === 0 && (
