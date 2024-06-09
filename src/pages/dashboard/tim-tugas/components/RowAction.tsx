@@ -6,8 +6,8 @@ import {
 import { Row } from "@tanstack/react-table";
 import { HiOutlineDocument } from "react-icons/hi2";
 import { IoEllipsisVertical } from "react-icons/io5";
-import { PiClockCounterClockwise } from "react-icons/pi";
-import { Link } from "react-router-dom";
+// import { PiClockCounterClockwise } from "react-icons/pi";
+// import { Link } from "react-router-dom";
 import useRowAction from "../hooks/useRowAction";
 import { DashTableData } from "../types";
 import ArchiveDialog from "./ArchiveDialog";
