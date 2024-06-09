@@ -94,7 +94,7 @@ export default function DospengModal({
                           ? form.setValue("dospeng", [
                               ...form.getValues().dospeng,
                               listDosenPenguji.find(
-                                (v) => v.id == val,
+                                (v) => v.id === val,
                               ) as Dospeng,
                             ])
                           : form.setValue("dospeng", [
