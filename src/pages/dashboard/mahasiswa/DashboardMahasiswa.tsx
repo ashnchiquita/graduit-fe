@@ -6,6 +6,8 @@ import RegisterSidSemCard from "./components/RegisterSidSemCard";
 import useDashboardMahasiswa from "./hooks/useDashboardMahasiswa";
 import { PiGraduationCapDuotone } from "react-icons/pi";
 import { AiTwotoneNotification } from "react-icons/ai";
+import { formatDate } from "@/lib/dateformat";
+import { Dot } from "lucide-react";
 
 export default function DashboardMahasiswa() {
   const {
@@ -130,7 +132,16 @@ export default function DashboardMahasiswa() {
         {notification.map((notif) => (
           <div className="w-full rounded-lg bg-white">
             <div className="flex flex-col gap-2 p-6">
-              <CardTitle key={notif.id}>{notif.title}</CardTitle>
+              <CardTitle
+                key={notif.id}
+                className="flex items-center gap-0.5 text-base"
+              >
+                <span className="text-sm text-blue-600">
+                  {formatDate(new Date(notif.createdAt))}
+                </span>
+                <Dot size={12} />
+                {notif.title}
+              </CardTitle>
               <CardDescription>{notif.description}</CardDescription>
             </div>
           </div>
