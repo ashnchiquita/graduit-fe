@@ -92,6 +92,7 @@ const NAV_ITEMS: NavItem[] = [
         roleAccess: [
           RoleEnum.S1_MAHASISWA,
           RoleEnum.S1_PEMBIMBING,
+          RoleEnum.S2_PEMBIMBING,
           RoleEnum.S1_TIM_TA,
           RoleEnum.S2_TIM_TESIS,
           RoleEnum.ADMIN,
@@ -111,6 +112,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
     roleAccess: [
       RoleEnum.S1_PEMBIMBING,
+      RoleEnum.S2_PEMBIMBING,
       RoleEnum.S1_TIM_TA,
       RoleEnum.S2_TIM_TESIS,
       RoleEnum.ADMIN,
