@@ -1,4 +1,3 @@
-import { FaArrowLeft } from "react-icons/fa6";
 import type { User } from "@/lib/entity";
 import {
   Accordion,
@@ -6,12 +5,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
-import { Button } from "./ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { ScrollArea } from "./ui/scroll-area";
-import { Lightbulb, WrapText } from "lucide-react";
+import { ArrowLeft, Lightbulb, WrapText } from "lucide-react";
 
 type ExpandableMahasiswaCardProps = {
   user: User & { submissionTime?: Date };
@@ -34,31 +32,23 @@ const ExpandableMahasiswaCard = ({
     <Accordion
       type="single"
       collapsible
-      className="w-full rounded-2xl bg-white p-6 text-base md:px-10 md:py-8"
+      className="flex w-full flex-col gap-2 overflow-y-scroll rounded-lg bg-white p-4"
     >
       <AccordionItem className="border-0" value="header">
         <AccordionTrigger className="py-0 text-left hover:no-underline">
-          <div className="flex items-center gap-4 md:gap-6">
+          <div className="flex items-center gap-3 md:gap-3.5">
             {backArrow && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="w-fit"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(-1);
-                }}
-              >
-                <FaArrowLeft className="size-4 text-gray-500 md:size-6" />
-              </Button>
+              <button onClick={() => navigate("/rekap-pendaftaran-tim-tesis")}>
+                <ArrowLeft size={20} className="text-gray-500" />
+              </button>
             )}
-            <Avatar className="size-12">
-              <AvatarFallback className="bg-violet-500 text-xl text-white">
-                {user.name.length > 0 && user.name[0]}
+            <Avatar className="z-0 size-10">
+              <AvatarFallback className="z-0 bg-violet-500 text-lg text-white">
+                {user.name.length > 0 && user.name[0].toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <div className="space-y-1 md:space-y-2">
-              <div className="flex items-center gap-3">
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
                 <div className="font-medium">{user.name}</div>
                 <div className="hidden text-xs text-muted-foreground md:block">
                   {user.submissionTime &&
@@ -83,7 +73,7 @@ const ExpandableMahasiswaCard = ({
         </AccordionTrigger>
 
         <AccordionContent className="py-0">
-          <div className="mt-8 flex flex-1 flex-col justify-between overflow-hidden">
+          <div className="mt-4 flex flex-1 flex-col justify-between overflow-hidden">
             <div className="flex flex-1 flex-col space-y-5 overflow-hidden">
               <div className="space-y-1">
                 <div className="flex w-full items-center gap-3">

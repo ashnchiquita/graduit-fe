@@ -8,12 +8,13 @@ import {
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
-import { getDashboardTimTesisData } from "../client";
+import { getDashboardTimTAData, getDashboardTimTesisData } from "../client";
 import RowAction from "../components/RowAction";
 import {
   DashboardTimTugasHookProps,
   DashboardTimTugasHookRet,
   DashTableData,
+  GetDashboardTimTAReqParams,
   GetDashboardTimTesisReqParams,
   GetDashboardTimTesisStatusEnum,
 } from "../types";
@@ -44,29 +45,23 @@ export default function useDashboardTimTugas({
       ["/dashboard-tim-tugas", searchValue, pagination, strataFilter],
       async () => {
         if (strata === "S1" || (strata === "ALL" && strataFilter === "S1")) {
-          return {
-            data: [
-              {
-                id: "13521149",
-                nim: "13521149",
-                nama: "John Doe",
-                pengajuanTopik: true,
-                seminarProposal: true,
-                seminarTesis: true,
-                sidang: true,
-              },
-              {
-                id: "13521149",
-                nim: "13521941",
-                nama: "Jane Doe",
-                pengajuanTopik: true,
-                seminarProposal: false,
-                seminarTesis: false,
-                sidang: false,
-              },
-            ],
-            pageCount: 1,
+          const params: GetDashboardTimTAReqParams = {
+            limit: 10,
+            offset: 0,
           };
+          const resp = (await getDashboardTimTAData(params)).data;
+          const data: DashTableData[] = resp.data.map(
+            ({ id, nama, nim, PengajuanTopik, SeminarProposal, Sidang }) => ({
+              id: id,
+              nim: nim,
+              nama: nama,
+              pengajuanTopik: PengajuanTopik,
+              seminarProposal: SeminarProposal,
+              seminarTesis: false,
+              sidang: Sidang,
+            }),
+          );
+          return { data };
         } else {
           const params: GetDashboardTimTesisReqParams = {
             limit: pagination.pageSize,

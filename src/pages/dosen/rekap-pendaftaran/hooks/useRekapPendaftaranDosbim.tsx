@@ -259,29 +259,45 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
       enableSorting: false,
       cell: ({ row }) =>
         row.original.jadwalWawancara ? (
-          <span className="text-xs font-bold">
+          <span className="text-sm font-bold">
             {formatDate(row.original.jadwalWawancara)}
           </span>
         ) : (
-          <span className="text-xs font-medium text-red-400">Belum Ada</span>
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-red-400">Belum Ada</span>
+            {row.original.status === StatusPendaftaranEnum.PROCESS && (
+              <WawancaraModal
+                dateInit={row.original.jadwalWawancara}
+                onChange={(date: Date) => handleInterviewUpdate(row, date)}
+                modalTrigger={
+                  <Button
+                    variant="outline"
+                    className="ml-1 size-fit gap-2 px-2 py-1 text-xs"
+                  >
+                    <GoPencil className="size-3" /> Ubah
+                  </Button>
+                }
+              />
+            )}
+          </div>
         ),
     },
-    {
-      id: "ubah_jadwal",
-      enableSorting: false,
-      cell: ({ row }) =>
-        row.original.status === StatusPendaftaranEnum.PROCESS ? (
-          <WawancaraModal
-            dateInit={row.original.jadwalWawancara}
-            onChange={(date: Date) => handleInterviewUpdate(row, date)}
-            modalTrigger={
-              <Button variant="outline" className="size-fit gap-2 text-xs">
-                <GoPencil className="size-3" /> Ubah
-              </Button>
-            }
-          />
-        ) : null,
-    },
+    // {
+    //   id: "ubah_jadwal",
+    //   enableSorting: false,
+    //   cell: ({ row }) =>
+    //     row.original.status === StatusPendaftaranEnum.PROCESS ? (
+    //       <WawancaraModal
+    //         dateInit={row.original.jadwalWawancara}
+    //         onChange={(date: Date) => handleInterviewUpdate(row, date)}
+    //         modalTrigger={
+    //           <Button variant="outline" className="size-fit gap-2 text-xs">
+    //             <GoPencil className="size-3" /> Ubah
+    //           </Button>
+    //         }
+    //       />
+    //     ) : null,
+    // },
     {
       header: "Status Pengajuan",
       accessorKey: "status",
