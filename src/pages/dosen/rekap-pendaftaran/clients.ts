@@ -1,5 +1,11 @@
 import s2Instance from "@/config/s2-axios-config";
-import { GetRegMhsS2Res, RegStatistic, SelfDataRes } from "./types";
+import s1Instance from "@/config/s1-axios-config";
+import {
+  GetRegMhsS2Res,
+  RegStatistic,
+  RegStatisticS1,
+  SelfDataRes,
+} from "./types";
 import loginInstance from "@/config/login-axios-config";
 
 export async function getRegMhsS2(search?: string) {
@@ -11,6 +17,12 @@ export async function getRegMhsS2(search?: string) {
   });
 }
 
+export async function getRegMhsS1() {
+  return await s1Instance.get<GetRegMhsS2Res>("admin/rekap-pendaftaran", {
+    withCredentials: true,
+  });
+}
+
 export async function getStatisticS2() {
   return await s2Instance.get<RegStatistic>("/registrasi-tesis/statistics", {
     params: {
@@ -19,10 +31,29 @@ export async function getStatisticS2() {
   });
 }
 
+export async function getStatisticS1() {
+  return await s1Instance.get<RegStatisticS1>("/admin/statistics", {
+    withCredentials: true,
+  });
+}
+
 export async function updateInterviewS2(mhsId: string, date: Date) {
   return await s2Instance.patch(`/registrasi-tesis/${mhsId}/interview`, {
     date,
   });
+}
+
+export async function updateInterviewS1(mhsId: string, date: Date) {
+  return await s1Instance.put(
+    `/admin/update-interview`,
+    {
+      id_mahasiswa: mhsId,
+      interview_at: date,
+    },
+    {
+      withCredentials: true,
+    },
+  );
 }
 
 export async function updateStatusS2(mhsId: string, status: string) {

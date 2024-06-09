@@ -5,8 +5,11 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import {
   getMhsData,
+  getRegS1,
   getRegS2,
+  updateInterviewS1,
   updateInterviewS2,
+  updateStatusS1,
   updateStatusS2,
 } from "../clients";
 import { RegistrationRecapData } from "../types";
@@ -51,22 +54,32 @@ const useDetailRekapPendaftaran = () => {
     async () => {
       if (!strata || !mahasiswaId) return;
 
-      // if (strata?.toLowerCase() === "s2") {
-      const { data } = await getRegS2(mahasiswaId);
+      if (strata?.toLowerCase() === "s2") {
+        const { data } = await getRegS2(mahasiswaId);
 
-      return {
-        apply_date: new Date(data.waktuPengiriman),
-        interview_date: data.jadwalInterview
-          ? new Date(data.jadwalInterview)
-          : null,
-        status: data.status,
-        stream: data.jalurPilihan,
-        topic: data.judulTopik,
-        description: data.deskripsiTopik,
-      };
-      // } else {
-
-      // }
+        return {
+          apply_date: new Date(data.waktuPengiriman),
+          interview_date: data.jadwalInterview
+            ? new Date(data.jadwalInterview)
+            : null,
+          status: data.status,
+          stream: data.jalurPilihan,
+          topic: data.judulTopik,
+          description: data.deskripsiTopik,
+        };
+      } else {
+        const { data } = await getRegS1(mahasiswaId);
+        return {
+          apply_date: new Date(data.data.waktuPengiriman),
+          interview_date: data.data.jadwalInterview
+            ? new Date(data.data.jadwalInterview)
+            : null,
+          status: data.data.status,
+          stream: data.data.jalurPilihan,
+          topic: data.data.judulTopik,
+          description: data.data.deskripsiTopik,
+        };
+      }
     },
   );
 
@@ -82,8 +95,11 @@ const useDetailRekapPendaftaran = () => {
     `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
     async (_: string, { arg }: { arg: Date }) => {
       if (!mahasiswaId) return;
-
-      await updateInterviewS2(mahasiswaId, arg);
+      if (strata?.toLowerCase() === "s2") {
+        await updateInterviewS2(mahasiswaId, arg);
+      } else {
+        await updateInterviewS1(mahasiswaId, arg);
+      }
     },
   );
   const { trigger: triggerApprove, error: approveError } = useSWRMutation(
@@ -91,7 +107,11 @@ const useDetailRekapPendaftaran = () => {
     async () => {
       if (!mahasiswaId) return;
 
-      await updateStatusS2(mahasiswaId, "APPROVED");
+      if (strata?.toLowerCase() === "s2") {
+        await updateStatusS2(mahasiswaId, "APPROVED");
+      } else {
+        await updateStatusS1(mahasiswaId, "APPROVED");
+      }
     },
   );
   const { trigger: triggerReject, error: rejectError } = useSWRMutation(
@@ -99,7 +119,11 @@ const useDetailRekapPendaftaran = () => {
     async () => {
       if (!mahasiswaId) return;
 
-      await updateStatusS2(mahasiswaId, "REJECTED");
+      if (strata?.toLowerCase() === "s2") {
+        await updateStatusS2(mahasiswaId, "REJECTED");
+      } else {
+        await updateStatusS1(mahasiswaId, "REJECTED");
+      }
     },
   );
 

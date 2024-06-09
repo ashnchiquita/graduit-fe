@@ -34,7 +34,7 @@ export default function StatusCircle({
 
   const updateBimbinganLogStatus = async (id: string, status: boolean) => {
     const toastId = toast.loading("Mengubah status pengesahan...");
-    if (strata === "S1") {
+    if (strata?.toUpperCase() === "S1") {
       const resUpdate = await updateStatusBimbinganLog(id, status);
       if ((resUpdate.data as any).success) {
         toast.update(toastId, {

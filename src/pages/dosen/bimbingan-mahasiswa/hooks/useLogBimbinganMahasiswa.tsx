@@ -47,8 +47,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
   };
   const { data = defaultData } = useSWR(`/bimbingan/${id}`, async () => {
     let data: BimbinganData;
-
-    if (strata?.toUpperCase() === "S1") {
+    if (strata?.toLowerCase() === "s1") {
       const resBimbingan = await getLogBimbinganS1(
         id ?? "",
         pagination.pageSize,

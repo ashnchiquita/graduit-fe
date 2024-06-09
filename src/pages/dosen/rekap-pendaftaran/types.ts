@@ -21,6 +21,14 @@ export type RegStatistic = {
   ditolak: StatisticItem;
 };
 
+export type RegStatisticS1 = {
+  data: {
+    diterima: StatisticItem;
+    sedang_proses: StatisticItem;
+    ditolak: StatisticItem;
+  };
+};
+
 export type RekapPendaftaranDosbimHookRet = {
   table: Table<Mahasiswa>;
   searchValue: string;
@@ -50,6 +58,17 @@ export type GetRegMhsS2Res = {
     jadwal_interview: string;
   }[];
   count: number;
+};
+
+export type GetRegMshS1Res = {
+  data: {
+    pendaftaran_id: string;
+    nim: string;
+    mahasiswa_nama: string;
+    mahasiswa_id: string;
+    status: string;
+    jadwal_interview: string;
+  }[];
 };
 
 export type SelfDataRes = {

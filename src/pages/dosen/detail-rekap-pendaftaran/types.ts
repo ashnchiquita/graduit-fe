@@ -25,6 +25,17 @@ export type GetPendaftaranRes = {
   }[];
 };
 
+export type GetPendaftaranResS1 = {
+  data: {
+    jalurPilihan: string;
+    waktuPengiriman: string;
+    jadwalInterview: string;
+    status: string;
+    judulTopik: string;
+    deskripsiTopik: string;
+  };
+};
+
 export type MhsDataRes = {
   id: string;
   nama: string;
