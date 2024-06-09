@@ -51,7 +51,7 @@ export type GetDashboardTimTARespData = {
     nama: string;
     PengajuanTopik: boolean;
     SeminarProposal: boolean;
-    Sidang: boolean
+    Sidang: boolean;
   }[];
 };
 
@@ -60,7 +60,6 @@ export type GetDashboardTimTesisReqParams = {
   limit: number;
   search?: string;
 };
-
 
 export type GetDashboardTimTAReqParams = {
   offset: number;

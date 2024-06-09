@@ -26,9 +26,7 @@ export async function getDashboardTimTAData(
 
   return await s1Instance.get<GetDashboardTimTARespData>(
     "/TIMTA/dashboard-status",
-    { params ,
-      withCredentials: true,
-    },
+    { params, withCredentials: true },
   );
 }
 

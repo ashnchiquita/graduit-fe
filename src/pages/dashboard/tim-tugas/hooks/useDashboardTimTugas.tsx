@@ -51,7 +51,7 @@ export default function useDashboardTimTugas({
           };
           const resp = (await getDashboardTimTAData(params)).data;
           const data: DashTableData[] = resp.data.map(
-            ({ id, nama, nim, PengajuanTopik,SeminarProposal, Sidang}) => ({
+            ({ id, nama, nim, PengajuanTopik, SeminarProposal, Sidang }) => ({
               id: id,
               nim: nim,
               nama: nama,
@@ -59,8 +59,8 @@ export default function useDashboardTimTugas({
               seminarProposal: SeminarProposal,
               seminarTesis: false,
               sidang: Sidang,
-            })
-          )
+            }),
+          );
           return { data };
         } else {
           const params: GetDashboardTimTesisReqParams = {
