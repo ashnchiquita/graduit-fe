@@ -121,7 +121,6 @@ export function useUpsertDialog(
       const data: PostNewTopicReqData = {
         ...values,
       };
-
       if (isAdmin(sessionData.roles)) {
         if (strata === "S1") {
           await triggerPostS1(data);
