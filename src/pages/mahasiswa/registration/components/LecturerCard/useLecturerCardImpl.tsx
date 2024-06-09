@@ -17,10 +17,24 @@ export const useLecturerCardImpl = () => {
     async () => {
       const res = await getAllDosenPembimbing();
 
-      const options: SelectData[] = res.data.map(({ id, nama }) => ({
-        label: nama,
-        value: id,
-      }));
+      if (!res.data || res.data.length === 0) {
+        return [] as SelectData[];
+      }
+
+      const options: SelectData[] = res.data
+        .filter(({ nama, email }) => {
+          if (nama !== null) return true;
+          if (email === null) return false;
+          const emailPrefix = email.split("@")[0];
+          return emailPrefix !== "";
+        })
+        .map(({ id, nama, email }) => {
+          const label = nama !== null ? nama : email.split("@")[0];
+          return {
+            label,
+            value: id,
+          };
+        });
 
       return options;
     },

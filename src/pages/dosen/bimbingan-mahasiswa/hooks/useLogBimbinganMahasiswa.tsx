@@ -54,8 +54,6 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
         pagination.pageSize,
       );
       const resMahasiswa = await getMahasiswaInfoS1(id ?? "");
-      console.log(resBimbingan);
-      console.log(resMahasiswa.data.data.submission_time);
       data = {
         bimbingan: resBimbingan.data.data.map((item: BimbinganS1Res) => ({
           id: item.id,
@@ -86,10 +84,12 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
       data = {
         bimbingan: res.data.bimbingan.map((item) => ({
           id: item.id,
-          tanggal: `${item.waktuBimbingan}`,
+          tanggal: formatDateWithoutClock(new Date(item.waktuBimbingan)),
           laporan_kemajuan: item.laporanKemajuan,
           todo: item.todo,
-          rencana: item.bimbinganBerikutnya,
+          rencana: item.bimbinganBerikutnya
+            ? formatDateWithoutClock(new Date(item.bimbinganBerikutnya))
+            : "",
           berkas: item.berkas.map((berkasItem) => ({
             nama: berkasItem.nama,
             link: berkasItem.url,
@@ -116,7 +116,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
     {
       header: "Tanggal",
       accessorKey: "tanggal",
-      minSize: 350,
+      minSize: 1000,
       enableSorting: false,
     },
     {
@@ -159,7 +159,7 @@ export default function useLogBimbinganMahasiswa(): LogBimbinganMahasiswaHookRet
           row={row}
         />
       ),
-      minSize: 700,
+      minSize: 600,
       enableSorting: false,
     },
   ];

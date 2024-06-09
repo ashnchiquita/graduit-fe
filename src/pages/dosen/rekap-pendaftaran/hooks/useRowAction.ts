@@ -14,6 +14,7 @@ export default function useRowAction({
   row,
   searchValue,
 }: HookProps): RowActionHookRet {
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
 
@@ -71,6 +72,8 @@ export default function useRowAction({
   };
 
   return {
+    isPopoverOpen,
+    setIsPopoverOpen,
     acceptDialogOpen,
     setAcceptDialogOpen,
     rejectDialogOpen,

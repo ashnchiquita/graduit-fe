@@ -39,6 +39,8 @@ export type RekapPendaftaranDosbimHookRet = {
 };
 
 export type RowActionHookRet = {
+  isPopoverOpen: boolean;
+  setIsPopoverOpen: React.Dispatch<React.SetStateAction<boolean>>;
   acceptDialogOpen: boolean;
   setAcceptDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   rejectDialogOpen: boolean;

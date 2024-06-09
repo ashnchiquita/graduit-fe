@@ -229,7 +229,7 @@ export default function DetailPengajuan() {
                 </div>
               </div>
               <ScrollArea className="flex-1">
-                <div className="span-1 flex gap-2 pl-9 text-sm md:text-base">
+                <div className="flex gap-2 pl-9 text-sm md:text-base">
                   {data.berkas_sidsem.length > 0 ? (
                     <ButtonDownload data={data.berkas_sidsem} />
                   ) : (
@@ -258,7 +258,7 @@ export default function DetailPengajuan() {
               <div className="flex items-center gap-5 pl-9 text-sm md:text-base">
                 {
                   <div className="flex items-center gap-5 text-sm md:text-base">
-                    {data.jadwal_sidang == ""
+                    {data.jadwal_sidang === ""
                       ? "Belum Ada"
                       : formatDate(new Date(data.jadwal_sidang))}
                   </div>
@@ -301,7 +301,7 @@ export default function DetailPengajuan() {
               <div className="flex items-center gap-5 text-sm md:text-base">
                 {
                   <div className="flex items-center gap-5 text-sm md:text-base">
-                    {data.tempat == "" ? "Belum Ada" : data.tempat}
+                    {data.tempat === "" ? "Belum Ada" : data.tempat}
                   </div>
                 }
                 <TempatModal

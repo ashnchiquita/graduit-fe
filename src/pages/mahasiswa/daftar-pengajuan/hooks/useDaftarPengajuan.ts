@@ -51,7 +51,9 @@ export default function useDaftarPengajuan(): StatusMahasiswaHookRet {
           status_pendaftaran: {
             status: true,
             topik: item.judulTopik,
-            dosen_pembimbing: item.dosenPembimbing[0].nama,
+            dosen_pembimbing: item.dosenPembimbing
+              .map((d) => d.nama)
+              .join(", "),
             pengiriman_registrasi: new Date(item.waktuPengiriman),
             persetujuan_dosen_pembimbing: item.waktuKeputusan
               ? new Date(item.waktuKeputusan)

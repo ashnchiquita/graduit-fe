@@ -16,7 +16,6 @@ const roleHeaders = {
   [RoleEnum.TU]: "Tata Usaha",
   [RoleEnum.S1_PENGUJI]: "Penguji S1",
   [RoleEnum.S2_PENGUJI]: "Penguji S2",
-  // Add other role headers as needed
 };
 
 export default function SidebarContent(): JSX.Element {
