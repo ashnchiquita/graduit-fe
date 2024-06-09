@@ -38,7 +38,7 @@ export default function DetailPengajuan() {
     jadwalDialogOpen,
     setJadwalDialogOpen,
     tempatDialogOpen,
-    setTempatDialogOpen
+    setTempatDialogOpen,
   } = useDetailPengajuan();
   return (
     <main className="ml-6 mr-3 ">
@@ -146,8 +146,8 @@ export default function DetailPengajuan() {
                   </div>
                 }
                 <DospengModal
-                dospengDialogOpen={dospengDialogOpen}
-                setDospengDialogOpen={setDospengDialogOpen}
+                  dospengDialogOpen={dospengDialogOpen}
+                  setDospengDialogOpen={setDospengDialogOpen}
                   dosenPenguji={data.dosuji_name}
                   listDosenPenguji={dospengData}
                   onChange={handleDospengUpdate}
@@ -274,8 +274,8 @@ export default function DetailPengajuan() {
                 }
                 {
                   <SidangModal
-                  sidangDialogOpen={jadwalDialogOpen}
-                  setSidangDialogOpen={setJadwalDialogOpen}
+                    sidangDialogOpen={jadwalDialogOpen}
+                    setSidangDialogOpen={setJadwalDialogOpen}
                     dateInit={new Date(data.jadwal_sidang)}
                     onChange={(date) => {
                       handleJadwalUpdate(date);
@@ -286,7 +286,9 @@ export default function DetailPengajuan() {
                           <Button
                             variant="outline"
                             className="flex h-7 gap-2 px-3 py-2 text-sm"
-                            onClick={()=>{setJadwalDialogOpen(true)}}
+                            onClick={() => {
+                              setJadwalDialogOpen(true);
+                            }}
                           >
                             <Pencil size={12} />
                             {"Jadwalkan"}
@@ -317,8 +319,8 @@ export default function DetailPengajuan() {
                   </div>
                 }
                 <TempatModal
-                tempatDialogOpen={tempatDialogOpen}
-                setTempatDialogOpen={setTempatDialogOpen}
+                  tempatDialogOpen={tempatDialogOpen}
+                  setTempatDialogOpen={setTempatDialogOpen}
                   tempat={data.tempat}
                   onChange={handleTempatUpdate}
                   modalTrigger={
@@ -327,7 +329,9 @@ export default function DetailPengajuan() {
                         <Button
                           variant="outline"
                           className="flex h-7 gap-2 px-3 py-2 text-sm"
-                          onClick={()=>{setTempatDialogOpen(true)}}
+                          onClick={() => {
+                            setTempatDialogOpen(true);
+                          }}
                         >
                           <Pencil size={12} />
                           {"Ubah"}

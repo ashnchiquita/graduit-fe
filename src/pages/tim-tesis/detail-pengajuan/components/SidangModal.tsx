@@ -31,7 +31,7 @@ export default function SidangModal({
   onChange,
   modalTrigger,
   setSidangDialogOpen,
-  sidangDialogOpen
+  sidangDialogOpen,
 }: SidangModalProps): JSX.Element {
   const { dialogOpen, setDialogOpen, handleChange, form, isMobile } =
     useSidangModal(dateInit, onChange);
