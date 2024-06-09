@@ -60,12 +60,12 @@ export default function useDetailSidsem() {
         const responseDetail = await getDetailSidSemS1(
           tipePendaftaran.toLowerCase(),
         );
-        if (
-          responseDetail.data.data.waktu_mulai === "0001-01-01T07:07:12+07:07"
-        ) {
+        if (responseDetail.data.data.waktu_mulai === "") {
           time = "Belum Ditetapkan";
         } else {
-          time = formatDate(new Date(responseDetail.data.data.waktu_mulai));
+          const rawDate = responseDetail.data.data.waktu_mulai;
+          const cleanedDate = rawDate ? rawDate.replace(" WIB", "") : null;
+          time = formatDate(new Date(cleanedDate!));
         }
         data = {
           data: {

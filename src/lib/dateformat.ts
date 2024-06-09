@@ -1,5 +1,6 @@
 export function formatDate(date: Date): string {
   // Months array to convert month index to month name
+  console.log(date);
   const months: string[] = [
     "Jan",
     "Feb",

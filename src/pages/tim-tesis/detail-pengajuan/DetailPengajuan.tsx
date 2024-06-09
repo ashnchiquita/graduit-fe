@@ -40,6 +40,9 @@ export default function DetailPengajuan() {
     tempatDialogOpen,
     setTempatDialogOpen,
   } = useDetailPengajuan();
+  const rawDate = data.jadwal_sidang;
+  const cleanedDate = rawDate ? rawDate.replace(" WIB", "") : null;
+  const dateInit = cleanedDate ? new Date(cleanedDate) : new Date();
   return (
     <main className="ml-6 mr-3 ">
       <div className="w-full rounded-2xl bg-white p-6 text-base md:px-10 md:py-8">
@@ -269,14 +272,14 @@ export default function DetailPengajuan() {
                   <div className="flex items-center gap-5 text-sm md:text-base">
                     {data.jadwal_sidang === ""
                       ? "Belum Ada"
-                      : formatDate(new Date(data.jadwal_sidang))}
+                      : formatDate(new Date(cleanedDate!))}
                   </div>
                 }
                 {
                   <SidangModal
                     sidangDialogOpen={jadwalDialogOpen}
                     setSidangDialogOpen={setJadwalDialogOpen}
-                    dateInit={new Date(data.jadwal_sidang)}
+                    dateInit={dateInit}
                     onChange={(date) => {
                       handleJadwalUpdate(date);
                     }}
