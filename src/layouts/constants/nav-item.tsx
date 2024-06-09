@@ -69,11 +69,11 @@ const NAV_ITEMS: NavItem[] = [
         path: "/log/bimbingan",
         roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
       },
-      {
-        label: "Log Bimbingan",
-        path: "/add-log-bimbingan",
-        roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
-      },
+      // {
+      //   label: "Log Bimbingan",
+      //   path: "/add-log-bimbingan",
+      //   roleAccess: [RoleEnum.S1_MAHASISWA, RoleEnum.S2_MAHASISWA],
+      // },
     ],
     roleAccess: [
       RoleEnum.S1_PEMBIMBING,
