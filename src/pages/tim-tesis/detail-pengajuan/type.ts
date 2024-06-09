@@ -86,18 +86,24 @@ export type Dospeng = {
 };
 
 export type SidangModalProps = {
+  sidangDialogOpen: boolean;
+  setSidangDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   dateInit: Date | null;
   onChange: (date: Date) => void;
   modalTrigger: JSX.Element;
 };
 
 export type TempatModalProps = {
+  tempatDialogOpen: boolean;
+  setTempatDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   tempat: string | null;
   onChange: (tempat: string) => void;
   modalTrigger: JSX.Element;
 };
 
 export type DospengModalProps = {
+  dospengDialogOpen: boolean;
+  setDospengDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   dosenPenguji: Dospeng[] | null;
   modalTrigger: JSX.Element;
   onChange: (data: Dospeng[]) => void;

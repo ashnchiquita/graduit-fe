@@ -20,20 +20,26 @@ import { Form, FormField, FormItem } from "@/components/ui/form/form";
 import { VscChromeClose } from "react-icons/vsc";
 import useDospengModal from "../hooks/useDospengModal";
 import { Dospeng, DospengModalProps } from "../type";
+import { useEffect, useState } from "react";
 
 export default function DospengModal({
   dosenPenguji,
   modalTrigger,
   listDosenPenguji,
   onChange,
+  dospengDialogOpen,
+  setDospengDialogOpen
 }: DospengModalProps): JSX.Element {
   dosenPenguji = dosenPenguji ?? [];
   const { dialogOpen, setDialogOpen, form, handleChange } = useDospengModal(
     dosenPenguji,
     onChange,
   );
+  useEffect(()=>{
+    console.log(listDosenPenguji)
+  },[dospengDialogOpen])
   return (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog open={dospengDialogOpen} onOpenChange={setDospengDialogOpen}>
       <DialogTrigger asChild>{modalTrigger}</DialogTrigger>
 
       <DialogContent className="max-w-[330px] rounded-md md:max-w-[425px]">

@@ -13,7 +13,7 @@ export default function useDospengModal(
   const [width] = useWindowSize();
   const handleChange = (data: z.infer<typeof FormSchemaDospeng>) => {
     onChange(data.dospeng);
-    setDialogOpen(false);
+    setDialogOpen(!dialogOpen);
   };
 
   const form = useForm<z.infer<typeof FormSchemaDospeng>>({

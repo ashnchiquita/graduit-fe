@@ -22,6 +22,9 @@ import { convertToDate } from "../utils";
 const useDetailPengajuan = () => {
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [dospengDialogOpen, setDospengDialogOpen] = useState(false);
+  const [jadwalDialogOpen, setJadwalDialogOpen] = useState(false);
+  const [tempatDialogOpen, setTempatDialogOpen] = useState(false);
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -209,6 +212,7 @@ const useDetailPengajuan = () => {
         autoClose: 1000,
       });
     } else {
+      setDospengDialogOpen(!dospengDialogOpen)
       toast.update(toastId, {
         render: "Berhasil menetapkan dosen penguji",
         type: "success",
@@ -230,6 +234,7 @@ const useDetailPengajuan = () => {
         autoClose: 1000,
       });
     } else {
+      setTempatDialogOpen(!tempatDialogOpen)
       toast.update(toastId, {
         render: "Berhasil menetapkan tempat sidang",
         type: "success",
@@ -251,6 +256,7 @@ const useDetailPengajuan = () => {
         autoClose: 1000,
       });
     } else {
+      setJadwalDialogOpen(!jadwalDialogOpen)
       toast.update(toastId, {
         render: "Berhasil menetapkan jadwal sidang/seminar",
         type: "success",
@@ -318,6 +324,12 @@ const useDetailPengajuan = () => {
     dospengData,
     handleDospengUpdate,
     strata,
+    dospengDialogOpen,
+    setDospengDialogOpen,
+    jadwalDialogOpen,
+    setJadwalDialogOpen,
+    tempatDialogOpen,
+    setTempatDialogOpen
   };
 };
 

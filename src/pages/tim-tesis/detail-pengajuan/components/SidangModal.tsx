@@ -30,12 +30,14 @@ export default function SidangModal({
   dateInit,
   onChange,
   modalTrigger,
+  setSidangDialogOpen,
+  sidangDialogOpen
 }: SidangModalProps): JSX.Element {
   const { dialogOpen, setDialogOpen, handleChange, form, isMobile } =
     useSidangModal(dateInit, onChange);
 
   return (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog open={sidangDialogOpen} onOpenChange={setSidangDialogOpen}>
       <DialogTrigger asChild>{modalTrigger}</DialogTrigger>
 
       <DialogContent className="max-w-[330px] rounded-md md:max-w-[425px]">
