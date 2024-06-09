@@ -40,8 +40,13 @@ export type GetDetailSidsemS2RespData = {
   jalurPilihan: string;
   judulTopik: string;
   deskripsiTopik: string;
-  dosenPembimbing: string[];
+  dosenPembimbing: DosbingDataRes[];
   dosenPenguji: string[];
   judulSidsem: string;
   deskripsiSidsem: string;
+};
+
+export type DosbingDataRes = {
+  nama: string;
+  email: string;
 };

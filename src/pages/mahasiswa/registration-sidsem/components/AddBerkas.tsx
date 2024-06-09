@@ -32,8 +32,8 @@ export function AddBerkas({
   };
 
   return (
-    <div className="flex flex-col gap-2 rounded-lg bg-white px-4 py-3">
-      <CardTitle> Berkas Proposal </CardTitle>
+    <div className="flex flex-col gap-2 rounded-lg bg-white p-4">
+      <CardTitle className="text-lg"> Berkas Proposal </CardTitle>
       <CardDescription>
         {" "}
         Silakan unggah berkas proposal Anda pada field di bawah ini. Link berkas
@@ -43,18 +43,23 @@ export function AddBerkas({
         control={form.control}
         name="berkas"
         render={() => (
-          <div className="mt-3 flex flex-col gap-3">
+          <div className="flex flex-col gap-3">
             <div className="flex flex-wrap gap-3">
               {fields.map((item, index) => (
                 <div
                   key={item.id}
-                  className="flex w-auto content-center gap-2 rounded-lg bg-slate-200 px-2 py-1 font-normal text-muted-foreground"
+                  className="flex w-auto content-center items-center gap-2 rounded-lg bg-slate-200 px-2 py-1 font-normal text-muted-foreground"
                 >
-                  <a href={item.link} className="text-gray-600 hover:underline">
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-gray-600 hover:underline"
+                  >
                     {item.nama}
                   </a>
                   <X
-                    className="mt-[5.5px] size-4 hover:cursor-pointer"
+                    className="size-4 hover:cursor-pointer"
                     onClick={() => remove(index)}
                   />
                 </div>

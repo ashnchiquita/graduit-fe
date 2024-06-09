@@ -4,6 +4,10 @@ import { RoleEnum } from "@/types/session-data";
 import KonfirmasiPendaftaranCard from "./components/KonfirmasiPendaftaran";
 import RegisterSidSemCard from "./components/RegisterSidSemCard";
 import useDashboardMahasiswa from "./hooks/useDashboardMahasiswa";
+import { PiGraduationCapDuotone } from "react-icons/pi";
+import { AiTwotoneNotification } from "react-icons/ai";
+import { formatDate } from "@/lib/dateformat";
+import { Dot } from "lucide-react";
 
 export default function DashboardMahasiswa() {
   const {
@@ -33,7 +37,11 @@ export default function DashboardMahasiswa() {
         {!dataMahasiswa ? (
           <></>
         ) : dataMahasiswa.roles.includes(RoleEnum.S1_MAHASISWA) ? (
-          <div className="flex w-full flex-col gap-4">
+          <div className="mb-1 flex w-full flex-col gap-4">
+            <div className="flex items-center gap-2">
+              <PiGraduationCapDuotone size={16} />
+              <h2 className="text-base font-bold">Sidang dan Seminar</h2>
+            </div>
             <RegisterSidSemCard
               title="Seminar Proposal"
               path="/registration/seminar/S1"
@@ -62,7 +70,11 @@ export default function DashboardMahasiswa() {
             )}
           </div>
         ) : (
-          <div className="flex w-full flex-col gap-4">
+          <div className="mb-1 flex w-full flex-col gap-4">
+            <div className="flex items-center gap-2">
+              <PiGraduationCapDuotone size={16} />
+              <h2 className="text-base font-bold">Sidang dan Seminar</h2>
+            </div>
             {isSemproPeriod && (
               <RegisterSidSemCard
                 title="Seminar Proposal"
@@ -111,10 +123,25 @@ export default function DashboardMahasiswa() {
           </div>
         )}
 
+        {notification.length > 0 && (
+          <div className="mb-[-6px] flex items-center gap-2 self-start">
+            <AiTwotoneNotification size={16} />
+            <h2 className="text-base font-bold">Notifikasi</h2>
+          </div>
+        )}
         {notification.map((notif) => (
           <div className="w-full rounded-lg bg-white">
             <div className="flex flex-col gap-2 p-6">
-              <CardTitle key={notif.id}>{notif.title}</CardTitle>
+              <CardTitle
+                key={notif.id}
+                className="flex items-center gap-0.5 text-base"
+              >
+                <span className="text-sm text-blue-600">
+                  {formatDate(new Date(notif.createdAt))}
+                </span>
+                <Dot size={12} />
+                {notif.title}
+              </CardTitle>
               <CardDescription>{notif.description}</CardDescription>
             </div>
           </div>

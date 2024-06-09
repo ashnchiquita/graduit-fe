@@ -73,7 +73,7 @@ export default function Profile(): JSX.Element {
 
             <DropdownMenuContent
               align="end"
-              className="z-[99] flex w-full flex-col gap-2 px-0 py-2"
+              className="z-[99] flex w-full flex-col gap-2 p-2"
             >
               {(sessionData.roles.includes(RoleEnum.S2_PEMBIMBING) ||
                 sessionData.roles.includes(RoleEnum.S1_PEMBIMBING)) && (
@@ -81,7 +81,7 @@ export default function Profile(): JSX.Element {
                   <DropdownMenuItem>
                     <button
                       disabled={isLoading}
-                      className="w-full px-4 text-left hover:text-blue-500"
+                      className="w-full px-1 text-left hover:text-blue-500"
                       onClick={() => {
                         navigate("/profile");
                       }}
@@ -89,13 +89,12 @@ export default function Profile(): JSX.Element {
                       Profile
                     </button>
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
                 </>
               )}
               <DropdownMenuItem>
                 <button
                   disabled={isLoading}
-                  className="w-full px-4 text-left hover:text-red-500"
+                  className="w-full px-1 text-left hover:text-red-500"
                   onClick={() => {
                     handleLogout();
                   }}
