@@ -38,13 +38,16 @@ export const getAlokasiTopikPerPembimbing = (
 };
 
 export const getAlokasiTopikPerPembimbingS1 = (
-  params: GetAlokasiTopikPerPembimbingReqParams
+  params: GetAlokasiTopikPerPembimbingReqParams,
 ) => {
-  return s1Instance.get<GetAlokasiTopikPerPembimbingRespDataS1>("/api/admin/alokasi-topik", {
-    params,
-    withCredentials: true,
-  })
-}
+  return s1Instance.get<GetAlokasiTopikPerPembimbingRespDataS1>(
+    "/api/admin/alokasi-topik",
+    {
+      params,
+      withCredentials: true,
+    },
+  );
+};
 
 export const postRegistrasiTAS1 = (data: PostRegistrasiTesisRequestData) => {
   function convertToPostRegistrasiTARequestData(

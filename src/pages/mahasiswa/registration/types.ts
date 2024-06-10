@@ -40,7 +40,7 @@ export type GetAlokasiTopikPerPembimbingRespDataS1 = {
         roles: string[];
       };
     }[];
-    maxPage: number
+    maxPage: number;
   };
 };
 
