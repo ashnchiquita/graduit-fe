@@ -340,7 +340,7 @@ export default function DetailPengajuan() {
                           {"Ubah"}
                         </Button>
                       )}
-                  </>
+                    </>
                   }
                 />
               </div>
