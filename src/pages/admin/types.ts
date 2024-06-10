@@ -39,6 +39,13 @@ export type PutAccountRequestData = {
   access: string[];
 };
 
+export type CreateAccountRequestData = {
+  nama: string;
+  email: string;
+  nim?: string;
+  access: string[];
+};
+
 export type PutAccountResponseData = {
   identifiers: {
     id: string;

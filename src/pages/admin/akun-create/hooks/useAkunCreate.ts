@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useSWRMutation from "swr/mutation";
 import { z } from "zod";
 import { putAccount } from "../../clients";
-import { PutAccountRequestData } from "../../types";
+import { CreateAccountRequestData } from "../../types";
 import { RoleEnum } from "@/types/session-data";
 import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
 
@@ -13,20 +13,22 @@ export default function useAkunCreate() {
 
   const roleAccess = Object.keys(RoleEnum)
     .filter((v) => isNaN(Number(v)))
-    .map((role, idx) => ({
-      id: idx,
+    .map((role) => ({
+      id: RoleEnum[role as keyof typeof RoleEnum],
       name: role,
     }));
 
   const formSchema = z.object({
     email: z.string().email(),
     name: z.string().min(1),
+    password: z.string().min(8),
     access: z
       .object({
-        id: z.number(),
+        id: z.nativeEnum(RoleEnum),
         name: z.string(),
       })
       .array(),
+    nim: z.string().optional(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -34,13 +36,15 @@ export default function useAkunCreate() {
     defaultValues: {
       email: "",
       name: "",
+      password: "",
       access: [],
+      nim: "",
     },
   });
 
   const { trigger } = useSWRMutation(
     "/akun",
-    async (_, { arg }: { arg: PutAccountRequestData }) => {
+    async (_, { arg }: { arg: CreateAccountRequestData }) => {
       const res = await putAccount(arg);
       return res.data;
     },
@@ -57,10 +61,11 @@ export default function useAkunCreate() {
         trigger({
           nama: values.name,
           email: values.email,
-          access: values.access.map((item) => item.name),
+          nim: values.nim,
+          access: values.access.map((item) => item.id.toString()),
         }),
       afterError: (err) => {
-        console.error(err);
+        toastParams.errorText = err.response.data.message;
       },
       beforeSuccess: () => {
         setTimeout(() => {
