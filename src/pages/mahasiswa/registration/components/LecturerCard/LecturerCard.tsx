@@ -22,7 +22,7 @@ export const LecturerCard = ({
     isLoading,
     lecturerSearchValue,
     setLecturerSeachValue,
-  } = useLecturerCardImpl();
+  } = useLecturerCardImpl(strata as "S1" | "S2");
 
   return (
     <Card
