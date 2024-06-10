@@ -70,6 +70,7 @@ export default function RiwayatPendaftaran(): JSX.Element {
                     open={ubahStatusDialogOpen}
                     setOpen={setUbahStatusDialogOpen}
                     id={dataMahasiswa.id}
+                    pendaftaranId={pengajuan.id}
                     initialStatus={pengajuan.status}
                   />
                 )}
@@ -78,6 +79,7 @@ export default function RiwayatPendaftaran(): JSX.Element {
                     open={ubahDosenPembimbingDialogOpen}
                     setOpen={setUbahDosenPembimbingDialogOpen}
                     id={dataMahasiswa.id}
+                    pendaftaranId={pengajuan.id}
                     initialDosenPembimbing={pengajuan.dosenPembimbing.map(
                       (dosen) =>
                         ({

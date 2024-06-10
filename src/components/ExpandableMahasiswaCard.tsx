@@ -38,7 +38,7 @@ const ExpandableMahasiswaCard = ({
         <AccordionTrigger className="py-0 text-left hover:no-underline">
           <div className="flex items-center gap-3 md:gap-3.5">
             {backArrow && (
-              <button onClick={() => navigate("/rekap-pendaftaran-tim-tesis")}>
+              <button onClick={() => navigate(-1)}>
                 <ArrowLeft size={20} className="text-gray-500" />
               </button>
             )}

@@ -7,6 +7,7 @@ export type PendaftaranTopik = {
   nama: string;
   dosenPembimbing: string;
   status: StatusPendaftaranEnum;
+  pendaftaranId: string;
 };
 
 export type RekapPendaftaranTimTesisHookRet = {
@@ -24,8 +25,8 @@ export type RowActionHookRet = {
   setAcceptDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   rejectDialogOpen: boolean;
   setRejectDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleAccept: (id: string) => void;
-  handleReject: (id: string) => void;
+  handleAccept: (id: string, pendaftaranId: string) => void;
+  handleReject: (id: string, pendaftaranId: string) => void;
 };
 
 export type GetStatisticsRes = {
@@ -40,6 +41,23 @@ export type GetStatisticsRes = {
   ditolak: {
     amount: number;
     percentage: number | null;
+  };
+};
+
+export type GetStatisticsResS1 = {
+  data: {
+    diterima: {
+      amount: number;
+      percentage: number | null;
+    };
+    sedang_proses: {
+      amount: number;
+      percentage: number | null;
+    };
+    ditolak: {
+      amount: number;
+      percentage: number | null;
+    };
   };
 };
 
@@ -62,4 +80,13 @@ export type ApproveRejectRes = {
   jadwalInterview: Date;
   waktuKeputusan: Date;
   status: "NOT_ASSIGNED" | "INTERVIEW" | "APPROVED" | "REJECTED";
+};
+
+export type SelfDataRes = {
+  id: string;
+  nama: string;
+  email: string;
+  nim: string;
+  roles: string[];
+  kontak: string;
 };
