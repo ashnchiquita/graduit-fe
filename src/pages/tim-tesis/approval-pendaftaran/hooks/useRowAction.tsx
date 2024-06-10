@@ -1,16 +1,16 @@
+import useSession from "@/hooks/useSession";
+import { RoleEnum } from "@/types/session-data";
 import { useState } from "react";
-import { RowActionHookRet } from "../types";
+import { toast } from "react-toastify";
+import useSWRMutation from "swr/mutation";
+import { useData } from "../../context/DataContext";
 import {
   approvePendaftaran,
   approvePendaftaranS1,
   rejectPendaftaran,
   rejectPendaftaranS1,
 } from "../clients";
-import { toast } from "react-toastify";
-import useSWRMutation from "swr/mutation";
-import { useData } from "../../context/DataContext";
-import useSession from "@/hooks/useSession";
-import { RoleEnum } from "@/types/session-data";
+import { RowActionHookRet } from "../types";
 
 type RowActionHookParams = {
   idMahasiswa: string;
@@ -35,13 +35,15 @@ export default function useRowAction({
       if (data.roles.includes(RoleEnum.S1_TIM_TA)) {
         try {
           const res = await approvePendaftaranS1(arg.id);
+          toast.error("Berhasil menerima pendaftaran");
           return res.data;
         } catch (error) {
           toast.error("Gagal menerima pendaftaran");
         }
       } else if (data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
         try {
-          const res = await approvePendaftaran(arg.id);
+          const res = await approvePendaftaran(idMahasiswa);
+          toast.error("Berhasil menerima pendaftaran");
           return res.data;
         } catch (error) {
           toast.error("Gagal menerima pendaftaran");
@@ -62,13 +64,15 @@ export default function useRowAction({
       if (data.roles.includes(RoleEnum.S1_TIM_TA)) {
         try {
           const res = await rejectPendaftaranS1(arg.id);
+          toast.success("Berhasil menolak pendaftaran");
           return res.data;
         } catch (error) {
           toast.error("Gagal menolak pendaftaran");
         }
       } else if (data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
         try {
-          const res = await rejectPendaftaran(arg.id);
+          const res = await rejectPendaftaran(idMahasiswa);
+          toast.success("Berhasil menolak pendaftaran");
           return res.data;
         } catch (error) {
           toast.error("Gagal menolak pendaftaran");
@@ -80,28 +84,26 @@ export default function useRowAction({
   );
 
   const handleAccept = async (id: string) => {
-    await acceptTrigger({
-      id: id,
-    });
-
-    if (acceptError) {
-      toast.error(acceptError);
-    } else {
+    try {
+      await acceptTrigger({
+        id: id,
+      });
       refreshData();
       setAcceptDialogOpen(false);
+    } catch (error) {
+      toast.error(acceptError);
     }
   };
 
   const handleReject = async (id: string) => {
-    await rejectTrigger({
-      id: id,
-    });
-
-    if (rejectError) {
-      toast.error(rejectError);
-    } else {
+    try {
+      await rejectTrigger({
+        id: id,
+      });
       refreshData();
       setRejectDialogOpen(false);
+    } catch (error) {
+      toast.error(rejectError);
     }
   };
 

@@ -17,10 +17,12 @@ import { useEffect, useState } from "react";
 import useSession from "@/hooks/useSession";
 import { RoleEnum } from "@/types/session-data";
 import { useNavigate } from "react-router-dom";
+import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
 
 const useAddLogBimbigan = () => {
   //TODO bahas page selanjutnya habis nambah log bimbingan apa
   const [idMahasiswa, setIdMahasiswa] = useState<string>("");
+  const { makeToast } = useCustomToast();
 
   useSWR(`/auth/self`, async () => {
     const response = await getNimMahasiswa();
@@ -51,7 +53,7 @@ const useAddLogBimbigan = () => {
   const apiFunction =
     strata === "S1" ? postLogBimbingan : postLogBimbinganForS2;
 
-  const { trigger, error: errorPost } = useSWRMutation(
+  const { trigger } = useSWRMutation(
     "/mahasiswa/add-bimbingan-log",
     async (_, { arg }: { arg: PostLogBimbinganReqData }) => {
       return await apiFunction(arg);
@@ -59,8 +61,6 @@ const useAddLogBimbigan = () => {
   );
 
   const onSubmit = async (values: AddLogBimbinganFormData) => {
-    const toastId = toast.loading("Menyimpan log bimbingan...");
-
     const data: PostLogBimbinganReqData = {
       id_mahasiswa: idMahasiswa,
       date: values.date,
@@ -71,24 +71,17 @@ const useAddLogBimbigan = () => {
       berkas: values.berkas || [],
     };
 
-    await trigger(data);
+    const toastParams: ToastParams = {
+      loadingText: "Menyimpan log bimbingan...",
+      successText: "Berhasil menyimpan log bimbingan",
+      errorText: "Gagal menyimpan log bimbingan",
+      action: () => trigger(data),
+      beforeSuccess: () => {
+        setTimeout(() => navigate("/log/bimbingan"), 1000);
+      },
+    };
 
-    if (errorPost) {
-      toast.update(toastId, {
-        render: "Gagal menyimpan log bimbingan",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
-      toast.update(toastId, {
-        render: "Berhasil menyimpan log bimbingan",
-        type: "success",
-        isLoading: false,
-        autoClose: 1000,
-      });
-      navigate("/log/bimbingan");
-    }
+    await makeToast(toastParams);
   };
 
   return {

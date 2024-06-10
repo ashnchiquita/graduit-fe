@@ -5,7 +5,7 @@ import { HapusRoleDialogHookProps, HapusRoleDialogHookRet } from "../types";
 import useSWRMutation from "swr/mutation";
 import { removeBatchUpdateRole } from "../../clients";
 import { RemoveBatchUpdateRole } from "../../types";
-import { toast } from "react-toastify";
+import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
 
 export default function useHapusRoleDialog({
   table,
@@ -19,7 +19,7 @@ export default function useHapusRoleDialog({
     defaultValues: {},
   });
 
-  const { trigger, error } = useSWRMutation(
+  const { trigger } = useSWRMutation(
     "/akun/roles/batch-remove",
     async (_, { arg }: { arg: RemoveBatchUpdateRole }) => {
       const res = await removeBatchUpdateRole(arg);
@@ -27,21 +27,29 @@ export default function useHapusRoleDialog({
     },
   );
 
-  const handleSubmit = async () => {
-    await trigger({
-      ids: table.getSelectedRowModel().rows.map((r) => r.original.id),
-    });
+  const { makeToast } = useCustomToast();
 
-    if (error) {
-      console.error(error);
-      toast.error("Gagal mengubah role");
-    } else {
-      toast.success("Berhasil mengubah role");
-      await fetchData();
-      form.reset();
-      table.toggleAllRowsSelected(false);
-      setHapusRoleDialogOpen(false);
-    }
+  const handleSubmit = async () => {
+    const toastParams: ToastParams = {
+      loadingText: "Mengubah role...",
+      successText: "Berhasil mengubah role",
+      errorText: "Gagal mengubah role",
+      action: () =>
+        trigger({
+          ids: table.getSelectedRowModel().rows.map((r) => r.original.id),
+        }),
+      beforeError: (err) => {
+        console.error(err);
+      },
+      afterSuccess: async () => {
+        await fetchData();
+        form.reset();
+        table.toggleAllRowsSelected(false);
+        setHapusRoleDialogOpen(false);
+      },
+    };
+
+    await makeToast(toastParams);
   };
 
   return {

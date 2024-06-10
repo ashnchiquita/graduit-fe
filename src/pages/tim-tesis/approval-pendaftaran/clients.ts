@@ -39,7 +39,7 @@ export async function getRekapPendaftaranTableS1(params: {
 
 export async function approvePendaftaran(id: string) {
   return await s2Instance.patch(
-    `/registrasi-tesis/${id}/status`,
+    `/registrasi-sidsem/mahasiswa/${id}/status`,
     {
       status: "APPROVED",
     },
@@ -51,7 +51,7 @@ export async function approvePendaftaran(id: string) {
 
 export async function rejectPendaftaran(id: string) {
   return await s2Instance.patch(
-    `/registrasi-tesis/${id}/status`,
+    `/registrasi-sidsem/mahasiswa/${id}/status`,
     {
       status: "REJECTED",
     },

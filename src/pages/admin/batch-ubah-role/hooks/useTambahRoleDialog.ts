@@ -6,8 +6,8 @@ import { RoleDialogHookProps, RoleDialogHookRet } from "../types";
 import useSWRMutation from "swr/mutation";
 import { patchBatchUpdateRole } from "../../clients";
 import { PatchBatchUpdateRole } from "../../types";
-import { toast } from "react-toastify";
 import { RoleEnum } from "@/types/session-data";
+import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
 
 export default function useTambahRoleDialog({
   table,
@@ -41,7 +41,7 @@ export default function useTambahRoleDialog({
     form.getValues().access.length === 0,
   );
 
-  const { trigger, error } = useSWRMutation(
+  const { trigger } = useSWRMutation(
     "/akun/roles/batch-add",
     async (_, { arg }: { arg: PatchBatchUpdateRole }) => {
       const res = await patchBatchUpdateRole(arg);
@@ -49,22 +49,29 @@ export default function useTambahRoleDialog({
     },
   );
 
+  const { makeToast } = useCustomToast();
   const handleSubmit = async ({ access }: z.infer<typeof formSchema>) => {
-    await trigger({
-      ids: table.getSelectedRowModel().rows.map((r) => r.original.id),
-      newRoles: access.map((a) => a.name),
-    });
+    const toastParams: ToastParams = {
+      loadingText: "Mengubah role...",
+      successText: "Berhasil mengubah role",
+      errorText: "Gagal mengubah role",
+      action: () =>
+        trigger({
+          ids: table.getSelectedRowModel().rows.map((r) => r.original.id),
+          newRoles: access.map((a) => a.name),
+        }),
+      beforeError: (err) => {
+        console.error(err);
+      },
+      afterSuccess: async () => {
+        await fetchData();
+        form.reset();
+        table.toggleAllRowsSelected(false);
+        setTambahRoleDialogOpen(false);
+      },
+    };
 
-    if (error) {
-      console.error(error);
-      toast.error("Gagal mengubah role");
-    } else {
-      toast.success("Berhasil mengubah role");
-      await fetchData();
-      form.reset();
-      table.toggleAllRowsSelected(false);
-      setTambahRoleDialogOpen(false);
-    }
+    await makeToast(toastParams);
   };
 
   return {

@@ -1,12 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { z } from "zod";
 import { getKonfigurasi, putKonfigurasi } from "../clients";
 import { KonfigurasiPeriodeHookReturn, PutKonfigurasiRequest } from "../types";
+import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
 
 export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
   const { data } = useSWR("/konfigurasi", async () => {
@@ -109,7 +109,7 @@ export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
     );
   }, [data, form]);
 
-  const { trigger, error } = useSWRMutation(
+  const { trigger } = useSWRMutation(
     "/konfigurasi",
     async (_, { arg }: { arg: PutKonfigurasiRequest }) => {
       const res = await putKonfigurasi(arg);
@@ -117,6 +117,7 @@ export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
     },
   );
 
+  const { makeToast } = useCustomToast();
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     const payload: PutKonfigurasiRequest = {
       data: [
@@ -155,13 +156,14 @@ export default function useKonfigurasiPeriode(): KonfigurasiPeriodeHookReturn {
       ],
     };
 
-    await trigger(payload);
+    const toastParams: ToastParams = {
+      loadingText: "Menyimpan konfigurasi...",
+      successText: "Berhasil menyimpan konfigurasi",
+      errorText: "Gagal menyimpan konfigurasi",
+      action: () => trigger(payload),
+    };
 
-    if (error) {
-      toast.error(error);
-    } else {
-      toast.success("Konfigurasi periode berhasil disimpan");
-    }
+    await makeToast(toastParams);
   };
 
   return { form, handleSubmit };

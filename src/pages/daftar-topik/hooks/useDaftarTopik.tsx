@@ -29,6 +29,7 @@ import {
 import useSession from "@/hooks/useSession";
 import { RoleEnum } from "@/types/session-data";
 import { isAdmin, isDosen, isMahasiswa } from "@/lib/checkRole";
+import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
 
 const columHelper = createColumnHelper<DaftarTopikData>();
 
@@ -220,20 +221,21 @@ export default function useDaftarTopik() {
     XLSX.writeFile(workbook, "topik_template.xlsx", { compression: true });
   };
 
-  const { trigger: triggerPostS1, error: errorPostS1 } = useSWRMutation(
+  const { trigger: triggerPostS1 } = useSWRMutation(
     "/registrasi-topik/bulk",
     async (_, { arg }: { arg: PostNewTopicBulkReqData }) => {
       return await postNewTopicBulkS1(arg);
     },
   );
 
-  const { trigger: triggerPostS2, error: errorPostS2 } = useSWRMutation(
+  const { trigger: triggerPostS2 } = useSWRMutation(
     "/registrasi-topik/bulk",
     async (_, { arg }: { arg: PostNewTopicBulkReqData }) => {
       return await postNewTopicBulkS2(arg);
     },
   );
 
+  const { makeToast } = useCustomToast();
   const readAndPostTemplate = async (file: File) => {
     const ab = await file.arrayBuffer();
     const workbook = XLSX.read(ab);
@@ -287,32 +289,23 @@ export default function useDaftarTopik() {
       });
     }
 
-    const toastId = toast.loading(
-      `Menambahkan ${postData.data.length} topik...`,
-    );
+    const toastParams: ToastParams = {
+      loadingText: `Menambahkan ${postData.data.length} topik...`,
+      successText: `Berhasil menambahkan ${postData.data.length} topik...`,
+      errorText: "Gagal menambahkan topik",
+      action: () => {
+        if (strataFilter === "S1") {
+          return triggerPostS1(postData);
+        } else {
+          return triggerPostS2(postData);
+        }
+      },
+      afterSuccess: () => {
+        updateData();
+      },
+    };
 
-    if (strataFilter === "S1") {
-      await triggerPostS1(postData);
-    } else if (strataFilter === "S2") {
-      await triggerPostS2(postData);
-    }
-
-    if (errorPostS1 || errorPostS2) {
-      toast.update(toastId, {
-        render: "Gagal menambahkan topik",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
-      toast.update(toastId, {
-        render: `Berhasil menambahkan ${postData.data.length} topik...`,
-        type: "success",
-        isLoading: false,
-        autoClose: 1000,
-      });
-      updateData();
-    }
+    await makeToast(toastParams);
   };
 
   const handleClickImportFromTemplate = () => {

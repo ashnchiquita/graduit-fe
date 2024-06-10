@@ -23,10 +23,10 @@ export default function StatusCircle({
   strata: "S1" | "S2";
   mhsId: string;
   row: Row<BimbinganLogs>;
-}): JSX.Element {
+}) {
   const [status, setStatus] = useState(row.original.status);
 
-  const { trigger: triggerUpdateS2, error: updateS2Error } = useSWRMutation(
+  const { trigger: triggerUpdateS2 } = useSWRMutation(
     `/bimbingan/${mhsId}`,
     async (_, { arg }: { arg: boolean }) =>
       await updatePengesahanS2(row.original.id, arg),
@@ -53,19 +53,18 @@ export default function StatusCircle({
         });
       }
     } else {
-      await triggerUpdateS2(status);
-
-      if (updateS2Error) {
-        toast.update(toastId, {
-          render: "Terjadi kesalahan dalam mengubah status pengesahan",
-          type: "error",
-          isLoading: false,
-          autoClose: 1000,
-        });
-      } else {
+      try {
+        await triggerUpdateS2(status);
         toast.update(toastId, {
           render: "Berhasil mengubah status pengesahan",
           type: "success",
+          isLoading: false,
+          autoClose: 1000,
+        });
+      } catch (error) {
+        toast.update(toastId, {
+          render: "Terjadi kesalahan dalam mengubah status pengesahan",
+          type: "error",
           isLoading: false,
           autoClose: 1000,
         });

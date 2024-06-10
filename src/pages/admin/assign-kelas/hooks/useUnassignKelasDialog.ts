@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { unassignKelasDosen, unassignKelasMahasiswa } from "../clients";
-import useSWRMutation from "swr/mutation";
-import { toast } from "react-toastify";
 import { Table } from "@tanstack/react-table";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import useSWRMutation from "swr/mutation";
+import { unassignKelasDosen, unassignKelasMahasiswa } from "../clients";
 import { KelasPengguna } from "../types";
 
 export default function useUnassignKelasDialog(
@@ -13,54 +13,45 @@ export default function useUnassignKelasDialog(
 ) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const { trigger: triggerUnassignMhs, error: unassignMhsError } =
-    useSWRMutation(
-      ["/kelas/mahasiswa", searchValue],
-      async (
-        _,
-        {
-          arg,
-        }: {
-          arg: {
-            penggunaIds: string[];
-          };
-        },
-      ) => {
-        await unassignKelasMahasiswa({ ...arg });
+  const { trigger: triggerUnassignMhs } = useSWRMutation(
+    ["/kelas/mahasiswa", searchValue],
+    async (
+      _,
+      {
+        arg,
+      }: {
+        arg: {
+          penggunaIds: string[];
+        };
       },
-    );
-  const { trigger: triggerUnassignDosen, error: unassignDosenError } =
-    useSWRMutation(
-      ["/kelas/dosen", searchValue],
-      async (
-        _,
-        {
-          arg,
-        }: {
-          arg: {
-            penggunaIds: string[];
-          };
-        },
-      ) => {
-        await unassignKelasDosen({ ...arg });
+    ) => {
+      await unassignKelasMahasiswa({ ...arg });
+    },
+  );
+  const { trigger: triggerUnassignDosen } = useSWRMutation(
+    ["/kelas/dosen", searchValue],
+    async (
+      _,
+      {
+        arg,
+      }: {
+        arg: {
+          penggunaIds: string[];
+        };
       },
-    );
+    ) => {
+      await unassignKelasDosen({ ...arg });
+    },
+  );
 
   const handleSubmit = async () => {
     const toastId = toast.loading("Menghapus kelas...");
     if (type === "MAHASISWA") {
-      await triggerUnassignMhs({
-        penggunaIds: penggunaIds,
-      });
-
-      if (unassignMhsError) {
-        toast.update(toastId, {
-          render: "Terjadi kesalahan dalam menghapus kelas",
-          type: "error",
-          isLoading: false,
-          autoClose: 1000,
+      try {
+        await triggerUnassignMhs({
+          penggunaIds: penggunaIds,
         });
-      } else {
+
         toast.update(toastId, {
           render: "Berhasil menghapus kelas",
           type: "success",
@@ -70,20 +61,20 @@ export default function useUnassignKelasDialog(
 
         table.toggleAllRowsSelected(false);
         setDialogOpen(false);
+      } catch (error) {
+        toast.update(toastId, {
+          render: "Terjadi kesalahan dalam menghapus kelas",
+          type: "error",
+          isLoading: false,
+          autoClose: 1000,
+        });
       }
     } else {
-      await triggerUnassignDosen({
-        penggunaIds: penggunaIds,
-      });
-
-      if (unassignDosenError) {
-        toast.update(toastId, {
-          render: "Terjadi kesalahan dalam menghapus kelas",
-          type: "error",
-          isLoading: false,
-          autoClose: 1000,
+      try {
+        await triggerUnassignDosen({
+          penggunaIds: penggunaIds,
         });
-      } else {
+
         toast.update(toastId, {
           render: "Berhasil menghapus kelas",
           type: "success",
@@ -93,6 +84,13 @@ export default function useUnassignKelasDialog(
 
         table.toggleAllRowsSelected(false);
         setDialogOpen(false);
+      } catch (error) {
+        toast.update(toastId, {
+          render: "Terjadi kesalahan dalam menghapus kelas",
+          type: "error",
+          isLoading: false,
+          autoClose: 1000,
+        });
       }
     }
   };

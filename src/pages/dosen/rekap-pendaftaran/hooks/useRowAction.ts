@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Mahasiswa, RowActionHookRet } from "../types";
 import { Row } from "@tanstack/react-table";
-import { updateStatusS2 } from "../clients";
-import useSWRMutation from "swr/mutation";
+import { useState } from "react";
 import { toast } from "react-toastify";
+import useSWRMutation from "swr/mutation";
+import { updateStatusS2 } from "../clients";
+import { Mahasiswa, RowActionHookRet } from "../types";
 
 type HookProps = {
   row: Row<Mahasiswa>;
@@ -18,27 +18,20 @@ export default function useRowAction({
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
 
-  const { trigger: triggerApproveS2, error: approveS2Error } = useSWRMutation(
+  const { trigger: triggerApproveS2 } = useSWRMutation(
     ["/rekap-pendaftaran/dosbim/s2", searchValue],
     async () => await updateStatusS2(row.original.id, "APPROVED"),
   );
-  const { trigger: triggerReject, error: rejectError } = useSWRMutation(
+  const { trigger: triggerReject } = useSWRMutation(
     ["/rekap-pendaftaran/dosbim/s2", searchValue],
     async () => await updateStatusS2(row.original.id, "REJECTED"),
   );
 
   const handleAccept = async () => {
     const toastId = toast.loading("Menerima pendaftaran...");
-    await triggerApproveS2();
+    try {
+      await triggerApproveS2();
 
-    if (approveS2Error) {
-      toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menerima pendaftaran",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
       toast.update(toastId, {
         render: "Berhasil menerima pendaftaran",
         type: "success",
@@ -46,21 +39,20 @@ export default function useRowAction({
         autoClose: 1000,
       });
       setAcceptDialogOpen(false);
+    } catch (error) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menerima pendaftaran",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
     }
   };
 
   const handleReject = async () => {
     const toastId = toast.loading("Menolak pendaftaran...");
-    await triggerReject();
-
-    if (rejectError) {
-      toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menolak pendaftaran",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
+    try {
+      await triggerReject();
       toast.update(toastId, {
         render: "Penolakan berhasil",
         type: "success",
@@ -68,6 +60,13 @@ export default function useRowAction({
         autoClose: 1000,
       });
       setRejectDialogOpen(false);
+    } catch (error) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menolak pendaftaran",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
     }
   };
 

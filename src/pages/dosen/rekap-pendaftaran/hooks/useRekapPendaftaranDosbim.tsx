@@ -1,6 +1,8 @@
 import StatusPendaftaranBadge from "@/components/StatusPendaftaranBadge";
 import { Button } from "@/components/ui/button";
+import useSession from "@/hooks/useSession";
 import { formatDate } from "@/lib/dateformat";
+import { RoleEnum } from "@/types/session-data";
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import {
   ColumnDef,
@@ -11,14 +13,10 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { GoPencil } from "react-icons/go";
 import { useSearchParams } from "react-router-dom";
-import WawancaraModal from "../../components/WawancaraModal";
-import RowAction from "../components/RowAction";
-import {
-  Mahasiswa,
-  RegStatistic,
-  RekapPendaftaranDosbimHookRet,
-} from "../types";
+import { toast } from "react-toastify";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
+import WawancaraModal from "../../components/WawancaraModal";
 import {
   getRegMhsS1,
   getRegMhsS2,
@@ -27,10 +25,12 @@ import {
   updateInterviewS1,
   updateInterviewS2,
 } from "../clients";
-import useSWRMutation from "swr/mutation";
-import { toast } from "react-toastify";
-import useSession from "@/hooks/useSession";
-import { RoleEnum } from "@/types/session-data";
+import RowAction from "../components/RowAction";
+import {
+  Mahasiswa,
+  RegStatistic,
+  RekapPendaftaranDosbimHookRet,
+} from "../types";
 
 const STATUS_MAP_S2 = new Map<string, StatusPendaftaranEnum>([
   ["NOT_ASSIGNED", StatusPendaftaranEnum.PROCESS],
@@ -195,47 +195,44 @@ export default function useRekapPendaftaranDosbim(): RekapPendaftaranDosbimHookR
       mhsId: string;
     };
   };
-  const { trigger: triggerInterviewS2, error: interviewS2Error } =
-    useSWRMutation(
-      ["/rekap-pendaftaran/dosbim/s2", searchValue],
-      async (_, { arg }: TriggerInterviewS2Arg) => {
-        await updateInterviewS2(arg.mhsId, arg.date);
-      },
-    );
+  const { trigger: triggerInterviewS2 } = useSWRMutation(
+    ["/rekap-pendaftaran/dosbim/s2", searchValue],
+    async (_, { arg }: TriggerInterviewS2Arg) => {
+      await updateInterviewS2(arg.mhsId, arg.date);
+    },
+  );
 
-  const { trigger: triggerInterviewS1, error: interviewS1Error } =
-    useSWRMutation(
-      ["/rekap-pendaftaran/dosbim/s2", searchValue],
-      async (_, { arg }: TriggerInterviewS1Arg) => {
-        await updateInterviewS1(arg.mhsId, arg.date);
-      },
-    );
+  const { trigger: triggerInterviewS1 } = useSWRMutation(
+    ["/rekap-pendaftaran/dosbim/s2", searchValue],
+    async (_, { arg }: TriggerInterviewS1Arg) => {
+      await updateInterviewS1(arg.mhsId, arg.date);
+    },
+  );
   const handleInterviewUpdate = async (row: Row<Mahasiswa>, date: Date) => {
     const toastId = toast.loading("Menetapkan jadwal interview...");
-    console.log(row.original);
-    if (row.original.strata === "S2") {
-      await triggerInterviewS2({
-        date,
-        mhsId: row.original.id,
-      });
-    } else {
-      await triggerInterviewS1({
-        date,
-        mhsId: row.original.id,
-      });
-    }
+    try {
+      if (row.original.strata === "S2") {
+        await triggerInterviewS2({
+          date,
+          mhsId: row.original.id,
+        });
+      } else {
+        await triggerInterviewS1({
+          date,
+          mhsId: row.original.id,
+        });
+      }
 
-    if (interviewS2Error || interviewS1Error) {
-      toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menetapkan jadwal interview",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
       toast.update(toastId, {
         render: "Berhasil menetapkan jadwal interview",
         type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    } catch (error) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menetapkan jadwal interview",
+        type: "error",
         isLoading: false,
         autoClose: 1000,
       });

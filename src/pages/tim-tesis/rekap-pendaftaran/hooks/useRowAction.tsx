@@ -1,15 +1,15 @@
+import { RoleEnum } from "@/types/session-data";
 import { useState } from "react";
-import { RowActionHookRet } from "../types";
+import { toast } from "react-toastify";
+import useSWRMutation from "swr/mutation";
+import { useData } from "../../context/DataContext";
 import {
   approvePendaftaran,
   getSelfData,
   rejectPendaftaran,
   updateStatusS1,
 } from "../clients";
-import { toast } from "react-toastify";
-import useSWRMutation from "swr/mutation";
-import { useData } from "../../context/DataContext";
-import { RoleEnum } from "@/types/session-data";
+import { RowActionHookRet } from "../types";
 
 type RowActionHookParams = {
   idMahasiswa: string;
@@ -61,30 +61,28 @@ export default function useRowAction({
   );
 
   const handleAccept = async (id: string, pendaftaranId: string) => {
-    await acceptTrigger({
-      id: id,
-      pendaftaranId: pendaftaranId,
-    });
-
-    if (acceptError) {
-      toast.error(acceptError);
-    } else {
+    try {
+      await acceptTrigger({
+        id: id,
+        pendaftaranId: pendaftaranId,
+      });
       refreshData();
       setAcceptDialogOpen(false);
+    } catch (error) {
+      toast.error(acceptError);
     }
   };
 
   const handleReject = async (id: string, pendaftaranId: string) => {
-    await rejectTrigger({
-      id: id,
-      pendaftaranId: pendaftaranId,
-    });
-
-    if (rejectError) {
-      toast.error(rejectError);
-    } else {
+    try {
+      await rejectTrigger({
+        id: id,
+        pendaftaranId: pendaftaranId,
+      });
       refreshData();
       setRejectDialogOpen(false);
+    } catch (error) {
+      toast.error(rejectError);
     }
   };
 

@@ -1,16 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Table } from "@tanstack/react-table";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 import { z } from "zod";
 import {
   assignKelasDosen,
   assignKelasMahasiswa,
   getDaftarKelas,
 } from "../clients";
-import useSWRMutation from "swr/mutation";
-import { toast } from "react-toastify";
-import { Table } from "@tanstack/react-table";
 import { KelasPengguna } from "../types";
 
 export default function useAssignKelasDialog(
@@ -57,7 +57,7 @@ export default function useAssignKelasDialog(
     form.getValues().kelas.length === 0,
   );
 
-  const { trigger: triggerAssignMhs, error: assignMhsError } = useSWRMutation(
+  const { trigger: triggerAssignMhs } = useSWRMutation(
     ["/kelas/mahasiswa", searchValue],
     async (
       _,
@@ -74,40 +74,31 @@ export default function useAssignKelasDialog(
     },
   );
 
-  const { trigger: triggerAssignDosen, error: assignDosenError } =
-    useSWRMutation(
-      ["/kelas/dosen", searchValue],
-      async (
-        _,
-        {
-          arg,
-        }: {
-          arg: {
-            penggunaIds: string[];
-            kelasIds: string[];
-          };
-        },
-      ) => {
-        await assignKelasDosen({ ...arg });
+  const { trigger: triggerAssignDosen } = useSWRMutation(
+    ["/kelas/dosen", searchValue],
+    async (
+      _,
+      {
+        arg,
+      }: {
+        arg: {
+          penggunaIds: string[];
+          kelasIds: string[];
+        };
       },
-    );
+    ) => {
+      await assignKelasDosen({ ...arg });
+    },
+  );
 
   const handleSubmit = async ({ kelas }: z.infer<typeof formSchema>) => {
     const toastId = toast.loading("Mengassign kelas...");
     if (type === "MAHASISWA") {
-      await triggerAssignMhs({
-        penggunaIds: penggunaIds,
-        kelasIds: kelas.map((k) => k.id),
-      });
-
-      if (assignMhsError) {
-        toast.update(toastId, {
-          render: "Terjadi kesalahan dalam mengassign kelas",
-          type: "error",
-          isLoading: false,
-          autoClose: 1000,
+      try {
+        await triggerAssignMhs({
+          penggunaIds: penggunaIds,
+          kelasIds: kelas.map((k) => k.id),
         });
-      } else {
         toast.update(toastId, {
           render: "Berhasil mengassign kelas",
           type: "success",
@@ -119,21 +110,20 @@ export default function useAssignKelasDialog(
         table.toggleAllRowsSelected(false);
         setSubmitDisabled(true);
         setDialogOpen(false);
+      } catch (error) {
+        toast.update(toastId, {
+          render: "Terjadi kesalahan dalam mengassign kelas",
+          type: "error",
+          isLoading: false,
+          autoClose: 1000,
+        });
       }
     } else {
-      await triggerAssignDosen({
-        penggunaIds: penggunaIds,
-        kelasIds: kelas.map((k) => k.id),
-      });
-
-      if (assignDosenError) {
-        toast.update(toastId, {
-          render: "Terjadi kesalahan dalam mengassign kelas",
-          type: "error",
-          isLoading: false,
-          autoClose: 1000,
+      try {
+        await triggerAssignDosen({
+          penggunaIds: penggunaIds,
+          kelasIds: kelas.map((k) => k.id),
         });
-      } else {
         toast.update(toastId, {
           render: "Berhasil mengassign kelas",
           type: "success",
@@ -145,6 +135,13 @@ export default function useAssignKelasDialog(
         table.toggleAllRowsSelected(false);
         setSubmitDisabled(true);
         setDialogOpen(false);
+      } catch (error) {
+        toast.update(toastId, {
+          render: "Terjadi kesalahan dalam mengassign kelas",
+          type: "error",
+          isLoading: false,
+          autoClose: 1000,
+        });
       }
     }
   };
