@@ -17,10 +17,10 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Form, FormField, FormItem } from "@/components/ui/form/form";
+import { useEffect } from "react";
 import { VscChromeClose } from "react-icons/vsc";
 import useDospengModal from "../hooks/useDospengModal";
 import { Dospeng, DospengModalProps } from "../type";
-import { useEffect, useState } from "react";
 
 export default function DospengModal({
   dosenPenguji,
@@ -31,12 +31,10 @@ export default function DospengModal({
   setDospengDialogOpen,
 }: DospengModalProps): JSX.Element {
   dosenPenguji = dosenPenguji ?? [];
-  const { dialogOpen, setDialogOpen, form, handleChange } = useDospengModal(
-    dosenPenguji,
-    onChange,
-  );
+  const { form, handleChange } = useDospengModal(dosenPenguji, onChange);
   useEffect(() => {
     console.log(listDosenPenguji);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dospengDialogOpen]);
   return (
     <Dialog open={dospengDialogOpen} onOpenChange={setDospengDialogOpen}>

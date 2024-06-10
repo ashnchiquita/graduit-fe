@@ -33,8 +33,7 @@ export default function SidangModal({
   setSidangDialogOpen,
   sidangDialogOpen,
 }: SidangModalProps): JSX.Element {
-  const { dialogOpen, setDialogOpen, handleChange, form, isMobile } =
-    useSidangModal(dateInit, onChange);
+  const { handleChange, form, isMobile } = useSidangModal(dateInit, onChange);
 
   return (
     <Dialog open={sidangDialogOpen} onOpenChange={setSidangDialogOpen}>
@@ -42,9 +41,10 @@ export default function SidangModal({
 
       <DialogContent className="max-w-[330px] rounded-md md:max-w-[425px]">
         <DialogHeader className="gap-2">
-          <DialogTitle className="text-left">Wawancara</DialogTitle>
+          <DialogTitle className="text-left">Sidang</DialogTitle>
           <DialogDescription className="text-left">
-            Jadwalkan wawancara dengan calon mahasiswa bimbingan.
+            Jadwalkan sidang dengan calon mahasiswa bimbingan. Minimal pilih
+            jadwal 1 hari hari ini.
           </DialogDescription>
         </DialogHeader>
 
