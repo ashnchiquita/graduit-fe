@@ -62,6 +62,7 @@ export default function useAkunCreate() {
           nama: values.name,
           email: values.email,
           nim: values.nim,
+          password: values.password,
           access: values.access.map((item) => item.id.toString()),
         }),
       afterError: (err) => {

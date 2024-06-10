@@ -28,7 +28,7 @@ const useLogBimbingan = () => {
   const { data: sessionData } = useSession();
 
   const defaultData: LogBimbinganStatusData = {
-    status: false,
+    status: "",
     bimbingan_logs: [],
   };
 
@@ -54,7 +54,7 @@ const useLogBimbingan = () => {
           resMahasiswa.data.id ?? "",
         );
         data = {
-          status: resLog.data.data.status,
+          status: resLog.data.data.status ? "lancar" : "terkendala",
           bimbingan_logs: resLog.data.data.bimbingan_logs.map(
             (item: LogBimbinganData) => ({
               id: item.id,
@@ -74,7 +74,7 @@ const useLogBimbingan = () => {
       } else {
         const { data } = await getBimbinganS2();
         return {
-          status: true,
+          status: data.status,
           bimbingan_logs: data.bimbingan.map((b) => ({
             id: b.id,
             date: formatDateNotHour(new Date(b.waktuBimbingan)),
@@ -181,6 +181,7 @@ const useLogBimbingan = () => {
     range,
     setRange,
     data,
+    isDefault: data === defaultData,
   };
 };
 

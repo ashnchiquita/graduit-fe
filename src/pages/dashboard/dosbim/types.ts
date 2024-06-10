@@ -9,7 +9,7 @@ export type MahasiswaBimbingan = {
   strata: "S1" | "S2";
 };
 
-export type StatusBimbingan = "lancar" | "terkendala" | "perlu bimbingan";
+export type StatusBimbingan = "lancar" | "terkendala" | "butuh_bimbingan";
 
 export type GetDashboardDosbimRes = {
   id: string;
