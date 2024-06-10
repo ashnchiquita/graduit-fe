@@ -12,17 +12,22 @@ import { MultiSelect } from "@/components/ui/multi-select";
 import useSWR from "swr";
 import {
   getAllDosenPembimbing,
+  getAllDosenPembimbingS1,
+  getSelfData,
   updateDosenPembimbing,
+  updateDosenPembimbingS1,
 } from "../riwayat-pendaftaran/clients";
 import useSWRMutation from "swr/mutation";
 import { toast } from "react-toastify";
 import { areArraysEqualByValue } from "../helper";
 import { useData } from "../context/DataContext";
+import { RoleEnum } from "@/types/session-data";
 
 interface EditDosenPembimbingDialogProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   id: string;
+  pendaftaranId: string;
   initialDosenPembimbing: SelectData[];
 }
 
@@ -30,6 +35,7 @@ export default function EditDosenPembimbingDialog({
   open,
   setOpen,
   id,
+  pendaftaranId,
   initialDosenPembimbing,
 }: EditDosenPembimbingDialogProps): JSX.Element {
   const [selectedDosenPembimbing, setSelectedDosenPembimbing] = useState<
@@ -37,6 +43,7 @@ export default function EditDosenPembimbingDialog({
   >([]);
 
   const [isChanged, setIsChanged] = useState(false);
+  const [isMulti, setIsMulti] = useState(true); // s1 cuman bisa 1 dosbing, multi kalau true = bisa lebih dari 1 dosbing
 
   const { refreshData } = useData();
 
@@ -58,20 +65,76 @@ export default function EditDosenPembimbingDialog({
       setIsChanged(false);
     } else {
       setIsChanged(true);
+      if (!isMulti && selectedDosenPembimbing.length > 1) {
+        setSelectedDosenPembimbing([
+          selectedDosenPembimbing[selectedDosenPembimbing.length - 1],
+        ]);
+      }
     }
   }, [selectedDosenPembimbing, initialDosenPembimbing]);
 
   const { data: dosenPembimbingList = [] } = useSWR(
     "/dosen-bimbingan",
     async () => {
-      const res = await getAllDosenPembimbing();
+      const self = await getSelfData();
+      if (self.data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
+        const res = await getAllDosenPembimbing();
 
-      const options: SelectData[] = res.data.map(({ id, nama }) => ({
-        label: nama,
-        value: id,
-      }));
+        if (!res.data || res.data.length === 0) {
+          return [] as SelectData[];
+        }
 
-      return options;
+        const options: SelectData[] = res.data
+          .filter(({ nama, email }) => nama !== null || email !== null)
+          .map(({ id, nama, email }) => {
+            let label = nama?.trim() || "";
+            if (!label && email) {
+              const emailPrefix = email.split("@")[0];
+              if (emailPrefix.trim()) {
+                label = emailPrefix;
+              }
+            }
+            if (label) {
+              return {
+                label: label,
+                value: id,
+              } as SelectData;
+            }
+            return null;
+          })
+          .filter((item): item is SelectData => item !== null); // Type guard to filter out nulls
+
+        return options;
+      } else {
+        const res = await getAllDosenPembimbingS1();
+        setIsMulti(false);
+        if (!res.data.data || res.data.data.length === 0) {
+          return [] as SelectData[];
+        }
+
+        const options: SelectData[] = res.data.data
+          .filter(({ nama, email }) => nama !== null || email !== null)
+          .map(({ id, nama, email }) => {
+            let label = nama?.trim() || "";
+            if (!label && email) {
+              const emailPrefix = email.split("@")[0];
+              if (emailPrefix.trim()) {
+                label = emailPrefix;
+              }
+            }
+            if (label) {
+              return {
+                label: label,
+                value: id,
+              } as SelectData;
+            }
+            return null;
+          })
+          .filter((item): item is SelectData => item !== null); // Type guard to filter out nulls
+        // console.log(options)
+
+        return options;
+      }
     },
   );
 
@@ -79,13 +142,24 @@ export default function EditDosenPembimbingDialog({
     `registrasi-tesis/${id}/pembimbing`,
     async (_) => {
       try {
-        const res = await updateDosenPembimbing(
-          id,
-          selectedDosenPembimbing.map((dosen) => dosen.value),
-        );
+        const self = await getSelfData();
+        if (self.data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
+          const res = await updateDosenPembimbing(
+            id,
+            selectedDosenPembimbing.map((dosen) => dosen.value),
+          );
 
-        toast.success("Berhasil mengubah dosen pembimbing");
-        return res.data;
+          toast.success("Berhasil mengubah dosen pembimbing");
+          return res.data;
+        } else {
+          const res = await updateDosenPembimbingS1(
+            pendaftaranId,
+            selectedDosenPembimbing.map((dosen) => dosen.value),
+          );
+
+          toast.success("Berhasil mengubah dosen pembimbing");
+          return res.data;
+        }
       } catch (error) {
         toast.error("Gagal mengubah dosen pembimbing");
       }

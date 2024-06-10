@@ -6,8 +6,8 @@ import {
 import { Row } from "@tanstack/react-table";
 import { HiOutlineDocument } from "react-icons/hi2";
 import { IoEllipsisVertical } from "react-icons/io5";
-import { PiClockCounterClockwise } from "react-icons/pi";
-import { Link } from "react-router-dom";
+// import { PiClockCounterClockwise } from "react-icons/pi";
+// import { Link } from "react-router-dom";
 import useRowAction from "../hooks/useRowAction";
 import { DashTableData } from "../types";
 import ArchiveDialog from "./ArchiveDialog";
@@ -38,7 +38,7 @@ export default function RowAction({
         className="w-[200px] overflow-hidden rounded-md p-0"
       >
         <div className="size-full bg-white">
-          <div className="w-full p-3">
+          {/* <div className="w-full p-3">
             <Link
               to={`/detail-mahasiswa/${row.original.nim}`}
               className="flex w-full items-center gap-3 text-xs font-medium text-slate-700"
@@ -48,7 +48,7 @@ export default function RowAction({
             </Link>
           </div>
 
-          <hr />
+          <hr /> */}
 
           <ArchiveDialog
             archiveDialogOpen={archiveDialogOpen}

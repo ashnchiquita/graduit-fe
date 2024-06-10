@@ -14,6 +14,13 @@ export type Pengajuan = {
   }[];
 };
 
+export type PengajuanS1Response = {
+  success: boolean;
+  code: number;
+  message: string;
+  data: Pengajuan[];
+};
+
 export type RiwayatPendaftaranData = {
   nim: string;
   nama: string;
@@ -42,8 +49,24 @@ export type GetAccountMahasiswaRes = {
   nim: string;
 };
 
+export type AllDosbingResp = {
+  success: boolean;
+  code: number;
+  message: string;
+  data: GetAllDosenPembimbingRespData;
+};
+
 export type GetAllDosenPembimbingRespData = {
   id: string;
   nama: string;
   email: string;
 }[];
+
+export type SelfDataRes = {
+  id: string;
+  nama: string;
+  email: string;
+  nim: string;
+  roles: string[];
+  kontak: string;
+};

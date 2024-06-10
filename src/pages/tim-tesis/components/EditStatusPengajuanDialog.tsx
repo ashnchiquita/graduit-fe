@@ -23,12 +23,16 @@ import { toast } from "react-toastify";
 import {
   approvePendaftaran,
   rejectPendaftaran,
+  getSelfData,
+  updateStatusS1,
 } from "../rekap-pendaftaran/clients";
+import { RoleEnum } from "@/types/session-data";
 
 interface EditStatusPengajuanDialogProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   id: string;
+  pendaftaranId: string;
   initialStatus: StatusPendaftaranEnum;
 }
 
@@ -36,6 +40,7 @@ export default function EditStatusPengajuanDialog({
   open,
   setOpen,
   id,
+  pendaftaranId,
   initialStatus,
 }: EditStatusPengajuanDialogProps): JSX.Element {
   const [status, setStatus] = useState<StatusPendaftaranEnum>();
@@ -59,10 +64,16 @@ export default function EditStatusPengajuanDialog({
 
   const { trigger: acceptTrigger, error: acceptError } = useSWRMutation(
     `/registrasi-tesis/${id}/status`,
-    async (_, { arg }: { arg: { id: string } }) => {
+    async (_, { arg }: { arg: { id: string; pendaftaranId: string } }) => {
       try {
-        const res = await approvePendaftaran(arg.id);
-        return res.data;
+        const self = await getSelfData();
+        if (self.data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
+          const res = await approvePendaftaran(arg.id);
+          return res.data;
+        } else {
+          const res = await updateStatusS1(arg.pendaftaranId, "APPROVED");
+          return res.data;
+        }
       } catch (error) {
         toast.error("Gagal menerima pendaftaran");
       }
@@ -71,10 +82,16 @@ export default function EditStatusPengajuanDialog({
 
   const { trigger: rejectTrigger, error: rejectError } = useSWRMutation(
     `/registrasi-tesis/${id}/status`,
-    async (_, { arg }: { arg: { id: string } }) => {
+    async (_, { arg }: { arg: { id: string; pendaftaranId: string } }) => {
       try {
-        const res = await rejectPendaftaran(arg.id);
-        return res.data;
+        const self = await getSelfData();
+        if (self.data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
+          const res = await rejectPendaftaran(arg.id);
+          return res.data;
+        } else {
+          const res = await updateStatusS1(arg.pendaftaranId, "REJECTED");
+          return res.data;
+        }
       } catch (error) {
         toast.error("Gagal menolak pendaftaran");
       }
@@ -84,6 +101,7 @@ export default function EditStatusPengajuanDialog({
   const handleAccept = async (id: string) => {
     await acceptTrigger({
       id: id,
+      pendaftaranId: pendaftaranId,
     });
 
     if (acceptError) {
@@ -96,6 +114,7 @@ export default function EditStatusPengajuanDialog({
   const handleReject = async (id: string) => {
     await rejectTrigger({
       id: id,
+      pendaftaranId: pendaftaranId,
     });
 
     if (rejectError) {

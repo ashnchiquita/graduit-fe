@@ -27,7 +27,7 @@ export default function KelolaAkun(): JSX.Element {
     <main className="flex w-full flex-col gap-5 px-4">
       <DataTable
         table={table}
-        headline="Pengaturan Akun Aplikasi Pengguna"
+        headline="Kelola Akun Aplikasi Pengguna"
         searchValue={searchValue}
         setSearchValue={handleSearchValueChange}
         searchPlaceholder="Cari nama atau email"

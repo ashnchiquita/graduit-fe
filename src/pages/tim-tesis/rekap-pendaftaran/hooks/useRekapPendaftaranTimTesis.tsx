@@ -15,7 +15,10 @@ import {
 import useSWR from "swr";
 import {
   getRekapPendaftaranStatistics,
+  getRekapPendaftaranStatisticsS1,
   getRekapPendaftaranTable,
+  getRekapPendaftaranTableS1,
+  getSelfData,
 } from "../clients";
 import { toast } from "react-toastify";
 import { RoleEnum } from "@/types/session-data";
@@ -96,10 +99,17 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
       "/registrasi-tesis/statistics",
       async () => {
         try {
-          const response = await getRekapPendaftaranStatistics({
-            view: RoleEnum.S2_TIM_TESIS,
-          });
-          return response.data;
+          const self = await getSelfData();
+          if (self.data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
+            const response = await getRekapPendaftaranStatistics({
+              view: RoleEnum.S2_TIM_TESIS,
+            });
+            return response.data;
+          } else {
+            const response = await getRekapPendaftaranStatisticsS1();
+            console.log(response.data.data);
+            return response.data.data;
+          }
         } catch (error) {
           toast.error("Gagal memuat data statistik");
           return defaultStatistics;
@@ -114,22 +124,38 @@ export default function useRekapPendaftaranTimTesis(): RekapPendaftaranTimTesisH
     PendaftaranTopik[]
   >("/registrasi-tesis", async () => {
     try {
-      const response = await getRekapPendaftaranTable({
-        view: RoleEnum.S2_TIM_TESIS,
-        page: page,
-        search: searchValue,
-      });
+      const self = await getSelfData();
+      if (self.data.roles.includes(RoleEnum.S2_TIM_TESIS)) {
+        const response = await getRekapPendaftaranTable({
+          view: RoleEnum.S2_TIM_TESIS,
+          page: page,
+          search: searchValue,
+        });
 
-      // Map GetRekapPendaftaranTableRes to PendaftaranTopik
-      const data = response.data.data.map((item) => ({
-        id: item.mahasiswa_id,
-        nim: item.nim,
-        nama: item.mahasiswa_nama,
-        dosenPembimbing: item.pembimbing_nama,
-        status: convertStatus(item.status),
-      }));
+        // Map GetRekapPendaftaranTableRes to PendaftaranTopik
+        const data = response.data.data.map((item) => ({
+          id: item.mahasiswa_id,
+          nim: item.nim,
+          nama: item.mahasiswa_nama,
+          dosenPembimbing: item.pembimbing_nama,
+          status: convertStatus(item.status),
+          pendaftaranId: item.pendaftaran_id,
+        }));
+        return data;
+      } else {
+        const response = await getRekapPendaftaranTableS1();
 
-      return data;
+        // Map GetRekapPendaftaranTableRes to PendaftaranTopik
+        const data = response.data.data.map((item) => ({
+          id: item.mahasiswa_id,
+          nim: item.nim,
+          nama: item.mahasiswa_nama,
+          dosenPembimbing: item.pembimbing_nama,
+          status: convertStatus(item.status),
+          pendaftaranId: item.pendaftaran_id,
+        }));
+        return data;
+      }
     } catch (error) {
       toast.error("Gagal memuat data tabel");
       return [];

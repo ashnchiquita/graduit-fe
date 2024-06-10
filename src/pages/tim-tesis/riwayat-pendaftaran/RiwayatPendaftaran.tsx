@@ -46,7 +46,7 @@ export default function RiwayatPendaftaran(): JSX.Element {
             <AvatarFallback className="z-0 bg-violet-500 text-lg text-white">
               {dataMahasiswa.nama &&
                 dataMahasiswa.nama.length > 0 &&
-                dataMahasiswa.nama[0]}
+                dataMahasiswa.nama[0].toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
@@ -65,31 +65,38 @@ export default function RiwayatPendaftaran(): JSX.Element {
             listPengajuan.map((pengajuan, index) => (
               <div className="flex w-full flex-col gap-4 rounded-lg bg-white p-4 font-medium">
                 {/* Dialogs */}
-                <EditStatusPengajuanDialog
-                  open={ubahStatusDialogOpen}
-                  setOpen={setUbahStatusDialogOpen}
-                  id={dataMahasiswa.id}
-                  initialStatus={pengajuan.status}
-                />
-                <EditDosenPembimbingDialog
-                  open={ubahDosenPembimbingDialogOpen}
-                  setOpen={setUbahDosenPembimbingDialogOpen}
-                  id={dataMahasiswa.id}
-                  initialDosenPembimbing={pengajuan.dosenPembimbing.map(
-                    (dosen) => {
-                      return {
-                        value: dosen.id,
-                        label: dosen.nama,
-                      } as SelectData;
-                    },
-                  )}
-                />
-                <EditWawancaraDialog
-                  open={wawancaraDialogOpen}
-                  setOpen={setWawancaraDialogOpen}
-                  id={dataMahasiswa.id}
-                  initialWawancara={pengajuan.jadwalInterview}
-                />
+                {index === 0 && (
+                  <EditStatusPengajuanDialog
+                    open={ubahStatusDialogOpen}
+                    setOpen={setUbahStatusDialogOpen}
+                    id={dataMahasiswa.id}
+                    pendaftaranId={pengajuan.id}
+                    initialStatus={pengajuan.status}
+                  />
+                )}
+                {index === 0 && (
+                  <EditDosenPembimbingDialog
+                    open={ubahDosenPembimbingDialogOpen}
+                    setOpen={setUbahDosenPembimbingDialogOpen}
+                    id={dataMahasiswa.id}
+                    pendaftaranId={pengajuan.id}
+                    initialDosenPembimbing={pengajuan.dosenPembimbing.map(
+                      (dosen) =>
+                        ({
+                          value: dosen.id,
+                          label: dosen.nama,
+                        }) as SelectData,
+                    )}
+                  />
+                )}
+                {index === 0 && (
+                  <EditWawancaraDialog
+                    open={wawancaraDialogOpen}
+                    setOpen={setWawancaraDialogOpen}
+                    id={dataMahasiswa.id}
+                    initialWawancara={pengajuan.jadwalInterview}
+                  />
+                )}
 
                 {/* Title Pengajuan */}
                 <h2>Pengajuan {listPengajuan.length - index} </h2>
