@@ -21,7 +21,7 @@ export const getAllDosenPembimbing = () => {
 
 export const getAllDosenPembimbingS1 = () => {
   return s1Instance.get<GetAllDosenPembimbingRespDataS1>(
-    "/api/admin/dosen-bimbingan",
+    "/admin/dosen-bimbingan",
     {
       withCredentials: true,
     },
@@ -41,7 +41,7 @@ export const getAlokasiTopikPerPembimbingS1 = (
   params: GetAlokasiTopikPerPembimbingReqParams,
 ) => {
   return s1Instance.get<GetAlokasiTopikPerPembimbingRespDataS1>(
-    "/api/admin/alokasi-topik",
+    "/admin/alokasi-topik",
     {
       params,
       withCredentials: true,
@@ -61,7 +61,7 @@ export const postRegistrasiTAS1 = (data: PostRegistrasiTesisRequestData) => {
   }
 
   return s1Instance.post<PostRegistrasiTesisResponseData>(
-    "/api/admin/pendaftaran",
+    "/admin/pendaftaran",
     convertToPostRegistrasiTARequestData(data),
     { withCredentials: true },
   );
@@ -83,7 +83,7 @@ export async function getRegS2(mhsId: string) {
 
 export async function getRegS1(mhsId: string) {
   return await s1Instance.get<StatusS1Response>(
-    `/api/admin/pendaftaran-by-id?id=${mhsId}`,
+    `/admin/pendaftaran-by-id?id=${mhsId}`,
     {
       withCredentials: true,
     },
