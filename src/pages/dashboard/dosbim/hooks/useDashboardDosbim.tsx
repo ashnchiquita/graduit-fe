@@ -1,3 +1,5 @@
+import useSession from "@/hooks/useSession";
+import { RoleEnum } from "@/types/session-data";
 import {
   ColumnDef,
   getCoreRowModel,
@@ -21,8 +23,6 @@ import {
   DoughnutChartDosbing,
   MahasiswaBimbingan,
 } from "../types";
-import useSession from "@/hooks/useSession";
-import { RoleEnum } from "@/types/session-data";
 
 export default function useDashboardDosbim(): DashboardDosbimHookRet {
   const { data: sessionData } = useSession();
@@ -179,19 +179,19 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
       header: "NIM",
       accessorKey: "nim",
       enableSorting: false,
-      minSize: 200,
+      minSize: 150,
     },
     {
       header: "Nama",
       accessorKey: "nama",
       enableSorting: false,
-      minSize: 400,
+      minSize: 200,
     },
     {
       header: "Topik",
       accessorKey: "topik",
       enableSorting: false,
-      minSize: 1000,
+      minSize: 600,
     },
     {
       header: "Status",
@@ -206,7 +206,10 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
         <Link
           to={`/dosen/bimbingan/${row.original.strata.toLowerCase()}/${row.original.id}`}
         >
-          <HiOutlineExternalLink className="size-4 hover:text-blue-500" />
+          <div className="hover:text-blue-500">
+            <HiOutlineExternalLink className="size-4" />
+            <div className="text-sm">Buka Riwayat Bimbingan Mahasiswa</div>
+          </div>
         </Link>
       ),
       minSize: 40,

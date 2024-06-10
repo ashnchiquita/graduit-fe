@@ -1,4 +1,6 @@
-import { useMemo, useState } from "react";
+import useSession from "@/hooks/useSession";
+import { RoleEnum } from "@/types/session-data";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useSWR from "swr";
@@ -25,11 +27,24 @@ const useDetailPengajuan = () => {
   const [dospengDialogOpen, setDospengDialogOpen] = useState(false);
   const [jadwalDialogOpen, setJadwalDialogOpen] = useState(false);
   const [tempatDialogOpen, setTempatDialogOpen] = useState(false);
+  const [isOnlyDosen, setIsOnlyDosen] = useState(true);
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const strata = searchParams.get("strata");
+  const { data: sessionData } = useSession();
+
+  useEffect(() => {
+    if (sessionData) {
+      setIsOnlyDosen(
+        !(
+          sessionData.roles.includes(RoleEnum.S1_TIM_TA) ||
+          sessionData.roles.includes(RoleEnum.S2_TIM_TESIS)
+        ),
+      );
+    }
+  }, [sessionData]);
 
   const defaultDetailData: Detail = {
     id_mahasiswa: "",
@@ -52,9 +67,10 @@ const useDetailPengajuan = () => {
   const defaultDospengData: Dospeng[] = [];
 
   const { data: dospengData = defaultDospengData, mutate } = useSWR(
-    `/TIMTA/get-dosuji?id=${id}`,
+    [`/TIMTA/get-dosuji?id=${id}`, isOnlyDosen],
     async () => {
       if (!id) return;
+      if (isOnlyDosen) return;
 
       if (strata === "S1") {
         const { data } = await getDospeng(id);
@@ -136,6 +152,7 @@ const useDetailPengajuan = () => {
     `/TIMTA/detail-sidsem?id=${id}`,
     async (_: string, { arg }: { arg: Dospeng[] }) => {
       if (!id) return;
+      if (isOnlyDosen) return;
 
       if (strata === "S1") {
         await updateDospeng({ dosen_uji: arg, id_sidsem: id });
@@ -151,6 +168,7 @@ const useDetailPengajuan = () => {
     `/TIMTA/detail-sidsem?id=${id}`,
     async (_: string, { arg }: { arg: string }) => {
       if (!id) return;
+      if (isOnlyDosen) return;
 
       if (strata === "S1") {
         await updateTempatSidang({ nama_ruangan: arg, id_sidsem: id });
@@ -164,6 +182,7 @@ const useDetailPengajuan = () => {
     `/TIMTA/detail-sidsem?id=${id}`,
     async (_: string, { arg }: { arg: Date }) => {
       if (!id) return;
+      if (isOnlyDosen) return;
 
       if (strata === "S1") {
         await updateJadwalSidang({
@@ -180,6 +199,7 @@ const useDetailPengajuan = () => {
     `/TIMTA/detail-sidsem?id=${id}`,
     async () => {
       if (!id) return;
+      if (isOnlyDosen) return;
 
       if (strata === "S1") {
         await approvePendaftaran(id);
@@ -192,6 +212,7 @@ const useDetailPengajuan = () => {
     `/TIMTA/detail-sidsem?id=${id}`,
     async () => {
       if (!id) return;
+      if (isOnlyDosen) return;
 
       if (strata === "S1") {
         await rejectPendaftaran(id);
@@ -328,6 +349,7 @@ const useDetailPengajuan = () => {
     setJadwalDialogOpen,
     tempatDialogOpen,
     setTempatDialogOpen,
+    isOnlyDosen,
   };
 };
 

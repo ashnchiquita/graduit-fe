@@ -196,6 +196,7 @@ export default function useDashboardTimTugas({
     state: {
       pagination,
     },
+    manualPagination: true,
     getCoreRowModel: getCoreRowModel(),
   });
 

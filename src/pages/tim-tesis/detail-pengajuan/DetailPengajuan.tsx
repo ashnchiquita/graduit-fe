@@ -39,6 +39,7 @@ export default function DetailPengajuan() {
     setJadwalDialogOpen,
     tempatDialogOpen,
     setTempatDialogOpen,
+    isOnlyDosen,
   } = useDetailPengajuan();
   const rawDate = data.jadwal_sidang;
   const cleanedDate = rawDate ? rawDate.replace(" WIB", "") : null;
@@ -148,27 +149,29 @@ export default function DetailPengajuan() {
                     </ul>
                   </div>
                 }
-                <DospengModal
-                  dospengDialogOpen={dospengDialogOpen}
-                  setDospengDialogOpen={setDospengDialogOpen}
-                  dosenPenguji={data.dosuji_name}
-                  listDosenPenguji={dospengData}
-                  onChange={handleDospengUpdate}
-                  modalTrigger={
-                    <>
-                      {data.status && (
-                        <Button
-                          variant="outline"
-                          className="flex h-7 gap-2 px-3 py-2 text-sm"
-                          onClick={() => setDospengDialogOpen(true)}
-                        >
-                          <Pencil size={12} />
-                          {"Ubah"}
-                        </Button>
-                      )}
-                    </>
-                  }
-                />
+                {!isOnlyDosen && (
+                  <DospengModal
+                    dospengDialogOpen={dospengDialogOpen}
+                    setDospengDialogOpen={setDospengDialogOpen}
+                    dosenPenguji={data.dosuji_name}
+                    listDosenPenguji={dospengData}
+                    onChange={handleDospengUpdate}
+                    modalTrigger={
+                      <>
+                        {data.status && !isOnlyDosen && (
+                          <Button
+                            variant="outline"
+                            className="flex h-7 gap-2 px-3 py-2 text-sm"
+                            onClick={() => setDospengDialogOpen(true)}
+                          >
+                            <Pencil size={12} />
+                            {"Ubah"}
+                          </Button>
+                        )}
+                      </>
+                    }
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -275,7 +278,7 @@ export default function DetailPengajuan() {
                       : formatDate(new Date(cleanedDate!))}
                   </div>
                 }
-                {
+                {!isOnlyDosen && (
                   <SidangModal
                     sidangDialogOpen={jadwalDialogOpen}
                     setSidangDialogOpen={setJadwalDialogOpen}
@@ -285,7 +288,7 @@ export default function DetailPengajuan() {
                     }}
                     modalTrigger={
                       <>
-                        {data.status && (
+                        {data.status && !isOnlyDosen && (
                           <Button
                             variant="outline"
                             className="flex h-7 gap-2 px-3 py-2 text-sm"
@@ -300,7 +303,7 @@ export default function DetailPengajuan() {
                       </>
                     }
                   />
-                }
+                )}
               </div>
             </div>
           </div>
@@ -321,28 +324,30 @@ export default function DetailPengajuan() {
                     {data.tempat === "" ? "Belum Ada" : data.tempat}
                   </div>
                 }
-                <TempatModal
-                  tempatDialogOpen={tempatDialogOpen}
-                  setTempatDialogOpen={setTempatDialogOpen}
-                  tempat={data.tempat}
-                  onChange={handleTempatUpdate}
-                  modalTrigger={
-                    <>
-                      {data.status && (
-                        <Button
-                          variant="outline"
-                          className="flex h-7 gap-2 px-3 py-2 text-sm"
-                          onClick={() => {
-                            setTempatDialogOpen(true);
-                          }}
-                        >
-                          <Pencil size={12} />
-                          {"Ubah"}
-                        </Button>
-                      )}
-                    </>
-                  }
-                />
+                {!isOnlyDosen && (
+                  <TempatModal
+                    tempatDialogOpen={tempatDialogOpen}
+                    setTempatDialogOpen={setTempatDialogOpen}
+                    tempat={data.tempat}
+                    onChange={handleTempatUpdate}
+                    modalTrigger={
+                      <>
+                        {data.status && (
+                          <Button
+                            variant="outline"
+                            className="flex h-7 gap-2 px-3 py-2 text-sm"
+                            onClick={() => {
+                              setTempatDialogOpen(true);
+                            }}
+                          >
+                            <Pencil size={12} />
+                            {"Ubah"}
+                          </Button>
+                        )}
+                      </>
+                    }
+                  />
+                )}
               </div>
             </div>
 
