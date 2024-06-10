@@ -4,6 +4,10 @@ export type GetAllDosenPembimbingRespData = {
   email: string;
 }[];
 
+export type GetAllDosenPembimbingRespDataS1 = {
+  data: GetAllDosenPembimbingRespData;
+};
+
 export type GetAlokasiTopikPerPembimbingReqParams = {
   idPembimbing: string;
 };
@@ -21,6 +25,23 @@ export type GetAlokasiTopikPerPembimbingRespData = {
       roles: string[];
     };
   }[];
+};
+
+export type GetAlokasiTopikPerPembimbingRespDataS1 = {
+  data: {
+    data: {
+      id: string;
+      judul: string;
+      deskripsi: string;
+      pengaju: {
+        id: string;
+        nama: string;
+        email: string;
+        roles: string[];
+      };
+    }[];
+    maxPage: number;
+  };
 };
 
 export type PostRegistrasiTesisRequestData = {

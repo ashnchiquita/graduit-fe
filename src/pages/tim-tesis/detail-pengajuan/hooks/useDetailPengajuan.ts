@@ -22,6 +22,9 @@ import { convertToDate } from "../utils";
 const useDetailPengajuan = () => {
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [dospengDialogOpen, setDospengDialogOpen] = useState(false);
+  const [jadwalDialogOpen, setJadwalDialogOpen] = useState(false);
+  const [tempatDialogOpen, setTempatDialogOpen] = useState(false);
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -157,7 +160,7 @@ const useDetailPengajuan = () => {
     },
   );
 
-  const { trigger: triggerJadwal, error: jadwalError } = useSWRMutation(
+  const { trigger: triggerJadwal } = useSWRMutation(
     `/TIMTA/detail-sidsem?id=${id}`,
     async (_: string, { arg }: { arg: Date }) => {
       if (!id) return;
@@ -173,7 +176,7 @@ const useDetailPengajuan = () => {
     },
   );
 
-  const { trigger: triggerApprove, error: approveError } = useSWRMutation(
+  const { trigger: triggerApprove } = useSWRMutation(
     `/TIMTA/detail-sidsem?id=${id}`,
     async () => {
       if (!id) return;
@@ -185,7 +188,7 @@ const useDetailPengajuan = () => {
       }
     },
   );
-  const { trigger: triggerReject, error: rejectError } = useSWRMutation(
+  const { trigger: triggerReject } = useSWRMutation(
     `/TIMTA/detail-sidsem?id=${id}`,
     async () => {
       if (!id) return;
@@ -209,6 +212,7 @@ const useDetailPengajuan = () => {
         autoClose: 1000,
       });
     } else {
+      setDospengDialogOpen(!dospengDialogOpen);
       toast.update(toastId, {
         render: "Berhasil menetapkan dosen penguji",
         type: "success",
@@ -230,6 +234,7 @@ const useDetailPengajuan = () => {
         autoClose: 1000,
       });
     } else {
+      setTempatDialogOpen(!tempatDialogOpen);
       toast.update(toastId, {
         render: "Berhasil menetapkan tempat sidang",
         type: "success",
@@ -241,19 +246,20 @@ const useDetailPengajuan = () => {
 
   const handleJadwalUpdate = async (date: Date) => {
     const toastId = toast.loading("Menetapkan jadwal sidang/seminar...");
-    await triggerJadwal(date);
-
-    if (jadwalError) {
-      toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menetapkan jadwal sidang/seminar",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
+    try {
+      await triggerJadwal(date);
       toast.update(toastId, {
         render: "Berhasil menetapkan jadwal sidang/seminar",
         type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      setJadwalDialogOpen(!jadwalDialogOpen);
+    } catch (error) {
+      toast.update(toastId, {
+        render:
+          "Terjadi kesalahan dalam menetapkan jadwal sidang/seminar, tolong periksa kembali tanggal yang dijadwalkan",
+        type: "error",
         isLoading: false,
         autoClose: 1000,
       });
@@ -262,16 +268,8 @@ const useDetailPengajuan = () => {
 
   const handleApprove = async () => {
     const toastId = toast.loading("Menerima sidang/seminar...");
-    await triggerApprove();
-
-    if (approveError) {
-      toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menerima sidang/seminar",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
+    try {
+      await triggerApprove();
       toast.update(toastId, {
         render: "Berhasil menerima sidang/seminar",
         type: "success",
@@ -279,21 +277,20 @@ const useDetailPengajuan = () => {
         autoClose: 1000,
       });
       setAcceptDialogOpen(!acceptDialogOpen);
+    } catch (error) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menerima sidang/seminar",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
     }
   };
 
   const handleReject = async () => {
     const toastId = toast.loading("Menolak sidang/seminar...");
-    await triggerReject();
-
-    if (rejectError) {
-      toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menolak sidang/seminar",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
+    try {
+      await triggerReject();
       toast.update(toastId, {
         render: "Penolakan berhasil",
         type: "success",
@@ -301,6 +298,13 @@ const useDetailPengajuan = () => {
         autoClose: 1000,
       });
       setRejectDialogOpen(!rejectDialogOpen);
+    } catch (error) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menolak sidang/seminar",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
     }
   };
 
@@ -318,6 +322,12 @@ const useDetailPengajuan = () => {
     dospengData,
     handleDospengUpdate,
     strata,
+    dospengDialogOpen,
+    setDospengDialogOpen,
+    jadwalDialogOpen,
+    setJadwalDialogOpen,
+    tempatDialogOpen,
+    setTempatDialogOpen,
   };
 };
 

@@ -173,7 +173,7 @@ export default function useDaftarTopik() {
     if (strataFilter === "S1") {
       const res = await getAllDosenPembimbingS1();
 
-      const options: SelectData[] = res.data.map(({ id, nama }) => ({
+      const options: SelectData[] = res.data.data.map(({ id, nama }) => ({
         label: nama,
         value: id,
       }));

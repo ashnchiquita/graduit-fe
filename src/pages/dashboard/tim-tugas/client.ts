@@ -1,6 +1,9 @@
 import loginInstance from "@/config/login-axios-config";
 import s2Instance from "@/config/s2-axios-config";
+import s1Instance from "@/config/s1-axios-config";
 import {
+  GetDashboardTimTAReqParams,
+  GetDashboardTimTARespData,
   GetDashboardTimTesisReqParams,
   GetDashboardTimTesisRespData,
 } from "./types";
@@ -13,6 +16,17 @@ export async function getDashboardTimTesisData(
   return await s2Instance.get<GetDashboardTimTesisRespData>(
     "/dashboard/tim-tesis",
     { params },
+  );
+}
+
+export async function getDashboardTimTAData(
+  params: GetDashboardTimTAReqParams,
+) {
+  console.log(params);
+
+  return await s1Instance.get<GetDashboardTimTARespData>(
+    "/TIMTA/dashboard-status",
+    { params, withCredentials: true },
   );
 }
 

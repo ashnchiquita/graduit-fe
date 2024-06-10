@@ -44,8 +44,24 @@ export type GetDashboardTimTesisRespData = {
   }[];
 };
 
+export type GetDashboardTimTARespData = {
+  data: {
+    id: string;
+    nim: string;
+    nama: string;
+    PengajuanTopik: boolean;
+    SeminarProposal: boolean;
+    Sidang: boolean;
+  }[];
+};
+
 export type GetDashboardTimTesisReqParams = {
   page: number;
   limit: number;
   search?: string;
+};
+
+export type GetDashboardTimTAReqParams = {
+  offset: number;
+  limit: number;
 };

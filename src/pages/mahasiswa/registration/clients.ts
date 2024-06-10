@@ -9,6 +9,8 @@ import {
   PostRegistrasiTARequestData,
   StatusS1Response,
   StatusS2Response,
+  GetAllDosenPembimbingRespDataS1,
+  GetAlokasiTopikPerPembimbingRespDataS1,
 } from "./types";
 
 export const getAllDosenPembimbing = () => {
@@ -17,12 +19,33 @@ export const getAllDosenPembimbing = () => {
   });
 };
 
+export const getAllDosenPembimbingS1 = () => {
+  return s1Instance.get<GetAllDosenPembimbingRespDataS1>(
+    "/api/admin/dosen-bimbingan",
+    {
+      withCredentials: true,
+    },
+  );
+};
+
 export const getAlokasiTopikPerPembimbing = (
   params: GetAlokasiTopikPerPembimbingReqParams,
 ) => {
   return s2Instance.get<GetAlokasiTopikPerPembimbingRespData>(
     "/alokasi-topik",
     { params, withCredentials: true },
+  );
+};
+
+export const getAlokasiTopikPerPembimbingS1 = (
+  params: GetAlokasiTopikPerPembimbingReqParams,
+) => {
+  return s1Instance.get<GetAlokasiTopikPerPembimbingRespDataS1>(
+    "/api/admin/alokasi-topik",
+    {
+      params,
+      withCredentials: true,
+    },
   );
 };
 
