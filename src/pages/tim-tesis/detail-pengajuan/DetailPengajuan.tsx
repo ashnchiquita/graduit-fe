@@ -2,7 +2,8 @@ import { CardTitle } from "@/components/Card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, Calendar, Lightbulb, Pencil, WrapText } from "lucide-react";
+import { Calendar, Lightbulb, Pencil, WrapText } from "lucide-react";
+import { FaArrowLeft } from "react-icons/fa6";
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import { RiFilePaper2Line } from "react-icons/ri";
 import DosenPembimbingIcon from "../../../assets/detail-sidsem/dosen-pembimbing-icon.svg";
@@ -32,39 +33,55 @@ export default function DetailPengajuan() {
     dospengData,
     handleDospengUpdate,
     strata,
+    dospengDialogOpen,
+    setDospengDialogOpen,
+    jadwalDialogOpen,
+    setJadwalDialogOpen,
+    tempatDialogOpen,
+    setTempatDialogOpen,
   } = useDetailPengajuan();
+  const rawDate = data.jadwal_sidang;
+  const cleanedDate = rawDate ? rawDate.replace(" WIB", "") : null;
+  const dateInit = cleanedDate ? new Date(cleanedDate) : new Date();
   return (
     <main className="ml-6 mr-3 ">
-      <div className="w-full rounded-lg bg-white p-4 text-base">
-        <div className="flex items-center gap-3 md:gap-3.5">
-          <button onClick={() => navigate(-1)}>
-            <ArrowLeft size={20} className="text-gray-500" />
-          </button>
-          <Avatar className="z-0 size-10">
-            <AvatarFallback className="z-0 bg-violet-500 text-lg text-white">
-              {data && data.nama[0] ? data.nama[0].toUpperCase() : "A"}
+      <div className="w-full rounded-2xl bg-white p-6 text-base md:px-10 md:py-8">
+        <div className="flex items-center gap-4 md:gap-6">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-fit"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(-1);
+            }}
+          >
+            <FaArrowLeft className="size-4 text-gray-500 md:size-6" />
+          </Button>
+          <Avatar className="size-12">
+            <AvatarFallback className="bg-violet-500 text-xl text-white">
+              {data.nama[0]}
             </AvatarFallback>
           </Avatar>
-          <div>
-            <div className="flex items-center gap-3">
-              <div className="font-medium">{data.nama}</div>
-            </div>
+          <div className="space-y-1 md:space-y-2">
+            <CardTitle>{data.nama}</CardTitle>
 
             {/* Desktop */}
-            <div className="hidden gap-2 text-sm text-muted-foreground md:flex">
-              <div>{data?.email}</div>
+            <div className="hidden gap-2 text-xs font-normal text-muted-foreground md:flex">
+              <div>{data.email}</div>
               <div>•</div>
-              <div>{data?.jalur_pilihan}</div>
+              <div>{data.jalur_pilihan}</div>
             </div>
 
             {/* Mobile */}
-            <div className="flex flex-col gap-1 text-sm text-muted-foreground md:hidden">
-              <div>{data?.email}</div>
+            <div className="flex flex-col gap-1 text-xs text-muted-foreground md:hidden">
+              <div className="font-medium">{data.jalur_pilihan}</div>
+              <div>{data.email}</div>
             </div>
           </div>
         </div>
 
-        <div className="ml-3 mt-6 flex flex-1 flex-col justify-between overflow-hidden">
+        <div className="mt-8 flex flex-1 flex-col justify-between overflow-hidden">
           <div className="flex flex-1 flex-col space-y-5 overflow-hidden">
             <div className="space-y-1">
               <div className="flex w-full items-center gap-3">
@@ -132,6 +149,8 @@ export default function DetailPengajuan() {
                   </div>
                 }
                 <DospengModal
+                  dospengDialogOpen={dospengDialogOpen}
+                  setDospengDialogOpen={setDospengDialogOpen}
                   dosenPenguji={data.dosuji_name}
                   listDosenPenguji={dospengData}
                   onChange={handleDospengUpdate}
@@ -141,6 +160,7 @@ export default function DetailPengajuan() {
                         <Button
                           variant="outline"
                           className="flex h-7 gap-2 px-3 py-2 text-sm"
+                          onClick={() => setDospengDialogOpen(true)}
                         >
                           <Pencil size={12} />
                           {"Ubah"}
@@ -155,9 +175,9 @@ export default function DetailPengajuan() {
         </div>
       </div>
 
-      <div className="my-4 w-full rounded-lg bg-white p-6 text-base">
-        <CardTitle className="text-lg">Detail Pengajuan</CardTitle>
-        <div className="mt-6 flex flex-1 flex-col justify-between overflow-hidden">
+      <div className="my-4 w-full rounded-2xl bg-white p-6 text-base md:px-10 md:py-8">
+        <CardTitle>Detail Pengajuan</CardTitle>
+        <div className="mt-8 flex flex-1 flex-col justify-between overflow-hidden">
           <div className="flex flex-1 flex-col space-y-5 overflow-hidden">
             <div className="flex flex-col space-y-1 overflow-hidden">
               <div className="flex w-full items-center gap-3">
@@ -171,13 +191,7 @@ export default function DetailPengajuan() {
                 </div>
               </div>
               <ScrollArea className="flex-1">
-                <div className="pl-9 text-sm md:text-base">
-                  {data.tipe === "SEMINAR_1"
-                    ? "Seminar Proposal"
-                    : data.tipe === "SEMINAR_2"
-                      ? "Seminar Tesis"
-                      : "Sidang"}
-                </div>
+                <div className="pl-9 text-sm md:text-base">{data.tipe}</div>
               </ScrollArea>
             </div>
 
@@ -227,12 +241,9 @@ export default function DetailPengajuan() {
                 </div>
               </div>
               <ScrollArea className="flex-1">
-                <div className="flex gap-2 pl-8 text-base">
+                <div className="flex gap-2 pl-9 text-sm md:text-base">
                   {data.berkas_sidsem.length > 0 ? (
-                    <ButtonDownload
-                      data={data.berkas_sidsem}
-                      className="text-base"
-                    />
+                    <ButtonDownload data={data.berkas_sidsem} />
                   ) : (
                     "Belum Ada"
                   )}
@@ -243,10 +254,10 @@ export default function DetailPengajuan() {
         </div>
       </div>
 
-      <div className="my-4 w-full rounded-lg bg-white p-6 text-base">
-        <CardTitle className="text-lg">Pengaturan Sidang / Seminar </CardTitle>
-        <div className="mt-5 flex flex-1 flex-col justify-between overflow-hidden">
-          <div className="flex flex-1 flex-col gap-4 overflow-hidden">
+      <div className="my-4 w-full rounded-2xl bg-white p-6 text-base md:px-10 md:py-8">
+        <CardTitle>Pengaturan Sidang / Seminar </CardTitle>
+        <div className="mt-8 flex flex-1 flex-col justify-between overflow-hidden">
+          <div className="flex flex-1 flex-col space-y-5 overflow-hidden">
             <div className="space-y-1">
               <div className="flex w-full items-center gap-3">
                 <Avatar className="size-6">
@@ -261,11 +272,13 @@ export default function DetailPengajuan() {
                   <div className="flex items-center gap-5 text-sm md:text-base">
                     {data.jadwal_sidang === ""
                       ? "Belum Ada"
-                      : formatDate(new Date(data.jadwal_sidang))}
+                      : formatDate(new Date(cleanedDate!))}
                   </div>
                 }
                 {
                   <SidangModal
+                    sidangDialogOpen={jadwalDialogOpen}
+                    setSidangDialogOpen={setJadwalDialogOpen}
                     dateInit={new Date(data.jadwal_sidang)}
                     onChange={(date) => {
                       handleJadwalUpdate(date);
@@ -276,6 +289,9 @@ export default function DetailPengajuan() {
                           <Button
                             variant="outline"
                             className="flex h-7 gap-2 px-3 py-2 text-sm"
+                            onClick={() => {
+                              setJadwalDialogOpen(true);
+                            }}
                           >
                             <Pencil size={12} />
                             {"Jadwalkan"}
@@ -287,44 +303,49 @@ export default function DetailPengajuan() {
                 }
               </div>
             </div>
-            <div className="space-y-1">
-              <div className="flex w-full items-center gap-3">
-                <Avatar className="size-6">
-                  <AvatarFallback className="bg-orange-200">
-                    <Calendar className="size-4 text-orange-400" />
-                  </AvatarFallback>
-                </Avatar>
-                <ScrollArea className="text-muted-foreground">
-                  Tempat
-                </ScrollArea>
-              </div>
-              <div className="pl-9 text-sm md:text-base">
-                <div className="flex items-center gap-5 text-sm md:text-base">
-                  {
-                    <div className="flex items-center gap-5 text-sm md:text-base">
-                      {data.tempat === "" ? "Belum Ada" : data.tempat}
-                    </div>
+          </div>
+
+          <div className="space-y-1">
+            <div className="flex w-full items-center gap-3">
+              <Avatar className="size-6">
+                <AvatarFallback className="bg-orange-200">
+                  <Calendar className="size-4 text-orange-400" />
+                </AvatarFallback>
+              </Avatar>
+              <ScrollArea className="text-muted-foreground">Tempat</ScrollArea>
+            </div>
+            <div className="pl-9 text-sm md:text-base">
+              <div className="flex items-center gap-5 text-sm md:text-base">
+                {
+                  <div className="flex items-center gap-5 text-sm md:text-base">
+                    {data.tempat === "" ? "Belum Ada" : data.tempat}
+                  </div>
+                }
+                <TempatModal
+                  tempatDialogOpen={tempatDialogOpen}
+                  setTempatDialogOpen={setTempatDialogOpen}
+                  tempat={data.tempat}
+                  onChange={handleTempatUpdate}
+                  modalTrigger={
+                    <>
+                      {data.status && (
+                        <Button
+                          variant="outline"
+                          className="flex h-7 gap-2 px-3 py-2 text-sm"
+                          onClick={() => {
+                            setTempatDialogOpen(true);
+                          }}
+                        >
+                          <Pencil size={12} />
+                          {"Ubah"}
+                        </Button>
+                      )}
+                    </>
                   }
-                  <TempatModal
-                    tempat={data.tempat}
-                    onChange={handleTempatUpdate}
-                    modalTrigger={
-                      <>
-                        {data.status && (
-                          <Button
-                            variant="outline"
-                            className="flex h-7 gap-2 px-3 py-2 text-sm"
-                          >
-                            <Pencil size={12} />
-                            {"Ubah"}
-                          </Button>
-                        )}
-                      </>
-                    }
-                  />
-                </div>
+                />
               </div>
             </div>
+
             <div className="space-y-1">
               <div className="flex w-full items-center gap-3">
                 <Avatar className="size-6">
@@ -346,7 +367,7 @@ export default function DetailPengajuan() {
             </div>
           </div>
           {(data.status === null || strata === "S1") && (
-            <div className="mt-4 flex items-center justify-center gap-5 justify-self-end">
+            <div className="mt-4 flex items-center justify-center gap-5 justify-self-end pl-9">
               <RegAcceptDialog
                 acceptDialogOpen={acceptDialogOpen}
                 setAcceptDialogOpen={setAcceptDialogOpen}

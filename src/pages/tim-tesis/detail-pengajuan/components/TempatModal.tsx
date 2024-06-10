@@ -16,13 +16,15 @@ export default function TempatModal({
   tempat,
   onChange,
   modalTrigger,
+  tempatDialogOpen,
+  setTempatDialogOpen,
 }: TempatModalProps): JSX.Element {
   const { dialogOpen, setDialogOpen, handleChange, form } = useTempatModal(
     tempat,
     onChange,
   );
   return (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog open={tempatDialogOpen} onOpenChange={setTempatDialogOpen}>
       <DialogTrigger asChild>{modalTrigger}</DialogTrigger>
 
       <DialogContent className="max-w-[330px] rounded-md md:max-w-[425px]">
