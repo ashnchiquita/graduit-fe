@@ -142,6 +142,23 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
     },
   ];
 
+  // Count of mahasiswa bimbingan S2 based on their status
+  const s2BimbinganData = s2MahasiswaData.reduce(
+    (acc, mahasiswa) => {
+      console.log("mahasiswa", mahasiswa);
+      if (mahasiswa.status.toLowerCase() === "butuh_bimbingan") {
+        acc.bimbingan += 1;
+      } else if (mahasiswa.status.toLowerCase() === "lancar") {
+        acc.lancar += 1;
+      } else {
+        acc.terkendala += 1;
+      }
+
+      return acc;
+    },
+    { lancar: 0, bimbingan: 0, terkendala: 0 },
+  );
+
   const barChartData: BarChartDosbing[] = [
     {
       level: "S1",
@@ -149,7 +166,12 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
       bimbingan: s1BimbinganData?.bimbingan ?? 0,
       terkendala: s1BimbinganData?.terkendala ?? 0,
     },
-    { level: "S2", lancar: 8, bimbingan: 2, terkendala: 4 },
+    {
+      level: "S2",
+      lancar: s2BimbinganData.lancar,
+      bimbingan: s2BimbinganData.bimbingan,
+      terkendala: s2BimbinganData.terkendala,
+    },
   ];
 
   const columns: ColumnDef<MahasiswaBimbingan>[] = [
