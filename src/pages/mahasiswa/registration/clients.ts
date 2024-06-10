@@ -56,7 +56,10 @@ export const postRegistrasiTAS1 = (data: PostRegistrasiTesisRequestData) => {
     return {
       idMahasiswa: data.idMahasiswa,
       idTopik: data.idTopik ?? "",
-      idPenerima: data.idPenerima,
+      idDosen: data.idPenerima,
+      judulTopik: data.judulTopik ?? "",
+      deskripsiTopik: data.deskripsiTopik ?? "",
+      jalurPilihan: data.jalurPilihan,
     };
   }
 
