@@ -38,7 +38,7 @@ export default function BatchUbahRole(): JSX.Element {
     roleValue,
     setRoleValue,
     handleRoleValueChange,
-    handleAddAccountButton,
+    // handleAddAccountButton,
     roleAccess,
     viewRole,
     setViewRole,
@@ -61,7 +61,7 @@ export default function BatchUbahRole(): JSX.Element {
       <section className="hidden md:block">
         <DataTable
           table={table}
-          headline="Pengaturan Akun Aplikasi Pengguna"
+          headline="Pengaturan Role Aplikasi Pengguna"
           searchValue={searchValue}
           setSearchValue={handleSearchValueChange}
           searchPlaceholder="Cari nama atau email"
@@ -91,12 +91,12 @@ export default function BatchUbahRole(): JSX.Element {
                 >
                   Hapus Role
                 </Button>
-                <Button
+                {/* <Button
                   onClick={() => handleAddAccountButton()}
                   className="h-fit border border-slate-500 bg-white px-3 py-1 text-black transition-all hover:bg-slate-500 hover:text-white"
                 >
                   Tambah Akun
-                </Button>
+                </Button> */}
               </div>
             </div>
           }

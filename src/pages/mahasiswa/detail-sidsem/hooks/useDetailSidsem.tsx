@@ -86,6 +86,7 @@ export default function useDetailSidsem() {
         // TODO has registered guard
         const responseDetail = (await getDetailSidSemS2(sessionData?.id ?? ""))
           .data;
+
         data = {
           data: {
             id_mahasiswa: responseDetail.idMahasiswa,
@@ -94,7 +95,9 @@ export default function useDetailSidsem() {
             jalur_pilihan: responseDetail.jalurPilihan,
             judul: responseDetail.judulSidsem,
             deskripsi: responseDetail.deskripsiSidsem,
-            dosbing_name: responseDetail.dosenPembimbing.join(", "),
+            dosbing_name: responseDetail.dosenPembimbing
+              .map((dosen) => dosen.nama)
+              .join(", "),
             tipe: responseDetail.jenisSidang,
             waktu_mulai: responseDetail.jadwalSidang ?? "Belum ditentukan",
             nama_ruangan: responseDetail.ruangan ?? "Belum ditentukan",

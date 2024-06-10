@@ -277,9 +277,9 @@ export default function DetailPengajuan() {
                 }
                 {
                   <SidangModal
-                    sidangDialogOpen={jadwalDialogOpen}
-                    setSidangDialogOpen={setJadwalDialogOpen}
-                    dateInit={dateInit}
+                  sidangDialogOpen={jadwalDialogOpen}
+                  setSidangDialogOpen={setJadwalDialogOpen}
+                    dateInit={new Date(data.jadwal_sidang)}
                     onChange={(date) => {
                       handleJadwalUpdate(date);
                     }}
@@ -322,8 +322,8 @@ export default function DetailPengajuan() {
                   </div>
                 }
                 <TempatModal
-                  tempatDialogOpen={tempatDialogOpen}
-                  setTempatDialogOpen={setTempatDialogOpen}
+                tempatDialogOpen={tempatDialogOpen}
+                setTempatDialogOpen={setTempatDialogOpen}
                   tempat={data.tempat}
                   onChange={handleTempatUpdate}
                   modalTrigger={
@@ -332,9 +332,7 @@ export default function DetailPengajuan() {
                         <Button
                           variant="outline"
                           className="flex h-7 gap-2 px-3 py-2 text-sm"
-                          onClick={() => {
-                            setTempatDialogOpen(true);
-                          }}
+                          onClick={()=>{setTempatDialogOpen(true)}}
                         >
                           <Pencil size={12} />
                           {"Ubah"}

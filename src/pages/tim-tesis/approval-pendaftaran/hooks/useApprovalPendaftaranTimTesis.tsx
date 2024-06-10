@@ -20,9 +20,8 @@ import {
 import JenisSidangBadge from "../components/JenisSidangBadge";
 import RowAction from "../components/RowAction";
 import { ApprovalPendaftaranTopik, Jenis, Status } from "../types";
-// import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 
-export default function useApprivalPendaftaranTimTesis() {
+export default function useApprovalPendaftaranTimTesis() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(
     searchParams.get("search") ?? "",

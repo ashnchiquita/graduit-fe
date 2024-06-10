@@ -15,9 +15,9 @@ const RegisterSidSemCard = ({
 }: RegisterSidSemCardProps) => {
   const navigate = useNavigate();
   return (
-    <div className="rounded-lg bg-white flex flex-col gap-2">
+    <div className="flex flex-col gap-2 rounded-lg bg-white">
       <img src={PendaftaranHeaderGraphic} className="rounded-t-md" alt="" />
-      <div className="px-6 py-3 flex flex-col gap-3">
+      <div className="flex flex-col gap-3 px-6 py-3">
         <CardTitle>Registrasi {title}</CardTitle>
         <CardDescription>
           Registrasi {title.toLowerCase()} dibuka. Untuk mendaftar, pastikan
@@ -25,7 +25,7 @@ const RegisterSidSemCard = ({
         </CardDescription>
         {disabled ? (
           <button
-            className="rounded-md bg-gray-100 px-9 py-2 text-sm text-gray-500 hover:cursor-not-allowed ml-auto mt-2 "
+            className="ml-auto mt-2 rounded-md bg-gray-100 px-9 py-2 text-sm text-gray-500 hover:cursor-not-allowed "
             disabled={disabled}
             onClick={() => navigate(path)}
           >
@@ -34,7 +34,7 @@ const RegisterSidSemCard = ({
           </button>
         ) : (
           <button
-            className="rounded-md bg-blue-500 px-9 py-2 text-sm text-white hover:bg-blue-600 ml-auto mt-2 hover:cursor-pointer "
+            className="ml-auto mt-2 rounded-md bg-blue-500 px-9 py-2 text-sm text-white hover:cursor-pointer hover:bg-blue-600 "
             disabled={disabled}
             onClick={() => navigate(path)}
           >

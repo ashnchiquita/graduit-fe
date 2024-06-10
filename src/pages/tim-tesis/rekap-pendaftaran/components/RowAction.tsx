@@ -51,7 +51,7 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
             setAcceptDialogOpen={setAcceptDialogOpen}
             name={row.original.nama}
             onAccept={() => {
-              handleAccept(row.original.id);
+              handleAccept(row.original.id, row.original.pendaftaranId);
               setIsPopoverOpen(false);
             }}
             dialogTrigger={<></>}
@@ -63,7 +63,7 @@ export default function RowAction({ row }: ComponentProps): JSX.Element {
             setRejectDialogOpen={setRejectDialogOpen}
             name={row.original.nama}
             onReject={() => {
-              handleReject(row.original.id);
+              handleReject(row.original.id, row.original.pendaftaranId);
               setIsPopoverOpen(false);
             }}
             dialogTrigger={<></>}
