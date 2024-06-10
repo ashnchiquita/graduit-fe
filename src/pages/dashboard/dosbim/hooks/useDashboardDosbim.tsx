@@ -28,7 +28,7 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
   const { data: sessionData } = useSession();
 
   const { data: s1MahasiswaData = [] } = useSWR(
-    "/api/dosbing/dashboard",
+    "/dosbing/dashboard",
     async () => {
       const res = await getDashboardDosbimS1();
       console.log("res", res);
@@ -84,7 +84,7 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
   const [mahasiswaData, setMahasiswaData] = useState<MahasiswaBimbingan[]>([]);
 
   const { data: s1StatisticData = [] } = useSWR(
-    "/api/dosbing/dashboard/statistic",
+    "/dosbing/dashboard/statistic",
     async () => {
       const res = await getDosbimStatisticsS1();
       const data = [
@@ -117,7 +117,7 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
   );
 
   const { data: s1BimbinganData } = useSWR(
-    "/api/dosbing/dashboard/status-bimbingan",
+    "/dosbing/dashboard/status-bimbingan",
     async () => {
       const res = await getDosbimStatusBimbinganS1();
 
