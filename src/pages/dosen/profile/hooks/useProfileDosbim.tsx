@@ -1,45 +1,63 @@
-import { useForm } from "react-hook-form";
-import { SimpanKontakFormData, SimpanKontakFormSchema } from "../constants";
+import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
+import useSession from "@/hooks/useSession";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import useSWRMutation from "swr/mutation";
-// import { toast } from "react-toastify";
-// import { useParams } from "react-router-dom";
-// import useSWR from "swr";
-// import { useState } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import useSWRMutation from "swr/mutation";
+import { patchDosbimProfile } from "../client";
+import { SimpanKontakFormData, SimpanKontakFormSchema } from "../constants";
+import { PatchDosbimProfileReqBody } from "../types";
 
 const useProfileDosbim = () => {
-  //TODO bahas page selanjutnya habis nambah log bimbingan apa
-  //   const [idMahasiswa, setIdMahasiswa] = useState<string>("");
+  const { makeToast } = useCustomToast();
+  const { data: sessionData } = useSession();
 
-  //   const {} = useSWR(`/auth/self`, async () => {
-  //     const response = await getNimMahasiswa();
-  //     setIdMahasiswa(response.data.id);
-  //   });
-
-  //   const { strata } = useParams();
+  const { trigger } = useSWRMutation(
+    `/auth/self`,
+    async (_, { arg }: { arg: PatchDosbimProfileReqBody }) => {
+      await patchDosbimProfile(arg);
+    },
+  );
 
   const form = useForm<SimpanKontakFormData>({
     defaultValues: {
-      whatsapp: "081111111111",
-      msteams: "tes@msteams",
-      email: "tes@tes.com",
-      telp: "081111111111",
+      whatsapp: "",
+      msteams: "",
+      email: "",
+      telp: "",
     },
     resolver: zodResolver(SimpanKontakFormSchema),
   });
 
-  //   const apiFunction =
-  //     strata === "S1" ? postLogBimbingan : postLogBimbinganForS2;
+  useEffect(() => {
+    console.log(sessionData);
 
-  //   const { trigger } = useSWRMutation(
-  //     "/mahasiswa/add-bimbingan-log",
-  //     async (_, { arg }: { arg: PostLogBimbinganReqData }) => {
-  //       return await apiFunction(arg);
-  //     },
-  //   );
+    if (sessionData)
+      form.reset({
+        whatsapp: sessionData.kontakWhatsApp ?? "",
+        msteams: sessionData.kontakMsTeams ?? "",
+        email: sessionData.kontakEmail ?? "",
+        telp: sessionData.kontakTelp ?? "",
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionData]);
 
   const onSubmit = async (values: SimpanKontakFormData) => {
-    console.log(values);
+    const data: PatchDosbimProfileReqBody = {
+      kontakEmail: values.email ?? "",
+      kontakMsTeams: values.msteams ?? "",
+      kontakTelp: values.telp ?? "",
+      kontakWhatsApp: values.whatsapp ?? "",
+    };
+
+    const toastParams: ToastParams = {
+      loadingText: "Menyimpan kontak...",
+      successText: "Berhasil menyimpan kontak",
+      errorText: "Gagal menyimpan kontak",
+      action: () => trigger(data),
+    };
+
+    await makeToast(toastParams);
   };
 
   return {

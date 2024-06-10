@@ -17,4 +17,9 @@ export type SessionData = {
   email: string;
   nim: string | null;
   roles: RoleEnum[];
+  kontakEmail: string | null;
+  kontakLainnya: string | null;
+  kontakMsTeams: string | null;
+  kontakTelp: string | null;
+  kontakWhatsApp: string | null;
 };
