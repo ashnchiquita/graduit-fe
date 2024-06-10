@@ -37,13 +37,23 @@ export default function useApprovalPendaftaranTimTesis() {
   const [strata, setStrata] = useState<string | undefined>(undefined);
 
   useEffect(() => {
+    console.log(
+      data
+        ? data.roles.includes(RoleEnum.S2_TIM_TESIS) ||
+          data.roles.includes(RoleEnum.S2_PEMBIMBING) ||
+          data.roles.includes(RoleEnum.S2_PENGUJI)
+          ? "S2"
+          : data.roles.includes(RoleEnum.S1_TIM_TA)
+            ? "S1"
+            : undefined
+        : undefined,
+    );
+
     setStrata(
       data
-        ? data.roles.includes(
-            RoleEnum.S2_TIM_TESIS ||
-              RoleEnum.S2_PEMBIMBING ||
-              RoleEnum.S2_PENGUJI,
-          )
+        ? data.roles.includes(RoleEnum.S2_TIM_TESIS) ||
+          data.roles.includes(RoleEnum.S2_PEMBIMBING) ||
+          data.roles.includes(RoleEnum.S2_PENGUJI)
           ? "S2"
           : data.roles.includes(RoleEnum.S1_TIM_TA)
             ? "S1"
