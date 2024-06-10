@@ -43,7 +43,7 @@ export default function DetailPengajuan() {
   } = useDetailPengajuan();
   const rawDate = data.jadwal_sidang;
   const cleanedDate = rawDate ? rawDate.replace(" WIB", "") : null;
-  const dateInit = cleanedDate ? new Date(cleanedDate) : new Date();
+  // const dateInit = cleanedDate ? new Date(cleanedDate) : new Date();
   return (
     <main className="ml-6 mr-3 ">
       <div className="w-full rounded-2xl bg-white p-6 text-base md:px-10 md:py-8">

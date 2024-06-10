@@ -35,6 +35,7 @@ export type PutAccountRequestData = {
   id?: string;
   nama: string;
   email: string;
+  password?: string;
   nim?: string;
   access: string[];
 };
@@ -42,6 +43,7 @@ export type PutAccountRequestData = {
 export type CreateAccountRequestData = {
   nama: string;
   email: string;
+  password: string;
   nim?: string;
   access: string[];
 };

@@ -14,10 +14,21 @@ import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function LogMahasiswa(): JSX.Element {
-  const { table, onClickCreate, data } = useLogBimbingan();
+  const { table, onClickCreate, data, isDefault } = useLogBimbingan();
+
+  if (isDefault) {
+    return (
+      <main className="w-full px-4">
+        <p className="w-full text-center">
+          Data pendaftaran tidak ditemukan. Silakan mendaftar terlebih dahulu.
+        </p>
+      </main>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-4 px-4 pb-20">
-      <TagStatus status={data.status ? "SAH" : "TIDAKSAH"} />
+      <TagStatus status={data.status.toLowerCase()} />
       <DataTable
         headline="Log Bimbingan"
         table={table}

@@ -198,7 +198,7 @@ export default function useDashboardDosbim(): DashboardDosbimHookRet {
       accessorKey: "status",
       enableSorting: false,
       cell: ({ row }) => <StatusCell row={row} />,
-      minSize: 100,
+      minSize: 170,
     },
     {
       id: "link",

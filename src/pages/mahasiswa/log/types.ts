@@ -4,7 +4,7 @@ export type Berkas = {
 };
 
 export type LogBimbinganStatusData = {
-  status: boolean;
+  status: string;
   bimbingan_logs: LogBimbinganData[];
 };
 
@@ -40,4 +40,5 @@ type BimbinganLogS2 = {
 
 export type GetBimbinganS2Res = {
   bimbingan: BimbinganLogS2[];
+  status: string;
 };
