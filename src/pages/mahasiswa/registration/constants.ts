@@ -13,6 +13,14 @@ export const StreamSelectOptions: SelectData[] = [
   { label: "Keamanan Siber (CSec)", value: "CSEC" },
 ];
 
+export const StreamSelectOptionsS1: SelectData[] = [
+  { label: "Teknik Informatika", value: "Teknik Informatika" },
+  {
+    label: "Sistem Teknologi dan Informasi",
+    value: "Sistem Teknologi dan Informasi",
+  },
+];
+
 export const RegistrationFormSchema = z.object({
   // TODO adjust to API contract
   topic: z.string().min(1, "Topik tidak boleh diisi kosong"),

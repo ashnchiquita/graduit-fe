@@ -11,11 +11,15 @@ import {
   FormMessage,
 } from "@/components/ui/form/form";
 import { SearchableSelect } from "@/components/ui/searchable-select";
-import { StreamSelectOptions } from "../../constants";
+import { StreamSelectOptions, StreamSelectOptionsS1 } from "../../constants";
 import { StreamCardProps, useStreamCardImpl } from "./useStreamCardImpl";
+import useRegistrationImpl from "../../useRegistrationImpl";
 
 export const StreamCard = ({ form }: StreamCardProps) => {
   const { streamSearchValue, setStreamSeachValue } = useStreamCardImpl();
+  const { strata } = useRegistrationImpl();
+  const usedStreamSelectOptions =
+    strata === "S1" ? StreamSelectOptionsS1 : StreamSelectOptions;
 
   return (
     <Card
@@ -37,7 +41,7 @@ export const StreamCard = ({ form }: StreamCardProps) => {
             <FormItem>
               <FormControl>
                 <SearchableSelect
-                  dataOptions={StreamSelectOptions}
+                  dataOptions={usedStreamSelectOptions}
                   inputValue={streamSearchValue}
                   setInputValue={setStreamSeachValue}
                   selected={field.value}
