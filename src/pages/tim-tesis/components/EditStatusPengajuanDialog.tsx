@@ -7,26 +7,26 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenu,
-  DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
+import { RoleEnum } from "@/types/session-data";
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
 import { useEffect, useState } from "react";
 import { VscChevronDown } from "react-icons/vsc";
-import { useData } from "../context/DataContext";
-import useSWRMutation from "swr/mutation";
 import { toast } from "react-toastify";
+import useSWRMutation from "swr/mutation";
+import { useData } from "../context/DataContext";
 import {
   approvePendaftaran,
-  rejectPendaftaran,
   getSelfData,
+  rejectPendaftaran,
   updateStatusS1,
 } from "../rekap-pendaftaran/clients";
-import { RoleEnum } from "@/types/session-data";
 
 interface EditStatusPengajuanDialogProps {
   open: boolean;
@@ -99,28 +99,26 @@ export default function EditStatusPengajuanDialog({
   );
 
   const handleAccept = async (id: string) => {
-    await acceptTrigger({
-      id: id,
-      pendaftaranId: pendaftaranId,
-    });
-
-    if (acceptError) {
-      toast.error(acceptError);
-    } else {
+    try {
+      await acceptTrigger({
+        id: id,
+        pendaftaranId: pendaftaranId,
+      });
       refreshData();
+    } catch (error) {
+      toast.error(acceptError);
     }
   };
 
   const handleReject = async (id: string) => {
-    await rejectTrigger({
-      id: id,
-      pendaftaranId: pendaftaranId,
-    });
-
-    if (rejectError) {
-      toast.error(rejectError);
-    } else {
+    try {
+      await rejectTrigger({
+        id: id,
+        pendaftaranId: pendaftaranId,
+      });
       refreshData();
+    } catch (error) {
+      toast.error(rejectError);
     }
   };
 

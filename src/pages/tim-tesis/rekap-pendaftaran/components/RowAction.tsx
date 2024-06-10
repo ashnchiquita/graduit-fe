@@ -3,16 +3,16 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Row } from "@tanstack/react-table";
-import { IoEllipsisVertical } from "react-icons/io5";
-import { Link } from "react-router-dom";
-import { PendaftaranTopik } from "../types";
-import useRowAction from "../hooks/useRowAction";
-import { PiClockCounterClockwise } from "react-icons/pi";
 import RegAcceptDialog from "@/pages/dosen/components/RegAcceptDialog";
 import RegRejectDialog from "@/pages/dosen/components/RegRejectDialog";
-import { Check, X } from "lucide-react";
 import { StatusPendaftaranEnum } from "@/types/status-pendaftaran";
+import { Row } from "@tanstack/react-table";
+import { Check, X } from "lucide-react";
+import { IoEllipsisVertical } from "react-icons/io5";
+import { PiClockCounterClockwise } from "react-icons/pi";
+import { Link } from "react-router-dom";
+import useRowAction from "../hooks/useRowAction";
+import { PendaftaranTopik } from "../types";
 
 interface ComponentProps {
   row: Row<PendaftaranTopik>;

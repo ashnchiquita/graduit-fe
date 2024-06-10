@@ -1,8 +1,12 @@
+import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
+import useSession from "@/hooks/useSession";
+import { isAdmin, isDosen } from "@/lib/checkRole";
 import SelectData from "@/types/select-data";
+import { RoleEnum } from "@/types/session-data";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Row } from "@tanstack/react-table";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import {
@@ -19,11 +23,6 @@ import {
   PostNewTopicReqData,
   PutExistingTopicReqData,
 } from "../types";
-import useSession from "@/hooks/useSession";
-import { useEffect } from "react";
-import { isAdmin, isDosen } from "@/lib/checkRole";
-import { RoleEnum } from "@/types/session-data";
-import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
 
 export function useUpsertDialog(
   closeDialog: () => void,
@@ -50,28 +49,28 @@ export function useUpsertDialog(
     }
   }, [sessionData, form]);
 
-  const { trigger: triggerPostS1, error: errorPostS1 } = useSWRMutation(
+  const { trigger: triggerPostS1 } = useSWRMutation(
     "/registrasi-topik",
     async (_, { arg }: { arg: PostNewTopicReqData }) => {
       return await postNewTopicS1(arg);
     },
   );
 
-  const { trigger: triggerPostS2, error: errorPostS2 } = useSWRMutation(
+  const { trigger: triggerPostS2 } = useSWRMutation(
     "/registrasi-topik",
     async (_, { arg }: { arg: PostNewTopicReqData }) => {
       return await postNewTopicS2(arg);
     },
   );
 
-  const { trigger: triggerPutS1, error: errorPutS1 } = useSWRMutation(
+  const { trigger: triggerPutS1 } = useSWRMutation(
     "/registrasi-topik",
     async (_, { arg }: { arg: PutExistingTopicReqData }) => {
       if (row) return await putExistingTopicS1(row?.original.id, arg);
     },
   );
 
-  const { trigger: triggerPutS2, error: errorPutS2 } = useSWRMutation(
+  const { trigger: triggerPutS2 } = useSWRMutation(
     "/registrasi-topik",
     async (_, { arg }: { arg: PutExistingTopicReqData }) => {
       if (row) return await putExistingTopicS2(row?.original.id, arg);

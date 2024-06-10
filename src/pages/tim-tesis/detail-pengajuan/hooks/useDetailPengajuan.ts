@@ -132,7 +132,7 @@ const useDetailPengajuan = () => {
     [detailData],
   );
 
-  const { trigger: triggerDospeng, error: dospengError } = useSWRMutation(
+  const { trigger: triggerDospeng } = useSWRMutation(
     `/TIMTA/detail-sidsem?id=${id}`,
     async (_: string, { arg }: { arg: Dospeng[] }) => {
       if (!id) return;
@@ -147,7 +147,7 @@ const useDetailPengajuan = () => {
     },
   );
 
-  const { trigger: triggerTempat, error: tempatError } = useSWRMutation(
+  const { trigger: triggerTempat } = useSWRMutation(
     `/TIMTA/detail-sidsem?id=${id}`,
     async (_: string, { arg }: { arg: string }) => {
       if (!id) return;
@@ -203,15 +203,8 @@ const useDetailPengajuan = () => {
 
   const handleDospengUpdate = async (dospeng: Dospeng[]) => {
     const toastId = toast.loading("Menetapkan dosen penguji...");
-    await triggerDospeng(dospeng);
-    if (dospengError) {
-      toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menetapkan dosen penguji",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
+    try {
+      await triggerDospeng(dospeng);
       setDospengDialogOpen(!dospengDialogOpen);
       toast.update(toastId, {
         render: "Berhasil menetapkan dosen penguji",
@@ -220,24 +213,31 @@ const useDetailPengajuan = () => {
         autoClose: 1000,
       });
       mutate(dospengData);
+    } catch (error) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menetapkan dosen penguji",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
     }
   };
 
   const handleTempatUpdate = async (tempat: string) => {
     const toastId = toast.loading("Menetapkan tempat sidang...");
-    await triggerTempat(tempat);
-    if (tempatError) {
-      toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menetapkan tempat sidang",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
+    try {
+      await triggerTempat(tempat);
       setTempatDialogOpen(!tempatDialogOpen);
       toast.update(toastId, {
         render: "Berhasil menetapkan tempat sidang",
         type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    } catch (error) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menetapkan tempat sidang",
+        type: "error",
         isLoading: false,
         autoClose: 1000,
       });

@@ -91,7 +91,7 @@ const useDetailRekapPendaftaran = () => {
     [mhsData, regData],
   );
 
-  const { trigger: triggerInterview, error: interviewError } = useSWRMutation(
+  const { trigger: triggerInterview } = useSWRMutation(
     `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
     async (_: string, { arg }: { arg: Date }) => {
       if (!mahasiswaId) return;
@@ -102,7 +102,7 @@ const useDetailRekapPendaftaran = () => {
       }
     },
   );
-  const { trigger: triggerApprove, error: approveError } = useSWRMutation(
+  const { trigger: triggerApprove } = useSWRMutation(
     `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
     async () => {
       if (!mahasiswaId) return;
@@ -114,7 +114,7 @@ const useDetailRekapPendaftaran = () => {
       }
     },
   );
-  const { trigger: triggerReject, error: rejectError } = useSWRMutation(
+  const { trigger: triggerReject } = useSWRMutation(
     `/rekap-pendaftaran/${strata}/${mahasiswaId}`,
     async () => {
       if (!mahasiswaId) return;
@@ -129,19 +129,19 @@ const useDetailRekapPendaftaran = () => {
 
   const handleInterviewUpdate = async (date: Date) => {
     const toastId = toast.loading("Menetapkan jadwal interview...");
-    await triggerInterview(date);
+    try {
+      await triggerInterview(date);
 
-    if (interviewError) {
-      toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menetapkan jadwal interview",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
       toast.update(toastId, {
         render: "Berhasil menetapkan jadwal interview",
         type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    } catch (error) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menetapkan jadwal interview",
+        type: "error",
         isLoading: false,
         autoClose: 1000,
       });
@@ -150,19 +150,19 @@ const useDetailRekapPendaftaran = () => {
 
   const handleApprove = async () => {
     const toastId = toast.loading("Menerima pendaftaran...");
-    await triggerApprove();
+    try {
+      await triggerApprove();
 
-    if (approveError) {
-      toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menerima pendaftaran",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
       toast.update(toastId, {
         render: "Berhasil menerima pendaftaran",
         type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    } catch (error) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menerima pendaftaran",
+        type: "error",
         isLoading: false,
         autoClose: 1000,
       });
@@ -171,19 +171,18 @@ const useDetailRekapPendaftaran = () => {
 
   const handleReject = async () => {
     const toastId = toast.loading("Menolak pendaftaran...");
-    await triggerReject();
-
-    if (rejectError) {
-      toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menolak pendaftaran",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
+    try {
+      await triggerReject();
       toast.update(toastId, {
         render: "Penolakan berhasil",
         type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    } catch (error) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menolak pendaftaran",
+        type: "error",
         isLoading: false,
         autoClose: 1000,
       });

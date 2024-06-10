@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
 import { z } from "zod";
 import { updateInfoKontak } from "../clients";
-import { toast } from "react-toastify";
 
 export default function useInfoKontakDialog(infoKontakInit: string) {
   const [kontakDialogOpen, setKontakDialogOpen] = useState(!infoKontakInit);
@@ -20,26 +20,17 @@ export default function useInfoKontakDialog(infoKontakInit: string) {
     },
   });
 
-  const { trigger: triggerKontakUpdate, error: kontakUpdateError } =
-    useSWRMutation(
-      "/self/kontak",
-      async (_, { arg }: { arg: string }) => await updateInfoKontak(arg),
-    );
+  const { trigger: triggerKontakUpdate } = useSWRMutation(
+    "/self/kontak",
+    async (_, { arg }: { arg: string }) => await updateInfoKontak(arg),
+  );
 
   const handleSubmit = async (
     data: z.infer<typeof FormSchema>,
   ): Promise<void> => {
     const toastId = toast.loading("Menyimpan informasi kontak...");
-    await triggerKontakUpdate(data.infoKontak);
-
-    if (kontakUpdateError) {
-      toast.update(toastId, {
-        render: "Terjadi kesalahan dalam menyimpan informasi kontak",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
+    try {
+      await triggerKontakUpdate(data.infoKontak);
       toast.update(toastId, {
         render: "Berhasil menyimpan informasi kontak",
         type: "success",
@@ -47,6 +38,13 @@ export default function useInfoKontakDialog(infoKontakInit: string) {
         autoClose: 1000,
       });
       setKontakDialogOpen(false);
+    } catch (error) {
+      toast.update(toastId, {
+        render: "Terjadi kesalahan dalam menyimpan informasi kontak",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
     }
   };
 

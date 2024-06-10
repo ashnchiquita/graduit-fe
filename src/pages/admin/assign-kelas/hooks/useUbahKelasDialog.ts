@@ -1,12 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Table } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 import { z } from "zod";
 import { getDaftarKelas, ubahKelasDosen, ubahKelasMahasiswa } from "../clients";
-import useSWRMutation from "swr/mutation";
-import { toast } from "react-toastify";
-import { Table } from "@tanstack/react-table";
 import { KelasPengguna } from "../types";
 
 export default function useUbahKelasDialog(
@@ -57,7 +57,7 @@ export default function useUbahKelasDialog(
     },
   );
 
-  const { trigger: triggerUbahMhs, error: ubahMhsError } = useSWRMutation(
+  const { trigger: triggerUbahMhs } = useSWRMutation(
     ["/kelas/mahasiswa", searchValue],
     async (
       _,
@@ -73,7 +73,7 @@ export default function useUbahKelasDialog(
     },
   );
 
-  const { trigger: triggerUbahDosen, error: ubahDosenError } = useSWRMutation(
+  const { trigger: triggerUbahDosen } = useSWRMutation(
     ["/kelas/dosen", searchValue],
     async (
       _,
@@ -94,18 +94,10 @@ export default function useUbahKelasDialog(
   }: z.infer<typeof formSchema>): Promise<void> => {
     const toastId = toast.loading("Mengubah kelas...");
     if (type === "MAHASISWA") {
-      await triggerUbahMhs({
-        kelasIds: kelas.map((k) => k.id),
-      });
-
-      if (ubahMhsError) {
-        toast.update(toastId, {
-          render: "Terjadi kesalahan dalam mengubah kelas",
-          type: "error",
-          isLoading: false,
-          autoClose: 1000,
+      try {
+        await triggerUbahMhs({
+          kelasIds: kelas.map((k) => k.id),
         });
-      } else {
         toast.update(toastId, {
           render: "Berhasil mengubah kelas",
           type: "success",
@@ -116,20 +108,20 @@ export default function useUbahKelasDialog(
         table.toggleAllRowsSelected(false);
         setDialogOpen(false);
         form.setValue("kelas", kelas);
+      } catch (error) {
+        toast.update(toastId, {
+          render: "Terjadi kesalahan dalam mengubah kelas",
+          type: "error",
+          isLoading: false,
+          autoClose: 1000,
+        });
       }
     } else {
-      await triggerUbahDosen({
-        kelasIds: kelas.map((k) => k.id),
-      });
-
-      if (ubahDosenError) {
-        toast.update(toastId, {
-          render: "Terjadi kesalahan dalam mengubah kelas",
-          type: "error",
-          isLoading: false,
-          autoClose: 1000,
+      try {
+        await triggerUbahDosen({
+          kelasIds: kelas.map((k) => k.id),
         });
-      } else {
+
         toast.update(toastId, {
           render: "Berhasil mengubah kelas",
           type: "success",
@@ -140,6 +132,13 @@ export default function useUbahKelasDialog(
         table.toggleAllRowsSelected(false);
         setDialogOpen(false);
         form.setValue("kelas", kelas);
+      } catch (error) {
+        toast.update(toastId, {
+          render: "Terjadi kesalahan dalam mengubah kelas",
+          type: "error",
+          isLoading: false,
+          autoClose: 1000,
+        });
       }
     }
   };

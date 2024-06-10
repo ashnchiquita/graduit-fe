@@ -33,7 +33,7 @@ export default function RowAction({
     handleAccept,
     handleReject,
   } = useRowAction({
-    idMahasiswa: row.original.id,
+    idMahasiswa: row.original.id_mahasiswa,
   });
 
   return (
