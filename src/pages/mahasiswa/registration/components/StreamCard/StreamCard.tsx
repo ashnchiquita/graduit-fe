@@ -16,6 +16,10 @@ import { StreamCardProps, useStreamCardImpl } from "./useStreamCardImpl";
 
 export const StreamCard = ({ form }: StreamCardProps) => {
   const { streamSearchValue, setStreamSeachValue } = useStreamCardImpl();
+  const { data: sessionData } = useSession();
+  const strata = sessionData?.roles.includes(RoleEnum.S1_MAHASISWA)
+    ? "S1"
+    : "S2";
 
   return (
     <Card
@@ -37,7 +41,11 @@ export const StreamCard = ({ form }: StreamCardProps) => {
             <FormItem>
               <FormControl>
                 <SearchableSelect
-                  dataOptions={StreamSelectOptions}
+                  dataOptions={
+                    strata === "S1"
+                      ? StreamSelectOptionsS1
+                      : StreamSelectOptionsS2
+                  }
                   inputValue={streamSearchValue}
                   setInputValue={setStreamSeachValue}
                   selected={field.value}

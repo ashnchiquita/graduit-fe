@@ -1,7 +1,12 @@
 import SelectData from "@/types/select-data";
 import { z } from "zod";
 
-export const StreamSelectOptions: SelectData[] = [
+export const StreamSelectOptionsS1: SelectData[] = [
+  { label: "Teknik Informatika (IF)", value: "IF" },
+  { label: "Sistem dan Teknologi Informasi (STI)", value: "STI" },
+];
+
+export const StreamSelectOptionsS2: SelectData[] = [
   { label: "Ilmu Komputer (CS)", value: "CS" },
   { label: "Rekayasa Perangkat Lunak dan Inovasi (SEI)", value: "SEI" },
   { label: "Sistem Informasi (SI)", value: "IS" },
