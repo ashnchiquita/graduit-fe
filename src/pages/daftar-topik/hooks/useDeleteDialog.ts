@@ -1,9 +1,9 @@
-import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
 import { deleteTopicS1, deleteTopicS2 } from "../clients";
 import useSession from "@/hooks/useSession";
 import { isAdmin } from "@/lib/checkRole";
 import { RoleEnum } from "@/types/session-data";
+import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
 
 export default function useDeleteDialog(
   updateData: () => Promise<any>,
@@ -12,56 +12,59 @@ export default function useDeleteDialog(
 ) {
   const { data: sessionData } = useSession();
 
-  const { trigger: triggerDeleteS1, error: errorDeleteS1 } = useSWRMutation(
+  const { trigger: triggerDeleteS1 } = useSWRMutation(
     "/alokasi-topik",
     async (_, { arg }: { arg: string }) => {
       return await deleteTopicS1(arg);
     },
   );
 
-  const { trigger: triggerDeleteS2, error: errorDeleteS2 } = useSWRMutation(
+  const { trigger: triggerDeleteS2 } = useSWRMutation(
     "/alokasi-topik",
     async (_, { arg }: { arg: string }) => {
       return await deleteTopicS2(arg);
     },
   );
 
+  const { makeToast } = useCustomToast();
   const handleDelete = async (id: string) => {
-    if (!sessionData) return;
+    if (
+      !sessionData ||
+      !(
+        isAdmin(sessionData.roles) ||
+        sessionData.roles.includes(RoleEnum.S1_PEMBIMBING) ||
+        sessionData.roles.includes(RoleEnum.S2_PEMBIMBING)
+      )
+    )
+      return;
 
-    const toastId = toast.loading("Menghapus topik...");
+    const toastParams: ToastParams = {
+      loadingText: "Menghapus topik...",
+      successText: "Berhasil menghapus topik",
+      errorText: "Gagal menghapus topik",
+      action: () => {
+        if (isAdmin(sessionData.roles)) {
+          if (strata === "S1") {
+            return triggerDeleteS1(id);
+          } else {
+            return triggerDeleteS2(id);
+          }
+        } else {
+          if (sessionData.roles.includes(RoleEnum.S1_PEMBIMBING)) {
+            return triggerDeleteS1(id);
+          } else {
+            // S2_PEMBIMBING
+            return triggerDeleteS2(id);
+          }
+        }
+      },
+      afterSuccess: () => {
+        updateData();
+        closeDialog();
+      },
+    };
 
-    if (isAdmin(sessionData.roles)) {
-      if (strata === "S1") {
-        await triggerDeleteS1(id);
-      } else if (strata === "S2") {
-        await triggerDeleteS2(id);
-      }
-    } else {
-      if (sessionData.roles.includes(RoleEnum.S1_PEMBIMBING)) {
-        await triggerDeleteS1(id);
-      } else if (sessionData.roles.includes(RoleEnum.S2_PEMBIMBING)) {
-        await triggerDeleteS2(id);
-      }
-    }
-
-    if (errorDeleteS1 || errorDeleteS2) {
-      toast.update(toastId, {
-        render: "Gagal menghapus topik",
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
-      toast.update(toastId, {
-        render: "Berhasil menghapus topik",
-        type: "success",
-        isLoading: false,
-        autoClose: 1000,
-      });
-      updateData();
-      closeDialog();
-    }
+    await makeToast(toastParams);
   };
 
   return { handleDelete };

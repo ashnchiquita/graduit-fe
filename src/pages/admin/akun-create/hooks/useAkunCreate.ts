@@ -6,6 +6,7 @@ import { z } from "zod";
 import { putAccount } from "../../clients";
 import { PutAccountRequestData } from "../../types";
 import { RoleEnum } from "@/types/session-data";
+import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
 
 export default function useAkunCreate() {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export default function useAkunCreate() {
     },
   });
 
-  const { trigger, error } = useSWRMutation(
+  const { trigger } = useSWRMutation(
     "/akun",
     async (_, { arg }: { arg: PutAccountRequestData }) => {
       const res = await putAccount(arg);
@@ -45,19 +46,30 @@ export default function useAkunCreate() {
     },
   );
 
-  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    await trigger({
-      nama: values.name,
-      email: values.email,
-      access: values.access.map((item) => item.name),
-    });
+  const { makeToast } = useCustomToast();
 
-    if (error) {
-      // TODO: Add toast
-      console.error(error);
-    } else {
-      navigate("/manajemen/kelola-akun");
-    }
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    const toastParams: ToastParams = {
+      loadingText: "Membuat akun...",
+      successText: "Berhasil membuat akun",
+      errorText: "Gagal membuat akun",
+      action: () =>
+        trigger({
+          nama: values.name,
+          email: values.email,
+          access: values.access.map((item) => item.name),
+        }),
+      afterError: (err) => {
+        console.error(err);
+      },
+      beforeSuccess: () => {
+        setTimeout(() => {
+          navigate("/manajemen/kelola-akun");
+        }, 1000);
+      },
+    };
+
+    await makeToast(toastParams);
   };
 
   return { form, handleSubmit, roleAccess };

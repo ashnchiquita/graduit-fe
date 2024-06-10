@@ -22,6 +22,7 @@ import useSession from "@/hooks/useSession";
 import { useEffect } from "react";
 import { isAdmin, isDosen } from "@/lib/checkRole";
 import { RoleEnum } from "@/types/session-data";
+import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
 
 export function useUpsertDialog(
   closeDialog: () => void,
@@ -92,67 +93,69 @@ export function useUpsertDialog(
     },
   );
 
+  const { makeToast } = useCustomToast();
   const onSubmit = async (values: UpsertTopikFormData) => {
-    if (!sessionData) return;
+    if (
+      !sessionData ||
+      !(
+        isAdmin(sessionData.roles) ||
+        sessionData.roles.includes(RoleEnum.S1_PEMBIMBING) ||
+        sessionData.roles.includes(RoleEnum.S2_PEMBIMBING)
+      )
+    )
+      return;
 
-    const toastId = toast.loading(
-      `${row ? "Mengubah" : "Menambahkan"} topik...`,
-    );
+    const toastParams: ToastParams = {
+      loadingText: `${row ? "Mengubah" : "Menambahkan"} topik...`,
+      successText: `Berhasil ${row ? "mengubah" : "menambahkan"} topik`,
+      errorText: `Gagal ${row ? "mengubah" : "menambahkan"} topik`,
+      action: () => {
+        if (row) {
+          const data: PutExistingTopicReqData = {
+            ...values,
+          };
 
-    if (row) {
-      const data: PutExistingTopicReqData = {
-        ...values,
-      };
+          if (isAdmin(sessionData.roles)) {
+            if (strata === "S1") {
+              return triggerPutS1(data);
+            } else {
+              return triggerPutS2(data);
+            }
+          } else {
+            if (sessionData.roles.includes(RoleEnum.S1_PEMBIMBING)) {
+              return triggerPutS1(data);
+            } else {
+              // S2_PEMBIMBING
+              return triggerPutS2(data);
+            }
+          }
+        } else {
+          const data: PostNewTopicReqData = {
+            ...values,
+          };
+          if (isAdmin(sessionData.roles)) {
+            if (strata === "S1") {
+              return triggerPostS1(data);
+            } else {
+              return triggerPostS2(data);
+            }
+          } else {
+            if (sessionData.roles.includes(RoleEnum.S1_PEMBIMBING)) {
+              return triggerPostS1(data);
+            } else {
+              // S2_PEMBIMBING
+              return triggerPostS2(data);
+            }
+          }
+        }
+      },
+      afterSuccess: () => {
+        updateData();
+        closeDialog();
+      },
+    };
 
-      if (isAdmin(sessionData.roles)) {
-        if (strata === "S1") {
-          await triggerPutS1(data);
-        } else if (strata === "S2") {
-          await triggerPutS2(data);
-        }
-      } else {
-        if (sessionData.roles.includes(RoleEnum.S1_PEMBIMBING)) {
-          await triggerPutS1(data);
-        } else if (sessionData.roles.includes(RoleEnum.S2_PEMBIMBING)) {
-          await triggerPutS2(data);
-        }
-      }
-    } else {
-      const data: PostNewTopicReqData = {
-        ...values,
-      };
-      if (isAdmin(sessionData.roles)) {
-        if (strata === "S1") {
-          await triggerPostS1(data);
-        } else if (strata === "S2") {
-          await triggerPostS2(data);
-        }
-      } else {
-        if (sessionData.roles.includes(RoleEnum.S1_PEMBIMBING)) {
-          await triggerPostS1(data);
-        } else if (sessionData.roles.includes(RoleEnum.S2_PEMBIMBING)) {
-          await triggerPostS2(data);
-        }
-      }
-    }
-
-    if (errorPostS1 || errorPostS2 || errorPutS1 || errorPutS2) {
-      toast.update(toastId, {
-        render: `Gagal ${row ? "mengubah" : "menambahkan"} topik`,
-        type: "error",
-        isLoading: false,
-        autoClose: 1000,
-      });
-    } else {
-      toast.update(toastId, {
-        render: `Berhasil ${row ? "mengubah" : "menambahkan"} topik`,
-        type: "success",
-        isLoading: false,
-        autoClose: 1000,
-      });
-      updateData();
-      closeDialog();
-    }
+    await makeToast(toastParams);
   };
 
   return {

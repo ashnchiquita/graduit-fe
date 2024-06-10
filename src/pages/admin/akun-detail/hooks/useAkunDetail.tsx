@@ -8,7 +8,7 @@ import { z } from "zod";
 import { getAccount, putAccount } from "../../clients";
 import { PutAccountRequestData } from "../../types";
 import { RoleEnum } from "@/types/session-data";
-import { toast } from "react-toastify";
+import useCustomToast, { ToastParams } from "@/hooks/useCustomToast";
 
 interface ReturnType {
   form: UseFormReturn<{
@@ -92,7 +92,7 @@ export default function useAkunDetail(): ReturnType {
     mutate();
   }, [mutate]);
 
-  const { trigger, error } = useSWRMutation(
+  const { trigger } = useSWRMutation(
     "/akun",
     async (_, { arg }: { arg: PutAccountRequestData }) => {
       const res = await putAccount(arg);
@@ -100,22 +100,27 @@ export default function useAkunDetail(): ReturnType {
     },
   );
 
-  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log("Form Submitted", values);
-    await trigger({
-      nama: values.name,
-      email: values.email,
-      access: values.access.map((item) => item.name),
-      id: id ?? "",
-    });
+  const { makeToast } = useCustomToast();
 
-    if (error) {
-      toast.error("Gagal menyimpan perubahan");
-    } else {
-      toast.success("Berhasil menyimpan perubahan");
-      // Refetch the initial data to reflect the changes
-      mutate();
-    }
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    const toastParams: ToastParams = {
+      loadingText: "Menyimpan perubahan...",
+      successText: "Berhasil menyimpan perubahan",
+      errorText: "Gagal menyimpan perubahan",
+      action: () =>
+        trigger({
+          nama: values.name,
+          email: values.email,
+          access: values.access.map((item) => item.name),
+          id: id ?? "",
+        }),
+      afterSuccess: () => {
+        // Refetch the initial data to reflect the changes
+        mutate();
+      },
+    };
+
+    await makeToast(toastParams);
   };
 
   return {

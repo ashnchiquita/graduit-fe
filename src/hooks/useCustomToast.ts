@@ -5,10 +5,10 @@ export type ToastParams = {
   successText: string;
   errorText: string;
   action: () => Promise<any>;
-  beforeSuccess?: () => void;
-  afterSuccess?: () => void;
-  beforeError?: () => void;
-  afterError?: () => void;
+  beforeSuccess?: () => Promise<void> | void;
+  afterSuccess?: () => Promise<void> | void;
+  beforeError?: (err: any) => Promise<void> | void;
+  afterError?: (err: any) => Promise<void> | void;
 };
 
 export default function useCustomToast() {
@@ -17,25 +17,25 @@ export default function useCustomToast() {
 
     await params
       .action()
-      .then(() => {
-        params.beforeSuccess?.();
+      .then(async () => {
+        await params.beforeSuccess?.();
         toast.update(toastId, {
           render: params.successText,
           type: "success",
           isLoading: false,
           autoClose: 1000,
         });
-        params.afterSuccess?.();
+        await params.afterSuccess?.();
       })
-      .catch(() => {
-        params.beforeError?.();
+      .catch(async (err) => {
+        await params.beforeError?.(err);
         toast.update(toastId, {
           render: params.errorText,
           type: "error",
           isLoading: false,
           autoClose: 1000,
         });
-        params.afterError?.();
+        await params.afterError?.(err);
       });
   }
 
