@@ -212,7 +212,7 @@ const useDetailPengajuan = () => {
         autoClose: 1000,
       });
     } else {
-      setDospengDialogOpen(!dospengDialogOpen)
+      setDospengDialogOpen(!dospengDialogOpen);
       toast.update(toastId, {
         render: "Berhasil menetapkan dosen penguji",
         type: "success",
@@ -234,7 +234,7 @@ const useDetailPengajuan = () => {
         autoClose: 1000,
       });
     } else {
-      setTempatDialogOpen(!tempatDialogOpen)
+      setTempatDialogOpen(!tempatDialogOpen);
       toast.update(toastId, {
         render: "Berhasil menetapkan tempat sidang",
         type: "success",
@@ -256,7 +256,7 @@ const useDetailPengajuan = () => {
         autoClose: 1000,
       });
     } else {
-      setJadwalDialogOpen(!jadwalDialogOpen)
+      setJadwalDialogOpen(!jadwalDialogOpen);
       toast.update(toastId, {
         render: "Berhasil menetapkan jadwal sidang/seminar",
         type: "success",
@@ -329,7 +329,7 @@ const useDetailPengajuan = () => {
     jadwalDialogOpen,
     setJadwalDialogOpen,
     tempatDialogOpen,
-    setTempatDialogOpen
+    setTempatDialogOpen,
   };
 };
 

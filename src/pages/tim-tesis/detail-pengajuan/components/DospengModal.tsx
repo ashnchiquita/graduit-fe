@@ -28,16 +28,16 @@ export default function DospengModal({
   listDosenPenguji,
   onChange,
   dospengDialogOpen,
-  setDospengDialogOpen
+  setDospengDialogOpen,
 }: DospengModalProps): JSX.Element {
   dosenPenguji = dosenPenguji ?? [];
   const { dialogOpen, setDialogOpen, form, handleChange } = useDospengModal(
     dosenPenguji,
     onChange,
   );
-  useEffect(()=>{
-    console.log(listDosenPenguji)
-  },[dospengDialogOpen])
+  useEffect(() => {
+    console.log(listDosenPenguji);
+  }, [dospengDialogOpen]);
   return (
     <Dialog open={dospengDialogOpen} onOpenChange={setDospengDialogOpen}>
       <DialogTrigger asChild>{modalTrigger}</DialogTrigger>

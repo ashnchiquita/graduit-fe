@@ -17,7 +17,7 @@ export default function TempatModal({
   onChange,
   modalTrigger,
   tempatDialogOpen,
-  setTempatDialogOpen
+  setTempatDialogOpen,
 }: TempatModalProps): JSX.Element {
   const { dialogOpen, setDialogOpen, handleChange, form } = useTempatModal(
     tempat,
