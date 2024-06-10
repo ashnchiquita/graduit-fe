@@ -9,12 +9,22 @@ import {
   PostRegistrasiTARequestData,
   StatusS1Response,
   StatusS2Response,
+  GetAllDosenPembimbingRespDataS1,
 } from "./types";
 
 export const getAllDosenPembimbing = () => {
   return s2Instance.get<GetAllDosenPembimbingRespData>("/dosen-bimbingan", {
     withCredentials: true,
   });
+};
+
+export const getAllDosenPembimbingS1 = () => {
+  return s1Instance.get<GetAllDosenPembimbingRespDataS1>(
+    "/api/admin/dosen-bimbingan",
+    {
+      withCredentials: true,
+    },
+  );
 };
 
 export const getAlokasiTopikPerPembimbing = (

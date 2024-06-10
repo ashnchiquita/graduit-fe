@@ -53,6 +53,10 @@ export type GetAllDosenPembimbingRespData = {
   email: string;
 }[];
 
+export type GetAllDosenPembimbingRespDataS1 = {
+  data: GetAllDosenPembimbingRespData;
+};
+
 export type LoadedExcelData = {
   Judul: string;
   Deskripsi: string;

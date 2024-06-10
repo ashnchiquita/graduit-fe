@@ -4,6 +4,10 @@ export type GetAllDosenPembimbingRespData = {
   email: string;
 }[];
 
+export type GetAllDosenPembimbingRespDataS1 = {
+  data: GetAllDosenPembimbingRespData;
+};
+
 export type GetAlokasiTopikPerPembimbingReqParams = {
   idPembimbing: string;
 };

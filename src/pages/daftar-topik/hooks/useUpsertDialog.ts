@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import {
+  getAllDosenPembimbingS1,
   getAllDosenPembimbingS2,
   postNewTopicS1,
   postNewTopicS2,
@@ -81,14 +82,27 @@ export function useUpsertDialog(
     async () => {
       if (isDosen(sessionData?.roles)) return [];
 
-      const res = await getAllDosenPembimbingS2();
+      if (strata === "S1") {
+        const resS1 = await getAllDosenPembimbingS1();
 
-      const options: SelectData[] = res.data.map(({ id, nama }) => ({
-        label: nama,
-        value: id,
-      }));
+        const optionsS1: SelectData[] = resS1.data.data.map(({ id, nama }) => ({
+          label: nama,
+          value: id,
+        }));
 
-      return options;
+        return optionsS1;
+      } else if (strata === "S2") {
+        const resS2 = await getAllDosenPembimbingS2();
+
+        const optionsS2: SelectData[] = resS2.data.map(({ id, nama }) => ({
+          label: nama,
+          value: id,
+        }));
+
+        return optionsS2;
+      } else {
+        return [];
+      }
     },
   );
 
