@@ -27,6 +27,23 @@ export type GetAlokasiTopikPerPembimbingRespData = {
   }[];
 };
 
+export type GetAlokasiTopikPerPembimbingRespDataS1 = {
+  data: {
+    data: {
+      id: string;
+      judul: string;
+      deskripsi: string;
+      pengaju: {
+        id: string;
+        nama: string;
+        email: string;
+        roles: string[];
+      };
+    }[];
+    maxPage: number
+  };
+};
+
 export type PostRegistrasiTesisRequestData = {
   idMahasiswa: string;
   idPenerima: string;

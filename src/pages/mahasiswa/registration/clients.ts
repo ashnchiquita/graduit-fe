@@ -10,6 +10,7 @@ import {
   StatusS1Response,
   StatusS2Response,
   GetAllDosenPembimbingRespDataS1,
+  GetAlokasiTopikPerPembimbingRespDataS1,
 } from "./types";
 
 export const getAllDosenPembimbing = () => {
@@ -35,6 +36,15 @@ export const getAlokasiTopikPerPembimbing = (
     { params, withCredentials: true },
   );
 };
+
+export const getAlokasiTopikPerPembimbingS1 = (
+  params: GetAlokasiTopikPerPembimbingReqParams
+) => {
+  return s1Instance.get<GetAlokasiTopikPerPembimbingRespDataS1>("/api/admin/alokasi-topik", {
+    params,
+    withCredentials: true,
+  })
+}
 
 export const postRegistrasiTAS1 = (data: PostRegistrasiTesisRequestData) => {
   function convertToPostRegistrasiTARequestData(
