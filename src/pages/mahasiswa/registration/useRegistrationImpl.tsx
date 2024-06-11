@@ -137,7 +137,7 @@ const useRegistrationImpl = () => {
       toast.success("Berhasil melakukan registrasi");
       navigate("/daftar-pengajuan");
     } catch (error) {
-      toast.success("Gagal melakukan registrasi");
+      toast.error("Gagal melakukan registrasi");
     }
   };
 

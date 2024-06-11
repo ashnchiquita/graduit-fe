@@ -13,7 +13,7 @@ export async function getStatusS2(id: string) {
 
 export async function getStatusS1(mhsId: string) {
   return await s1Instance.get<StatusS1Response>(
-    `/api/admin/pendaftaran-by-id?id=${mhsId}`,
+    `/admin/pendaftaran-by-id?id=${mhsId}`,
     {
       withCredentials: true,
     },

@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { useEffect } from "react";
 
 interface ComponentProps {
   form: UseFormReturn<{

@@ -1,5 +1,5 @@
 interface TagStatusType {
-  status: "SAH" | "MENUNGGU" | "TIDAKSAH";
+  status: string;
 }
 
 const TagStatus = ({ status }: TagStatusType) => {
@@ -7,16 +7,16 @@ const TagStatus = ({ status }: TagStatusType) => {
     <>
       {status ? (
         <div
-          className={`p-4 ${status === "SAH" ? "bg-green-500" : status === "MENUNGGU" ? "bg-yellow-500" : "bg-red-500"} rounded-md`}
+          className={`p-4 ${status === "lancar" ? "bg-green-500" : status === "butuh_bimbingan" ? "bg-yellow-500" : "bg-red-500"} rounded-md`}
         >
           <ul className="ml-2 list-disc text-xs font-semibold">
             <li
-              className={`${status === "SAH" ? "text-green-700" : status === "MENUNGGU" ? "text-yellow-700" : "text-red-700"} `}
+              className={`${status === "lancar" ? "text-green-700" : status === "butuh_bimbingan" ? "text-yellow-700" : "text-red-700"} `}
             >
               <span className=" text-white">
-                {status === "SAH"
+                {status === "lancar"
                   ? "Status bimbingan Anda lancar"
-                  : status === "MENUNGGU"
+                  : status === "butuh_bimbingan"
                     ? "Status bimbingan Anda cukup baik, segera lakukan bimbingan"
                     : "Segera laksanakan bimbingan"}
               </span>

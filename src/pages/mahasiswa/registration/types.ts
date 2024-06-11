@@ -73,8 +73,11 @@ export type StatusS2Response = {
 
 export type PostRegistrasiTARequestData = {
   idMahasiswa: string;
-  idTopik: string;
-  idPenerima: string;
+  idDosen: string;
+  judulTopik?: string;
+  idTopik?: string;
+  deskripsiTopik?: string;
+  jalurPilihan: string;
 };
 
 export type StatusS1Response = {

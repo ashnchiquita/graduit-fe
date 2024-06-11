@@ -34,6 +34,6 @@ export default function Dashboard(): JSX.Element {
   } else if (data?.roles.includes(RoleEnum.S2_TIM_TESIS)) {
     return <DashboardTimTugas strata="S2" />;
   } else {
-    return <div>gaboleh :o</div>;
+    return <div />;
   }
 }
