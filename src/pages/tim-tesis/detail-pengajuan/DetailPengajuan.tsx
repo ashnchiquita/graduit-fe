@@ -282,7 +282,9 @@ export default function DetailPengajuan() {
                   <SidangModal
                     sidangDialogOpen={jadwalDialogOpen}
                     setSidangDialogOpen={setJadwalDialogOpen}
-                    dateInit={new Date(data.jadwal_sidang)}
+                    dateInit={
+                      data.jadwal_sidang ? new Date(data.jadwal_sidang) : null
+                    }
                     onChange={(date) => {
                       handleJadwalUpdate(date);
                     }}

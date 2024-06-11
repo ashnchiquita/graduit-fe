@@ -44,7 +44,7 @@ export default function SidangModal({
           <DialogTitle className="text-left">Sidang</DialogTitle>
           <DialogDescription className="text-left">
             Jadwalkan sidang dengan calon mahasiswa bimbingan. Minimal pilih
-            jadwal 1 hari hari ini.
+            jadwal 1 hari dari hari ini.
           </DialogDescription>
         </DialogHeader>
 
@@ -66,7 +66,6 @@ export default function SidangModal({
                       >
                         <CalendarIcon className="size-4 opacity-50" />
                         {field.value ? (
-                          // format(field.value, "PPP")
                           dayjs(field.value).format("DD/MM/YYYY HH.mm")
                         ) : (
                           <p>Pilih waktu</p>
