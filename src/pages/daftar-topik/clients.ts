@@ -18,13 +18,10 @@ export async function getAllTopicsS2(params: GetAllTopicParams) {
 }
 
 export async function getAllTopicsS1(params: GetAllTopicParams) {
-  return await s1Instance.get<GetAllTopicRespDataS1>(
-    "/admin/alokasi-topik",
-    {
-      params,
-      withCredentials: true,
-    },
-  );
+  return await s1Instance.get<GetAllTopicRespDataS1>("/admin/alokasi-topik", {
+    params,
+    withCredentials: true,
+  });
 }
 
 export async function postNewTopicS2(data: PostNewTopicReqData) {
